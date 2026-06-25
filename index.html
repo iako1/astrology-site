@@ -442,7 +442,27 @@ const DEF_MARS_SIGNS=[
 let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
 let DEF_TIMEZONE={
   id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
-  content:`<div style="margin-bottom:16px;font-size:14px;color:var(--text2);line-height:1.7">საქართველო სხვადასხვა პერიოდში სხვადასხვა დროის სარტყელში იყო. ნატალური კარტის სწორი გამოთვლისთვის მნიშვნელოვანია დაბადების დროს მოქმედი GMT გამოვიყენოთ.</div>
+  content:`
+<div style="max-width:520px;margin:0 auto 28px;background:linear-gradient(135deg,#1e3a6e 0%,#1a5fb4 100%);border-radius:20px;padding:28px 24px;color:#fff;box-shadow:0 8px 32px rgba(30,58,110,.18)">
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:36px;margin-bottom:6px">🕐</div>
+    <div style="font-size:20px;font-weight:500;margin-bottom:4px">GMT კალკულატორი</div>
+    <div style="font-size:13px;opacity:.75">შეიყვანე დაბადების თარიღი — სისტემა ავტომატურად განსაზღვრავს GMT-ს</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+    <div>
+      <label style="font-size:11px;font-weight:500;opacity:.8;display:block;margin-bottom:5px">📅 დაბადების თარიღი</label>
+      <input type="date" id="tz-date" style="width:100%;padding:10px 12px;border:none;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;font-size:14px;font-family:inherit;backdrop-filter:blur(4px)" onchange="calcGMT()">
+    </div>
+    <div>
+      <label style="font-size:11px;font-weight:500;opacity:.8;display:block;margin-bottom:5px">⏰ დაბადების დრო (სურვ.)</label>
+      <input type="time" id="tz-time" style="width:100%;padding:10px 12px;border:none;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;font-size:14px;font-family:inherit" onchange="calcGMT()">
+    </div>
+  </div>
+  <div id="gmt-result" style="display:none"></div>
+</div>
+
+<div style="margin-bottom:16px;font-size:14px;color:var(--text2);line-height:1.7">საქართველო სხვადასხვა პერიოდში სხვადასხვა დროის სარტყელში იყო. ნატალური კარტის სწორი გამოთვლისთვის მნიშვნელოვანია დაბადების დროს მოქმედი GMT გამოვიყენოთ.</div>
 <div class="tbl-outer"><table class="main-tbl"><thead><tr><th>წელი</th><th>ზაფხული (დან)</th><th>ზამთარი (დან)</th><th>შენიშვნა</th></tr></thead><tbody>
 <tr><td>1924–1957</td><td>01.05-დან GMT+3</td><td>—</td><td>1924 წლის 1 მაისიდან 1957 წლის 28 თებ.</td></tr>
 <tr class="upper"><td>1957–1981</td><td>28.02-დან GMT+4</td><td>—</td><td>1957 წლის 28 თებ.-დან 1981 წლის 31 მარტამდე</td></tr>
@@ -475,21 +495,7 @@ let DEF_TIMEZONE={
 <div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--bg2);border:.5px solid var(--border);font-size:12px;color:var(--text2)">
   <strong>მიმდინარე დრო:</strong> საქართველო — GMT+4 (UTC+4), ზაფხულის დროის გადართვა 2005 წლიდან გაუქმდა.
 </div>
-<div style="margin-top:20px;border:.5px solid var(--border2);border-radius:14px;padding:20px;background:var(--bg)">
-  <div style="font-size:16px;font-weight:500;color:var(--text);margin-bottom:4px">🔍 GMT კალკულატორი</div>
-  <div style="font-size:13px;color:var(--text2);margin-bottom:14px">შეიყვანე დაბადების თარიღი და დრო — სისტემა ავტომატურად განსაზღვრავს GMT-ს</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-    <div>
-      <label style="font-size:11px;font-weight:500;color:var(--text3);display:block;margin-bottom:5px">დაბადების თარიღი</label>
-      <input type="date" id="tz-date" style="width:100%;padding:8px 10px;border:.5px solid var(--border2);border-radius:8px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit" onchange="calcGMT()">
-    </div>
-    <div>
-      <label style="font-size:11px;font-weight:500;color:var(--text3);display:block;margin-bottom:5px">დაბადების დრო (სურვ.)</label>
-      <input type="time" id="tz-time" style="width:100%;padding:8px 10px;border:.5px solid var(--border2);border-radius:8px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit" onchange="calcGMT()">
-    </div>
-  </div>
-  <div id="gmt-result" style="display:none"></div>
-</div>`
+`
 };
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
@@ -1098,15 +1104,15 @@ function calcGMT(){
   const res=document.getElementById('gmt-result');
   if(!res)return;
   if(gmt===null){
-    res.innerHTML=`<div style="padding:14px;border-radius:10px;background:#FEF9C3;border:.5px solid #D4A017;color:#7a5c00;font-size:14px">${note}</div>`;
+    res.innerHTML=`<div style="padding:12px 14px;border-radius:10px;background:rgba(255,200,0,.15);border:.5px solid rgba(255,200,0,.4);color:#fff;font-size:13px">${note}</div>`;
   }else{
     const ts=timeVal?` ${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`:'';
-    res.innerHTML=`<div style="padding:16px;border-radius:10px;background:#DBEAFE;border:.5px solid #1a5fb4">
-      <div style="font-size:32px;font-weight:500;color:#1e3a6e;margin-bottom:6px">GMT+${gmt}</div>
-      <div style="font-size:13px;color:#1e3a6e;margin-bottom:4px">${d.toString().padStart(2,'0')}.${m.toString().padStart(2,'0')}.${y}${ts}</div>
-      <div style="font-size:12px;color:#1e3a6e;opacity:.8;margin-bottom:8px">${note}</div>
-      <div style="padding:8px 12px;background:rgba(255,255,255,.5);border-radius:8px;font-size:12px;color:#1e3a6e">
-        <strong>ასტრო-პროგრამისთვის:</strong> UTC+${gmt} / GMT+${gmt}
+    res.innerHTML=`<div style="padding:16px;border-radius:12px;background:rgba(255,255,255,.12);border:.5px solid rgba(255,255,255,.25);text-align:center">
+      <div style="font-size:42px;font-weight:600;color:#fff;letter-spacing:1px">GMT+${gmt}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.8);margin:4px 0">${d.toString().padStart(2,'0')}.${m.toString().padStart(2,'0')}.${y}${ts}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:10px">${note}</div>
+      <div style="display:inline-block;padding:6px 16px;background:rgba(255,255,255,.2);border-radius:20px;font-size:12px;color:#fff;font-weight:500">
+        ასტრო-პროგრამა: UTC+${gmt}
       </div>
     </div>`;
   }
