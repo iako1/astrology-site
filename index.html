@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="site-title-tag">ასტროლოგია — ზოდიაქო</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#f7f7f5;--bg3:#f0efeb;
+  --text:#1a1a18;--text2:#6b6b67;--text3:#9a9994;
+  --border:#e5e4de;--border2:#d0cfc8;
+  --r:10px;--rl:14px;
+  --fire-bg:#FAECE7;--fire-tc:#712B13;--fire-bc:#D85A30;
+  --earth-bg:#EAF3DE;--earth-tc:#27500A;--earth-bc:#639922;
+  --air-bg:#E6F1FB;--air-tc:#0C447C;--air-bc:#378ADD;
+  --water-bg:#EEEDFE;--water-tc:#3C3489;--water-bc:#7F77DD;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;
+  --text:#f0efeb;--text2:#a8a79f;--text3:#6b6b67;
+  --border:#3a3a36;--border2:#4a4a45;
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
+/* header */
+.site-header{background:var(--bg);border-bottom:.5px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hdr h1{font-size:17px;font-weight:500;color:var(--text)}
+.hdr p{font-size:12px;color:var(--text2);margin-top:1px}
+.admin-btn{font-size:12px;padding:5px 12px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
+/* tabs */
+.tabs{display:flex;gap:0;overflow-x:auto;background:var(--bg);border-bottom:.5px solid var(--border)}
+.tab{padding:10px 16px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;flex-shrink:0}
+.tab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
+.wrap{max-width:880px;margin:0 auto;padding:22px 14px}
+.page{display:none}.page.on{display:block}
+/* cards grid */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:20px}
+.scard{border:.5px solid var(--border);border-radius:var(--rl);padding:13px;cursor:pointer;background:var(--bg);transition:border-color .15s,background .15s}
+.scard:hover,.scard.on{border-color:var(--border2);background:var(--bg2)}
+.scard.on{border-width:1px}
+.epill{font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid}
+/* detail */
+.dpanel{border:.5px solid var(--border2);border-radius:var(--rl);padding:20px;background:var(--bg);margin-top:4px}
+.dhero{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:.5px solid var(--border)}
+.dclose{margin-left:auto;background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer;padding:4px;line-height:1}
+.prow{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:7px;margin-bottom:14px}
+.pc{background:var(--bg2);border-radius:var(--r);padding:9px 11px}
+.pl{font-size:10px;color:var(--text3);margin-bottom:2px}
+.pv{font-size:13px;font-weight:500;color:var(--text)}
+.kws{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.kw{font-size:11px;padding:3px 9px;border-radius:10px;background:var(--bg2);border:.5px solid var(--border);color:var(--text2)}
+.slbl{font-size:11px;font-weight:500;color:var(--text3);margin:12px 0 6px}
+/* generic section types */
+.sec-article{margin-bottom:24px}
+.sec-article h2{font-size:18px;font-weight:500;color:var(--text);margin-bottom:10px}
+.sec-article p{font-size:14px;color:var(--text2);line-height:1.75}
+.sec-grid-wrap{margin-bottom:24px}
+.sec-grid-wrap h2{font-size:18px;font-weight:500;color:var(--text);margin-bottom:12px}
+.sec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px}
+.sec-card{border:.5px solid var(--border);border-radius:var(--rl);padding:14px;background:var(--bg)}
+.sec-table-wrap{margin-bottom:24px;overflow-x:auto}
+.sec-table-wrap h2{font-size:18px;font-weight:500;color:var(--text);margin-bottom:10px}
+.sec-table{width:100%;border-collapse:collapse;font-size:13px;border:.5px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sec-table th{padding:9px 11px;background:var(--bg2);text-align:left;font-size:11px;font-weight:500;color:var(--text3);border-bottom:.5px solid var(--border)}
+.sec-table td{padding:9px 11px;border-bottom:.5px solid var(--border);color:var(--text2)}
+.sec-table tr:last-child td{border-bottom:none}
+.sec-signs-wrap{margin-bottom:24px}
+.sec-signs-wrap h2{font-size:18px;font-weight:500;color:var(--text);margin-bottom:10px}
+.hier-lbl{font-size:11px;font-weight:500;color:var(--text3);margin:10px 0 7px;letter-spacing:.04em}
+/* table page */
+.tbl-outer{overflow-x:auto;border-radius:var(--rl);border:.5px solid var(--border);background:var(--bg)}
+table.main-tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.main-tbl thead th{padding:9px 11px;text-align:left;font-size:11px;font-weight:500;color:var(--text3);border-bottom:.5px solid var(--border);white-space:nowrap;background:var(--bg2)}
+table.main-tbl tbody td{padding:9px 11px;border-bottom:.5px solid var(--border);vertical-align:top}
+table.main-tbl tbody tr:last-child td{border-bottom:none}
+table.main-tbl tbody tr:hover td{background:var(--bg2)}
+table.main-tbl tbody tr.upper td{background:var(--bg2)}
+.rx{font-size:9px;font-weight:700;color:#A32D2D;background:#FCEBEB;border-radius:4px;padding:0 3px;line-height:15px;display:inline-block}
+.ast{font-size:9px;font-weight:700;color:#3C3489;background:#EEEDFE;border-radius:4px;padding:0 3px;line-height:15px;display:inline-block}
+.pi{display:flex;align-items:center;gap:4px;white-space:nowrap;margin-bottom:3px}
+/* calc */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:580px){.cgrid{grid-template-columns:1fr}}
+.prow2{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r);border:.5px solid var(--border);margin-bottom:5px;background:var(--bg2)}
+.psym{font-size:17px;width:24px;text-align:center}
+.pname{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.psel{font-size:12px;border:.5px solid var(--border2);border-radius:6px;padding:4px 6px;background:var(--bg);color:var(--text);flex:1.5;max-width:145px}
+.ppts{font-size:11px;color:var(--text3);width:34px;text-align:right}
+.cbtn{width:100%;padding:10px;margin-top:7px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;border:.5px solid var(--border2);background:var(--text);color:var(--bg)}
+.rcard{border:.5px solid var(--border);border-radius:var(--rl);padding:13px;background:var(--bg);margin-bottom:8px}
+.bwrap{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:4px}
+.bfill{height:100%;border-radius:4px;transition:width .5s}
+.srow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.ins{border-radius:var(--r);padding:11px 13px;margin-top:7px;font-size:13px;line-height:1.65;border:.5px solid}
+/* ===== ADMIN ===== */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto}
+.moverlay.open{display:flex}
+.modal{background:var(--bg);border-radius:var(--rl);padding:20px;width:100%;max-width:640px;margin:auto;border:.5px solid var(--border2)}
+.modal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.modal-h h2{font-size:15px;font-weight:500;color:var(--text)}
+.mclose{background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer}
+.fg{margin-bottom:11px}
+.fg label{display:block;font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px}
+.fg input,.fg textarea,.fg select{width:100%;padding:7px 9px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit}
+.fg textarea{resize:vertical;min-height:72px}
+.sbtn{width:100%;padding:9px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;background:var(--text);color:var(--bg);margin-top:5px}
+.sbtn:hover{opacity:.85}
+.sbtn.sec{background:var(--bg2);color:var(--text);border:.5px solid var(--border2);margin-top:0}
+.atabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.atab{padding:5px 12px;border:.5px solid var(--border);border-radius:14px;font-size:12px;cursor:pointer;background:var(--bg2);color:var(--text2)}
+.atab.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.svbadge{display:none;font-size:11px;color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:7px;margin-left:7px}
+.lbox{max-width:280px;margin:0 auto;padding:24px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.asl{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:5px;margin-bottom:12px}
+.asb{padding:7px;border:.5px solid var(--border);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;text-align:center}
+.asb:hover,.asb.sel{border-color:var(--border2);background:var(--bg3)}
+/* CMS drag list */
+.cms-list{margin-bottom:12px}
+.cms-item{display:flex;align-items:center;gap:8px;padding:9px 11px;border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px;background:var(--bg2);cursor:default}
+.cms-item.dragging{opacity:.4}
+.cms-item.drag-over{border-color:var(--text);background:var(--bg3)}
+.cms-drag{cursor:grab;color:var(--text3);font-size:14px;user-select:none;padding:0 4px}
+.cms-name{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.cms-type{font-size:10px;color:var(--text3);background:var(--bg);padding:2px 7px;border-radius:8px;border:.5px solid var(--border)}
+.cms-vis{font-size:11px;padding:3px 8px;border:.5px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;color:var(--text2)}
+.cms-vis.off{opacity:.5}
+.cms-edit{font-size:11px;padding:3px 8px;border:.5px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;color:var(--text2)}
+.cms-del{font-size:11px;padding:3px 8px;border:.5px solid #fca5a5;border-radius:8px;background:var(--bg);cursor:pointer;color:#A32D2D}
+/* section editor */
+.sec-editor{border:.5px solid var(--border);border-radius:var(--r);padding:14px;background:var(--bg);margin-top:10px}
+.sec-editor h3{font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px}
+/* card editor rows */
+.card-row{border:.5px solid var(--border);border-radius:var(--r);padding:10px;margin-bottom:7px;background:var(--bg2);position:relative}
+.card-row .rm{position:absolute;right:8px;top:8px;background:none;border:none;color:#A32D2D;cursor:pointer;font-size:14px}
+/* table editor */
+.tbl-head-row,.tbl-data-row{display:flex;gap:5px;margin-bottom:5px;align-items:center}
+.tbl-head-row input,.tbl-data-row input{flex:1;padding:5px 7px;border:.5px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text);font-size:12px;font-family:inherit}
+footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="hdr">
+    <h1 id="site-h1">ასტროლოგია ✦ ზოდიაქო</h1>
+    <p id="site-sub">სტიქიები · ჯვრები · მმართველები</p>
+  </div>
+  <button class="admin-btn" onclick="openAdmin()">✎ რედაქტირება</button>
+</header>
+
+<nav class="tabs" id="nav-tabs"></nav>
+
+<div class="wrap">
+  <div id="pages-container"></div>
+</div>
+
+<footer id="site-footer">ასტროლოგიური ცნობარი · Georgian Astrology Guide</footer>
+
+<!-- ADMIN -->
+<div class="moverlay" id="adminModal">
+<div class="modal">
+  <div id="al">
+    <div class="modal-h"><h2>🔐 ადმინ პანელი</h2><button class="mclose" onclick="closeAdmin()">✕</button></div>
+    <div class="lbox">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">შეიყვანე პაროლი</p>
+      <div style="position:relative;margin-bottom:10px">
+        <input type="password" id="pw-inp" placeholder="პაროლი" onkeydown="if(event.key==='Enter')checkPw()" style="width:100%;padding:8px 36px 8px 10px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:14px">
+        <button onclick="tglPw()" type="button" id="pw-eye" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--text3)">👁</button>
+      </div>
+      <button class="sbtn" onclick="checkPw()">შესვლა</button>
+      <p id="pw-err" style="font-size:12px;color:#A32D2D;margin-top:6px;display:none">პაროლი არასწორია</p>
+    </div>
+  </div>
+  <div id="ap" style="display:none">
+    <div class="modal-h"><h2>✎ CMS — სექციების მართვა</h2><button class="mclose" onclick="closeAdmin()">✕</button></div>
+    <div class="atabs">
+      <button class="atab on" onclick="aTab('pages',this)">📄 გვერდები</button>
+      <button class="atab" onclick="aTab('site',this)">⚙️ საიტი</button>
+    </div>
+
+    <!-- PAGES TAB -->
+    <div id="at-pages">
+      <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap">
+        <button class="sbtn sec" onclick="addSection('article')" style="flex:1;min-width:120px">+ სტატია</button>
+        <button class="sbtn sec" onclick="addSection('cards')" style="flex:1;min-width:120px">+ ბარათები</button>
+        <button class="sbtn sec" onclick="addSection('signs')" style="flex:1;min-width:120px">+ ნიშნების სია</button>
+        <button class="sbtn sec" onclick="addSection('table')" style="flex:1;min-width:120px">+ ცხრილი</button>
+      </div>
+      <div class="cms-list" id="cms-list"></div>
+      <div id="sec-editor-wrap"></div>
+    </div>
+
+    <!-- SITE TAB -->
+    <div id="at-site" style="display:none">
+      <div class="fg"><label>სათაური (H1)</label><input type="text" id="es-h1"></div>
+      <div class="fg"><label>ქვესათაური</label><input type="text" id="es-sub"></div>
+      <div class="fg"><label>Footer</label><input type="text" id="es-footer"></div>
+      <button class="sbtn" onclick="saveSite()">შენახვა <span class="svbadge" id="sv-site">✓</span></button>
+      <div style="border-top:.5px solid var(--border);margin-top:16px;padding-top:16px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:12px">ბლოკების ჩვენება / დამალვა</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:.5px solid var(--border);border-radius:var(--r);background:var(--bg2)">
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--text)">სამეული</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">მაგ: "ვერძი იჭერს → კური აფიქსირებს → ტყუპები განავრცობს"</div>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <span id="triad-status" style="font-size:12px;color:var(--text3)">ჩართული</span>
+            <input type="checkbox" id="toggle-triad" style="width:16px;height:16px;cursor:pointer" onchange="saveTriadToggle(this)">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const PW='astro2026';
+const EL={fire:{label:'ცეცხლი',bg:'var(--fire-bg)',tc:'var(--fire-tc)',bc:'var(--fire-bc)',hex:'#D85A30'},earth:{label:'მიწა',bg:'var(--earth-bg)',tc:'var(--earth-tc)',bc:'var(--earth-bc)',hex:'#639922'},air:{label:'ჰაერი',bg:'var(--air-bg)',tc:'var(--air-tc)',bc:'var(--air-bc)',hex:'#378ADD'},water:{label:'წყალი',bg:'var(--water-bg)',tc:'var(--water-tc)',bc:'var(--water-bc)',hex:'#7F77DD'}};
+const CR={cardinal:'კარდინ.',fixed:'ფიქსირ.',mutable:'მუტაბ.'};
+const ELC={fire:{label:'ცეცხლი',hex:'#D85A30',desc:'ენერგია, ინიციატივა, ვნება'},earth:{label:'მიწა',hex:'#639922',desc:'პრაქტიკულობა, სტაბილობა'},air:{label:'ჰაერი',hex:'#378ADD',desc:'გონება, კომუნიკაცია'},water:{label:'წყალი',hex:'#7F77DD',desc:'ემოცია, ინტუიცია, სიღრმე'}};
+const CRC={cardinal:{label:'კარდინალური',hex:'#D85A30',desc:'ინიციატივა, ახლის დაწყება'},fixed:{label:'ფიქსირებული',hex:'#854F0B',desc:'გამძლეობა, სიმტკიცე'},mutable:{label:'მუტაბელური',hex:'#185FA5',desc:'ადაპტაცია, მოქნილობა'}};
+const SIGN_OPTS=['♈ ვერძი','♉ კური','♊ ტყუპები','♋ კირჩხიბი','♌ ლომი','♍ ქალწული','♎ სასწორი','♏ მორიელი','♐ მშვილდ.','♑ თხის რქა','♒ მერწყ.','♓ თევზები'];
+const SIGN_EL=['fire','earth','air','water','fire','earth','air','water','fire','earth','air','water'];
+const SIGN_CR=['cardinal','fixed','mutable','cardinal','fixed','mutable','cardinal','fixed','mutable','cardinal','fixed','mutable'];
+
+function ls(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function uid(){return 's'+Date.now()+Math.random().toString(36).slice(2,6);}
+function badge(id){const b=document.getElementById(id);if(!b)return;b.style.display='inline';setTimeout(()=>b.style.display='none',2200);}
+
+// ===== DEFAULT DATA =====
+const DEF_SECTIONS=[
+  {id:'s-signs',type:'signs',title:'12 ნიშანი',visible:true,tab:'12 ნიშანი',
+   items:[
+    {n:'ვერძი',sym:'♈',num:'01',el:'fire',cr:'cardinal',hier:'lower',ruler:'♂ მარსი, ♇ პლუტო Rx',impulse:'პირველადი იმპულსი',keywords:['ადრენალინი','სისწრაფე','ინსტინქტი','მოქმედება'],opp:'♎ სასწორი — ბალანსი',triad:'ვერძი იჭერს → კური აფიქსირებს → ტყუპები განავრცობს',desc:'პირველი ნიშანი — პირველადი იმპულსი. ვერძი იჭერს, იწყებს. მარსი მართავს.'},
+    {n:'კური',sym:'♉',num:'02',el:'earth',cr:'fixed',hier:'lower',ruler:'⚷ ქირონი, ♀ ვენერა Rx',impulse:'ფუნდამენტი',keywords:['სიამოვნება','კომფორტი','სილამაზე','ფინანსები'],opp:'♏ მორიელი — სიღრმე',triad:'ვერძი იჭერს → კური აფიქსირებს → ტყუპები განავრცობს',desc:'სადაც ვერძი მეტეორია, კური — მიწა. ფუნდამენტი, სიმშვიდე.'},
+    {n:'ტყუპები',sym:'♊',num:'03',el:'air',cr:'mutable',hier:'lower',ruler:'☿ მერკური, ⚴ პროზეფ.',impulse:'გავრცელება',keywords:['მასწავლებლობა','კომუნიკაცია','ცოდნა'],opp:'♐ მშვილდ. — სიღრმე',triad:'ვერძი იჭერს → კური აფიქსირებს → ტყუპები განავრცობს',desc:'ჰაერი, მუტაბელური. ყოველთვის პარალელურად. ბევრი იცის, ცოტა-ცოტა.'},
+    {n:'კირჩხიბი',sym:'♋',num:'04',el:'water',cr:'cardinal',hier:'lower',ruler:'☽ მთვარე',impulse:'ქალური ენერგია',keywords:['სახლი','ოჯახი','ემოცია','მიჯაჭვულობა'],opp:'♑ თხა — სტრუქტურა',triad:'',desc:'ქალური, მთვარის ენერგია. სამშობლო, სახლი.'},
+    {n:'ლომი',sym:'♌',num:'05',el:'fire',cr:'fixed',hier:'lower',ruler:'☉ მზე',impulse:'სინათლე',keywords:['შემოქმედება','სცენა','ლიდერობა','ბავშვები'],opp:'♒ მერწყ. — კოლექტივი',triad:'',desc:'ლომია და ფისო. ბრწყინვალება, სცენა, ლიდერობა.'},
+    {n:'ქალწული',sym:'♍',num:'06',el:'earth',cr:'mutable',hier:'lower',ruler:'☿ მერკური',impulse:'სამსახური',keywords:['სიზუსტე','ანალიზი','პრაქტიკული'],opp:'♓ თევზ. — სულიერება',triad:'',desc:'პრაგმატული, სიზუსტით. კარგი მსახური.'},
+    {n:'სასწორი',sym:'♎',num:'07',el:'air',cr:'cardinal',hier:'upper',ruler:'♀ ვენერა',impulse:'პარტნიორობა',keywords:['ბალანსი','დიზაინი','მოდა','სამართ.'],opp:'♈ ვერძი — ინსტინქტი',triad:'',desc:'"ჩვენ"-ის სამყარო. კომუნიკაცია, ბალანსი.'},
+    {n:'მორიელი',sym:'♏',num:'08',el:'water',cr:'fixed',hier:'upper',ruler:'⚵ ვულკ., ♂ მარსი Rx',impulse:'სიღრმე',keywords:['ფსიქოლოგია','ენერგეტიკა','ტრანსფ.'],opp:'♉ კური — კომფორტი',triad:'',desc:'ჩაკეტილი ენერგია. სიღრმე, ფსიქოლოგია.'},
+    {n:'მშვილდ.',sym:'♐',num:'09',el:'fire',cr:'mutable',hier:'upper',ruler:'♃ იუპიტ.',impulse:'სიბრძნე',keywords:['ამბიცია','მოგზაურობა','ფილოსოფია'],opp:'♊ ტყუპ. — დეტალი',triad:'',desc:'იუპიტერი მართავს. ამბიცია, სწავლა, მოგზაურობა.'},
+    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'♄ სატ., ♅ ურ. Rx',impulse:'სტრუქტურა',keywords:['შრომა','სტატუსი','პასუხისმგ.'],opp:'♋ კირჩხ. — ემოცია',triad:'',desc:'სატურნი. სტრუქტურა, კარიერა.'},
+    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'♅ ურანი, ♄ სატ. Rx',impulse:'კოლექტივი',keywords:['ინტუიცია','ტექნოლ.','მეგობრობა'],opp:'♌ ლომი — ეგო',triad:'',desc:'ურანი. ძლიერი ინტუიცია, ტექნოლოგია.'},
+    {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'♆ ნეპტ., ♃ იუპ. Rx',impulse:'შერწყმა',keywords:['ინტუიცია','ქაოსი','მუსიკა','სულიერება'],opp:'♍ ქალწ. — სიზუსტე',triad:'',desc:'ნეპტუნი. ინტუიცია, ფერადი სათვალე.'},
+   ]
+  },
+  {id:'s-elements',type:'cards',title:'სტიქიები',visible:true,tab:'სტიქიები',
+   items:[
+    {title:'ცეცხლი ♈♌♐',sub:'ვერძი · ლომი · მშვილდოსანი',desc:'ენერგია, ინიციატივა, ვნება, ლიდერობა.',accent:'#D85A30'},
+    {title:'მიწა ♉♍♑',sub:'კური · ქალწული · თხის რქა',desc:'პრაქტიკულობა, სტაბილობა, ფინანსები.',accent:'#639922'},
+    {title:'ჰაერი ♊♎♒',sub:'ტყუპები · სასწორი · მერწყული',desc:'გონება, კომუნიკაცია, სოციალობა.',accent:'#378ADD'},
+    {title:'წყალი ♋♏♓',sub:'კირჩხიბი · მორიელი · თევზები',desc:'ემოცია, ინტუიცია, სიღრმე, ემპათია.',accent:'#7F77DD'},
+   ]
+  },
+  {id:'s-crosses',type:'cards',title:'ჯვრები',visible:true,tab:'ჯვრები',
+   items:[
+    {title:'კარდინალური ♈♋♎♑',sub:'ვერძი · კირჩხ. · სასწ. · თხა',desc:'იწყებს სეზონებს. ინიციატივა, ლიდერობა.',accent:'#D85A30'},
+    {title:'ფიქსირებული ♉♌♏♒',sub:'კური · ლომი · მორ. · მერწ.',desc:'ინარჩუნებს. გამძლეობა, სიმტკიცე.',accent:'#854F0B'},
+    {title:'მუტაბელური ♊♍♐♓',sub:'ტყუპ. · ქალწ. · მშვ. · თევზ.',desc:'ასრულებს. ადაპტაცია, მოქნილობა.',accent:'#185FA5'},
+   ]
+  },
+  {id:'s-table',type:'table',title:'ეგზალტ. / ვარდნა',visible:true,tab:'ეგზალტ.',
+   headers:['','ნიშანი','მმართველი','ეგზალტაცია','ტყვეობა','ვარდნა'],
+   rows:[
+    ['♈','ვერძი','♂ მარსი, ♇ პლუტო Rx','☉ მზე','♀ ვენ., ⚷ ქირ. Rx','♄ სატ., ♆ ნეპ. Rx'],
+    ['♉','კური','⚷ ქირ. Ast, ♀ ვენ. Rx','☽ მთვარე','⚵ ვულ. Rx Ast, ♂ მარ. Rx','♅ ურ., ♄ სატ. Rx'],
+    ['♊','ტყუპები','☿ მერკ., ⚴ პრ. Ast','☿ მერკ., Ω კვ.','♃ იუპ., ♆ ნეპ. Rx','⚷ ქირ. Ast'],
+    ['♋','კირჩხიბი','☽ მთვარე','♃ იუპ., ♆ ნეპ. Rx','♄ სატ., ♅ ურ. Rx','♂ მარ., ⚵ ვულ. Rx Ast'],
+    ['♌','ლომი','☉ მზე','⚵ ვულ. Ast, ♂ მარ. Rx','♅ ურ., ♄ სატ. Rx','♆ ნეპ., ♃ იუპ. Rx'],
+    ['♍','ქალწული','☿ მერკ., ⚴ პრ. Ast','⚴ პრ. Rx Ast, ☿ მერ. Rx','♆ ნეპ., ♃ იუპ. Rx','♀ ვენ., ⚷ ქირ. Rx Ast'],
+    ['♎','სასწორი','♀ ვენ., ⚷ ქირ. Rx Ast','♄ სატ., ♅ ურ. Rx','♂ მარ., ⚵ ვულ. Rx Ast','☉ მზე'],
+    ['♏','მორიელი','⚵ ვულ. Ast, ♂ მარ. Rx','♅ ურ., ♄ სატ. Rx','⚷ ქირ. Ast, ♀ ვენ. Rx','☽ მთვ.'],
+    ['♐','მშვილდ.','♃ იუპ., ♆ ნეპ. Rx','⚷ ქირ. Ast','⚴ პრ. Rx Ast, ☿ მერ. Rx','⚵ ვულ. Ast'],
+    ['♑','თხა','♄ სატ., ♅ ურ. Rx','♂ მარ., ⚵ ვულ. Rx Ast','☽ მთვ.','♃ იუპ., ♆ ნეპ. Rx'],
+    ['♒','მერწყ.','♅ ურ., ♄ სატ. Rx','♆ ნეპ., ♃ იუპ. Rx','☉ მზე','⚵ ვულ. Ast, ♂ მარ. Rx'],
+    ['♓','თევზ.','♆ ნეპ., ♃ იუპ. Rx','♀ ვენ., ⚷ ქირ. Rx Ast','☿ მერ., ⚴ პრ. Ast','⚴ პრ. Rx Ast, ☿ მერ. Rx'],
+   ]
+  },
+  {id:'s-calc',type:'calc',title:'ქულების კალკ.',visible:true,tab:'ქულები',
+   planets:[
+    {sym:'☉',name:'მზე',pts:5},{sym:'☽',name:'მთვარე',pts:5},
+    {sym:'☿',name:'მერკური',pts:3},{sym:'♀',name:'ვენერა',pts:3},{sym:'♂',name:'მარსი',pts:3},
+    {sym:'♃',name:'იუპიტ.',pts:2},{sym:'♄',name:'სატ.',pts:2},
+    {sym:'♅',name:'ურანი',pts:1},{sym:'♆',name:'ნეპტ.',pts:1},{sym:'♇',name:'პლუტო',pts:1},
+   ]
+  },
+  {id:'s-moon',type:'signs',title:'🌙 მთვარე ნიშნებში',visible:true,tab:'🌙 მთვარე',
+   items:[
+    {n:'ვერძი',sym:'♈',num:'01',el:'fire',cr:'cardinal',hier:'lower',ruler:'ცეცხლოვანი მთვარე',impulse:'მებრძოლი',keywords:['იმპულსური','გულწრფელი','შეჯიბრი','დემონსტრ.'],opp:'კაცებს მოსწონთ ძლიერი ქალები',triad:'',desc:'ცეცხლოვანი მთვარე. მებრძოლი ქალები. იმპულსური — აფეთქება და დამშვიდდება. სინაზე ნაკლები. გულწრფელი, მოურიდებელი.'},
+    {n:'კური',sym:'♉',num:'02',el:'earth',cr:'fixed',hier:'lower',ruler:'ეგზალტაცია ✦',impulse:'კომფორტი',keywords:['ქალური','სექსუალური','სანდომიანი','პრაქტიკული'],opp:'კაცებს მოსწონთ სახლური ქალები',triad:'',desc:'ეგზალტირებული. კომფორტული, ქალური. ხასიათი ფინანსებზე. ლამაზი ყველაფერი. გვიან ბრაზდება, გვიან წყნარდება.'},
+    {n:'ტყუპები',sym:'♊',num:'03',el:'air',cr:'mutable',hier:'lower',ruler:'ცვალებადი',impulse:'ინფორმაცია',keywords:['ცნობისმოყვ.','ფლირტი','შფოთვა','ბლოგერი'],opp:'კაცებს მოსწონთ ჭკვიანი ქალები',triad:'',desc:'ენერგია მუდმივად იცვლება. ცნობისმოყვარე. ღრმა ემოცია ნაკლებად სჭირდება. სქროლვა, ტელევიზორი = დასვენება.'},
+    {n:'კირჩხიბი',sym:'♋',num:'04',el:'water',cr:'cardinal',hier:'lower',ruler:'ყველაზე ძლიერი',impulse:'ადაპტაცია',keywords:['მზრუნველი','ტრადიც.','კარგი დედა','ემოციური'],opp:'კაცებს მოსწონთ დედის მსგავსი',triad:'',desc:'კარგი ადაპტაცია. მზრუნველი. კარგი დედა. ბავშვები ადვილად. ტრადიციული.'},
+    {n:'ლომი',sym:'♌',num:'05',el:'fire',cr:'fixed',hier:'lower',ruler:'კომპლექსები',impulse:'ყურადღება',keywords:['ნარცისიზმი','ოპტიმ.','კომპლ.','მართვა'],opp:'კაცებს მოსწონთ ამაყი ქალები',triad:'',desc:'ბევრი კომპლექსი. ყურადღების ცენტრი. ოპტიმიზმი. ბავშვები ძალიან უყვართ.'},
+    {n:'ქალწული',sym:'♍',num:'06',el:'earth',cr:'mutable',hier:'lower',ruler:'ნერვოზი',impulse:'სიზუსტე',keywords:['გეგმა','ემოც.ცივი','ნერვოზი','ჯანსაღი კვება'],opp:'კაცებს მოსწონთ მოწესრ. ქალები',triad:'',desc:'ნერვოზისკენ. სრულყოფილად ასრულებს. ემოციურად ცივი, პრაქტიკულად მზრუნველი.'},
+    {n:'სასწორი',sym:'♎',num:'07',el:'air',cr:'cardinal',hier:'upper',ruler:'დახვეწილი',impulse:'ბალანსი',keywords:['ადვოკ.','ბრენდი','კოლექტ.','სტილი'],opp:'კაცებს მოსწონთ სტილური ქალები',triad:'',desc:'ადვოკატი, სამართლიანი. პარფიუმერია. ყოველთვის კოლექტივი სჭირდება. ბრენდი, სტილი.'},
+    {n:'მორიელი',sym:'♏',num:'08',el:'water',cr:'fixed',hier:'upper',ruler:'დაცემული ⚠️',impulse:'სიღრმე',keywords:['შიში','ეჭვიანობა','ბოლომდე','ფსიქოლ.'],opp:'ღრმა, ვნებიანი ურთიერთობა',triad:'',desc:'რთული მთვარე. ემოციები შინ დუღს. მუდმივი შიში ბავშვობიდან. ეჭვიანი. ფსიქოლოგია კარგია.'},
+    {n:'მშვილდ.',sym:'♐',num:'09',el:'fire',cr:'mutable',hier:'upper',ruler:'თავისუფალი',impulse:'ახალი ცოდნა',keywords:['მოგზაურ.','იუმორი','აზარტი','შეზღუდვ. სიძ.'],opp:'პარტნიორს იუმორი უნდა ჰქონდეს',triad:'',desc:'ახალი ცოდნა. შეზღუდვა ვერ იტანს. მოგზაურობა. დეპრესია ნაკლებად.'},
+    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'ძალიან რთული',impulse:'სტრუქტ.',keywords:['ემ.ჩაკეტ.','სტატუსი','ფრთხილი','დისტანცია'],opp:'სტატუსი, სტაბილური',triad:'',desc:'ემოციის გამოხატვა ძალიან უჭირს. ცივი, დისტანციური. ადაპტაცია ძნელი.'},
+    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'განსაკუთრ.',impulse:'თავისუფლება',keywords:['ბანალ.სიძ.','განქ.ნიშ.','არასტანდ.','ურანი'],opp:'უნიკალური, მეგობარი ქალი',triad:'',desc:'სიყვარული vs მეგობრობა. ბანალურობის სიძულვილი. განქ. ნიშანი. არასტანდ. ურთ.'},
+    {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'ნაყოფიერი',impulse:'ემოცია',keywords:['ნაყოფ.','რომანტ.','ობ.უჭ.','წარსული'],opp:'ნაზი, სათუთი ქალი',triad:'',desc:'ნაყოფიერი. გადამეტებული ემოციები. ობიექტ. უჭირს. რომანტიკოსი.'},
+   ]
+  },
+];
+
+
+// ===== VENUS DATA =====
+const DEF_VENUS_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'დინამიური',
+   rel:'ვნებიანი, ეძებს დინამიურ, სპორტულ და დამოუკიდებელ პარტნიორს. (რისკი: კონფლიქტი ურთიერთობაში).',
+   finance:'იმპულსური შესყიდვები. მარტივად ხარჯავს ფულს თავის გასატაცებლად.',
+   selfeval:'იზრდება ფიზიკური ტონუსით, სექსუალური რეალიზაციით და ლიდერული პოზიციებით.'},
+  {sym:'♉',n:'კური',el:'earth',badge:'სენსუალური',
+   rel:'ეძებს მშვიდ, საიმედო, ფინანსურად უზრუნველყოფილ პარტნიორს. აფასებს კომფორტს და ერთგულებას.',
+   finance:'საუკეთესოდ აგროვებს. ფულს აბანდებს ხარისხიან, ნატურალურ ნივთებსა და ესთეტიკაში.',
+   selfeval:'პირდაპირ კავშირშია საბანკო ანგარიშთან, ფინანსურ ბალიშთან და შემოქმედებით რეალიზაციასთან.'},
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'ინტელექტუალური',
+   rel:'პარტნიორი უპირველესად მეგობარია. ესაჭიროება მრავალფეროვნება, მუდმივი კომუნიკაცია და საერთო ინტერესები.',
+   finance:'არ აქვს მიდრეკილება დაგროვებისკენ. ფულს მარტივად ხარჯავს წვრილმანებსა და მოგზაურობებზე.',
+   selfeval:'იზრდება სოციალური კონტაქტების სიმრავლით და როგორც საინტერესო თანამოსაუბრის აღიარებით.'},
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'მზრუნველი',
+   rel:'ემოციური უსაფრთხოება. ეძებს მზრუნველ, ოჯახზე ორიენტირებულ პარტნიორს.',
+   finance:'ფულს აგროვებს შინაგანი სიმშვიდისთვის. ხარჯავს სახლის სიმყუდროვეზე და ოჯახზე.',
+   selfeval:'იზრდება ოჯახური ჰარმონიით, დედასთან კარგი ურთიერთობით და ფსიქოლოგიური მხარდაჭერის გაცევით.'},
+  {sym:'♌',n:'ლომი',el:'fire',badge:'გამორჩეული',
+   rel:'ეძებს გამორჩეულ, ნათელ და ცნობად პარტნიორს, რომელიაც იამაყებს. სჭირდება ყურადღება.',
+   finance:'გულუხვია. ფულს ხარჯავს დასვენებაზე, ოქროზე და შთაბეჭდილებებზე.',
+   selfeval:'იზრდება კომპლიმენტებით, საჯარო აღიარებით და ბავშვების წარმატებით.'},
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'პრაქტიკული',
+   rel:'პრაქტიკული სიყვარული. ეძებს რაციონალურ, ხელსაქმიან პარტნიორს. (რისკი: ზედმეტი კრიტიკულობა).',
+   finance:'ყაირათიანი, ფულს ანაწილებს კატეგორიებად. ხარჯავს პრაქტიკულ, საყოფაცხოვრებო ნივთებზე.',
+   selfeval:'იზრდება სამსახურში სასარგებლოდ ყოფნის შეგრძნება და ჯანსაღი ცხოვრების წესის დაცვით.'},
+  {sym:'♎',n:'სასწორი',el:'air',badge:'დახვეწილი',
+   rel:'იდეალური პარტნიორობა. ეძებს ესთეტიკურ, დიპლომატიურ და გემოვნებიან პარტნიორს. (რისკი: კასტინგები).',
+   finance:'ხარჯავს საკუთარ გარეგნობაზე, დიზაინზე, ხელოვნებასა და სილამაზის სალონებზე.',
+   selfeval:'დამოკიდებულია ჰარმონიულ ურთიერთობებზე და საზოგადოების (სხვების) მიერ მისი გარეგნობის მაღალ შეფასებაზე.'},
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ინტენსიური',
+   rel:'ინტენსიური, ექსტრემალური კავშირი. ეძებს ღრმა ემოციურ და სექსუალურ პარტნიორს. (რისკი: ეჭვიანობა).',
+   finance:'სხვისი რესურსების მაგნიტი (კრედიტები, მემკვიდრეობა). ფინანსურად იზრდება კრიზისის დროს.',
+   selfeval:'იზრდება კრიზისების გადალახვით, რისკის მართვითა და სექსუალური რეალიზაციით.'},
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'თავისუფალი',
+   rel:'ეძებს ავტორიტეტულ, სოციალურად რეალიზებულ ან უცხოელ პარტნიორს. ფასობს გულწრფელობა.',
+   finance:'მარტივად ხარჯავს სამოგზაუროდ, უმაღლესი განათლებისთვის და ბრენდული ნივთებისთვის.',
+   selfeval:'იზრდება ექსპერტის სტატუსით, ცოდნის გაღრმავებით და საზოგადოებრივი პატივისცემით.'},
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'სტატუსური',
+   rel:'გრძელვადიანი გათვლები. ეძებს პროფესიონალურად შემდგარ, პასუხისმგებლიან პარტნიორს.',
+   finance:'მკაცრი დისციპლინა. ფულს დებს უძრავ ქონებაში და კარიერულ წინსვლაში.',
+   selfeval:'იზრდება კარიერული მიღნევებით, მაღალი სტატუსით და ხელმძღვანელობის მხრიდან აღიარებით.'},
+  {sym:'♒',n:'მერწყული',el:'air',badge:'უნიკალური',
+   rel:'თავისუფლება და ინტელექტი. ეძებს ორიგინალურ, არასტანდარტულ პარტნიორს; სიყვარული ხშირად მეგობრობიდან იწება.',
+   finance:'ფინანსური ტალღები (უეცარი მოგება/ხარჩი). ხარჯავს ტექნიკურ სიახლეებსა და ახალ გამოცდილებებზე.',
+   selfeval:'იზრდება თანამოაზრეების (კოლექტივის) მიღებით და საკუთარი უნიკალურობის შეგრდნებით.'},
+  {sym:'♓',n:'თევზები',el:'water',badge:'რომანტიკული',
+   rel:'იდეალიზაცია და რომანტიკა. შეუძლია მსხვერპლგაღება. ეძებს ინტუიციურ, შემოქმედებით ადამიანს.',
+   finance:'ინტუიციური ფინანსები. ფული მოდის რწმენის მიხედვით. კარგი კარგი ინვესტორები.',
+   selfeval:'იზრდება ქველმოქმედებით, უმაღლესი სიყვარულის გამოვლენით და შემოქმედებითი (ხელოვნების) პროექტებით.'},
+];
+
+const DEF_VENUS_ELS=[
+  {el:'fire',signs:'ვერძი, ლომი, მშვილდოსანი',title:'ცეცხლი — აქცია და ვნება',
+   desc:'აქტიური, დამოუკიდებელი. ფულს უფრო მარტივად ხარჯავს, ვიდრე აგროვებს. ურთიერთობებში სჭირდება დინამიკა და სიმძაფრე. მთავარია პარტნიორთან საუბარი.',
+   color:'#D85A30'},
+  {el:'earth',signs:'კური, ქალწული, თხის რქა',title:'მიწა — სტაბილურობა და რესურსი',
+   desc:'პრაქტიკული, ორიენტირებულია ფინანსურ დაგროვებასა და სტაბილურობაზე. სიყვარულს გამოხატავს საქმითა და მატერიალური ზრუნვით.',
+   color:'#639922'},
+  {el:'air',signs:'ტყუპები, სასწორი, მერწყული',title:'ჰაერი — კავშირი და კომუნიკაცია',
+   desc:'აფასებს ინტელექტუალურ კავშირს. ფულს ხარჯავს მსუბუქად (შთაბეჭდილებები, კომუნიკაციები). მთავარია პარტნიორთან საუბარი.',
+   color:'#378ADD'},
+  {el:'water',signs:'კირჩხიბი, მორიელი, თევზები',title:'წყალი — ემოცია და სიღრმე',
+   desc:'ფულს აგროვებს უსაფრთხოებისთვის (ხშირად ინტუიციურად). ურთიერთობებში ეძებს სრულ ემოციურ შერწყმასა და თანაგრდნობას.',
+   color:'#7F77DD'},
+];
+
+// ===== MARS DATA =====
+const DEF_MARS_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'ოიკოსი ✦',
+   style:'სწრაფი, იმპულსური, მოკლე დისტანციები.',
+   energy:'ფიზიკური სპორტი, კონკურენცია, სექსი.',
+   risk:'კონკურენტები, ბრძანებების გაცემა, შენელება.',
+   masc:'ბრუტალური, დომინანტი, სწრაფი ალდგება, ეგოისტური.'},
+  {sym:'♉',n:'კური',el:'earth',badge:'დაცემა ⚠️',
+   style:'ნელი, მაგრამ სტაბილური. მოქმედებს ფინანსური ინტერესით.',
+   energy:'დასვენება, გემრიელი საჭმელი, ფული.',
+   risk:'დაჭიანება, სხვების სიზარმაცე.',
+   masc:'საიმედო, ხანგრძლივი პრელუდია, ტაქტილური და სენსორული.'},
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'ჰაერი',
+   style:'მრავალამოცანიანი, სიტყვიერი, ზედაპირული მაგრამ სწრაფი.',
+   energy:'ინფორმაციის გავრცელება, მუდმივი მოძრაობა.',
+   risk:'უპასუხისმგებლობა (საკუთარი ხრდილის პროექცია).',
+   masc:'მსუბუქი კონტაქტი, სტიმულაცია საუბრით და ხელებით, ექსპერიმენტები მანქანაში.'},
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'დაცემა ⚠️',
+   style:'ემოციური, დამცველობითი. იბრძვის როცა კუთხეშია მიმქცეული.',
+   energy:'ოჯახის დაცვა, სახლის მოვლა.',
+   risk:'საფრთხე ოჯახისთვის (ან ავტოან/ოჯახზე ძალადობა უარყოფითში).',
+   masc:'მზრუნველი, სენსიტიური, ეძებს დედობრივ მზრუნველობას.'},
+  {sym:'♌',n:'ლომი',el:'fire',badge:'ცეცხლი',
+   style:'თეატრალური, საჯარო, თამაშზე ორიენტირებული.',
+   energy:'კომპლიმენტები, აუდიტორია, ჰობი.',
+   risk:'იგნორირება, როცა სხვები უმიზეზოდ ხარობენ.',
+   masc:'მფარველი, გულუხვი, ესაჭიროება შექება, სექსუალური თამაშები.'},
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'მიწა',
+   style:'ალგორითმული, პედანტური, ინსტრუქციებზე დაფუძნებული.',
+   energy:'სარგებლის მოტანა, მონესრიგებული რუტინა.',
+   risk:'არაკომპეტენტურობა, ქაოსი, უსარგებლო კრიტიკა.',
+   masc:'პრაგმატული, სუფთა (ჰიგიენა კრიტიკულია), მექანიკური მიდგომა.'},
+  {sym:'♎',n:'სასწორი',el:'air',badge:'დაცემა ⚠️',
+   style:'დიპლომატიური, მოქმედებს პარტნიორთან ერთად (ან ფარულად).',
+   energy:'ესთეტიკა, ჰარმონია, ხელოვნება.',
+   risk:'ზენოლა, ვულგარულობა, უხეშობა.',
+   masc:'გალანტური, ითვალისწინებს პარტნიორს, გარემოს ესთეტიკა კრიტიკულია.'},
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ოიკოსი ✦',
+   style:'კრიზისზე ორიენტირებული, ფარული ტრანსფორმაცია, მანიპულაცია.',
+   energy:'სტრესი, დედლაინები, რისკი, დიდი მასები.',
+   risk:'დაუმსახურებელი ძალაუფლება, ფინანსური ოლიგარქია.',
+   masc:'უდიდესი გამძლეობა, ინტენსიური, ვნებიანი, დომინანტი.'},
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'ცეცხლი',
+   style:'გლობალური, სტრატეგიული მიზნებისკენ მიმართული.',
+   energy:'სტატუსი, მოგზაურობა, ავტორიტეტის აღიარება.',
+   risk:'მორალისტები, თვალთმაქცობა.',
+   masc:'მასწავლებელი/უცხოელი, უდიდესი გამძლეობა, რაოდენობაზე ორიენტირებული.'},
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'ეგზალტ. ✦',
+   style:'ეტაპობრივი, დისციპლინირებული, საუკეთესო სტრატეგი.',
+   energy:'ოფიციალური სტატუსის მიღება, ძალაუფლება, მთები.',
+   risk:'შეზღუდვები ავტორიტეტებისგან, ნელი ადამიანები.',
+   masc:'სერიოზული, ფოკუსირებული სამუშაოზე, სექსი გრაფიკით ან დაუოკებელი ენერგია.'},
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ჰაერი',
+   style:'არაპროგნოზირებადი, გუნდური მოთამაშე, ორგანიზატორი.',
+   energy:'კოლექტივი, მეგობრები, რევოლუციური იდეები.',
+   risk:'თავისუფლების შეზღუდვა, ბიუროკრატია.',
+   masc:'ორიგინალური, მეგობრული, სჭირდება ინტელექტუალური და ვიზუალური სტიმულაცია.'},
+  {sym:'♓',n:'თევზები',el:'water',badge:'წყალი',
+   style:'ფარული, ინტუიციური, ერიდება პირდაპირ კონფლიქტს.',
+   energy:'მუსიკა, მედიტაცია, შემოქმედებით ნაკადი.',
+   risk:'ემპათიის ნაკლებობა, უხეში რეალობა, დამოკიდებულებები.',
+   masc:'მოლოდინი, დიდარი ფანტაზია, მისტიური კავშირი პარტნიორთან.'},
+];
+
+let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
+let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
+let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
+let VENUS=ls('as_venus_signs')||DEF_VENUS_SIGNS;
+let VENUS_ELS=ls('as_venus_els')||DEF_VENUS_ELS;
+let MARS=ls('as_mars_signs')||DEF_MARS_SIGNS;
+// ---- merge venus/mars into saved sections ----
+function initSections(){
+  let saved=ls('as_sections');
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS];
+  // ensure venus and mars exist
+  const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
+  const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
+  if(!hasVenus) saved.push(DEF_VENUS);
+  if(!hasMars) saved.push(DEF_MARS);
+  return saved;
+}
+let SECTIONS=initSections();
+let activePage=null;
+let activeCard={};
+let editSecId=null;
+let dragSrc=null;
+
+// ===== VENUS/MARS RENDER =====
+let activeVenus=null;
+let activeMars=null;
+const EL_COLORS={fire:'#D85A30',earth:'#639922',air:'#378ADD',water:'#7F77DD'};
+const EL_BGS={fire:'#FAECE7',earth:'#EAF3DE',air:'#E6F1FB',water:'#EEEDFE'};
+const EL_TCS={fire:'#712B13',earth:'#27500A',air:'#0C447C',water:'#3C3489'};
+
+function renderVenusSection(sec){
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:22px;margin-bottom:6px">♀</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">ვენერა ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">ვენერა — სიყვარულის, სილამაზის, ფინანსებისა და ღირებულებების პლანეტა. ყოველ 8 წელიწადში ვენერა ახდენს რეტროგრადულ მარყუჟს ნატალური რუკის ზუსტად იმავე წერტილში — ეს არის პერიოდი, როდესაც ხდება ღირებულებების, ურთიერთობებისა და ფინანსური დამოკიდებულებების კარდინალური გადაფასება. ვენერა არ არის მხოლოდ პლანეტა ურთიერთობებისთვის — ის არის ჩვენი შინაგანი სარკე.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:14px">`;
+  VENUS_ELS.forEach(e=>{
+    h+=`<div style="border-radius:var(--r);padding:12px 14px;border:.5px solid ${e.color};background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:${e.color};margin-bottom:4px">${e.title}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:5px">${e.signs}</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6">${e.desc}</div>
+    </div>`;
+  });
+  h+=`</div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:16px" id="venus-grid">`;
+  VENUS.forEach((s,i)=>{
+    const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
+    h+=`<div id="vc${i}" onclick="toggleVenus(${i})" style="border:.5px solid var(--border);border-radius:14px;padding:13px;cursor:pointer;background:var(--bg);transition:border-color .15s${activeVenus===i?';border-color:var(--border2);background:var(--bg2)':''}">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:3px">♀ ${s.sym}</div>
+      <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
+      <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
+      <span style="font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
+    </div>`;
+  });
+  h+=`</div><div id="venus-det"></div>`;
+  return h;
+}
+
+function toggleVenus(i){
+  if(activeVenus===i){activeVenus=null;renderCurrentVenus();return;}
+  activeVenus=i;renderCurrentVenus();
+  setTimeout(()=>{const d=document.getElementById('venus-det');if(d)d.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+}
+
+function renderCurrentVenus(){
+  const container=document.querySelector('[id^="pg-s-venus"]')||document.querySelector('[id*="venus"]');
+  // re-render the venus grid cards
+  const grid=document.getElementById('venus-grid');
+  if(grid){
+    VENUS.forEach((s,i)=>{
+      const el=document.getElementById('vc'+i);
+      if(el){
+        el.style.borderColor=activeVenus===i?'var(--border2)':'var(--border)';
+        el.style.background=activeVenus===i?'var(--bg2)':'var(--bg)';
+      }
+    });
+  }
+  const det=document.getElementById('venus-det');
+  if(!det)return;
+  if(activeVenus===null){det.innerHTML='';return;}
+  const s=VENUS[activeVenus];
+  const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
+  det.innerHTML=`<div style="border:.5px solid var(--border2);border-radius:14px;padding:22px;background:var(--bg)">
+    <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:.5px solid var(--border)">
+      <div style="font-size:46px;line-height:1">♀${s.sym}</div>
+      <div>
+        <div style="font-size:20px;font-weight:500;color:var(--text)">ვენერა ${s.n}ში</div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:9px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
+      </div>
+      <button onclick="toggleVenus(${activeVenus})" style="margin-left:auto;background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px">
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px 14px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">💑 ურთიერთობები</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.65">${s.rel}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px 14px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">💰 ფინანსები</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.65">${s.finance}</div>
+      </div>
+      <div style="background:${bg};border-radius:var(--r);padding:12px 14px;border:.5px solid ${bc}">
+        <div style="font-size:10px;color:${tc};margin-bottom:4px">🪞 თვითშეფასება</div>
+        <div style="font-size:13px;color:${tc};line-height:1.65">${s.selfeval}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderMarsSection(sec){
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:22px;margin-bottom:6px">♂</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მარსი ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px">მარსი — მოქმედების, ენერგიის, მამაკაცური ძალის პლანეტა. სინთეზის ფორმულა: <strong>პლანეტა</strong> (რა?) + <strong>ნიშანი</strong> (როგორ?) + <strong>სახლი</strong> (სად?) + <strong>ასპექტები</strong> (ვინ ეხმარება/უშლის?) = ადამიანის უნიკალური ენერგეტიკული ხელწერა. ქალის რუკაში მარსი — ანიმუსი (შინაგანი მამაკაცური ენერგია) და სექსუალური პარტნიორის იდეალი. მამაკაცის რუკაში — იდენტობა და ფიზიკური გამოხატულება.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:#FAECE7;border-radius:var(--r);padding:12px 14px;border:.5px solid #D85A30">
+        <div style="font-size:12px;font-weight:500;color:#712B13;margin-bottom:5px">🛡️ წრე — ფარი</div>
+        <div style="font-size:12px;color:#712B13;line-height:1.6">პირადი საზღვრების დაცვა. ფიზიკური სხეული, ინდივიდის მთავარი საზღვარი გარე სამყაროსთან.</div>
+      </div>
+      <div style="background:#FAECE7;border-radius:var(--r);padding:12px 14px;border:.5px solid #D85A30">
+        <div style="font-size:12px;font-weight:500;color:#712B13;margin-bottom:5px">↗️ ისარი — შუბი</div>
+        <div style="font-size:12px;color:#712B13;line-height:1.6">მიზანმიმართული, გარეთ მიმართული ქმედება. მარსის ენერგია კონცენტრირებულია ერთ წერტილში მოსახვედრად.</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:16px" id="mars-grid">`;
+  MARS.forEach((s,i)=>{
+    const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
+    h+=`<div id="mc${i}" onclick="toggleMars(${i})" style="border:.5px solid var(--border);border-radius:14px;padding:13px;cursor:pointer;background:var(--bg);transition:border-color .15s${activeMars===i?';border-color:var(--border2);background:var(--bg2)':''}">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:3px">♂ ${s.sym}</div>
+      <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
+      <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
+      <span style="font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
+    </div>`;
+  });
+  h+=`</div><div id="mars-det"></div>`;
+  return h;
+}
+
+function toggleMars(i){
+  if(activeMars===i){activeMars=null;renderCurrentMars();return;}
+  activeMars=i;renderCurrentMars();
+  setTimeout(()=>{const d=document.getElementById('mars-det');if(d)d.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+}
+
+function renderCurrentMars(){
+  MARS.forEach((s,i)=>{
+    const el=document.getElementById('mc'+i);
+    if(el){
+      el.style.borderColor=activeMars===i?'var(--border2)':'var(--border)';
+      el.style.background=activeMars===i?'var(--bg2)':'var(--bg)';
+    }
+  });
+  const det=document.getElementById('mars-det');
+  if(!det)return;
+  if(activeMars===null){det.innerHTML='';return;}
+  const s=MARS[activeMars];
+  const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
+  det.innerHTML=`<div style="border:.5px solid var(--border2);border-radius:14px;padding:22px;background:var(--bg)">
+    <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:.5px solid var(--border)">
+      <div style="font-size:46px;line-height:1">♂${s.sym}</div>
+      <div>
+        <div style="font-size:20px;font-weight:500;color:var(--text)">მარსი ${s.n}ში</div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:9px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
+      </div>
+      <button onclick="toggleMars(${activeMars})" style="margin-left:auto;background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px">
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px 14px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">⚡ სტილი</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.65">${s.style}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px 14px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">🔥 ენერგიის წყარო</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.65">${s.energy}</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px 14px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">⚠️ რისკის მიზეზი</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.65">${s.risk}</div>
+      </div>
+      <div style="background:${bg};border-radius:var(--r);padding:12px 14px;border:.5px solid ${bc}">
+        <div style="font-size:10px;color:${tc};margin-bottom:4px">♂ მამაკაცი / სექსუალობა</div>
+        <div style="font-size:13px;color:${tc};line-height:1.65">${s.masc}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== RENDER =====
+function renderSite(){
+  document.getElementById('site-h1').textContent=SITE.h1;
+  document.getElementById('site-sub').textContent=SITE.sub;
+  document.getElementById('site-footer').textContent=SITE.footer;
+  document.getElementById('site-title-tag').textContent=SITE.h1;
+}
+
+function renderAll(){
+  renderSite();
+  const tabs=document.getElementById('nav-tabs');
+  const pages=document.getElementById('pages-container');
+  tabs.innerHTML='';pages.innerHTML='';
+  const visible=SECTIONS.filter(s=>s.visible!==false);
+  visible.forEach((sec,i)=>{
+    // tab
+    const btn=document.createElement('button');
+    btn.className='tab'+(i===0?' on':'');
+    btn.textContent=sec.tab||sec.title;
+    btn.onclick=()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('pg-'+sec.id).classList.add('on');
+    };
+    tabs.appendChild(btn);
+    // page
+    const div=document.createElement('div');
+    div.className='page'+(i===0?' on':'');
+    div.id='pg-'+sec.id;
+    div.innerHTML=renderSection(sec);
+    pages.appendChild(div);
+    // bind events
+    bindSectionEvents(sec,div);
+  });
+}
+
+function renderSection(sec){
+  if(sec.type==='signs')return renderSignsSection(sec);
+  if(sec.type==='cards')return renderCardsSection(sec);
+  if(sec.type==='table')return renderTableSection(sec);
+  if(sec.type==='calc')return renderCalcSection(sec);
+  if(sec.type==='article')return renderArticleSection(sec);
+  if(sec.type==='venus')return renderVenusSection(sec);
+  if(sec.type==='mars')return renderMarsSection(sec);
+  return '';
+}
+
+function renderSignsSection(sec){
+  const lower=(sec.items||[]).filter(s=>s.hier==='lower');
+  const upper=(sec.items||[]).filter(s=>s.hier==='upper');
+  let h='';
+  if(sec.intro)h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px;font-size:14px;color:var(--text2);line-height:1.7">${sec.intro}</div>`;
+  const renderGroup=(items,label)=>{
+    let g=`<p class="hier-lbl">${label}</p><div class="cards-grid">`;
+    items.forEach((s,i)=>{
+      const idx=(sec.items||[]).indexOf(s);
+      const e=EL[s.el]||EL.fire;
+      g+=`<div class="scard" id="sc-${sec.id}-${idx}" onclick="toggleSignCard('${sec.id}',${idx})">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:3px">${s.num||''}</div>
+        <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;line-height:1.4">${s.ruler||''}</div>
+        <span class="epill" style="background:${e.bg};color:${e.tc};border-color:${e.bc}">${e.label}·${CR[s.cr]||''}</span>
+      </div>`;
+    });
+    g+='</div>';
+    return g;
+  };
+  h+=renderGroup(lower,'ქვედა 6 — პირადი სფერო');
+  h+=renderGroup(upper,'ზედა 6 — კოლექტიური / სულიერი');
+  h+='<div id="det-'+sec.id+'"></div>';
+  return h;
+}
+
+function toggleSignCard(secId,idx){
+  const key=secId+'-'+idx;
+  const prev=activeCard[secId];
+  document.querySelectorAll(`[id^="sc-${secId}-"]`).forEach(c=>c.classList.remove('on'));
+  const det=document.getElementById('det-'+secId);
+  if(prev===idx){delete activeCard[secId];det.innerHTML='';return;}
+  activeCard[secId]=idx;
+  document.getElementById('sc-'+secId+'-'+idx).classList.add('on');
+  const sec=SECTIONS.find(s=>s.id===secId);
+  const s=sec.items[idx];
+  const e=EL[s.el]||EL.fire;
+  const kws=(s.keywords||[]).map(k=>`<span class="kw">${k}</span>`).join('');
+  const showTriad=ls('as_show_triad')!==false;
+  const triad=(s.triad&&showTriad)?`<div class="slbl">სამეული</div><div style="background:var(--bg2);border-radius:var(--r);padding:10px 13px;border:.5px solid var(--border);font-size:13px;color:var(--text2);margin-bottom:12px">${s.triad}</div>`:'';
+  det.innerHTML=`<div class="dpanel">
+    <div class="dhero">
+      <div style="font-size:46px;line-height:1">${s.sym}</div>
+      <div>
+        <div style="font-size:20px;font-weight:500;color:var(--text)">${s.n}</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:3px">${e.label}·${CR[s.cr]||''}·${s.impulse||''}</div>
+        <span class="epill" style="background:${e.bg};color:${e.tc};border-color:${e.bc};margin-top:6px;display:inline-block">${s.ruler||''}</span>
+      </div>
+      <button class="dclose" onclick="toggleSignCard('${secId}',${idx})">✕</button>
+    </div>
+    <div class="prow">
+      <div class="pc"><div class="pl">სტიქია</div><div class="pv">${e.label}</div></div>
+      <div class="pc"><div class="pl">ჯვარი</div><div class="pv">${CR[s.cr]||''}</div></div>
+      <div class="pc"><div class="pl">იერარქია</div><div class="pv">${s.hier==='lower'?'ქვედა':'ზედა'}</div></div>
+      <div class="pc"><div class="pl">იმპულსი</div><div class="pv">${s.impulse||''}</div></div>
+    </div>
+    <div class="slbl">საკვანძო სიტყვები</div><div class="kws">${kws}</div>
+    <div class="slbl">განმარტება</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:14px">${s.desc||''}</div>
+    ${triad}
+    <div class="slbl">საპირისპირო</div>
+    <div style="background:var(--bg2);border-radius:var(--r);padding:11px 14px;border:.5px solid var(--border);font-size:13px;color:var(--text2)">${s.opp||''}</div>
+  </div>`;
+  det.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function renderCardsSection(sec){
+  let h=`<div class="sec-grid-wrap"><h2>${sec.title}</h2><div class="sec-grid">`;
+  (sec.items||[]).forEach(c=>{
+    const acc=c.accent||'#888';
+    h+=`<div class="sec-card" style="border-left:3px solid ${acc};border-radius:0 14px 14px 0">
+      <div style="font-size:15px;font-weight:500;color:var(--text);margin-bottom:4px">${c.title||''}</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:9px">${c.sub||''}</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.65">${c.desc||''}</div>
+    </div>`;
+  });
+  h+='</div></div>';
+  return h;
+}
+
+function renderArticleSection(sec){
+  return `<div class="sec-article"><h2>${sec.title}</h2><p>${(sec.content||'').replace(/\n/g,'<br>')}</p></div>`;
+}
+
+function renderTableSection(sec){
+  let h=`<div class="sec-table-wrap"><h2>${sec.title}</h2>`;
+  h+='<div class="tbl-outer"><table class="main-tbl"><thead><tr>';
+  (sec.headers||[]).forEach(hd=>h+=`<th>${hd}</th>`);
+  h+='</tr></thead><tbody>';
+  (sec.rows||[]).forEach((row,ri)=>{
+    h+=`<tr${ri%2===0?'':' class="upper"'}>`;
+    row.forEach((cell,ci)=>{
+      if(ci===0) h+=`<td style="font-size:18px;text-align:center">${cell}</td>`;
+      else h+=`<td>${cell}</td>`;
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div></div>';
+  return h;
+}
+
+function renderCalcSection(sec){
+  const planets=sec.planets||[];
+  const opts=SIGN_OPTS.map((s,i)=>`<option value="${i}">${s}</option>`).join('');
+  let plHTML='';
+  planets.forEach((p,i)=>{
+    plHTML+=`<div class="prow2"><span class="psym">${p.sym}</span><span class="pname">${p.name}</span><select class="psel" id="csel-${sec.id}-${i}"><option value="-1">— ნიშანი —</option>${opts}</select><span class="ppts">${p.pts} ქ.</span></div>`;
+  });
+  return `<div class="cgrid">
+    <div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">პლანეტებს მიუჩინე ნიშნები</p>
+      ${plHTML}
+      <button class="cbtn" onclick="doCalc('${sec.id}')">გამოთვლა →</button>
+    </div>
+    <div id="calc-res-${sec.id}"><p style="color:var(--text3);font-size:13px;padding:16px 0">შეიყვანე პლანეტები</p></div>
+  </div>`;
+}
+
+function doCalc(secId){
+  const sec=SECTIONS.find(s=>s.id===secId);
+  const planets=sec.planets||[];
+  const el={fire:0,earth:0,air:0,water:0};const cr={cardinal:0,fixed:0,mutable:0};let tot=0;
+  planets.forEach((p,i)=>{
+    const v=parseInt(document.getElementById('csel-'+secId+'-'+i).value);
+    if(v<0)return;
+    el[SIGN_EL[v]]+=p.pts;cr[SIGN_CR[v]]+=p.pts;tot+=p.pts;
+  });
+  if(!tot){alert('სულ მცირე ერთი ნიშანი');return;}
+  const ea=Object.entries(el).sort((a,b)=>b[1]-a[1]);
+  const ca=Object.entries(cr).sort((a,b)=>b[1]-a[1]);
+  const de=ELC[ea[0][0]];const dc=CRC[ca[0][0]];
+  let h='<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:10px">სტიქიები</div>';
+  ea.forEach(([k,v])=>{const m=ELC[k];const p=Math.round(v/tot*100);h+=`<div class="srow"><span style="font-size:13px;font-weight:500;color:var(--text);width:80px">${m.label}</span><div style="flex:1"><div class="bwrap"><div class="bfill" style="width:${p}%;background:${m.hex}"></div></div></div><span style="font-size:13px;font-weight:500;width:26px;text-align:right">${v}</span><span style="font-size:11px;color:var(--text3);width:32px;text-align:right">${p}%</span></div>`;});
+  h+='<div style="font-size:11px;font-weight:500;color:var(--text3);margin:12px 0 9px">ჯვრები</div>';
+  ca.forEach(([k,v])=>{const m=CRC[k];const p=Math.round(v/tot*100);h+=`<div class="srow"><span style="font-size:13px;font-weight:500;color:var(--text);width:100px">${m.label}</span><div style="flex:1"><div class="bwrap"><div class="bfill" style="width:${p}%;background:${m.hex}"></div></div></div><span style="font-size:13px;font-weight:500;width:26px;text-align:right">${v}</span><span style="font-size:11px;color:var(--text3);width:32px;text-align:right">${p}%</span></div>`;});
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 7px"><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომ. სტიქია</div><div style="font-size:20px;font-weight:500;color:${de.hex}">${de.label}</div></div><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომ. ჯვარი</div><div style="font-size:20px;font-weight:500;color:${dc.hex}">${dc.label}</div></div></div>
+  <div class="ins" style="border-color:${de.hex};background:var(--bg2);color:var(--text2)"><strong style="color:${de.hex}">${de.label}+${dc.label}:</strong> ${de.desc}. ${dc.desc}.</div>`;
+  document.getElementById('calc-res-'+secId).innerHTML=h;
+}
+
+function bindSectionEvents(sec,div){}
+
+// ===== ADMIN =====
+function openAdmin(){document.getElementById('adminModal').classList.add('open');}
+function closeAdmin(){document.getElementById('adminModal').classList.remove('open');document.getElementById('al').style.display='';document.getElementById('ap').style.display='none';}
+function tglPw(){const i=document.getElementById('pw-inp');const e=document.getElementById('pw-eye');i.type=i.type==='password'?'text':'password';e.textContent=i.type==='password'?'👁':'🙈';}
+function checkPw(){
+  if(document.getElementById('pw-inp').value===PW){
+    document.getElementById('al').style.display='none';document.getElementById('ap').style.display='';
+    document.getElementById('pw-inp').value='';document.getElementById('pw-err').style.display='none';
+    renderCmsList();document.getElementById('es-h1').value=SITE.h1;document.getElementById('es-sub').value=SITE.sub;document.getElementById('es-footer').value=SITE.footer;
+    setTimeout(initTriadToggle,50);
+  }else{document.getElementById('pw-err').style.display='block';}
+}
+function aTab(id,btn){
+  ['pages','site'].forEach(t=>document.getElementById('at-'+t).style.display='none');
+  document.getElementById('at-'+id).style.display='';
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+}
+function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=document.getElementById('es-sub').value;SITE.footer=document.getElementById('es-footer').value;lss('as_site',SITE);renderSite();badge('sv-site');}
+
+// CMS LIST
+function renderCmsList(){
+  const c=document.getElementById('cms-list');c.innerHTML='';
+  SECTIONS.forEach((sec,i)=>{
+    const div=document.createElement('div');
+    div.className='cms-item';div.draggable=true;div.dataset.idx=i;
+    div.ondragstart=e=>{dragSrc=i;div.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
+    div.ondragend=()=>{document.querySelectorAll('.cms-item').forEach(d=>{d.classList.remove('dragging','drag-over');});};
+    div.ondragover=e=>{e.preventDefault();div.classList.add('drag-over');};
+    div.ondragleave=()=>div.classList.remove('drag-over');
+    div.ondrop=e=>{e.preventDefault();div.classList.remove('drag-over');if(dragSrc===null||dragSrc===i)return;const moved=SECTIONS.splice(dragSrc,1)[0];SECTIONS.splice(i,0,moved);dragSrc=null;lss('as_sections',SECTIONS);renderCmsList();renderAll();};
+    const typeLabel={signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',calc:'კალკ.',article:'სტატია'}[sec.type]||sec.type;
+    div.innerHTML=`<span class="cms-drag">⠿</span>
+      <span class="cms-name">${sec.title}</span>
+      <span class="cms-type">${typeLabel}</span>
+      <button class="cms-vis${sec.visible===false?' off':''}" onclick="toggleVis(${i})" title="ჩვენება/დამალვა">${sec.visible===false?'👁‍🗨':'👁'}</button>
+      <button class="cms-edit" onclick="openEditor(${i})">✎</button>
+      <button class="cms-del" onclick="deleteSection(${i})">✕</button>`;
+    c.appendChild(div);
+  });
+}
+
+function toggleVis(i){SECTIONS[i].visible=SECTIONS[i].visible===false?true:false;lss('as_sections',SECTIONS);renderCmsList();renderAll();}
+function deleteSection(i){if(!confirm('წაიშალოს?'))return;SECTIONS.splice(i,1);lss('as_sections',SECTIONS);renderCmsList();renderAll();document.getElementById('sec-editor-wrap').innerHTML='';}
+
+function addSection(type){
+  const sec={id:uid(),type,title:'ახალი '+type,visible:true,tab:'ახალი'};
+  if(type==='cards')sec.items=[{title:'ბარათი 1',sub:'',desc:'',accent:'#378ADD'}];
+  if(type==='signs')sec.items=JSON.parse(JSON.stringify(DEF_SECTIONS[0].items));
+  if(type==='article')sec.content='ტექსტი...';
+  if(type==='table'){sec.headers=['სვეტი 1','სვეტი 2'];sec.rows=[['',''],['','']];}
+  if(type==='calc')sec.planets=JSON.parse(JSON.stringify(DEF_SECTIONS[4].planets));
+  SECTIONS.push(sec);lss('as_sections',SECTIONS);renderCmsList();renderAll();openEditor(SECTIONS.length-1);
+}
+
+function openEditor(i){
+  editSecId=SECTIONS[i].id;
+  const sec=SECTIONS[i];
+  const w=document.getElementById('sec-editor-wrap');
+  let h=`<div class="sec-editor"><h3>✎ ${sec.title} (${sec.type})</h3>
+    <div class="g2">
+      <div class="fg"><label>სათაური</label><input type="text" id="ed-title" value="${sec.title}"></div>
+      <div class="fg"><label>ჩანართის სახელი</label><input type="text" id="ed-tab" value="${sec.tab||sec.title}"></div>
+    </div>`;
+
+  if(sec.type==='article'){
+    h+=`<div class="fg"><label>ტექსტი</label><textarea id="ed-content" rows="6">${sec.content||''}</textarea></div>`;
+  }
+  if(sec.type==='cards'){
+    h+=`<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:8px">ბარათები</div><div id="cards-editor">`;
+    (sec.items||[]).forEach((c,ci)=>{
+      h+=`<div class="card-row"><button class="rm" onclick="removeCard(${ci})">✕</button>
+        <div class="g2"><div class="fg"><label>სათაური</label><input type="text" id="ct-${ci}" value="${c.title||''}"></div>
+        <div class="fg"><label>ფერი</label><input type="color" id="cc-${ci}" value="${c.accent||'#378ADD'}" style="padding:2px;height:34px"></div></div>
+        <div class="fg"><label>ქვესათაური</label><input type="text" id="cs-${ci}" value="${c.sub||''}"></div>
+        <div class="fg"><label>ტექსტი</label><textarea id="cd-${ci}" rows="2">${c.desc||''}</textarea></div></div>`;
+    });
+    h+=`</div><button class="sbtn sec" onclick="addCard()" style="margin-bottom:10px">+ ბარათი</button>`;
+  }
+  if(sec.type==='table'){
+    h+=`<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:7px">სვეტების სათაური (tab-ით გამოყოფე)</div>
+      <div class="fg"><input type="text" id="tbl-headers" value="${(sec.headers||[]).join('\t')}"></div>
+      <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:7px">მწკრივები (ერთი მწკრივი = ერთი ხაზი, სვეტები tab-ით)</div>
+      <div class="fg"><textarea id="tbl-rows" rows="8">${(sec.rows||[]).map(r=>r.join('\t')).join('\n')}</textarea></div>`;
+  }
+  if(sec.type==='calc'){
+    h+=`<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:8px">პლანეტების ქულები</div>`;
+    (sec.planets||[]).forEach((p,pi)=>{
+      h+=`<div class="prow2"><span class="psym">${p.sym}</span><span class="pname">${p.name}</span><input type="number" id="pp-${pi}" value="${p.pts}" min="0" max="20" style="width:60px;padding:4px 8px;border:.5px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text);font-size:13px;text-align:center"><span class="ppts">ქ.</span></div>`;
+    });
+  }
+  if(sec.type==='signs'){
+    h+=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">ნიშნების სია — ინდივიდ. დასარედაქტ. შეინახე და გახსენი ნიშანი</div>
+      <div class="fg"><label>შესავალი ტექსტი (სურვ.)</label><textarea id="ed-intro" rows="3">${sec.intro||''}</textarea></div>`;
+    (sec.items||[]).forEach((s,si)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px"><summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${s.sym} ${s.n}</summary>
+        <div style="padding:10px 12px">
+          <div class="g2">
+            <div class="fg"><label>სახელი</label><input type="text" id="sn-${si}" value="${s.n}"></div>
+            <div class="fg"><label>სიმბოლო</label><input type="text" id="ss-${si}" value="${s.sym}" style="font-size:18px;text-align:center"></div>
+          </div>
+          <div class="g3">
+            <div class="fg"><label>სტიქია</label><select id="sel-${si}"><option value="fire"${s.el==='fire'?' selected':''}>ცეცხლი</option><option value="earth"${s.el==='earth'?' selected':''}>მიწა</option><option value="air"${s.el==='air'?' selected':''}>ჰაერი</option><option value="water"${s.el==='water'?' selected':''}>წყალი</option></select></div>
+            <div class="fg"><label>ჯვარი</label><select id="scr-${si}"><option value="cardinal"${s.cr==='cardinal'?' selected':''}>კარდ.</option><option value="fixed"${s.cr==='fixed'?' selected':''}>ფიქსირ.</option><option value="mutable"${s.cr==='mutable'?' selected':''}>მუტაბ.</option></select></div>
+            <div class="fg"><label>იერარქია</label><select id="sh-${si}"><option value="lower"${s.hier==='lower'?' selected':''}>ქვედა</option><option value="upper"${s.hier==='upper'?' selected':''}>ზედა</option></select></div>
+          </div>
+          <div class="fg"><label>მმართველი</label><input type="text" id="sr-${si}" value="${s.ruler||''}"></div>
+          <div class="fg"><label>იმპულსი</label><input type="text" id="si-${si}" value="${s.impulse||''}"></div>
+          <div class="fg"><label>საკვანძო სიტყვები (მძიმით)</label><input type="text" id="sk-${si}" value="${(s.keywords||[]).join(', ')}"></div>
+          <div class="fg"><label>განმარტება</label><textarea id="sd-${si}" rows="3">${s.desc||''}</textarea></div>
+          <div class="fg"><label>სამეული</label><input type="text" id="st-${si}" value="${s.triad||''}"></div>
+          <div class="fg"><label>საპირისპირო</label><input type="text" id="so-${si}" value="${s.opp||''}"></div>
+        </div></details>`;
+    });
+  }
+  h+=`<button class="sbtn" onclick="saveEditor()" style="margin-top:8px">შენახვა <span class="svbadge" id="sv-ed">✓</span></button></div>`;
+  w.innerHTML=h;
+  w.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function addCard(){
+  const i=SECTIONS.findIndex(s=>s.id===editSecId);
+  SECTIONS[i].items.push({title:'ახალი ბარათი',sub:'',desc:'',accent:'#378ADD'});
+  openEditor(i);
+}
+function removeCard(ci){
+  const i=SECTIONS.findIndex(s=>s.id===editSecId);
+  SECTIONS[i].items.splice(ci,1);openEditor(i);
+}
+
+function saveEditor(){
+  const i=SECTIONS.findIndex(s=>s.id===editSecId);
+  const sec=SECTIONS[i];
+  sec.title=document.getElementById('ed-title').value;
+  sec.tab=document.getElementById('ed-tab').value;
+  if(sec.type==='article'){sec.content=document.getElementById('ed-content').value;}
+  if(sec.type==='cards'){
+    sec.items=(sec.items||[]).map((c,ci)=>({
+      title:document.getElementById('ct-'+ci).value,
+      sub:document.getElementById('cs-'+ci).value,
+      desc:document.getElementById('cd-'+ci).value,
+      accent:document.getElementById('cc-'+ci).value,
+    }));
+  }
+  if(sec.type==='table'){
+    sec.headers=document.getElementById('tbl-headers').value.split('\t');
+    sec.rows=document.getElementById('tbl-rows').value.split('\n').filter(r=>r.trim()).map(r=>r.split('\t'));
+  }
+  if(sec.type==='calc'){
+    (sec.planets||[]).forEach((p,pi)=>{p.pts=parseInt(document.getElementById('pp-'+pi).value)||0;});
+  }
+  if(sec.type==='signs'){
+    sec.intro=document.getElementById('ed-intro')?.value||'';
+    (sec.items||[]).forEach((s,si)=>{
+      s.n=document.getElementById('sn-'+si)?.value||s.n;
+      s.sym=document.getElementById('ss-'+si)?.value||s.sym;
+      s.el=document.getElementById('sel-'+si)?.value||s.el;
+      s.cr=document.getElementById('scr-'+si)?.value||s.cr;
+      s.hier=document.getElementById('sh-'+si)?.value||s.hier;
+      s.ruler=document.getElementById('sr-'+si)?.value||'';
+      s.impulse=document.getElementById('si-'+si)?.value||'';
+      s.keywords=(document.getElementById('sk-'+si)?.value||'').split(',').map(k=>k.trim()).filter(Boolean);
+      s.desc=document.getElementById('sd-'+si)?.value||'';
+      s.triad=document.getElementById('st-'+si)?.value||'';
+      s.opp=document.getElementById('so-'+si)?.value||'';
+    });
+  }
+  lss('as_sections',SECTIONS);renderCmsList();renderAll();badge('sv-ed');
+}
+
+// INIT
+function saveTriadToggle(cb){
+  lss('as_show_triad', cb.checked);
+  document.getElementById('triad-status').textContent=cb.checked?'ჩართული':'გამორთული';
+  renderAll();
+}
+function initTriadToggle(){
+  const val=ls('as_show_triad');
+  const isOn=val!==false;
+  const cb=document.getElementById('toggle-triad');
+  if(cb){
+    cb.checked=isOn;
+    document.getElementById('triad-status').textContent=isOn?'ჩართული':'გამორთული';
+  }
+}
+renderAll();
+</script>
+</body>
+</html>
