@@ -195,14 +195,9 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 
     <!-- GLOSSARY ADMIN TAB -->
     <div id="at-glossary" style="display:none">
-      <div style="display:flex;gap:7px;margin-bottom:12px">
-        <button class="sbtn sec" onclick="openAddTerm()" style="flex:1">+ ახალი ტერმინი</button>
-        <input type="text" id="admin-gloss-search" placeholder="🔍 ძიება..." oninput="renderAdminGloss()" 
-          style="flex:2;padding:7px 10px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit">
-      </div>
-      <div id="admin-gloss-list"></div>
-      <div id="term-editor" style="display:none;margin-top:12px;border:.5px solid var(--border2);border-radius:var(--r);padding:14px;background:var(--bg)">
-        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px" id="term-editor-title">ტერმინის რედაქტირება</div>
+      <!-- ALWAYS VISIBLE TERM EDITOR -->
+      <div style="border:.5px solid var(--border2);border-radius:var(--r);padding:14px;background:var(--bg);margin-bottom:14px">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px" id="term-editor-title">+ ახალი ტერმინი</div>
         <div class="g2">
           <div class="fg"><label>ქართული სახელი *</label><input type="text" id="te-ka" placeholder="მაგ: ასცენდანტი"></div>
           <div class="fg"><label>ინგლისური სახელი</label><input type="text" id="te-en" placeholder="მაგ: Ascendant"></div>
@@ -215,9 +210,13 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
               <div class="fg"><label>განმარტება</label><textarea id="te-def" rows="4"></textarea></div>
         <div style="display:flex;gap:8px">
           <button class="sbtn" onclick="saveTerm()" style="flex:2">შენახვა <span class="svbadge" id="sv-term">✓</span></button>
-          <button class="sbtn sec" onclick="cancelTerm()" style="flex:1">გაუქმება</button>
+          <button class="sbtn sec" onclick="clearTermForm()" style="flex:1">გასუფთავება</button>
         </div>
       </div>
+      <!-- GLOSSARY LIST -->
+      <input type="text" id="admin-gloss-search" placeholder="🔍 სიაში ძიება..." oninput="renderAdminGloss()"
+        style="width:100%;padding:8px 10px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit;margin-bottom:8px">
+      <div id="admin-gloss-list"></div>
     </div>
 
     <!-- SITE TAB -->
@@ -1334,7 +1333,7 @@ function saveGlossaryTerms(){
 let editTermIdx=null;
 
 function renderAdminGloss(){
-  const terms=getGlossaryTerms();
+  const terms=getGlossaryTerms().sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
   const q=(document.getElementById('admin-gloss-search')?.value||'').toLowerCase();
   const c=document.getElementById('admin-gloss-list');
   if(!c)return;
@@ -1355,19 +1354,7 @@ function renderAdminGloss(){
   if(filtered.length===0) c.innerHTML='<p style="font-size:13px;color:var(--text3);padding:10px 0">ტერმინი ვერ მოიძებნა</p>';
 }
 
-function openAddTerm(){
-  editTermIdx=null;
-  document.getElementById('term-editor-title').textContent='+ ახალი ტერმინი';
-  document.getElementById('te-ka').value='';
-  document.getElementById('te-en').value='';
-  document.getElementById('te-cat').value='';
-  document.getElementById('te-src').value='';
-  const uF=document.getElementById('te-url');if(uF)uF.value='';
-  document.getElementById('te-def').value='';
-  document.getElementById('term-editor').style.display='';
-  document.getElementById('term-editor').scrollIntoView({behavior:'smooth',block:'nearest'});
-  document.getElementById('sv-term').style.display='none';
-}
+function openAddTerm(){cancelTerm();}
 
 function editTerm(idx){
   const terms=getGlossaryTerms();
@@ -1406,16 +1393,37 @@ function saveTerm(){
   if(!t.ka||!t.def){alert('სახელი და განმარტება სავალდებულოა');return;}
   if(editTermIdx===null) terms.push(t);
   else terms[editTermIdx]=t;
+  // Sort alphabetically by Georgian name
+  CUSTOM_TERMS.sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
   saveGlossaryTerms();
   renderAdminGloss();
   badge('sv-term');
-  setTimeout(()=>{document.getElementById('term-editor').style.display='none';editTermIdx=null;},1500);
+  // Clear form after save
+  setTimeout(()=>{
+    editTermIdx=null;
+    document.getElementById('term-editor-title').textContent='+ ახალი ტერმინი';
+    document.getElementById('te-ka').value='';
+    document.getElementById('te-en').value='';
+    document.getElementById('te-cat').value='';
+    document.getElementById('te-src').value='';
+    const uF=document.getElementById('te-url');if(uF)uF.value='';
+    document.getElementById('te-def').value='';
+    document.querySelectorAll('#admin-gloss-list .asb').forEach(b=>b.classList.remove('sel'));
+  },1500);
 }
 
 function cancelTerm(){
-  document.getElementById('term-editor').style.display='none';
   editTermIdx=null;
+  document.getElementById('term-editor-title').textContent='+ ახალი ტერმინი';
+  document.getElementById('te-ka').value='';
+  document.getElementById('te-en').value='';
+  document.getElementById('te-cat').value='';
+  document.getElementById('te-src').value='';
+  const uF=document.getElementById('te-url');if(uF)uF.value='';
+  document.getElementById('te-def').value='';
+  document.querySelectorAll('#admin-gloss-list .asb').forEach(b=>b.classList.remove('sel'));
 }
+function clearTermForm(){cancelTerm();}
 
 // Patch getGlossaryTerms into renderGlossaryGrid
 const _origRenderGlossaryGrid=renderGlossaryGrid;
@@ -1431,7 +1439,8 @@ function renderGlossaryGrid(){
   const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
   const levelTc={beginner:'#27500A',intermediate:'#0C447C',advanced:'#3C3489'};
   const levelLabel={beginner:'დამწყები',intermediate:'საშუალო',advanced:'მოწინავე'};
-  const filtered=termsToUse.filter(t=>{
+  const sorted=[...termsToUse].sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
+  const filtered=sorted.filter(t=>{
     const matchLevel=glossaryFilter==='all'||t.cat===glossaryFilter;
     const matchSearch=!glossarySearch||(t.ka.toLowerCase().includes(glossarySearch)||t.en.toLowerCase().includes(glossarySearch)||t.def.toLowerCase().includes(glossarySearch)||t.cat.toLowerCase().includes(glossarySearch));
     return matchLevel&&matchSearch;
