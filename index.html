@@ -264,7 +264,7 @@ const DEF_SECTIONS=[
     {title:'მუტაბელური ♊♍♐♓',sub:'ტყუპ. · ქალწ. · მშვ. · თევზ.',desc:'ასრულებს. ადაპტაცია, მოქნილობა.',accent:'#185FA5'},
    ]
   },
-  {id:'s-table',type:'table',title:'ეგზალტ. / ვარდნა',visible:true,tab:'ეგზალტ.',
+  {id:'s-table',type:'table',title:'პლანეტური ძალები',visible:true,tab:'პლანეტური ძალები',
    headers:['','ნიშანი','მმართველი','ეგზალტაცია','ტყვეობა','ვარდნა'],
    rows:[
     ['♈','ვერძი','♂ მარსი, ♇ პლუტო Rx','☉ მზე','♀ ვენ., ⚷ ქირ. Rx','♄ სატ., ♆ ნეპ. Rx'],
@@ -440,6 +440,42 @@ const DEF_MARS_SIGNS=[
 ];
 
 let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
+let DEF_TIMEZONE={
+  id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
+  content:`<div style="margin-bottom:16px;font-size:14px;color:var(--text2);line-height:1.7">საქართველო სხვადასხვა პერიოდში სხვადასხვა დროის სარტყელში იყო. ნატალური კარტის სწორი გამოთვლისთვის მნიშვნელოვანია დაბადების დროს მოქმედი GMT გამოვიყენოთ.</div>
+<div class="tbl-outer"><table class="main-tbl"><thead><tr><th>წელი</th><th>ზაფხული (დან)</th><th>ზამთარი (დან)</th><th>შენიშვნა</th></tr></thead><tbody>
+<tr><td>1924–1957</td><td>01.05-დან GMT+3</td><td>—</td><td>1924 წლის 1 მაისიდან 1957 წლის 28 თებ.</td></tr>
+<tr class="upper"><td>1957–1981</td><td>28.02-დან GMT+4</td><td>—</td><td>1957 წლის 28 თებ.-დან 1981 წლის 31 მარტამდე</td></tr>
+<tr><td>1981</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1981-ში 31 მარტიდან 30 სექტემბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr class="upper"><td>1982</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1982-ში 31 მარტიდან 30 სექტემბრამდე (+5)</td></tr>
+<tr><td>1983</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1983-ში 31 მარტიდან 30 სექტემბრამდე (+5)</td></tr>
+<tr class="upper"><td>1984</td><td>31.03 GMT+5</td><td>29.09 GMT+4</td><td>1984-ში 31 მარტიდან 29 სექტემბრამდე (+5)</td></tr>
+<tr><td>1985</td><td>30.03 GMT+5</td><td>28.09 GMT+4</td><td>1985-ში 30 მარტიდან 28 სექტემბრამდე (+5)</td></tr>
+<tr class="upper"><td>1986</td><td>29.03 GMT+5</td><td>27.09 GMT+4</td><td>1986-ში 29 მარტიდან 27 სექტემბრამდე (+5)</td></tr>
+<tr><td>1987</td><td>28.03 GMT+5</td><td>26.09 GMT+4</td><td>1987-ში 28 მარტიდან 26 სექტემბრამდე (+5)</td></tr>
+<tr class="upper"><td>1988</td><td>26.03 GMT+5</td><td>23.09 GMT+4</td><td>1988-ში 26 მარტიდან 23 სექტემბრამდე (+5)</td></tr>
+<tr><td>1989</td><td>25.03 GMT+5</td><td>23.09 GMT+4</td><td>1989-ში 25 მარტიდან 23 სექტემბრამდე (+5)</td></tr>
+<tr class="upper"><td>1990</td><td>24.03 GMT+5</td><td>29.09 GMT+4</td><td>1990-ში 24 მარტიდან 29 სექტემბრამდე (+5)</td></tr>
+<tr><td>1991</td><td>— GMT+5 (მთელი წელი)</td><td>28.09 GMT+3</td><td>1991-ში მთელი წელი 29 სექტემბრამდე (+4), წლის ბოლოს (+3)</td></tr>
+<tr class="upper"><td>1992</td><td>28.03 GMT+4</td><td>26.09 GMT+3</td><td>1992-ში 28 მარტიდან 26 სექტემბრამდე (+4), დანარჩენი (+3)</td></tr>
+<tr><td>1993</td><td>27.03 GMT+4</td><td>25.09 GMT+3</td><td>1993-ში 27 მარტიდან 25 სექტემბრამდე (+4), დანარჩენი (+3)</td></tr>
+<tr class="upper"><td>1994</td><td>26.03 GMT+4</td><td>—</td><td>1994-ში მთელი წელი (+4)</td></tr>
+<tr><td>1995</td><td>25.03 GMT+5</td><td>23.09 GMT+4</td><td>1995-ში 25 მარტიდან 23 სექტემბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr class="upper"><td>1996</td><td>30.03 GMT+5</td><td>—</td><td>1996-ში 30 მარტამდე (+4), დანარჩენი მთელი წელი (+5)</td></tr>
+<tr><td>1997</td><td>— GMT+5</td><td>25.10 GMT+4</td><td>1997-ში 25 ოქტომბრამდე (+5), წლის ბოლოს (+4)</td></tr>
+<tr class="upper"><td>1998</td><td>28.03 GMT+5</td><td>24.10 GMT+4</td><td>1998-ში 28 მარტიდან 24 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr><td>1999</td><td>27.03 GMT+5</td><td>30.10 GMT+4</td><td>1999-ში 27 მარტიდან 30 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr class="upper"><td>2000</td><td>25.03 GMT+5</td><td>28.10 GMT+4</td><td>2000-ში 25 მარტიდან 28 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr><td>2001</td><td>24.03 GMT+5</td><td>27.10 GMT+4</td><td>2001-ში 24 მარტიდან 27 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr class="upper"><td>2002</td><td>30.03 GMT+5</td><td>26.10 GMT+4</td><td>2002-ში 30 მარტიდან 26 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr><td>2003</td><td>29.03 GMT+5</td><td>25.10 GMT+4</td><td>2003-ში 29 მარტიდან 25 ოქტომბრამდე (+5), დანარჩენი (+4)</td></tr>
+<tr class="upper"><td>2004</td><td>27.03 GMT+4 / 26.06 GMT+5</td><td>30.10 GMT+4 / GMT+3</td><td>2004-ში 1 იანვრიდან 27 მარტამდე (+4), 27 მარტიდან 26 ივნისამდე (+5), 26 ივნისიდან 30 ოქტომბრამდე (+4), 30 ოქტომბრიდან წლის ბოლომდე (+3)</td></tr>
+<tr><td>2005–დღემდე</td><td>26.03-დან GMT+4</td><td>—</td><td>2005-ში 26 მარტიდან (+3) და მჟამე სულ (+4)</td></tr>
+</tbody></table></div>
+<div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--bg2);border:.5px solid var(--border);font-size:12px;color:var(--text2)">
+  <strong>მიმდინარე დრო:</strong> საქართველო — GMT+4 (UTC+4), ზაფხულის დროის გადართვა 2005 წლიდან გაუქმდა.
+</div>`
+};
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
 let VENUS=ls('as_venus_signs')||DEF_VENUS_SIGNS;
@@ -448,12 +484,13 @@ let MARS=ls('as_mars_signs')||DEF_MARS_SIGNS;
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS];
-  // ensure venus and mars exist
+  if(!saved) return [...DEF_SECTIONS,DEF_TIMEZONE,DEF_VENUS,DEF_MARS];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
+  const hasTimezone=saved.some(s=>s.id==='s-timezone');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
+  if(!hasTimezone) saved.push(DEF_TIMEZONE);
   return saved;
 }
 let SECTIONS=initSections();
@@ -756,19 +793,37 @@ function renderCardsSection(sec){
 }
 
 function renderArticleSection(sec){
-  return `<div class="sec-article"><h2>${sec.title}</h2><p>${(sec.content||'').replace(/\n/g,'<br>')}</p></div>`;
+  const isHTML=(sec.content||'').trim().startsWith('<');
+  const body=isHTML?(sec.content||''):`<p>${(sec.content||'').replace(/\n/g,'<br>')}</p>`;
+  return `<div class="sec-article"><h2>${sec.title}</h2>${body}</div>`;
 }
 
 function renderTableSection(sec){
   let h=`<div class="sec-table-wrap"><h2>${sec.title}</h2>`;
+  // legend
+  h+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:12px">
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#1a5fb4;display:inline-block"></span>მმართველი</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#d4a017;display:inline-block"></span>ეგზალტაცია</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#c0392b;display:inline-block"></span>ვარდნა</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#888;display:inline-block"></span>ტყვეობა</span>
+  </div>`;
   h+='<div class="tbl-outer"><table class="main-tbl"><thead><tr>';
   (sec.headers||[]).forEach(hd=>h+=`<th>${hd}</th>`);
   h+='</tr></thead><tbody>';
+  // col colors: 0=sym, 1=name, 2=ruler(blue), 3=exalt(gold), 4=captive(gray), 5=fall(red)
+  const colColors=['','','#dbeafe','#fef9c3','#f3f3f1','#fee2e2'];
+  const colTC=['','','#1e3a6e','#7a5c00','#555','#7f1d1d'];
   (sec.rows||[]).forEach((row,ri)=>{
     h+=`<tr${ri%2===0?'':' class="upper"'}>`;
     row.forEach((cell,ci)=>{
-      if(ci===0) h+=`<td style="font-size:18px;text-align:center">${cell}</td>`;
-      else h+=`<td>${cell}</td>`;
+      if(ci===0){
+        h+=`<td style="font-size:18px;text-align:center">${cell}</td>`;
+      } else if(ci===1){
+        h+=`<td style="font-weight:500">${cell}</td>`;
+      } else {
+        const bg=colColors[ci]||'';const tc=colTC[ci]||'';
+        h+=`<td style="background:${bg};color:${tc};font-size:12px">${cell}</td>`;
+      }
     });
     h+='</tr>';
   });
