@@ -284,13 +284,7 @@ const DEF_SECTIONS=[
     {title:'წყალი ♋♏♓',sub:'კირჩხიბი · მორიელი · თევზები',desc:'ემოცია, ინტუიცია, სიღრმე, ემპათია.',accent:'#7F77DD'},
    ]
   },
-  {id:'s-crosses',type:'cards',title:'ჯვრები',visible:true,tab:'ჯვრები',
-   items:[
-    {title:'კარდინალური ♈♋♎♑',sub:'ვერძი · კირჩხ. · სასწ. · თხა',desc:'იწყებს სეზონებს. ინიციატივა, ლიდერობა.',accent:'#D85A30'},
-    {title:'ფიქსირებული ♉♌♏♒',sub:'კური · ლომი · მორ. · მერწ.',desc:'ინარჩუნებს. გამძლეობა, სიმტკიცე.',accent:'#854F0B'},
-    {title:'მუტაბელური ♊♍♐♓',sub:'ტყუპ. · ქალწ. · მშვ. · თევზ.',desc:'ასრულებს. ადაპტაცია, მოქნილობა.',accent:'#185FA5'},
-   ]
-  },
+  {id:'s-crosses',type:'crosses',title:'ჯვრები (მოდალობები)',visible:true,tab:'ჯვრები'},
   {id:'s-table',type:'table',title:'პლანეტური ძალები',visible:true,tab:'პლანეტური ძალები',
    headers:['','ნიშანი','მმართველი','ეგზალტაცია','ტყვეობა','ვარდნა'],
    rows:[
@@ -925,9 +919,94 @@ function renderAll(){
   });
 }
 
+function renderCrossesSection(sec){
+  const crosses=[
+    {
+      sym:'♈♋♎♑',title:'კარდინალური ჯვარი',
+      sub:'ვერძი · კირჩხიბი · სასწორი · თხის რქა',
+      color:'#D85A30',bg:'#FAECE7',tc:'#712B13',
+      keyword:'ვიწყებ',
+      season:'სეზონის დასაწყისი',
+      houses:'Angular სახლები — I, IV, VII, X',
+      desc:'კარდინალური ნიშნები სეზონების <b>გახსნაზე</b> დგანან — ვერძი გაზაფხულს იწყებს, კირჩხიბი ზაფხულს, სასწორი შემოდგომას, თხა ზამთარს. ეს ჯვარი <b>ინიციატივის, ლიდერობისა და ახლის</b> სიმბოლოა. კარდინ. ადამიანები პირველები იყვნენ, ახლის დაწყება ბუნებრივია, მაგრამ ბოლომდე მიყვანა ხშირად რთულია.',
+      gift:'ინიციატივა · ლიდერობა · ენთუზიაზმი · ახლის შექმნა',
+      challenge:'მოუთმენლობა · დაუმთავრებელი პროექტები · ჩქარობა',
+    },
+    {
+      sym:'♉♌♏♒',title:'ფიქსირებული ჯვარი',
+      sub:'კური · ლომი · მორიელი · მერწყული',
+      color:'#854F0B',bg:'#FEF3E2',tc:'#6B3A08',
+      keyword:'ვაშენებ',
+      season:'სეზონის პიკი',
+      houses:'Succedent სახლები — II, V, VIII, XI',
+      desc:'ფიქსირებული ნიშნები სეზონის <b>შუაში</b>, პიკზე დგანან. სეზონი სრულ ძლიერებაშია. ეს ჯვარი <b>სიმტკიცის, ნების, გამძლეობის</b> სიმბოლოა. სახელი "ფიქსირებული" ხშირად ცდის — ეს ნიშნები ცვლილებებს ახდენენ, მაგრამ <b>საკუთარ ტემპზე</b>, გადაწყვეტილება ნელა, მაგრამ შეუჩერებლად სრულდება.',
+      gift:'გამძლეობა · ნება · ღრმა ფოკუსი · ერთგულება · სიმტკიცე',
+      challenge:'სიჯიუტე · ცვლილებასთან წინაარმდეგობა · კომპრომისი',
+    },
+    {
+      sym:'♊♍♐♓',title:'მუტაბელური ჯვარი',
+      sub:'ტყუპები · ქალწული · მშვილდოსანი · თევზები',
+      color:'#185FA5',bg:'#E6F1FB',tc:'#0C447C',
+      keyword:'ვადაპტირდები',
+      season:'სეზონის დასასრული',
+      houses:'Cadent სახლები — III, VI, IX, XII',
+      desc:'მუტაბელური ნიშნები სეზონის <b>ბოლოში</b> — ძველი სრულდება, ახალი ემზადება. ეს ჯვარი <b>ადაპტაციის, გარდამავლობის, მოქნილობის</b> სიმბოლოა. ისინი ყველაზე კარგად ეგუებიან ცვლილებებს, ყოველ სიტუაციაში ახალ ადგილს პოულობენ. მათი ძლიერი მხარეა <b>ვერსატილობა</b>.',
+      gift:'ადაპტაცია · მოქნილობა · ვერსატილობა · ახალი კუთხე',
+      challenge:'გადაწყვეტილება · ფოკუსი · ბოლომდე მიყვანა · გაფანტულობა',
+    },
+  ];
+
+  const intro=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:20px">
+    <div style="font-size:13px;color:var(--text2);line-height:1.75">
+      <strong>ჯვარი (მოდალობა)</strong> განსაზღვრავს <em>როგორ</em> იმოქმედებს ნიშნის ენერგია — სტიქია კი განსაზღვრავს <em>რა</em> ენერგიაა. ყოველ ჯვარს 4 ნიშანი ეკუთვნის — სხვადასხვა სტიქიის. სამი ჯვარი ერთად სრულ ციკლს ქმნის: <strong>იწყება → იშენება → სრულდება</strong>.
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;text-align:center">
+        <div style="background:var(--bg2);border-radius:8px;padding:8px"><div style="font-size:18px">🌱</div><div style="font-size:11px;color:var(--text3)">კარდინ.</div><div style="font-size:12px;font-weight:500">იწყებს</div></div>
+        <div style="background:var(--bg2);border-radius:8px;padding:8px"><div style="font-size:18px">🏛️</div><div style="font-size:11px;color:var(--text3)">ფიქსირ.</div><div style="font-size:12px;font-weight:500">აშენებს</div></div>
+        <div style="background:var(--bg2);border-radius:8px;padding:8px"><div style="font-size:18px">🌊</div><div style="font-size:11px;color:var(--text3)">მუტაბ.</div><div style="font-size:12px;font-weight:500">ადაპტირდება</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  const cards=crosses.map(c=>`
+    <div style="border:.5px solid var(--border);border-radius:14px;padding:20px;background:var(--bg);margin-bottom:14px">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding-bottom:12px;border-bottom:.5px solid var(--border)">
+        <div style="font-size:32px;letter-spacing:4px;line-height:1.2">${c.sym}</div>
+        <div style="flex:1">
+          <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:3px">${c.title}</div>
+          <div style="font-size:12px;color:var(--text3)">${c.sub}</div>
+        </div>
+        <span style="font-size:12px;padding:4px 12px;border-radius:12px;background:${c.bg};color:${c.tc};border:.5px solid ${c.color};font-weight:500">${c.keyword}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:14px">${c.desc}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:12px">
+        <div style="background:var(--bg2);border-radius:8px;padding:10px 12px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">📅 სეზონი</div>
+          <div style="font-size:12px;font-weight:500;color:var(--text)">${c.season}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:8px;padding:10px 12px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">🏠 სახლები</div>
+          <div style="font-size:12px;font-weight:500;color:var(--text)">${c.houses}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:${c.bg};border-radius:8px;padding:10px 12px;border:.5px solid ${c.color}">
+          <div style="font-size:10px;color:${c.tc};margin-bottom:4px;font-weight:500">✦ ნიჭი</div>
+          <div style="font-size:12px;color:${c.tc};line-height:1.6">${c.gift}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:8px;padding:10px 12px;border:.5px solid var(--border)">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;font-weight:500">⚡ გამოწვევა</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">${c.challenge}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  return `<div class="sec-signs-wrap"><h2>${sec.title}</h2>${intro}${cards}</div>`;
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
+  if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
   if(sec.type==='calc')return renderCalcSection(sec);
   if(sec.type==='article')return renderArticleSection(sec);
