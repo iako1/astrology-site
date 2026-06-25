@@ -204,22 +204,15 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       <div id="term-editor" style="display:none;margin-top:12px;border:.5px solid var(--border2);border-radius:var(--r);padding:14px;background:var(--bg)">
         <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px" id="term-editor-title">ტერმინის რედაქტირება</div>
         <div class="g2">
-          <div class="fg"><label>ქართული სახელი</label><input type="text" id="te-ka"></div>
-          <div class="fg"><label>ინგლისური სახელი</label><input type="text" id="te-en"></div>
+          <div class="fg"><label>ქართული სახელი *</label><input type="text" id="te-ka" placeholder="მაგ: ასცენდანტი"></div>
+          <div class="fg"><label>ინგლისური სახელი</label><input type="text" id="te-en" placeholder="მაგ: Ascendant"></div>
         </div>
-        <div class="g3">
-          <div class="fg"><label>დონე</label>
-            <select id="te-level">
-              <option value="beginner">დამწყები</option>
-              <option value="intermediate">საშუალო</option>
-              <option value="advanced">მოწინავე</option>
-            </select>
-          </div>
-          <div class="fg"><label>კატეგორია</label><input type="text" id="te-cat" placeholder="მაგ: ასპექტები"></div>
+        <div class="g2">
+          <div class="fg"><label>კატეგორია</label><input type="text" id="te-cat" placeholder="მაგ: ასპექტები, ჰელენური..."></div>
           <div class="fg"><label>წყარო</label><input type="text" id="te-src" placeholder="მაგ: Cafe Astrology"></div>
-        <div class="fg"><label>ლინკი (URL)</label><input type="text" id="te-url" placeholder="https://..."></div>
         </div>
-        <div class="fg"><label>განმარტება</label><textarea id="te-def" rows="4"></textarea></div>
+        <div class="fg"><label>ლინკი (URL)</label><input type="text" id="te-url" placeholder="https://cafeastrology.com/..."></div>
+              <div class="fg"><label>განმარტება</label><textarea id="te-def" rows="4"></textarea></div>
         <div style="display:flex;gap:8px">
           <button class="sbtn" onclick="saveTerm()" style="flex:2">შენახვა <span class="svbadge" id="sv-term">✓</span></button>
           <button class="sbtn sec" onclick="cancelTerm()" style="flex:1">გაუქმება</button>
@@ -1367,11 +1360,12 @@ function openAddTerm(){
   document.getElementById('term-editor-title').textContent='+ ახალი ტერმინი';
   document.getElementById('te-ka').value='';
   document.getElementById('te-en').value='';
-  document.getElementById('te-level').value='beginner';
   document.getElementById('te-cat').value='';
   document.getElementById('te-src').value='';
+  const uF=document.getElementById('te-url');if(uF)uF.value='';
   document.getElementById('te-def').value='';
   document.getElementById('term-editor').style.display='';
+  document.getElementById('term-editor').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('sv-term').style.display='none';
 }
 
@@ -1382,7 +1376,6 @@ function editTerm(idx){
   document.getElementById('term-editor-title').textContent='✎ რედაქტირება: '+t.ka;
   document.getElementById('te-ka').value=t.ka;
   document.getElementById('te-en').value=t.en;
-  document.getElementById('te-level').value=t.level;
   document.getElementById('te-cat').value=t.cat;
   document.getElementById('te-src').value=t.src||'';
   document.getElementById('te-url').value=t.url||'';
