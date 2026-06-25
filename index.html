@@ -474,6 +474,21 @@ let DEF_TIMEZONE={
 </tbody></table></div>
 <div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--bg2);border:.5px solid var(--border);font-size:12px;color:var(--text2)">
   <strong>მიმდინარე დრო:</strong> საქართველო — GMT+4 (UTC+4), ზაფხულის დროის გადართვა 2005 წლიდან გაუქმდა.
+</div>
+<div style="margin-top:20px;border:.5px solid var(--border2);border-radius:14px;padding:20px;background:var(--bg)">
+  <div style="font-size:16px;font-weight:500;color:var(--text);margin-bottom:4px">🔍 GMT კალკულატორი</div>
+  <div style="font-size:13px;color:var(--text2);margin-bottom:14px">შეიყვანე დაბადების თარიღი და დრო — სისტემა ავტომატურად განსაზღვრავს GMT-ს</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+    <div>
+      <label style="font-size:11px;font-weight:500;color:var(--text3);display:block;margin-bottom:5px">დაბადების თარიღი</label>
+      <input type="date" id="tz-date" style="width:100%;padding:8px 10px;border:.5px solid var(--border2);border-radius:8px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit" onchange="calcGMT()">
+    </div>
+    <div>
+      <label style="font-size:11px;font-weight:500;color:var(--text3);display:block;margin-bottom:5px">დაბადების დრო (სურვ.)</label>
+      <input type="time" id="tz-time" style="width:100%;padding:8px 10px;border:.5px solid var(--border2);border-radius:8px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit" onchange="calcGMT()">
+    </div>
+  </div>
+  <div id="gmt-result" style="display:none"></div>
 </div>`
 };
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
@@ -1039,6 +1054,63 @@ function saveEditor(){
     });
   }
   lss('as_sections',SECTIONS);renderCmsList();renderAll();badge('sv-ed');
+}
+
+// GMT CALCULATOR
+function calcGMT(){
+  const dateVal=document.getElementById('tz-date')?.value;
+  const timeVal=document.getElementById('tz-time')?.value||'12:00';
+  if(!dateVal){const r=document.getElementById('gmt-result');if(r)r.style.display='none';return;}
+  const y=parseInt(dateVal.slice(0,4)),m=parseInt(dateVal.slice(5,7)),d=parseInt(dateVal.slice(8,10));
+  const h=parseInt(timeVal.slice(0,2)),min=parseInt(timeVal.slice(3,5));
+  let gmt=null,note='';
+  const md=d*100+m;
+  if(y<1924){gmt=null;note='1924 წლამდე მონაცემი არ არის';}
+  else if(y<1957){gmt=3;note='1924–1957: GMT+3';}
+  else if(y<1981){gmt=4;note='1957–1981: GMT+4';}
+  else if(y<=1990){
+    const ss={1981:[331,930],1982:[331,930],1983:[331,930],1984:[331,929],1985:[330,928],1986:[329,927],1987:[328,926],1988:[326,923],1989:[325,923],1990:[324,929]};
+    const s=ss[y];
+    if(s&&md>=s[0]&&md<=s[1]){gmt=5;note=y+': ზაფხული GMT+5';}
+    else{gmt=4;note=y+': ზამთარი GMT+4';}
+  }
+  else if(y===1991){if(md<=929){gmt=4;note='1991: 29 სექტ.-მდე GMT+4';}else{gmt=3;note='1991: 29 სექტ.-ის შემდეგ GMT+3';}}
+  else if(y===1992){if(md>=328&&md<=926){gmt=4;note='1992: 28 მარ.–26 სექტ. GMT+4';}else{gmt=3;note='1992: სხვა GMT+3';}}
+  else if(y===1993){if(md>=327&&md<=925){gmt=4;note='1993: 27 მარ.–25 სექტ. GMT+4';}else{gmt=3;note='1993: სხვა GMT+3';}}
+  else if(y===1994){gmt=4;note='1994: მთელი წელი GMT+4';}
+  else if(y===1995){if(md>=325&&md<=923){gmt=5;note='1995: 25 მარ.–23 სექტ. GMT+5';}else{gmt=4;note='1995: სხვა GMT+4';}}
+  else if(y===1996){if(md<330){gmt=4;note='1996: 30 მარტამდე GMT+4';}else{gmt=5;note='1996: 30 მარტის შემდეგ GMT+5';}}
+  else if(y===1997){if(md<=1025){gmt=5;note='1997: 25 ოქტ.-მდე GMT+5';}else{gmt=4;note='1997: 25 ოქტ.-ის შემდეგ GMT+4';}}
+  else if(y===1998){if(md>=328&&md<=1024){gmt=5;note='1998: 28 მარ.–24 ოქტ. GMT+5';}else{gmt=4;note='1998: სხვა GMT+4';}}
+  else if(y===1999){if(md>=327&&md<=1030){gmt=5;note='1999: 27 მარ.–30 ოქტ. GMT+5';}else{gmt=4;note='1999: სხვა GMT+4';}}
+  else if(y===2000){if(md>=325&&md<=1028){gmt=5;note='2000: 25 მარ.–28 ოქტ. GMT+5';}else{gmt=4;note='2000: სხვა GMT+4';}}
+  else if(y===2001){if(md>=324&&md<=1027){gmt=5;note='2001: 24 მარ.–27 ოქტ. GMT+5';}else{gmt=4;note='2001: სხვა GMT+4';}}
+  else if(y===2002){if(md>=330&&md<=1026){gmt=5;note='2002: 30 მარ.–26 ოქტ. GMT+5';}else{gmt=4;note='2002: სხვა GMT+4';}}
+  else if(y===2003){if(md>=329&&md<=1025){gmt=5;note='2003: 29 მარ.–25 ოქტ. GMT+5';}else{gmt=4;note='2003: სხვა GMT+4';}}
+  else if(y===2004){
+    if(md<327){gmt=4;note='2004: 27 მარტამდე GMT+4';}
+    else if(md<626){gmt=5;note='2004: 27 მარ.–26 ივნ. GMT+5';}
+    else if(md<=1030){gmt=4;note='2004: 26 ივნ.–30 ოქტ. GMT+4';}
+    else{gmt=3;note='2004: 30 ოქტ.-ის შემდეგ GMT+3';}
+  }
+  else if(y===2005){if(md<326){gmt=3;note='2005: 26 მარტამდე GMT+3';}else{gmt=4;note='2005: 26 მარტის შემდეგ GMT+4';}}
+  else{gmt=4;note='2005 წლის შემდეგ: GMT+4 (მუდმივი)';}
+  const res=document.getElementById('gmt-result');
+  if(!res)return;
+  if(gmt===null){
+    res.innerHTML=`<div style="padding:14px;border-radius:10px;background:#FEF9C3;border:.5px solid #D4A017;color:#7a5c00;font-size:14px">${note}</div>`;
+  }else{
+    const ts=timeVal?` ${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`:'';
+    res.innerHTML=`<div style="padding:16px;border-radius:10px;background:#DBEAFE;border:.5px solid #1a5fb4">
+      <div style="font-size:32px;font-weight:500;color:#1e3a6e;margin-bottom:6px">GMT+${gmt}</div>
+      <div style="font-size:13px;color:#1e3a6e;margin-bottom:4px">${d.toString().padStart(2,'0')}.${m.toString().padStart(2,'0')}.${y}${ts}</div>
+      <div style="font-size:12px;color:#1e3a6e;opacity:.8;margin-bottom:8px">${note}</div>
+      <div style="padding:8px 12px;background:rgba(255,255,255,.5);border-radius:8px;font-size:12px;color:#1e3a6e">
+        <strong>ასტრო-პროგრამისთვის:</strong> UTC+${gmt} / GMT+${gmt}
+      </div>
+    </div>`;
+  }
+  res.style.display='block';
 }
 
 // INIT
