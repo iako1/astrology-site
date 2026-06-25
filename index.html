@@ -440,7 +440,146 @@ const DEF_MARS_SIGNS=[
 ];
 
 let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
-let DEF_TIMEZONE={
+let DEF_GLOSSARY={
+  id:'s-glossary',type:'glossary',title:'📖 გლოსარი',visible:true,tab:'📖 გლოსარი',
+};
+
+const GLOSSARY_TERMS=[
+  // ===== დამწყები =====
+  {ka:'ნატალური კარტა',en:'Natal Chart',level:'beginner',cat:'საფუძვლები',
+   def:'ცის რუკა, რომელიც ასახავს პლანეტების ზუსტ პოზიციებს დაბადების კონკრეტულ მომენტში, ადგილსა და დროში. ეს პიროვნების ასტროლოგიური "პასპორტია".',
+   src:'Cafe Astrology Glossary (cafeastrology.com)'},
+  {ka:'ასცენდანტი',en:'Ascendant / Rising Sign',level:'beginner',cat:'საფუძვლები',
+   def:'ზოდიაქოს ის ნიშანი, რომელიც დაბადების მომენტში აღმოსავლეთ ჰორიზონტზე ამოდიოდა. ეს "პირველი შთაბეჭდილებაა" — როგორ გვხედავენ სხვები. I სახლის საწყისი წერტილი.',
+   src:'Astrology.powerfortunes.com; Cafe Astrology'},
+  {ka:'ზოდიაქო',en:'Zodiac',level:'beginner',cat:'საფუძვლები',
+   def:'12 ნიშნისგან შემდგარი სარტყელი ეკლიპტიკის გარშემო. სიტყვა ბერძნულიდან მოდის — "ცხოველთა წრე". თითოეული ნიშანი 30°-ს იკავებს.',
+   src:'Benebellwen.com Glossary of Astrological Terms (2019)'},
+  {ka:'სახლები',en:'Houses',level:'beginner',cat:'საფუძვლები',
+   def:'ჰოროსკოპი 12 სახლად იყოფა. თითოეული სახლი ცხოვრების სფეროს განსაზღვრავს: I — პიროვნება, II — ფინანსები, III — კომუნიკ., IV — სახლი, V — შემოქმ., VI — ჯანმრთ., VII — პარტნ., VIII — ტრანსფ., IX — ფილოს., X — კარიერა, XI — მეგობ., XII — ფარული.',
+   src:'Cafe Astrology; Tarot.com Glossary'},
+  {ka:'ასპექტი',en:'Aspect',level:'beginner',cat:'პლანეტები',
+   def:'პლანეტებს შორის კუთხური მანძილი. მთავარი ასპექტები: კონიუნქცია (0°), სექსტილი (60°), კვადრატი (90°), ტრინი (120°), ოპოზიცია (180°). თითოეული განსაზღვრავს პლანეტათა ენერგიის ჰარმონიას ან დაძაბულობას.',
+   src:'Tarot.com Glossary; Cafe Astrology'},
+  {ka:'კონიუნქცია',en:'Conjunction',level:'beginner',cat:'ასპექტები',
+   def:'ორი ან მეტი პლანეტა ერთ ზოდიაქო ნიშანში — 0°. მათი ენერგია ერთდება და ძლიერდება. ახალი დაწყებების მაჩვენებელი.',
+   src:'Astroclub.com; Cafe Astrology'},
+  {ka:'ოპოზიცია',en:'Opposition',level:'beginner',cat:'ასპექტები',
+   def:'ორი პლანეტა ერთმანეთის პირდაპირ — 180°. ყველაზე დამძიმებული ასპექტი, სხვა ადამიანებთან კონფლიქტს ან ბალანსის ძიებას მიუთითებს.',
+   src:'Tarot.com; Cafe Astrology'},
+  {ka:'ტრინი',en:'Trine',level:'beginner',cat:'ასპექტები',
+   def:'120° — ჰარმონიული, ბუნებრივი ნიჭი. ერთი სტიქიის ნიშნები ქმნიან ტრინს. "ზარმაცი" ასპექტი — ძალა ყოველთვის ბოლომდე არ გამოიყენება.',
+   src:'Tarot.com; Cafe Astrology'},
+  {ka:'კვადრატი',en:'Square',level:'beginner',cat:'ასპექტები',
+   def:'90° — გამომწვევი ასპექტი. ქმნის დაძაბულობას, გამოწვევებს, მაგრამ ამავდროულად ძლიერ მოტივაციას. "ხასიათის მაძიარებელია".',
+   src:'Tarot.com; Cafe Astrology'},
+  {ka:'სექსტილი',en:'Sextile',level:'beginner',cat:'ასპექტები',
+   def:'60° — ხელსაყრელი ასპექტი, ტრინის მსგავსი მაგრამ ნაკლებად ძლიერი. შესაძლებლობებს ხსნის, განსაკუთრებით მუშაობით.',
+   src:'Tarot.com; Cafe Astrology'},
+  {ka:'მზის ნიშანი',en:'Sun Sign',level:'beginner',cat:'პლანეტები',
+   def:'ზოდიაქოს ნიშანი, სადაც მზე იმყოფებოდა დაბადების დღეს. ეს ყველაზე ცნობილი ასტროლოგიური მაჩვენებელია, თუმცა კარტის მხოლოდ ერთი ელემენტია.',
+   src:'Benebellwen.com Glossary (2019)'},
+  {ka:'მთვარის ნიშანი',en:'Moon Sign',level:'beginner',cat:'პლანეტები',
+   def:'ზოდიაქოს ნიშანი, სადაც მთვარე იმყოფებოდა დაბადების მომენტს. შინაგანი ემოციური ბუნება, ქვეცნობიერი, ბავშვობა, დედა.',
+   src:'Indastro.com Glossary; Benebellwen.com'},
+  {ka:'ასცენდანტი / ამომავალი',en:'Rising Sign',level:'beginner',cat:'საფუძვლები',
+   def:'= ასცენდანტი. ზოდიაქოს ნიშანი, რომელიც ჰორიზონტზე ამოდიოდა დაბადებისას. სხვებზე გავლენა, გარეგნული ქცევა.',
+   src:'Cafe Astrology; Astrology.powerfortunes.com'},
+  {ka:'ლუმინარები',en:'Luminaries',level:'beginner',cat:'პლანეტები',
+   def:'მზე და მთვარე ერთად. ანტიკური ასტროლოგია მათ "სინათლის წყაროდ" მიიჩნევდა. ნატალური კარტის ყველაზე მნიშვნელოვანი ელემენტები.',
+   src:'Benebellwen.com Glossary of Astrological Terms (2019)'},
+  {ka:'სტიქია',en:'Element',level:'beginner',cat:'სტიქიები',
+   def:'12 ნიშანი 4 სტიქიად იყოფა: ცეცხლი (♈♌♐), მიწა (♉♍♑), ჰაერი (♊♎♒), წყალი (♋♏♓). თითოეული სტიქია ქცევისა და ენერგიის ძირეულ ტიპს განსაზღვრავს.',
+   src:'Cafe Astrology; Tarot.com'},
+  // ===== საშუალო =====
+  {ka:'დდეკანი',en:'Decan',level:'intermediate',cat:'ტექნიკა',
+   def:'თითოეული ნიშნის 30° სამ ათ-ათ გრადუსად — დეკანად — იყოფა. პირველი დეკანი (0–10°) — ძირეული, მეორე (10–20°) — ნახევრად გამოვლენილი, მესამე (20–30°) — განვითარებული.',
+   src:'Skyscript.co.uk Glossary'},
+  {ka:'მმართველი',en:'Ruler / Domicile Lord',level:'intermediate',cat:'დიგნიტეტები',
+   def:'პლანეტა, რომელიც ზოდიაქოს ნიშანთან ყველაზე ღრმა კავშირშია. მმართველობა (oikos) — ყველაზე ძლიერი ესენციური ღირსება.',
+   src:'Scribd Hellenistic Glossary; Skyscript.co.uk'},
+  {ka:'ეგზალტაცია',en:'Exaltation',level:'intermediate',cat:'დიგნიტეტები',
+   def:'პლანეტა განსაკუთრებულ ძლიერებას ევლინება ამ ნიშანში — "პატივდებული სტუმარი". მაგ: მზე ვერძში (19°), მთვარე კუროში (3°), სატურნი სასწორში (21°).',
+   src:'Astrology.powerfortunes.com; Scribd Hellenistic Glossary'},
+  {ka:'ვარდნა',en:'Fall',level:'intermediate',cat:'დიგნიტეტები',
+   def:'ეგზალტაციის საპირისპირო ნიშანი — პლანეტა სუსტდება. მაგ: მზე სასწორში (ეგზალტ. ვერძშია), სატურნი ვერძში.',
+   src:'Astrology.powerfortunes.com'},
+  {ka:'დეტრიმენტი / ტყვეობა',en:'Detriment',level:'intermediate',cat:'დიგნიტეტები',
+   def:'მმართველობის საპირისპირო ნიშანი — პლანეტა "სახლიდან შორს". ენერგია სუსტია ან გამოხატვა ძნელი. მაგ: მარსი სასწორში (მმართ. ვერძია).',
+   src:'Scribd Hellenistic Glossary; Cafe Astrology'},
+  {ka:'ტერმები',en:'Terms / Bounds',level:'intermediate',cat:'დიგნიტეტები',
+   def:'თითოეული ნიშნის გრადუსები 5 ნაწილად. თითოეულ ნაწილს პლანეტა "განაგებს". ყველაზე ვიწრო ესენციური ღირსება ჰელენური სისტემაში.',
+   src:'Scribd Hellenistic Astrology Glossary (Scribd)'},
+  {ka:'ოიკოსი',en:'Oikos / Domicile',level:'intermediate',cat:'დიგნიტეტები',
+   def:'ბერძ. "სახლი" — პლანეტის "სახლი". ყველაზე ძლიერი პოზიცია. მარსი ვერძსა და მორიელში, ვენერა — კუროსა და სასწორში.',
+   src:'Scribd Hellenistic Glossary'},
+  {ka:'რეტროგრადული',en:'Retrograde',level:'intermediate',cat:'მოძრაობა',
+   def:'პლანეტის ხელოვნური "უკუმოძრაობა" დედამიწიდან დაკვირვებისას — ორბიტების სხვადასხვა სიჩქარის გამო. Rx სიმბოლოთი აღინიშნება. პლანეტის ენერგია შიდა სამყაროში ვლინდება.',
+   src:'Psychicencyclopedia.com Astrology Terms; Cafe Astrology'},
+  {ka:'შტატივი / ტრინი',en:'Grand Trine',level:'intermediate',cat:'ასპექტები',
+   def:'სამი პლანეტა ერთი სტიქიის სამივე ნიშანში — სამი 120° ქმნის სამკუთხედს. ბუნებრივი ნიჭი, ადვილი ენერგია, ზოგჯერ ინერციაც.',
+   src:'Cafe Astrology'},
+  {ka:'T-კვადრატი',en:'T-Square',level:'intermediate',cat:'ასპექტები',
+   def:'ორი ოპოზიციაში მყოფი პლანეტა + მესამე კვადრატში. ძლიერი დაძაბულობა და გამოწვევა, მაგრამ ასევე ძლიერი მამოძრავებელი ძალა.',
+   src:'Cafe Astrology'},
+  {ka:'MC / მიდჰევენი',en:'Midheaven / MC',level:'intermediate',cat:'კუთხეები',
+   def:'Medium Coeli — "ცის შუა". X სახლის საწყისი. კარიერა, სახელი, საჯარო იმიჯი. ყველაზე მაღალი წერტილი ნატალურ კარტაში.',
+   src:'Astroclub.com; Psychicencyclopedia.com'},
+  {ka:'IC / იმუმ კოელი',en:'Imum Coeli / IC',level:'intermediate',cat:'კუთხეები',
+   def:'IV სახლის საწყისი — MC-ს საპირისპირო. "ცის ფსკერი". სახლი, ოჯახი, ძირები, ბავშვობა, შინაგანი ბუნება.',
+   src:'Psychicencyclopedia.com'},
+  {ka:'დისენდანტი',en:'Descendant',level:'intermediate',cat:'კუთხეები',
+   def:'VII სახლის საწყისი — ასცენდანტის საპირისპირო. პარტნიორობა, ქორწინება, ღია მტრები.',
+   src:'Cafe Astrology'},
+  {ka:'სექტი',en:'Sect',level:'intermediate',cat:'ტრადიციული',
+   def:'ანტიკური პრინციპი: დღის კარტა (მზე ჰორიზონტზე) და ღამის კარტა (მზე ჰორიზონტს ქვეშ). პლანეტები ორ ჯგუფად: დღის — მზე, იუპიტ., სატ.; ღამის — მთვარე, ვენ., მარსი.',
+   src:'Psychicencyclopedia.com; Scribd Hellenistic Glossary'},
+  {ka:'პროფექცია',en:'Profection',level:'intermediate',cat:'პროგნოზი',
+   def:'ჰელენური პროგნოზის მეთოდი: წელიწადში ერთი ნიშნით წინ. I სახლი = 1, 13, 25... წ. II სახლი = 2, 14, 26... წ. "აქტიური სახლი" განსაზღვრავს წლის მთავარ თემას.',
+   src:'Scribd Hellenistic Glossary; Psychicencyclopedia.com'},
+  // ===== მოწინავე =====
+  {ka:'ჰელენური ასტროლოგია',en:'Hellenistic Astrology',level:'advanced',cat:'სკოლები',
+   def:'დასავლური ასტროლოგიის ადრეული ტრადიცია (ძვ.წ. II — ახ.წ. VII). ეგვიპტე, ხმელთაშუა ზღვა, ალექსანდრია. ავტორები: პტოლემე, ვეტიუს ვალენსი, პაულ ალექსანდრელი.',
+   src:'Benebellwen.com Glossary (2019)'},
+  {ka:'ტრანზიტი',en:'Transit',level:'advanced',cat:'პროგნოზი',
+   def:'მოძრავი პლანეტების ამჟამინდელი პოზიციების შედარება ნატალურ კარტასთან. ტრანზიტი ნატალურ პლანეტაზე — "ენერგიის გააქტიურება".',
+   src:'Cafe Astrology; Psychicencyclopedia.com'},
+  {ka:'სოლარული რევოლუცია',en:'Solar Return',level:'advanced',cat:'პროგნოზი',
+   def:'კარტა, რომელიც იმ მომენტში იგება, როცა მზე ნატალური კარტის ზუსტ პოზიციას დაუბრუნდება (დაბადებიდან ყოველ ~365 დღეში). ასახავს მომავალი წლის თემებს.',
+   src:'Psychicencyclopedia.com'},
+  {ka:'ლუნარული რევოლუცია',en:'Lunar Return',level:'advanced',cat:'პროგნოზი',
+   def:'კარტა, კასტი მომენტში, როცა მთვარე ნატალურ პოზიციას დაუბრუნდება (~ყოველ 28 დღეში). ყოველი თვის ემოციური ტემპი.',
+   src:'Psychicencyclopedia.com'},
+  {ka:'სინასტრი',en:'Synastry',level:'advanced',cat:'ურთ-ბები',
+   def:'ორი ადამიანის ნატალური კარტების შედარება — ურთიერთობის ასტროლოგიური ანალიზი. პლანეტები ერთმანეთის ნიშნებსა და სახლებში.',
+   src:'Astroclub.com; Cafe Astrology'},
+  {ka:'კომპოზიტური კარტა',en:'Composite Chart',level:'advanced',cat:'ურთ-ბები',
+   def:'ორი ადამიანის ნატალური კარტების "შუა წერტილი" — ერთი ახალი კარტა, რომელიც ურთიერთობის არსს ასახავს.',
+   src:'Astroclub.com; Psychicencyclopedia.com'},
+  {ka:'ჰორარული ასტროლოგია',en:'Horary Astrology',level:'advanced',cat:'სკოლები',
+   def:'კარტა კასტია კითხვის დასმის ზუსტ მომენტში. "კი/არა" პასუხებს იძლევა კონკრეტულ კითხვებზე. ძალიან ტექნიკური, ზუსტი სისტემა.',
+   src:'Psychicencyclopedia.com; Astrology.powerfortunes.com'},
+  {ka:'მუნდური ასტროლოგია',en:'Mundane Astrology',level:'advanced',cat:'სკოლები',
+   def:'ასტროლოგიის დარგი, რომელიც მსოფლიო მოვლენებს, პოლიტიკასა და ისტორიულ ციკლებს შეისწავლის. ქვეყნების "ნატალური კარტები".',
+   src:'Indastro.com; Astrology.powerfortunes.com'},
+  {ka:'კაზიმი',en:'Cazimi',level:'advanced',cat:'დიგნიტეტები',
+   def:'პლანეტა მზის ზუსტ ცენტრში — 17 arc minute-ის ფარგლებში. "მეფის გამოჩენა" — ყველაზე ძლიერი საზოგადოებრივი გამოვლინება. კომბუსტიის საპირისპირო.',
+   src:'Psychicencyclopedia.com; Skyscript.co.uk'},
+  {ka:'კომბუსტია',en:'Combustion',level:'advanced',cat:'დიგნიტეტები',
+   def:'პლანეტა მზიდან 8°-ის ფარგლებში — სუსტდება, "ენთება". პლანეტის ენერგია მზეში "იხრჩობა". კაზიმის საპირისპირო.',
+   src:'Psychicencyclopedia.com; Astrology.powerfortunes.com'},
+  {ka:'ზოდიაქალური გათავისუფლება',en:'Zodiacal Releasing',level:'advanced',cat:'ჰელენური',
+   def:'ჰელენური დროის-მმართველის ტექნიკა ვეტიუს ვალენსისგან. პლანეტები "ათავისუფლებენ" ნიშნებს და ცხოვრების პერიოდებს განსაზღვრავენ.',
+   src:'Scribd Hellenistic Glossary; Psychicencyclopedia.com'},
+  {ka:'ინტერცეფტული ნიშანი',en:'Intercepted Sign',level:'advanced',cat:'ტექნიკა',
+   def:'ნიშანი, რომელიც სრულად ერთ სახლში მოქცეულია — სახლის კუსპებზე არ ჩანს. ენერგია "ჩაკეტილია" და გამოხატვა ძნელი.',
+   src:'Psychicencyclopedia.com'},
+  {ka:'იოდი',en:'Yod',level:'advanced',cat:'ასპექტები',
+   def:'"ბედის თითი" ან "ღვთის თითი". ორი პლანეტა სექსტილში (60°) + მესამე ორივეს კვინქუნქსში (150°). იშვიათი კონფიგურაცია, განსაკუთრებული მიზანდასახულობის მაჩვენებელი.',
+   src:'Astrology.powerfortunes.com'},
+];
+
+let DEF_TIMEZONE={let DEF_TIMEZONE={
   id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
   content:`
 <div style="max-width:520px;margin:0 auto 28px;background:linear-gradient(135deg,#1e3a6e 0%,#1a5fb4 100%);border-radius:20px;padding:28px 24px;color:#fff;box-shadow:0 8px 32px rgba(30,58,110,.18)">
@@ -509,9 +648,11 @@ function initSections(){
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
+  const hasGlossary=saved.some(s=>s.id==='s-glossary');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
+  if(!hasGlossary) saved.push(DEF_GLOSSARY);
   return saved;
 }
 let SECTIONS=initSections();
@@ -727,6 +868,7 @@ function renderSection(sec){
   if(sec.type==='table')return renderTableSection(sec);
   if(sec.type==='calc')return renderCalcSection(sec);
   if(sec.type==='article')return renderArticleSection(sec);
+  if(sec.type==='glossary')return renderGlossarySection(sec);
   if(sec.type==='venus')return renderVenusSection(sec);
   if(sec.type==='mars')return renderMarsSection(sec);
   return '';
@@ -891,7 +1033,11 @@ function doCalc(secId){
   document.getElementById('calc-res-'+secId).innerHTML=h;
 }
 
-function bindSectionEvents(sec,div){}
+function bindSectionEvents(sec,div){
+  if(sec.type==='glossary'){
+    setTimeout(()=>renderGlossaryGrid(),50);
+  }
+}
 
 // ===== ADMIN =====
 function openAdmin(){document.getElementById('adminModal').classList.add('open');}
@@ -1060,6 +1206,84 @@ function saveEditor(){
     });
   }
   lss('as_sections',SECTIONS);renderCmsList();renderAll();badge('sv-ed');
+}
+
+// GLOSSARY RENDER
+function renderGlossarySection(sec){
+  const levels={beginner:'დამწყები',intermediate:'საშუალო',advanced:'მოწინავე'};
+  const levelColors={beginner:'#639922',intermediate:'#1a5fb4',advanced:'#712B13'};
+  const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
+
+  let h=`<div style="margin-bottom:20px">
+    <div style="position:relative;margin-bottom:12px">
+      <input type="text" id="glossary-search" placeholder="🔍 ტერმინი მოძებნე ქართულად ან ინგლისურად..." 
+        style="width:100%;padding:12px 16px;border:.5px solid var(--border2);border-radius:12px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit"
+        oninput="filterGlossary()">
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+      <button onclick="setGlossaryFilter('all',this)" class="gf-btn gf-on" style="padding:5px 14px;border:.5px solid var(--border);border-radius:12px;font-size:12px;cursor:pointer;background:var(--text);color:var(--bg);border-color:var(--text)">ყველა</button>
+      <button onclick="setGlossaryFilter('beginner',this)" class="gf-btn" style="padding:5px 14px;border:.5px solid #639922;border-radius:12px;font-size:12px;cursor:pointer;background:#EAF3DE;color:#27500A">დამწყები</button>
+      <button onclick="setGlossaryFilter('intermediate',this)" class="gf-btn" style="padding:5px 14px;border:.5px solid #1a5fb4;border-radius:12px;font-size:12px;cursor:pointer;background:#E6F1FB;color:#0C447C">საშუალო</button>
+      <button onclick="setGlossaryFilter('advanced',this)" class="gf-btn" style="padding:5px 14px;border:.5px solid #712B13;border-radius:12px;font-size:12px;cursor:pointer;background:#FAECE7;color:#712B13">მოწინავე</button>
+    </div>
+  </div>
+  <div id="glossary-count" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
+  <div id="glossary-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px"></div>`;
+  return h;
+}
+
+let glossaryFilter='all';
+let glossarySearch='';
+
+function setGlossaryFilter(f,btn){
+  glossaryFilter=f;
+  document.querySelectorAll('.gf-btn').forEach(b=>{
+    b.style.background='var(--bg2)';b.style.color='var(--text2)';b.style.borderColor='var(--border)';
+  });
+  const colors={all:['var(--text)','var(--bg)','var(--text)'],beginner:['#EAF3DE','#27500A','#639922'],intermediate:['#E6F1FB','#0C447C','#1a5fb4'],advanced:['#FAECE7','#712B13','#712B13']};
+  const c=colors[f]||colors.all;
+  btn.style.background=c[0];btn.style.color=c[1];btn.style.borderColor=c[2];
+  renderGlossaryGrid();
+}
+
+function filterGlossary(){
+  glossarySearch=document.getElementById('glossary-search')?.value?.toLowerCase()||'';
+  renderGlossaryGrid();
+}
+
+function renderGlossaryGrid(){
+  const grid=document.getElementById('glossary-grid');
+  const count=document.getElementById('glossary-count');
+  if(!grid)return;
+  
+  const levelColors={beginner:'#639922',intermediate:'#1a5fb4',advanced:'#712B13'};
+  const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
+  const levelTc={beginner:'#27500A',intermediate:'#0C447C',advanced:'#712B13'};
+  const levelLabel={beginner:'დამწყები',intermediate:'საშუალო',advanced:'მოწინავე'};
+
+  const filtered=GLOSSARY_TERMS.filter(t=>{
+    const matchLevel=glossaryFilter==='all'||t.level===glossaryFilter;
+    const matchSearch=!glossarySearch||(t.ka.toLowerCase().includes(glossarySearch)||t.en.toLowerCase().includes(glossarySearch)||t.def.toLowerCase().includes(glossarySearch)||t.cat.toLowerCase().includes(glossarySearch));
+    return matchLevel&&matchSearch;
+  });
+
+  count.textContent=`${filtered.length} ტერმინი`;
+  grid.innerHTML=filtered.map(t=>`
+    <div style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg);transition:border-color .15s" 
+         onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--text)">${t.ka}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.en}</div>
+        </div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0;background:${levelBg[t.level]};color:${levelTc[t.level]};border:.5px solid ${levelColors[t.level]}">${levelLabel[t.level]}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">${t.def}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
+        <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
+        <span style="font-size:10px;color:var(--text3)">📚 ${t.src}</span>
+      </div>
+    </div>`).join('');
 }
 
 // GMT CALCULATOR
