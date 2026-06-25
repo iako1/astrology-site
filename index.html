@@ -178,6 +178,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
     <div class="atabs">
       <button class="atab on" onclick="aTab('pages',this)">📄 გვერდები</button>
       <button class="atab" onclick="aTab('site',this)">⚙️ საიტი</button>
+      <button class="atab" onclick="aTab('glossary',this)">📖 გლოსარი</button>
     </div>
 
     <!-- PAGES TAB -->
@@ -190,6 +191,39 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       </div>
       <div class="cms-list" id="cms-list"></div>
       <div id="sec-editor-wrap"></div>
+    </div>
+
+    <!-- GLOSSARY ADMIN TAB -->
+    <div id="at-glossary" style="display:none">
+      <div style="display:flex;gap:7px;margin-bottom:12px">
+        <button class="sbtn sec" onclick="openAddTerm()" style="flex:1">+ ახალი ტერმინი</button>
+        <input type="text" id="admin-gloss-search" placeholder="🔍 ძიება..." oninput="renderAdminGloss()" 
+          style="flex:2;padding:7px 10px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit">
+      </div>
+      <div id="admin-gloss-list"></div>
+      <div id="term-editor" style="display:none;margin-top:12px;border:.5px solid var(--border2);border-radius:var(--r);padding:14px;background:var(--bg)">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px" id="term-editor-title">ტერმინის რედაქტირება</div>
+        <div class="g2">
+          <div class="fg"><label>ქართული სახელი</label><input type="text" id="te-ka"></div>
+          <div class="fg"><label>ინგლისური სახელი</label><input type="text" id="te-en"></div>
+        </div>
+        <div class="g3">
+          <div class="fg"><label>დონე</label>
+            <select id="te-level">
+              <option value="beginner">დამწყები</option>
+              <option value="intermediate">საშუალო</option>
+              <option value="advanced">მოწინავე</option>
+            </select>
+          </div>
+          <div class="fg"><label>კატეგორია</label><input type="text" id="te-cat" placeholder="მაგ: ასპექტები"></div>
+          <div class="fg"><label>წყარო</label><input type="text" id="te-src" placeholder="მაგ: Cafe Astrology"></div>
+        </div>
+        <div class="fg"><label>განმარტება</label><textarea id="te-def" rows="4"></textarea></div>
+        <div style="display:flex;gap:8px">
+          <button class="sbtn" onclick="saveTerm()" style="flex:2">შენახვა <span class="svbadge" id="sv-term">✓</span></button>
+          <button class="sbtn sec" onclick="cancelTerm()" style="flex:1">გაუქმება</button>
+        </div>
+      </div>
     </div>
 
     <!-- SITE TAB -->
@@ -1052,9 +1086,10 @@ function checkPw(){
   }else{document.getElementById('pw-err').style.display='block';}
 }
 function aTab(id,btn){
-  ['pages','site'].forEach(t=>document.getElementById('at-'+t).style.display='none');
+  ['pages','site','glossary'].forEach(t=>document.getElementById('at-'+t).style.display='none');
   document.getElementById('at-'+id).style.display='';
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  if(id==='glossary')renderAdminGloss();
 }
 function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=document.getElementById('es-sub').value;SITE.footer=document.getElementById('es-footer').value;lss('as_site',SITE);renderSite();badge('sv-site');}
 
@@ -1282,6 +1317,142 @@ function renderGlossaryGrid(){
       <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
         <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
         <span style="font-size:10px;color:var(--text3)">📚 ${t.src}</span>
+      </div>
+    </div>`).join('');
+}
+
+// GLOSSARY ADMIN
+let CUSTOM_TERMS=null;
+function getGlossaryTerms(){
+  if(CUSTOM_TERMS!==null)return CUSTOM_TERMS;
+  const saved=ls('as_glossary_terms');
+  CUSTOM_TERMS=saved||JSON.parse(JSON.stringify(GLOSSARY_TERMS));
+  return CUSTOM_TERMS;
+}
+function saveGlossaryTerms(){
+  lss('as_glossary_terms',CUSTOM_TERMS);
+  renderGlossaryGrid();
+}
+
+let editTermIdx=null;
+
+function renderAdminGloss(){
+  const terms=getGlossaryTerms();
+  const q=(document.getElementById('admin-gloss-search')?.value||'').toLowerCase();
+  const c=document.getElementById('admin-gloss-list');
+  if(!c)return;
+  const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
+  const levelTc={beginner:'#27500A',intermediate:'#0C447C',advanced:'#712B13'};
+  const levelLabel={beginner:'დამწყ.',intermediate:'საშ.',advanced:'მოწ.'};
+  const filtered=terms.filter((t,i)=>!q||(t.ka.toLowerCase().includes(q)||t.en.toLowerCase().includes(q)||t.cat.toLowerCase().includes(q)));
+  c.innerHTML=filtered.map((t,fi)=>{
+    const realIdx=terms.indexOf(t);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px;background:var(--bg2)">
+      <span style="font-size:12px;font-weight:500;color:var(--text);flex:1">${t.ka}</span>
+      <span style="font-size:10px;color:var(--text3);flex:1">${t.en}</span>
+      <span style="font-size:10px;padding:2px 7px;border-radius:8px;background:${levelBg[t.level]};color:${levelTc[t.level]}">${levelLabel[t.level]}</span>
+      <button onclick="editTerm(${realIdx})" style="font-size:11px;padding:3px 8px;border:.5px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;color:var(--text2)">✎</button>
+      <button onclick="deleteTerm(${realIdx})" style="font-size:11px;padding:3px 8px;border:.5px solid #fca5a5;border-radius:6px;background:var(--bg);cursor:pointer;color:#A32D2D">✕</button>
+    </div>`;
+  }).join('');
+  if(filtered.length===0) c.innerHTML='<p style="font-size:13px;color:var(--text3);padding:10px 0">ტერმინი ვერ მოიძებნა</p>';
+}
+
+function openAddTerm(){
+  editTermIdx=null;
+  document.getElementById('term-editor-title').textContent='+ ახალი ტერმინი';
+  document.getElementById('te-ka').value='';
+  document.getElementById('te-en').value='';
+  document.getElementById('te-level').value='beginner';
+  document.getElementById('te-cat').value='';
+  document.getElementById('te-src').value='';
+  document.getElementById('te-def').value='';
+  document.getElementById('term-editor').style.display='';
+  document.getElementById('sv-term').style.display='none';
+}
+
+function editTerm(idx){
+  const terms=getGlossaryTerms();
+  const t=terms[idx];
+  editTermIdx=idx;
+  document.getElementById('term-editor-title').textContent='✎ რედაქტირება: '+t.ka;
+  document.getElementById('te-ka').value=t.ka;
+  document.getElementById('te-en').value=t.en;
+  document.getElementById('te-level').value=t.level;
+  document.getElementById('te-cat').value=t.cat;
+  document.getElementById('te-src').value=t.src||'';
+  document.getElementById('te-def').value=t.def;
+  document.getElementById('term-editor').style.display='';
+  document.getElementById('sv-term').style.display='none';
+  document.getElementById('term-editor').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function deleteTerm(idx){
+  if(!confirm('წაიშალოს?'))return;
+  const terms=getGlossaryTerms();
+  terms.splice(idx,1);
+  saveGlossaryTerms();
+  renderAdminGloss();
+}
+
+function saveTerm(){
+  const terms=getGlossaryTerms();
+  const t={
+    ka:document.getElementById('te-ka').value.trim(),
+    en:document.getElementById('te-en').value.trim(),
+    level:document.getElementById('te-level').value,
+    cat:document.getElementById('te-cat').value.trim(),
+    src:document.getElementById('te-src').value.trim(),
+    def:document.getElementById('te-def').value.trim(),
+  };
+  if(!t.ka||!t.def){alert('სახელი და განმარტება სავალდებულოა');return;}
+  if(editTermIdx===null) terms.push(t);
+  else terms[editTermIdx]=t;
+  saveGlossaryTerms();
+  renderAdminGloss();
+  badge('sv-term');
+  setTimeout(()=>{document.getElementById('term-editor').style.display='none';editTermIdx=null;},1500);
+}
+
+function cancelTerm(){
+  document.getElementById('term-editor').style.display='none';
+  editTermIdx=null;
+}
+
+// Patch getGlossaryTerms into renderGlossaryGrid
+const _origRenderGlossaryGrid=renderGlossaryGrid;
+function renderGlossaryGrid(){
+  // Use custom terms if available
+  const saved=ls('as_glossary_terms');
+  if(saved) CUSTOM_TERMS=saved;
+  const termsToUse=CUSTOM_TERMS||GLOSSARY_TERMS;
+  const grid=document.getElementById('glossary-grid');
+  const count=document.getElementById('glossary-count');
+  if(!grid)return;
+  const levelColors={beginner:'#639922',intermediate:'#1a5fb4',advanced:'#712B13'};
+  const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
+  const levelTc={beginner:'#27500A',intermediate:'#0C447C',advanced:'#3C3489'};
+  const levelLabel={beginner:'დამწყები',intermediate:'საშუალო',advanced:'მოწინავე'};
+  const filtered=termsToUse.filter(t=>{
+    const matchLevel=glossaryFilter==='all'||t.level===glossaryFilter;
+    const matchSearch=!glossarySearch||(t.ka.toLowerCase().includes(glossarySearch)||t.en.toLowerCase().includes(glossarySearch)||t.def.toLowerCase().includes(glossarySearch)||t.cat.toLowerCase().includes(glossarySearch));
+    return matchLevel&&matchSearch;
+  });
+  if(count)count.textContent=filtered.length+' ტერმინი';
+  grid.innerHTML=filtered.map(t=>`
+    <div style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg);transition:border-color .15s"
+         onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--text)">${t.ka}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.en}</div>
+        </div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0;background:${levelBg[t.level]};color:${levelTc[t.level]};border:.5px solid ${levelColors[t.level]}">${levelLabel[t.level]}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">${t.def}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
+        <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
+        <span style="font-size:10px;color:var(--text3)">📚 ${t.src||''}</span>
       </div>
     </div>`).join('');
 }
