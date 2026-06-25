@@ -1326,40 +1326,7 @@ function filterGlossary(){
   renderGlossaryGrid();
 }
 
-function renderGlossaryGrid(){
-  const grid=document.getElementById('glossary-grid');
-  const count=document.getElementById('glossary-count');
-  if(!grid)return;
-  
-  const levelColors={beginner:'#639922',intermediate:'#1a5fb4',advanced:'#712B13'};
-  const levelBg={beginner:'#EAF3DE',intermediate:'#E6F1FB',advanced:'#FAECE7'};
-  const levelTc={beginner:'#27500A',intermediate:'#0C447C',advanced:'#712B13'};
-  const levelLabel={beginner:'დამწყები',intermediate:'საშუალო',advanced:'მოწინავე'};
 
-  const filtered=GLOSSARY_TERMS.filter(t=>{
-    const matchLevel=glossaryFilter==='all'||t.cat===glossaryFilter;
-    const matchSearch=!glossarySearch||(t.ka.toLowerCase().includes(glossarySearch)||t.en.toLowerCase().includes(glossarySearch)||t.def.toLowerCase().includes(glossarySearch)||t.cat.toLowerCase().includes(glossarySearch));
-    return matchLevel&&matchSearch;
-  });
-
-  count.textContent=`${filtered.length} ტერმინი`;
-  grid.innerHTML=filtered.map(t=>`
-    <div style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg);transition:border-color .15s" 
-         onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
-        <div>
-          <div style="font-size:15px;font-weight:500;color:var(--text)">${t.ka}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.en}</div>
-        </div>
-
-      </div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">${t.def}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
-        <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
-        <span style="font-size:10px;color:var(--text3)">📚 ${t.src}</span>
-      </div>
-    </div>`).join('');
-}
 
 // GLOSSARY ADMIN
 let CUSTOM_TERMS=null;
