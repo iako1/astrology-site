@@ -293,14 +293,7 @@ const DEF_SECTIONS=[
     {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'♆ ნეპტ., ♃ იუპ. Rx',impulse:'შერწყმა',keywords:['ინტუიცია','ქაოსი','მუსიკა','სულიერება'],opp:'♍ ქალწ. — სიზუსტე',triad:'',desc:'ნეპტუნი. ინტუიცია, ფერადი სათვალე.'},
    ]
   },
-  {id:'s-elements',type:'cards',title:'სტიქიები',visible:true,tab:'სტიქიები',
-   items:[
-    {title:'ცეცხლი ♈♌♐',sub:'ვერძი · ლომი · მშვილდოსანი',desc:'ენერგია, ინიციატივა, ვნება, ლიდერობა.',accent:'#D85A30'},
-    {title:'მიწა ♉♍♑',sub:'კური · ქალწული · თხის რქა',desc:'პრაქტიკულობა, სტაბილობა, ფინანსები.',accent:'#639922'},
-    {title:'ჰაერი ♊♎♒',sub:'ტყუპები · სასწორი · მერწყული',desc:'გონება, კომუნიკაცია, სოციალობა.',accent:'#378ADD'},
-    {title:'წყალი ♋♏♓',sub:'კირჩხიბი · მორიელი · თევზები',desc:'ემოცია, ინტუიცია, სიღრმე, ემპათია.',accent:'#7F77DD'},
-   ]
-  },
+  {id:'s-elements',type:'elements',title:'სტიქიები',visible:true,tab:'სტიქიები'},
   {id:'s-crosses',type:'crosses',title:'ჯვრები (მოდალობები)',visible:true,tab:'ჯვრები'},
   {id:'s-table',type:'table',title:'პლანეტების პოზიციები',visible:true,tab:'პლანეტების პოზიციები',
    headers:['','ნიშანი','მმართველი','ეგზალტაცია','ტყვეობა','ვარდნა'],
@@ -1088,8 +1081,147 @@ function renderCrossesSection(sec){
   return `<div class="sec-signs-wrap"><h2>${sec.title}</h2>${intro}${cards}</div>`;
 }
 
+function renderElementsSection(sec){
+  const ELS=[
+    {
+      id:'fire',sym:'🔥',signs:'♈♌♐',
+      title:'ცეცხლის სტიქია',
+      names:'ვერძი · ლომი · მშვილდოსანი',
+      color:'#D85A30',bg:'#FAECE7',tc:'#712B13',border:'#D85A30',
+      keyword:'ვმოქმედებ',
+      ruler:'☉ მზე, ♂ მარსი, ♃ იუპიტერი',
+      body:'თავი, გული, თეძო',
+      season:'გაზაფხული (ვ.), ზაფხული (ლ.), ზამთარი (მ.)',
+      desc:'ცეცხლის სტიქია ყველაზე <strong>აქტიური და ენერგიული</strong> სტიქიაა. ეს ადამიანები <strong>ინტუიციით მოქმედებენ</strong>, პირველები იყვნენ, შთაგონებული ხედვა აქვთ. ცეცხლი — ეს არის ინიციატივა, ვნება, ლიდერობა. <strong>ემოციები</strong> პირდაპირ და ღიად გამოხატავენ. ენერგია სწრაფად ივსება, მაგრამ სწრაფადაც იხარჯება.',
+      gifts:'ინიციატივა · ლიდერობა · გამბედაობა · შემოქმედება · ოპტიმიზმი · ენთუზიაზმი',
+      challenges:'მოუთმენლობა · იმპულსი · ბოლომდე მიყვანა · სხვის მოსმენა',
+      love:'ვნებიანი, პირდაპირი, დამოუკიდებელი. სჭირდება: სიახლე, გამოწვევა, საკუთარი სივრცე.',
+      work:'ლიდერობა, მეწარმეობა, სპორტი, ხელოვნება, პოლიტიკა.',
+      shadow:'ეგოიზმი, სხვის დამწვარი, სიბრაზე, ჩქარობა.',
+    },
+    {
+      id:'earth',sym:'🌿',signs:'♉♍♑',
+      title:'მიწის სტიქია',
+      names:'კური · ქალწული · თხის რქა',
+      color:'#639922',bg:'#EAF3DE',tc:'#27500A',border:'#639922',
+      keyword:'ვაშენებ',
+      ruler:'♀ ვენერა, ☿ მერკური, ♄ სატურნი',
+      body:'კისერი, მუცელი, მუხლი',
+      season:'გაზაფხ. შ. (კ.), ზაფ. შ. (ქ.), შემ. შ. (თ.)',
+      desc:'მიწის სტიქია <strong>ყველაზე პრაქტიკული</strong> სტიქიაა. ეს ადამიანები <strong>ხელებით ქმნიან</strong>, ფიზიკური სამყარო მათი სივრცეა. მიწა — ეს არის სტაბილობა, სიმტკიცე, მოთმინება. <strong>ფინანსები, სხეული, ბუნება, ხელობა</strong> — ეს არის მათი სფეროები. ნელა მოქმედებენ, მაგრამ საიმედოდ.',
+      gifts:'სიმტკიცე · მოთმინება · პრაქტიკულობა · საიმედოობა · სენსუალობა · ეკონომიურობა',
+      challenges:'სიჯიუტე · ცვლილებებთან ადაპტაცია · გრიგალობა · მატერიალიზმი',
+      love:'სენსუალური, ერთგული, ნელა ხსნის. სჭირდება: სტაბილობა, კომფორტი, ნდობა.',
+      work:'ფინანსები, მეურნეობა, მედიცინა, ხელოვნება, არქიტექტურა.',
+      shadow:'სიხარბე, ინერცია, გრიგალობა, ზოდველობა.',
+    },
+    {
+      id:'air',sym:'💨',signs:'♊♎♒',
+      title:'ჰაერის სტიქია',
+      names:'ტყუპები · სასწორი · მერწყული',
+      color:'#378ADD',bg:'#E6F1FB',tc:'#0C447C',border:'#378ADD',
+      keyword:'ვფიქრობ',
+      ruler:'☿ მერკური, ♀ ვენერა, ♅ ურანი',
+      body:'ფილტვები, თირკმელი, კანჭი',
+      season:'გაზ. ბ. (ტ.), შემ. (ს.), ზამ. შ. (მ.)',
+      desc:'ჰაერის სტიქია <strong>ყველაზე ინტელექტუალური</strong> სტიქიაა. ეს ადამიანები <strong>იდეებით და კომუნიკაციით</strong> ცხოვრობენ. ჰაერი — ეს არის გონება, ენა, კავშირები. <strong>ინფორმაცია, ურთიერთობები, სოციალობა</strong> — ეს მათი სამყაროა. ყოველთვის ახალ ადამიანებს, იდეებს, სიტუაციებს ეძებენ.',
+      gifts:'კომუნიკაბელობა · გონება · ობიექტურობა · სოციალობა · ვერსატილობა · სიახლე',
+      challenges:'ზედაპირულობა · გადაწყვეტილება · ემოციური სიღრმე · ერთ ადგილას ყოფნა',
+      love:'მეგობრული, ინტელექტუალური, თავისუფალი. სჭირდება: საუბარი, სივრცე, ინტელექტი.',
+      work:'ჟურნალისტიკა, განათლება, IT, სამართალი, დიზაინი.',
+      shadow:'ცივობა, ბოლომდე ვერ მისვლა, ყბედობა.',
+    },
+    {
+      id:'water',sym:'💧',signs:'♋♏♓',
+      title:'წყლის სტიქია',
+      names:'კირჩხიბი · მორიელი · თევზები',
+      color:'#7F77DD',bg:'#EEEDFE',tc:'#3C3489',border:'#7F77DD',
+      keyword:'ვგრძნობ',
+      ruler:'☽ მთვარე, ♇ პლუტო, ♆ ნეპტუნი',
+      body:'მკერდი, სასქესო ორგ., ფეხები',
+      season:'ზაფ. (კ.), ზამ. (მ.), ზამ. ბ. (თ.)',
+      desc:'წყლის სტიქია <strong>ყველაზე ემოციური და ინტუიციური</strong> სტიქიაა. ეს ადამიანები <strong>გრძნობებით ხედავენ</strong> სამყაროს. წყალი — ეს არის სიღრმე, ემპათია, ფარული სამყარო. <strong>ფსიქოლოგია, სულიერება, ხელოვნება, განკურნება</strong> — ეს მათი ბუნებრივი სფეროებია.',
+      gifts:'ემპათია · ინტუიცია · სიღრმე · შემოქმედება · განკურნება · სიყვარული',
+      challenges:'ობიექტურობა · საზღვრები · ჭარბი ემოცია · სხვის ენერგიის შეთვისება',
+      love:'ღრმა, ერთგული, ემოციური. სჭირდება: ემოციური უსაფრთხოება, ნდობა, სიღრმე.',
+      work:'ფსიქოლოგია, მედიცინა, მუსიკა, პოეზია, სოციალური მუშაობა.',
+      shadow:'ჩაიკეტება, ემოციური მანიპულაცია, შიში, მსხვერპლობა.',
+    },
+  ];
+
+  let h=`<div class="sec-signs-wrap">`;
+
+  // intro
+  h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:20px">
+    <h2 style="font-size:18px;font-weight:500;color:var(--text);margin-bottom:10px">სტიქიები ასტროლოგიაში</h2>
+    <div style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:14px">
+      12 ზოდიაქოს ნიშანი 4 სტიქიად იყოფა — <strong>ცეცხლი, მიწა, ჰაერი, წყალი</strong>. სტიქია განსაზღვრავს ადამიანის ფუნდამენტურ <strong>ენერგიის ტიპს</strong> — როგორ აღიქვამს სამყაროს, როგორ მოქმედებს, რაზე რეაგირებს ბუნებრივად.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      ${ELS.map(e=>`<div style="text-align:center;padding:10px 8px;border-radius:10px;background:${e.bg};border:.5px solid ${e.color}">
+        <div style="font-size:24px;margin-bottom:4px">${e.sym}</div>
+        <div style="font-size:11px;font-weight:600;color:${e.tc}">${e.title.replace(' სტიქია','')}</div>
+        <div style="font-size:10px;color:${e.tc};opacity:.7;margin-top:2px">${e.signs}</div>
+        <div style="font-size:10px;font-weight:500;color:${e.tc};margin-top:4px;background:${e.color};color:#fff;padding:2px 6px;border-radius:6px;display:inline-block">${e.keyword}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+
+  // each element card
+  ELS.forEach(e=>{
+    h+=`<div style="border:.5px solid ${e.border};border-radius:16px;overflow:hidden;background:var(--bg);margin-bottom:16px">
+      <!-- header -->
+      <div style="background:${e.bg};padding:18px 20px;border-bottom:.5px solid ${e.border}">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+          <div style="font-size:40px">${e.sym}</div>
+          <div>
+            <div style="font-size:20px;font-weight:600;color:${e.tc}">${e.title}</div>
+            <div style="font-size:13px;color:${e.tc};opacity:.8;margin-top:2px">${e.names}</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:11px;color:${e.tc};opacity:.7;margin-bottom:2px">ნიშნები</div>
+            <div style="font-size:22px;letter-spacing:4px">${e.signs}</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:${e.tc};line-height:1.75">${e.desc}</div>
+      </div>
+      <!-- body -->
+      <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+        <div style="background:var(--bg2);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.05em">✦ ძლიერი მხარეები</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">${e.gifts}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.05em">⚡ გამოწვევები</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">${e.challenges}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.05em">💑 სიყვარულში</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.65">${e.love}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.05em">💼 კარიერა</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.65">${e.work}</div>
+        </div>
+        <div style="background:${e.bg};border-radius:10px;padding:12px 14px;border:.5px solid ${e.border}">
+          <div style="font-size:10px;font-weight:600;color:${e.tc};margin-bottom:6px;letter-spacing:.05em">🪐 მმართველი პლანეტები</div>
+          <div style="font-size:12px;color:${e.tc};line-height:1.65">${e.ruler}</div>
+        </div>
+        <div style="background:${e.bg};border-radius:10px;padding:12px 14px;border:.5px solid ${e.border}">
+          <div style="font-size:10px;font-weight:600;color:${e.tc};margin-bottom:6px;letter-spacing:.05em">🌑 ჩრდილი (Shadow)</div>
+          <div style="font-size:12px;color:${e.tc};line-height:1.65">${e.shadow}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  h+=`</div>`;
+  return h;
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
+  if(sec.type==='elements')return renderElementsSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
