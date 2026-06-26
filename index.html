@@ -1896,7 +1896,12 @@ function initTriadToggle(){
     document.getElementById('triad-status').textContent=isOn?'ჩართული':'გამორთული';
   }
 }
-renderAll();
-</script>
+// Version check — clears stale localStorage when code updates
+const SITE_VERSION='v2.2';
+if(ls('as_version')!==SITE_VERSION){
+  localStorage.removeItem('as_sections');
+  lss('as_version',SITE_VERSION);
+}
+renderAll();</script>
 </body>
 </html>
