@@ -920,6 +920,7 @@ function renderAll(){
 }
 
 function renderCrossesSection(sec){
+  const cxOverride=ls('as_crosses_data')||{};
   const crosses=[
     {
       sym:'♈♋♎♑',title:'კარდინალური ჯვარი',
@@ -1296,6 +1297,63 @@ function openEditor(i){
         </div></details>`;
     });
   }
+  // ===== CROSSES =====
+  if(sec.type==='crosses'){
+    const cxData=[
+      {i:0,title:'კარდინალური ჯვარი',sub:'ვერძი · კირჩხიბი · სასწორი · თხის რქა',keyword:'ვიწყებ',season:'სეზონის დასაწყისი',houses:'I, IV, VII, X',gift:'ინიციატივა · ლიდერობა · ენთუზიაზმი',challenge:'მოუთმენლობა · დაუმთავრებელი პ.',desc:'კარდინალური ნიშნები სეზონების გახსნაზე დგანან.'},
+      {i:1,title:'ფიქსირებული ჯვარი',sub:'კური · ლომი · მორიელი · მერწყული',keyword:'ვაშენებ',season:'სეზონის პიკი',houses:'II, V, VIII, XI',gift:'გამძლეობა · ნება · ღრმა ფოკუსი',challenge:'სიჯიუტე · კომპრომისი',desc:'ფიქსირებული ნიშნები სეზონის შუაში, პიკზე დგანან.'},
+      {i:2,title:'მუტაბელური ჯვარი',sub:'ტყუპები · ქალწული · მშვილდ. · თევზები',keyword:'ვადაპტირდები',season:'სეზონის ბოლო',houses:'III, VI, IX, XII',gift:'ადაპტაცია · მოქნილობა · ვერსატ.',challenge:'გადაწყვეტ. · ფოკუსი',desc:'მუტაბელური ნიშნები სეზონის ბოლოში დგანან.'},
+    ];
+    const savedCx=ls('as_crosses_data')||{};
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">3 ჯვრის ბარათები</p>';
+    cxData.forEach((c)=>{
+      const saved=savedCx[c.i]||c;
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px"><summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${saved.title}</summary>
+      <div style="padding:10px 12px">
+        <div class="g2"><div class="fg"><label>სათაური</label><input type="text" id="cx-t${c.i}" value="${saved.title}"></div>
+        <div class="fg"><label>ქვესათაური</label><input type="text" id="cx-s${c.i}" value="${saved.sub}"></div></div>
+        <div class="g3">
+          <div class="fg"><label>Keyword</label><input type="text" id="cx-k${c.i}" value="${saved.keyword}"></div>
+          <div class="fg"><label>სეზონი</label><input type="text" id="cx-se${c.i}" value="${saved.season}"></div>
+          <div class="fg"><label>სახლები</label><input type="text" id="cx-h${c.i}" value="${saved.houses}"></div>
+        </div>
+        <div class="fg"><label>განმარტება</label><textarea id="cx-d${c.i}" rows="3">${saved.desc||''}</textarea></div>
+        <div class="g2">
+          <div class="fg"><label>✦ ნიჭი</label><input type="text" id="cx-g${c.i}" value="${saved.gift}"></div>
+          <div class="fg"><label>⚡ გამოწვევა</label><input type="text" id="cx-c${c.i}" value="${saved.challenge}"></div>
+        </div>
+      </div></details>`;
+    });
+  }
+  // ===== VENUS =====
+  if(sec.type==='venus'){
+    const vd=ls('as_venus_signs')||VENUS||[];
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ნიშანი — ვენერა</p>';
+    vd.forEach((s,i)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px"><summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${s.sym} ${s.n}</summary>
+      <div style="padding:10px 12px">
+        <div class="fg"><label>💑 ურთიერთობები</label><textarea id="v-r${i}" rows="3">${s.rel||''}</textarea></div>
+        <div class="fg"><label>💰 ფინანსები</label><textarea id="v-f${i}" rows="3">${s.finance||''}</textarea></div>
+        <div class="fg"><label>🪞 თვითშეფასება</label><textarea id="v-s${i}" rows="3">${s.selfeval||''}</textarea></div>
+        <div class="fg"><label>Badge</label><input type="text" id="v-b${i}" value="${s.badge||''}"></div>
+      </div></details>`;
+    });
+  }
+  // ===== MARS =====
+  if(sec.type==='mars'){
+    const md=ls('as_mars_signs')||MARS||[];
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ნიშანი — მარსი</p>';
+    md.forEach((s,i)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px"><summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${s.sym} ${s.n}</summary>
+      <div style="padding:10px 12px">
+        <div class="fg"><label>⚡ სტილი</label><textarea id="m-st${i}" rows="2">${s.style||''}</textarea></div>
+        <div class="fg"><label>🔥 ენერგიის წყარო</label><textarea id="m-e${i}" rows="2">${s.energy||''}</textarea></div>
+        <div class="fg"><label>⚠️ რისკის მიზეზი</label><textarea id="m-r${i}" rows="2">${s.risk||''}</textarea></div>
+        <div class="fg"><label>♂ მამაკ./სექსუალობა</label><textarea id="m-m${i}" rows="2">${s.masc||''}</textarea></div>
+        <div class="fg"><label>Badge</label><input type="text" id="m-b${i}" value="${s.badge||''}"></div>
+      </div></details>`;
+    });
+  }
   h+=`<button class="sbtn" onclick="saveEditor()" style="margin-top:8px">შენახვა <span class="svbadge" id="sv-ed">✓</span></button></div>`;
   w.innerHTML=h;
   w.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -1331,6 +1389,42 @@ function saveEditor(){
   }
   if(sec.type==='calc'){
     (sec.planets||[]).forEach((p,pi)=>{p.pts=parseInt(document.getElementById('pp-'+pi).value)||0;});
+  }
+  if(sec.type==='crosses'){
+    const cxSaved=ls('as_crosses_data')||{};
+    [0,1,2].forEach(i=>{
+      const get=id=>document.getElementById(id)?.value||'';
+      cxSaved[i]={
+        title:get('cx-t'+i),sub:get('cx-s'+i),
+        keyword:get('cx-k'+i),season:get('cx-se'+i),houses:get('cx-h'+i),
+        desc:get('cx-d'+i),gift:get('cx-g'+i),challenge:get('cx-c'+i),
+        i:i
+      };
+    });
+    lss('as_crosses_data',cxSaved);
+  }
+  if(sec.type==='venus'){
+    const vd=ls('as_venus_signs')||VENUS||[];
+    vd.forEach((s,i)=>{
+      s.rel=document.getElementById('v-r'+i)?.value||s.rel;
+      s.finance=document.getElementById('v-f'+i)?.value||s.finance;
+      s.selfeval=document.getElementById('v-s'+i)?.value||s.selfeval;
+      s.badge=document.getElementById('v-b'+i)?.value||s.badge;
+    });
+    lss('as_venus_signs',vd);
+    if(typeof VENUS!=='undefined') VENUS.splice(0,VENUS.length,...vd);
+  }
+  if(sec.type==='mars'){
+    const md=ls('as_mars_signs')||MARS||[];
+    md.forEach((s,i)=>{
+      s.style=document.getElementById('m-st'+i)?.value||s.style;
+      s.energy=document.getElementById('m-e'+i)?.value||s.energy;
+      s.risk=document.getElementById('m-r'+i)?.value||s.risk;
+      s.masc=document.getElementById('m-m'+i)?.value||s.masc;
+      s.badge=document.getElementById('m-b'+i)?.value||s.badge;
+    });
+    lss('as_mars_signs',md);
+    if(typeof MARS!=='undefined') MARS.splice(0,MARS.length,...md);
   }
   if(sec.type==='signs'){
     sec.intro=document.getElementById('ed-intro')?.value||'';
