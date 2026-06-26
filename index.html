@@ -712,9 +712,9 @@ let DEF_TIMEZONE={
 };
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
-let VENUS=ls('as_venus_signs')||DEF_VENUS_SIGNS;
+let VENUS=(()=>{const s=ls('as_venus_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_VENUS_SIGNS));})();
 let VENUS_ELS=ls('as_venus_els')||DEF_VENUS_ELS;
-let MARS=ls('as_mars_signs')||DEF_MARS_SIGNS;
+let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_MARS_SIGNS));})();
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
@@ -1608,35 +1608,36 @@ function saveEditor(){
     lss('as_crosses_data',cxSaved);
   }
   if(sec.type==='venus'){
-    const vd=ls('as_venus_signs')||JSON.parse(JSON.stringify(VENUS||[]));
+    const vd=JSON.parse(JSON.stringify(VENUS||[]));
     vd.forEach((s,i)=>{
-      const g=id=>document.getElementById(id)?.value;
-      if(g('v-n'+i)!==undefined) s.n=g('v-n'+i)||s.n;
-      if(g('v-sym'+i)!==undefined) s.sym=g('v-sym'+i)||s.sym;
-      if(g('v-el'+i)!==undefined) s.el=g('v-el'+i)||s.el;
-      if(g('v-b'+i)!==undefined) s.badge=g('v-b'+i)||s.badge;
-      if(g('v-r'+i)!==undefined) s.rel=g('v-r'+i);
-      if(g('v-f'+i)!==undefined) s.finance=g('v-f'+i);
-      if(g('v-s'+i)!==undefined) s.selfeval=g('v-s'+i);
+      const g=id=>{const el=document.getElementById(id);return el?el.value:undefined;};
+      const n=g('v-n'+i); if(n!==undefined&&n!=='') s.n=n;
+      const sym=g('v-sym'+i); if(sym!==undefined&&sym!=='') s.sym=sym;
+      const el=g('v-el'+i); if(el!==undefined) s.el=el;
+      const b=g('v-b'+i); if(b!==undefined) s.badge=b;
+      const r=g('v-r'+i); if(r!==undefined) s.rel=r;
+      const f=g('v-f'+i); if(f!==undefined) s.finance=f;
+      const sv=g('v-s'+i); if(sv!==undefined) s.selfeval=sv;
     });
     lss('as_venus_signs',vd);
-    VENUS.splice(0,VENUS.length,...vd);
+    // reload VENUS from saved data
+    VENUS.splice(0,VENUS.length,...JSON.parse(JSON.stringify(vd)));
   }
   if(sec.type==='mars'){
-    const md=ls('as_mars_signs')||JSON.parse(JSON.stringify(MARS||[]));
+    const md=JSON.parse(JSON.stringify(MARS||[]));
     md.forEach((s,i)=>{
-      const g=id=>document.getElementById(id)?.value;
-      if(g('m-n'+i)!==undefined) s.n=g('m-n'+i)||s.n;
-      if(g('m-sym'+i)!==undefined) s.sym=g('m-sym'+i)||s.sym;
-      if(g('m-el'+i)!==undefined) s.el=g('m-el'+i)||s.el;
-      if(g('m-b'+i)!==undefined) s.badge=g('m-b'+i)||s.badge;
-      if(g('m-st'+i)!==undefined) s.style=g('m-st'+i);
-      if(g('m-e'+i)!==undefined) s.energy=g('m-e'+i);
-      if(g('m-r'+i)!==undefined) s.risk=g('m-r'+i);
-      if(g('m-m'+i)!==undefined) s.masc=g('m-m'+i);
+      const g=id=>{const el=document.getElementById(id);return el?el.value:undefined;};
+      const n=g('m-n'+i); if(n!==undefined&&n!=='') s.n=n;
+      const sym=g('m-sym'+i); if(sym!==undefined&&sym!=='') s.sym=sym;
+      const el=g('m-el'+i); if(el!==undefined) s.el=el;
+      const b=g('m-b'+i); if(b!==undefined) s.badge=b;
+      const st=g('m-st'+i); if(st!==undefined) s.style=st;
+      const e=g('m-e'+i); if(e!==undefined) s.energy=e;
+      const r=g('m-r'+i); if(r!==undefined) s.risk=r;
+      const m=g('m-m'+i); if(m!==undefined) s.masc=m;
     });
     lss('as_mars_signs',md);
-    MARS.splice(0,MARS.length,...md);
+    MARS.splice(0,MARS.length,...JSON.parse(JSON.stringify(md)));
   }
   if(sec.type==='signs'){
     sec.intro=document.getElementById('ed-intro')?.value||'';
