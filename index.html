@@ -711,7 +711,7 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_TIMEZONE,DEF_VENUS,DEF_MARS];
+  if(!saved) return [...DEF_SECTIONS,DEF_TIMEZONE,DEF_VENUS,DEF_MARS,DEF_GLOSSARY];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -2178,7 +2178,7 @@ function initTriadToggle(){
   }
 }
 // Version check — clears stale localStorage when code updates
-const SITE_VERSION='v2.4';
+const SITE_VERSION='v2.5';
 if(ls('as_version')!==SITE_VERSION){
   localStorage.removeItem('as_sections');
   lss('as_version',SITE_VERSION);
