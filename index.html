@@ -1181,35 +1181,103 @@ function renderArticleSection(sec){
 }
 
 function renderTableSection(sec){
-  let h=`<div class="sec-table-wrap"><h2>${sec.title}</h2>`;
-  // legend
-  h+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:12px">
-    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#1a5fb4;display:inline-block"></span>მმართველი</span>
-    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#d4a017;display:inline-block"></span>ეგზალტაცია</span>
-    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#c0392b;display:inline-block"></span>ვარდნა</span>
-    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#888;display:inline-block"></span>ტყვეობა</span>
-  </div>`;
-  h+='<div class="tbl-outer"><table class="main-tbl"><thead><tr>';
-  (sec.headers||[]).forEach(hd=>h+=`<th>${hd}</th>`);
-  h+='</tr></thead><tbody>';
-  // col colors: 0=sym, 1=name, 2=ruler(blue), 3=exalt(gold), 4=captive(gray), 5=fall(red)
-  const colColors=['','','#dbeafe','#fef9c3','#f3f3f1','#fee2e2'];
-  const colTC=['','','#1e3a6e','#7a5c00','#555','#7f1d1d'];
-  (sec.rows||[]).forEach((row,ri)=>{
-    h+=`<tr${ri%2===0?'':' class="upper"'}>`;
-    row.forEach((cell,ci)=>{
-      if(ci===0){
-        h+=`<td style="font-size:18px;text-align:center">${cell}</td>`;
-      } else if(ci===1){
-        h+=`<td style="font-weight:500">${cell}</td>`;
-      } else {
-        const bg=colColors[ci]||'';const tc=colTC[ci]||'';
-        h+=`<td style="background:${bg};color:${tc};font-size:12px">${cell}</td>`;
-      }
-    });
-    h+='</tr>';
+  // Color config per column type
+  const COL={
+    ruler:{bg:'#dbeafe',tc:'#1e3a6e',border:'#93c5fd',icon:'👑',label:'მმართველი'},
+    exalt:{bg:'#fef9c3',tc:'#854d0e',border:'#fde047',icon:'⭐',label:'ეგზალტაცია'},
+    captive:{bg:'#f1f0ee',tc:'#57534e',border:'#d6d3d1',icon:'🔗',label:'ტყვეობა'},
+    fall:{bg:'#fee2e2',tc:'#991b1b',border:'#fca5a5',icon:'⬇️',label:'ვარდნა'},
+  };
+  const EL_COLORS={fire:'#D85A30',earth:'#639922',air:'#378ADD',water:'#7F77DD'};
+  const EL_BG={fire:'#FAECE7',earth:'#EAF3DE',air:'#E6F1FB',water:'#EEEDFE'};
+  const EL_TC={fire:'#712B13',earth:'#27500A',air:'#0C447C',water:'#3C3489'};
+  const SIGN_EL={'♈':'fire','♉':'earth','♊':'air','♋':'water','♌':'fire','♍':'earth',
+                  '♎':'air','♏':'water','♐':'fire','♑':'earth','♒':'air','♓':'water'};
+
+  // Parse cell: "♂ მარსი, ♇ პლუტო Rx" → array of {sym,name,flags}
+  function parsePlanets(cell){
+    if(!cell||cell==='-'||cell==='—')return [];
+    return cell.split(',').map(p=>{
+      p=p.trim();
+      const rx=p.includes('Rx');const ast=p.includes('Ast');
+      const clean=p.replace('Rx','').replace('Ast','').trim();
+      const parts=clean.split(' ');
+      return{sym:parts[0]||'',name:parts.slice(1).join(' '),rx,ast,secondary:false};
+    }).map((p,i,arr)=>{if(i>0)p.secondary=true;return p;});
+  }
+
+  function renderPlanet(p,colType){
+    const cfg=COL[colType];
+    const flags=[];
+    if(p.rx)flags.push('<span style="font-size:9px;font-weight:700;background:rgba(163,45,45,.15);color:#A32D2D;padding:1px 4px;border-radius:4px">Rx</span>');
+    if(p.ast)flags.push('<span style="font-size:9px;font-weight:700;background:rgba(60,52,137,.15);color:#3C3489;padding:1px 4px;border-radius:4px">Ast</span>');
+    const opacity=p.secondary?'opacity:.75;':'';
+    const border=p.secondary?`border:.5px dashed ${cfg.border}`:`border:.5px solid ${cfg.border}`;
+    return `<span style="display:inline-flex;align-items:center;gap:4px;${border};border-radius:8px;padding:3px 8px;margin:2px;background:${cfg.bg};${opacity}">
+      <span style="font-size:15px">${p.sym}</span>
+      <span style="font-size:11px;font-weight:${p.secondary?'400':'500'};color:${cfg.tc}">${p.name}</span>
+      ${flags.join('')}
+    </span>`;
+  }
+
+  let h=`<div class="sec-signs-wrap"><h2 style="margin-bottom:16px">${sec.title}</h2>`;
+
+  // Legend
+  h+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">`;
+  Object.entries(COL).forEach(([k,v])=>{
+    h+=`<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:10px;background:${v.bg};border:.5px solid ${v.border}">
+      <span>${v.icon}</span><span style="font-size:12px;font-weight:500;color:${v.tc}">${v.label}</span>
+    </div>`;
   });
-  h+='</tbody></table></div></div>';
+  h+=`<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:10px;background:var(--bg2);border:.5px solid var(--border)">
+    <span style="font-size:9px;font-weight:700;color:#A32D2D;background:rgba(163,45,45,.15);padding:1px 5px;border-radius:4px">Rx</span>
+    <span style="font-size:12px;color:var(--text2)">რეტროგრადული</span>
+  </div></div>`;
+
+  // Cards - one per sign
+  const rows=sec.rows||[];
+  const colTypes=['','','ruler','exalt','captive','fall'];
+
+  h+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">`;
+
+  rows.forEach(row=>{
+    const sym=row[0]||'';
+    const name=row[1]||'';
+    const el=SIGN_EL[sym]||'fire';
+    const elBg=EL_BG[el];
+    const elTc=EL_TC[el];
+    const elBorder=EL_COLORS[el];
+
+    h+=`<div style="border:.5px solid ${elBorder};border-radius:14px;overflow:hidden;background:var(--bg)">
+      <div style="background:${elBg};padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:.5px solid ${elBorder}">
+        <span style="font-size:28px">${sym}</span>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:${elTc}">${name}</div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;display:grid;gap:8px">`;
+
+    [2,3,4,5].forEach(ci=>{
+      const ct=colTypes[ci];
+      if(!ct)return;
+      const cfg=COL[ct];
+      const planets=parsePlanets(row[ci]);
+      if(!planets.length)return;
+      h+=`<div style="display:flex;align-items:flex-start;gap:8px">
+        <div style="display:flex;align-items:center;gap:5px;min-width:90px;padding:3px 0">
+          <span style="font-size:12px">${cfg.icon}</span>
+          <span style="font-size:11px;font-weight:500;color:var(--text3)">${cfg.label}</span>
+        </div>
+        <div style="flex:1;display:flex;flex-wrap:wrap;gap:2px">
+          ${planets.map(p=>renderPlanet(p,ct)).join('')}
+        </div>
+      </div>`;
+    });
+
+    h+=`</div></div>`;
+  });
+
+  h+=`</div></div>`;
   return h;
 }
 
