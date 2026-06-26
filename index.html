@@ -1249,9 +1249,32 @@ function renderSignsSection(sec){
   let h='';
   if(sec.intro)h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px;font-size:14px;color:var(--text2);line-height:1.7">${sec.intro}</div>`;
   // hint shown only if no card is open
+  // Moon intro block
+  if(sec.id==='s-moon'){
+    h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+      <div style="font-size:22px;margin-bottom:6px">🌙</div>
+      <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მთვარე ასტროლოგიაში</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.75">
+        მთვარე ყველაზე <strong>სწრაფად მოძრავი</strong> ციური სხეულია — ყოველ 2-3 დღეში ახალ ნიშანში გადადის. ის ასახავს ჩვენს <strong>ემოციურ ბუნებას, ინსტინქტებს, ქვეცნობიერს</strong> და ბავშვობის გამოცდილებებს. თუ მზე "ვინ ვარ?" კითხვაა, მთვარე — "<strong>რას ვგრძნობ? რისი მჭირდება?</strong>"
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:12px">
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>⏱️ ციკლი:</strong> ~28 დღე</div>
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>🏠 სახლი:</strong> IV სახლი</div>
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>⭐ ეგზ.:</strong> ♉ კური 3°</div>
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>⬇️ ვარდნა:</strong> ♏ მორიელი</div>
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>👑 მმართ.:</strong> ♋ კირჩხიბი</div>
+          <div style="background:var(--bg2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text2)"><strong>💫 ქულა:</strong> 5 ქ. (ლუმინარი)</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const isMoon=sec.id==='s-moon';
+  const hintText=isMoon
+    ?'ნიშანზე დაჭერით — მთვარე ამ ნიშანში: ემოციები, ინსტინქტები, მოთხოვნილებები'
+    :'ნიშანზე დაჭერით გაიხსნება სრული ინფო — განმარტება, საკვანძო სიტყვები, საპირისპირო და სამეული';
   const hintHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:9px 14px;border-radius:10px;background:var(--bg2);border:.5px solid var(--border);font-size:12px;color:var(--text2)">
     <span style="font-size:16px">👆</span>
-    <span>ნიშანზე დაჭერით გაიხსნება სრული ინფო — განმარტება, საკვანძო სიტყვები, საპირისპირო და სამეული</span>
+    <span>${hintText}</span>
   </div>`;
   h+=hintHTML;
 
