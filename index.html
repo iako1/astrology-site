@@ -192,8 +192,8 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 
     <!-- PAGES TAB -->
     <div id="at-pages">
-      <div style="padding:10px 14px;background:var(--bg2);border-radius:var(--r);border:.5px solid var(--border);margin-bottom:10px;font-size:12px;color:var(--text2)">
-        <strong>საიტის ნავიგაცია:</strong> ჩამოთვლილი სექციები → ბოლოს <span style="background:#E6F1FB;color:#0C447C;padding:1px 6px;border-radius:6px;font-size:11px">🪐 dropdown</span> მთვარე, ვენერა, მარსი
+      <div style="padding:10px 14px;background:var(--bg2);border-radius:var(--r);border:.5px solid var(--border);margin-bottom:10px;font-size:12px;color:var(--text2);line-height:1.6">
+        <strong>⠿ გადათრევით</strong> შეგიძლია სექციების გადალაგება. <span style="background:#E6F1FB;color:#0C447C;padding:1px 6px;border-radius:6px;font-size:11px">🪐 dropdown</span> ტიპის სექციები (მთვარე, ვენერა, მარსი) ავტომატურად "პლანეტები ნიშნებში" მენიუში ხვდებიან — სია შეგიძლია გადაალაგო.
       </div>
       <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap">
         <button class="sbtn sec" onclick="addSection('article')" style="flex:1;min-width:120px">+ სტატია</button>
@@ -926,10 +926,10 @@ function renderAll(){
   const pages=document.getElementById('pages-container');
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
-  // sections that go into "პლანეტები ნიშნებში" dropdown
-  const PLANET_IDS=['s-moon','s-venus','s-mars'];
-  const planetSecs=visible.filter(s=>PLANET_IDS.includes(s.id)||(s.type==='venus'||s.type==='mars'||(s.id==='s-moon')));
-  const otherSecs=visible.filter(s=>!planetSecs.includes(s));
+  // sections that go into dropdown - determined by type
+  const isPlanetSec=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const planetSecs=visible.filter(s=>isPlanetSec(s));
+  const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
 
 
