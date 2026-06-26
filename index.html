@@ -230,6 +230,11 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 
     <!-- SITE TAB -->
     <div id="at-site" style="display:none">
+      <div style="margin-bottom:12px;padding:10px 14px;background:#fee2e2;border-radius:var(--r);border:.5px solid #fca5a5">
+        <div style="font-size:12px;font-weight:500;color:#991b1b;margin-bottom:6px">⚠️ Cache-ის გასუფთავება</div>
+        <div style="font-size:11px;color:#7f1d1d;margin-bottom:8px">თუ ახალი ცვლილებები არ ჩანს — დააჭირე ამ ღილაკს</div>
+        <button class="sbtn" onclick="clearSiteCache()" style="background:#991b1b">🗑️ Cache გასუფთავება და განახლება</button>
+      </div>
       <div class="fg"><label>სათაური (H1)</label><input type="text" id="es-h1"></div>
       <div class="fg"><label>ქვესათაური</label><input type="text" id="es-sub"></div>
       <div class="fg"><label>Footer</label><input type="text" id="es-footer"></div>
@@ -1344,6 +1349,14 @@ function aTab(id,btn){
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   if(id==='glossary')renderAdminGloss();
 }
+function clearSiteCache(){
+  if(!confirm('ყველა შენახული ცვლილება წაიშლება და საწყისი მონაცემები ჩაიტვირთება. გავაგრძელოთ?'))return;
+  const keys=['as_sections','as_signs','as_els','as_crs','as_triad','as_tbl','as_pl','as_site',
+    'as_version','as_show_triad','as_venus_signs','as_venus_els','as_mars_signs',
+    'as_glossary_terms','as_crosses_data','as_moon'];
+  keys.forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
 function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=document.getElementById('es-sub').value;SITE.footer=document.getElementById('es-footer').value;lss('as_site',SITE);renderSite();badge('sv-site');}
 
 // CMS LIST
@@ -1897,7 +1910,7 @@ function initTriadToggle(){
   }
 }
 // Version check — clears stale localStorage when code updates
-const SITE_VERSION='v2.2';
+const SITE_VERSION='v2.3';
 if(ls('as_version')!==SITE_VERSION){
   localStorage.removeItem('as_sections');
   lss('as_version',SITE_VERSION);
