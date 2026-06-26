@@ -138,6 +138,15 @@ table.main-tbl tbody tr.upper td{background:var(--bg2)}
 .tbl-head-row,.tbl-data-row{display:flex;gap:5px;margin-bottom:5px;align-items:center}
 .tbl-head-row input,.tbl-data-row input{flex:1;padding:5px 7px;border:.5px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text);font-size:12px;font-family:inherit}
 footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
+/* dropdown nav */
+.tab-dropdown{position:relative;display:inline-flex;flex-shrink:0}
+.tab-dropdown>.tab{padding-right:22px}
+.tab-dropdown>.tab::after{content:'▾';position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3)}
+.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:var(--bg);border:.5px solid var(--border2);border-radius:var(--r);min-width:160px;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.dropdown-menu.open{display:block}
+.dropdown-item{display:block;width:100%;padding:9px 14px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;white-space:nowrap}
+.dropdown-item:hover,.dropdown-item.on{background:var(--bg2);color:var(--text)}
+.dropdown-item.on{font-weight:500}
 </style>
 </head>
 <body>
@@ -896,27 +905,88 @@ function renderAll(){
   const pages=document.getElementById('pages-container');
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
-  visible.forEach((sec,i)=>{
-    // tab
+  // sections that go into "პლანეტები ნიშნებში" dropdown
+  const PLANET_IDS=['s-moon','s-venus','s-mars'];
+  const planetSecs=visible.filter(s=>PLANET_IDS.includes(s.id)||(s.type==='venus'||s.type==='mars'||(s.id==='s-moon')));
+  const otherSecs=visible.filter(s=>!planetSecs.includes(s));
+  let firstPageId=null;
+
+  function showPage(secId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+    document.querySelectorAll('.dropdown-item').forEach(b=>b.classList.remove('on'));
+    const pg=document.getElementById('pg-'+secId);
+    if(pg)pg.classList.add('on');
+    // mark active tab or dropdown item
+    const tb=document.getElementById('tab-'+secId);
+    if(tb)tb.classList.add('on');
+    const di=document.getElementById('di-'+secId);
+    if(di){di.classList.add('on');document.getElementById('tab-planets')?.classList.add('on');}
+    // close dropdown
+    document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
+  }
+
+  // render normal tabs
+  otherSecs.forEach((sec,i)=>{
+    if(!firstPageId)firstPageId=sec.id;
     const btn=document.createElement('button');
-    btn.className='tab'+(i===0?' on':'');
+    btn.className='tab';
+    btn.id='tab-'+sec.id;
     btn.textContent=sec.tab||sec.title;
-    btn.onclick=()=>{
-      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-      btn.classList.add('on');
-      document.getElementById('pg-'+sec.id).classList.add('on');
-    };
+    btn.onclick=()=>showPage(sec.id);
     tabs.appendChild(btn);
-    // page
+  });
+
+  // render planets dropdown if any planet sections visible
+  if(planetSecs.length>0){
+    const wrapper=document.createElement('div');
+    wrapper.className='tab-dropdown';
+    const dropBtn=document.createElement('button');
+    dropBtn.className='tab';
+    dropBtn.id='tab-planets';
+    dropBtn.textContent='🪐 პლანეტები';
+    dropBtn.onclick=(e)=>{
+      e.stopPropagation();
+      const menu=document.getElementById('planets-menu');
+      document.querySelectorAll('.dropdown-menu').forEach(m=>{if(m!==menu)m.classList.remove('open');});
+      menu.classList.toggle('open');
+    };
+    const menu=document.createElement('div');
+    menu.className='dropdown-menu';
+    menu.id='planets-menu';
+    planetSecs.forEach(sec=>{
+      if(!firstPageId)firstPageId=sec.id;
+      const item=document.createElement('button');
+      item.className='dropdown-item';
+      item.id='di-'+sec.id;
+      item.textContent=sec.tab||sec.title;
+      item.onclick=(e)=>{e.stopPropagation();showPage(sec.id);};
+      menu.appendChild(item);
+    });
+    wrapper.appendChild(dropBtn);
+    wrapper.appendChild(menu);
+    tabs.appendChild(wrapper);
+  }
+
+  // close dropdown on outside click
+  document.onclick=()=>document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
+
+  // render all pages (normal + planet)
+  visible.forEach((sec,i)=>{
     const div=document.createElement('div');
-    div.className='page'+(i===0?' on':'');
+    div.className='page';
     div.id='pg-'+sec.id;
     div.innerHTML=renderSection(sec);
     pages.appendChild(div);
-    // bind events
     bindSectionEvents(sec,div);
   });
+  // activate first page
+  if(firstPageId){
+    const fp=document.getElementById('pg-'+firstPageId);
+    if(fp)fp.classList.add('on');
+    const ft=document.getElementById('tab-'+firstPageId);
+    if(ft)ft.classList.add('on');
+  }
 }
 
 function renderCrossesSection(sec){
