@@ -899,6 +899,19 @@ function renderSite(){
   document.getElementById('site-title-tag').textContent=SITE.h1;
 }
 
+function showPage(secId){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.dropdown-item').forEach(b=>b.classList.remove('on'));
+  const pg=document.getElementById('pg-'+secId);
+  if(pg)pg.classList.add('on');
+  const tb=document.getElementById('tab-'+secId);
+  if(tb)tb.classList.add('on');
+  const di=document.getElementById('di-'+secId);
+  if(di){di.classList.add('on');document.getElementById('tab-planets')?.classList.add('on');}
+  document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
+}
+
 function renderAll(){
   renderSite();
   const tabs=document.getElementById('nav-tabs');
@@ -911,20 +924,7 @@ function renderAll(){
   const otherSecs=visible.filter(s=>!planetSecs.includes(s));
   let firstPageId=null;
 
-  function showPage(secId){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-    document.querySelectorAll('.dropdown-item').forEach(b=>b.classList.remove('on'));
-    const pg=document.getElementById('pg-'+secId);
-    if(pg)pg.classList.add('on');
-    // mark active tab or dropdown item
-    const tb=document.getElementById('tab-'+secId);
-    if(tb)tb.classList.add('on');
-    const di=document.getElementById('di-'+secId);
-    if(di){di.classList.add('on');document.getElementById('tab-planets')?.classList.add('on');}
-    // close dropdown
-    document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
-  }
+
 
   // render normal tabs
   otherSecs.forEach((sec,i)=>{
@@ -948,8 +948,9 @@ function renderAll(){
     dropBtn.onclick=(e)=>{
       e.stopPropagation();
       const menu=document.getElementById('planets-menu');
-      document.querySelectorAll('.dropdown-menu').forEach(m=>{if(m!==menu)m.classList.remove('open');});
-      menu.classList.toggle('open');
+      const isOpen=menu.classList.contains('open');
+      document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
+      if(!isOpen)menu.classList.add('open');
     };
     const menu=document.createElement('div');
     menu.className='dropdown-menu';
