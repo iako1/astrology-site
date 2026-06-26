@@ -1406,10 +1406,24 @@ function openEditor(i){
     h+=`</div><button class="sbtn sec" onclick="addCard()" style="margin-bottom:10px">+ ბარათი</button>`;
   }
   if(sec.type==='table'){
-    h+=`<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:7px">სვეტების სათაური (tab-ით გამოყოფე)</div>
-      <div class="fg"><input type="text" id="tbl-headers" value="${(sec.headers||[]).join('\t')}"></div>
-      <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:7px">მწკრივები (ერთი მწკრივი = ერთი ხაზი, სვეტები tab-ით)</div>
-      <div class="fg"><textarea id="tbl-rows" rows="8">${(sec.rows||[]).map(r=>r.join('\t')).join('\n')}</textarea></div>`;
+    const rows=sec.rows||[];
+    const COLS=['სიმბოლო','ნიშანი','მმართველი','ეგზალტაცია','ტყვეობა','ვარდნა'];
+    const ICONS=['','','👑','⭐','🔗','⬇️'];
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ნიშნის პოზიციები — ყოველი ნიშანი ცალ-ცალე</p>';
+    rows.forEach((row,ri)=>{
+      const sym=row[0]||'';
+      const name=row[1]||'';
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+        <summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px">
+          <span style="font-size:18px">${sym}</span><span>${name}</span>
+        </summary>
+        <div style="padding:10px 12px;display:grid;gap:8px">`;
+      [2,3,4,5].forEach(ci=>{
+        h+=`<div class="fg"><label>${ICONS[ci]} ${COLS[ci]}</label>
+          <input type="text" id="tbl-r${ri}-c${ci}" value="${(row[ci]||'').replace(/"/g,'&quot;')}" placeholder="მაგ: ♂ მარსი, ♇ პლუტო Rx"></div>`;
+      });
+      h+=`</div></details>`;
+    });
   }
   if(sec.type==='calc'){
     h+=`<div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:8px">პლანეტების ქულები</div>`;
@@ -1544,8 +1558,13 @@ function saveEditor(){
     }));
   }
   if(sec.type==='table'){
-    sec.headers=document.getElementById('tbl-headers').value.split('\t');
-    sec.rows=document.getElementById('tbl-rows').value.split('\n').filter(r=>r.trim()).map(r=>r.split('\t'));
+    const rows=sec.rows||[];
+    rows.forEach((row,ri)=>{
+      [2,3,4,5].forEach(ci=>{
+        const el=document.getElementById('tbl-r'+ri+'-c'+ci);
+        if(el) row[ci]=el.value;
+      });
+    });
   }
   if(sec.type==='calc'){
     (sec.planets||[]).forEach((p,pi)=>{p.pts=parseInt(document.getElementById('pp-'+pi).value)||0;});
