@@ -192,6 +192,9 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 
     <!-- PAGES TAB -->
     <div id="at-pages">
+      <div style="padding:10px 14px;background:var(--bg2);border-radius:var(--r);border:.5px solid var(--border);margin-bottom:10px;font-size:12px;color:var(--text2)">
+        <strong>საიტის ნავიგაცია:</strong> ჩამოთვლილი სექციები → ბოლოს <span style="background:#E6F1FB;color:#0C447C;padding:1px 6px;border-radius:6px;font-size:11px">🪐 dropdown</span> მთვარე, ვენერა, მარსი
+      </div>
       <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap">
         <button class="sbtn sec" onclick="addSection('article')" style="flex:1;min-width:120px">+ სტატია</button>
         <button class="sbtn sec" onclick="addSection('cards')" style="flex:1;min-width:120px">+ ბარათები</button>
@@ -1370,8 +1373,17 @@ function renderCmsList(){
     div.ondragover=e=>{e.preventDefault();div.classList.add('drag-over');};
     div.ondragleave=()=>div.classList.remove('drag-over');
     div.ondrop=e=>{e.preventDefault();div.classList.remove('drag-over');if(dragSrc===null||dragSrc===i)return;const moved=SECTIONS.splice(dragSrc,1)[0];SECTIONS.splice(i,0,moved);dragSrc=null;lss('as_sections',SECTIONS);renderCmsList();renderAll();};
-    const typeLabel={signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',calc:'კალკ.',article:'სტატია'}[sec.type]||sec.type;
+    const typeLabel={
+      signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',
+      calc:'კალკ.',article:'სტატია',crosses:'ჯვრები',
+      venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'გლოსარი'
+    }[sec.type]||sec.type;
+    const PLANET_TYPES=['venus','mars'];
+    const isPlanet=PLANET_TYPES.includes(sec.type)||(sec.id==='s-moon');
+    const isInDropdown=isPlanet;
+    const planetBadge=isInDropdown?'<span style="font-size:10px;padding:1px 7px;border-radius:8px;background:#E6F1FB;color:#0C447C;border:.5px solid #378ADD;margin-right:4px">🪐 dropdown</span>':''
     div.innerHTML=`<span class="cms-drag">⠿</span>
+      ${planetBadge}
       <span class="cms-name">${sec.title}</span>
       <span class="cms-type">${typeLabel}</span>
       <button class="cms-vis${sec.visible===false?' off':''}" onclick="toggleVis(${i})" title="ჩვენება/დამალვა">${sec.visible===false?'👁‍🗨':'👁'}</button>
