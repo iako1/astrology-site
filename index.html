@@ -646,6 +646,7 @@ const GLOSSARY_TERMS=[
    url:'https://cafeastrology.com/glossaryofastrology.html'},
 ];
 
+const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 ქვიზი'};
 let DEF_TIMEZONE={
   id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
   content:`
@@ -1274,8 +1275,6 @@ const DEF_QUIZ_QUESTIONS=[
   {q:'2005 წ. შ. საქ. — GMT?',a:['GMT+3','GMT+5','GMT+6','GMT+4'],c:3,ex:'2005 შ.: GMT+4 (მ.) — ზ-ბ-ის დ. 2005 გ-ბ.'},
   {q:'1996 — მ. ის. ც. — GMT?',a:['GMT+3','GMT+4','GMT+5','GMT+6'],c:2,ex:'1996: 30 მ-დ. GMT+4; შ. — GMT+5 (მ. წ.)'},
 ];
-
-const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 ქვიზი'};
 
 function renderQuizSection(sec){
   const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
