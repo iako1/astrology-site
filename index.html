@@ -1688,12 +1688,14 @@ function movePlanetGroup(dir){
   const firstIdx=SECTIONS.findIndex(s=>isPlanet(s));
   const lastIdx=SECTIONS.reduce((acc,s,i)=>isPlanet(s)?i:acc,-1);
   if(firstIdx<0)return;
-  const planets=SECTIONS.splice(firstIdx,lastIdx-firstIdx+1);
-  const newPos=firstIdx+dir;
-  if(newPos<0||newPos>SECTIONS.length){
-    SECTIONS.splice(firstIdx,0,...planets);return;
-  }
-  SECTIONS.splice(newPos,0,...planets);
+  const count=lastIdx-firstIdx+1;
+  if(dir===-1&&firstIdx===0)return; // already at top
+  if(dir===1&&lastIdx===SECTIONS.length-1)return; // already at bottom
+  // remove planet group
+  const planets=SECTIONS.splice(firstIdx,count);
+  // insert at new position
+  const insertAt=dir===-1?firstIdx-1:firstIdx+1;
+  SECTIONS.splice(insertAt,0,...planets);
   lss('as_sections',SECTIONS);renderCmsList();renderAll();
 }
 function moveSection(i,dir){
