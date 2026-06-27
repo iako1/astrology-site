@@ -711,15 +711,17 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
+  const hasQuiz=saved.some(s=>s.id==='s-quiz');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
+  if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   return saved;
 }
 let SECTIONS=initSections();
@@ -1229,9 +1231,137 @@ function renderElementsSection(sec){
   return h;
 }
 
+// ===== QUIZ =====
+const DEF_QUIZ_QUESTIONS=[
+  // 12 ნიშანი
+  {q:'ვერძი ♈ — რომელი სტიქიაა?',a:['ცეცხლი 🔥','მიწა 🌿','ჰაერი 💨','წყალი 💧'],c:0,ex:'ვერძი ცეცხლის სტიქიაა — ენერგია, ინიციატივა, ვნება. ♂ მარსი მართავს.'},
+  {q:'კური ♉ — რომელი ჯვარია?',a:['კარდინ.','ფიქს.','მუტაბ.','ყველა'],c:1,ex:'კური ფიქსირებული ჯვარია — სტაბილობა, გამძლეობა, სენსუალობა.'},
+  {q:'რომელი ნიშნის საპირისპიროა სასწორი ♎?',a:['ლომი ♌','ვერძი ♈','თევზ. ♓','ქალვ. ♍'],c:1,ex:'ვერძი ↔ სასწორი — I/VII სახლის ღერძი. ინდივიდ. vs პარტნიორობა.'},
+  {q:'მორიელი ♏ — რომელი სტიქიაა?',a:['ცეცხლი','ჰაერი','წყალი','მიწა'],c:2,ex:'მორიელი წყლის სტიქიაა — ღრმა ემოციები, ტრანსფ., სიმდიდ. სხვ.'},
+  {q:'მშვილდოსანი ♐ — მმართველია?',a:['სატ. ♄','იუპ. ♃','მარ. ♂','ვენ. ♀'],c:1,ex:'იუპიტ. ♃ მართავს მშვ-ს — ფილოს., მოგზ., განათ., გულუხვობა.'},
+  {q:'თხის რქა ♑ — სად ეგზალტირდება მარსი?',a:['ვერძი ♈','კირჩხ. ♋','ქალვ. ♍','თხა ♑'],c:3,ex:'მარსი ♂ ეგზალტ. ♑ თხის რქაში 28°-ზე — დისციპლ., სტრატ., კარიერ. ენ.'},
+  {q:'მერწყული ♒ — ჯვარი?',a:['კარდ.','ფიქს.','მუტ.'],c:1,ex:'მერწ. ფიქს. ჯვ.: ♉♌♏♒ — გამძ., ნება, სიჯ.'},
+  {q:'თევზები ♓ — მმართველი (მოდერნი)?',a:['ნეპ. ♆','იუპ. ♃','ვენ. ♀','სატ. ♄'],c:0,ex:'ნეპტ. ♆ — ილ., სულ., ოც., ინტ. იუპ. — ტრად. მმ.'},
+  // სტიქიები
+  {q:'ჰაერის სტიქიის ნიშნებია:',a:['♈♌♐','♉♍♑','♊♎♒','♋♏♓'],c:2,ex:'ჰაერი: ♊ ტყუპ. · ♎ სასწ. · ♒ მერწ. — გონება, კომ., სოც., ი.'},
+  {q:'მიწის სტიქია — მმართველი პლანეტა:',a:['☉ მზე, ♂ მარ.','♀ ვენ., ☿ მერკ., ♄ სატ.','☽ მთვ., ♆ ნეპ.','♃ იუპ., ♅ ურ.'],c:1,ex:'მიწა: ♀ ვენ. (კ., სასწ.), ☿ მერკ. (ქ.), ♄ სატ. (თხ., მ.) — პრაქ., სტ., ფინ.'},
+  {q:'წყლის სტიქიის Shadow (ჩრდილი) — რომელია?',a:['ეგ., ი-ბ.','ჩ-ბ., ე. მ.','ე. მ-ბ., ს., შ.','ა-ბ., მ., ა-ბ.'],c:2,ex:'წყ. shadow: ე. მ-ბ., ს-ბ., ე-ბ., ი.'},
+  // ჯვრები
+  {q:'კარდინ. ჯვ. — სეზ. სად?',a:['ს. ბ.','ს. შ.','ს. დ-ბ.','ს. ბ-ე'],c:2,ex:'კ. ჯ. სეზ. დ-ბ-ს — ვ.=გ., კ.=ზ., სასწ.=შ., თხ.=ზ. ♜ ვ-ბ.'},
+  {q:'Cadent სახ-ები — მუტ. ჯვ.:',a:['I,IV,VII,X','II,V,VIII,XI','III,VI,IX,XII'],c:2,ex:'Cadent: III,VI,IX,XII — ს. ბ., ად-ბ., მ-ბ.'},
+  {q:'ფ-ბ. ჯვ. keyword:',a:['ვ-ბ.','ვ-ბ.','ვ-ბ.'],c:1,ex:'ფ-ბ. ჯ. "ვ-ბ." — სტ., გ., ღ. ფ.'},
+  // პლ. პოზ.
+  {q:'☉ მზე სად ეგზ.?',a:['♌ ლ.','♈ ვ. 19°','♋ კ.','♎ სასწ.'],c:1,ex:'☉ ეგ. ♈ 19° — "მეფ. ნ." — ლ-ბ., ი., ე-ა.'},
+  {q:'☽ მთვ. სად ვ-ბ.?',a:['♈ ვ.','♎ სასწ.','♏ მ.','♑ თხ.'],c:2,ex:'☽ ვ-ბ. ♏ მ. — ემ., ი. ს-ბ. ☽-ს.'},
+  {q:'♀ ვენ. ეგ. ♓-ში — ♀-ს ქ.:',a:['1','2','3','5'],c:1,ex:'♀ ვ-ბ. ♓ 27° — "ი. ს." — ეგ. ♀.'},
+  {q:'♄ სატ. ეგ. სად?',a:['♑','♒','♎','♐'],c:2,ex:'♄ ეგ. ♎ 21° — "პ. ს." ♎-ში.'},
+  // ქ. კ.
+  {q:'☽ მთვ. + ☉ მზ. = რამდ. ქ.?',a:['3','2','5','1'],c:2,ex:'ლ-ები ☉+☽=5ქ. — ყ. მ-ი პ. კ-ში.'},
+  {q:'♃ + ♄ = რამდ. ქ.?',a:['5','3','2','1'],c:2,ex:'სოც. პლ. ♃♄=2ქ. — ს-ბ., ნ., თ. ახ.'},
+  {q:'♅♆♇ = რამდ. ქ.?',a:['5','3','2','1'],c:3,ex:'ტრ-პ. პლ. = 1ქ. — მ. თ., ც. გ-ბ.'},
+  // ვენ.
+  {q:'♀ ვ. ♌-ში — Badge?',a:['ს.','გ.','ს.','პ.'],c:1,ex:'♀ ♌ badge: "გ." — კ., ა., ბ. ს.'},
+  {q:'♀ ვ. ♏-ში — ფ.:',a:['კ. დ-ბ.','ს. რ.','ი. ფ.','პ. ს.'],c:1,ex:'♀ ♏: "ი." — კ., მ., ფ. კ. დ.'},
+  // მარ.
+  {q:'♂ ♈-ში — ეს:',a:['დ. ⚠️','ოიკ. ✦','ეგ. ✦','მ. ♮'],c:1,ex:'♂ ♈ — ოიკ.! ყ. ძლ. ♂ — ენ., ი., ფ. ს.'},
+  {q:'♂ ♋-ში badge:',a:['ოიკ.','ეგ.','დ. ⚠️','ჰ-ბ.'],c:2,ex:'♂ ♋: "დ. ⚠️" — ♂ ♋-ში ს. — ემ., ო-ბ.'},
+  // მთვ.
+  {q:'☽ ♈-ში — ემ-ბ.:',a:['ს-ბ.','ი.','ვ-ბ.','ვ-ბ. ენ.'],c:2,ex:'☽ ♈: "ი. ვ-ბ." — ვ., ა., ემ. — ი. ემ.'},
+  {q:'☽ ♉-ში — (ეგ. 3°) ემ-ბ.:',a:['ვ.','ი.','ს.','გ.'],c:2,ex:'☽ ♉: "ს." — ი-ი, ფ., ბ. ☽ ეგ. ♉.'},
+  {q:'☽ ♏-ში — ♏ სად ვ-ბ. ☽?',a:['ეგ.','ოიკ.','ვ-ბ.','ნ.'],c:2,ex:'☽ ♏ — ვ-ბ. (♋-ეგ. საპ.). ვ-ბ. = ყ. ს. პ.'},
+  // GMT
+  {q:'1924-1957 — საქ. GMT?',a:['GMT+4','GMT+5','GMT+3','GMT+2'],c:2,ex:'1924-1957: GMT+3 — 1924 წ. 1 მ-დ.'},
+  {q:'2005 წ. შ. საქ. — GMT?',a:['GMT+3','GMT+5','GMT+6','GMT+4'],c:3,ex:'2005 შ.: GMT+4 (მ.) — ზ-ბ-ის დ. 2005 გ-ბ.'},
+  {q:'1996 — მ. ის. ც. — GMT?',a:['GMT+3','GMT+4','GMT+5','GMT+6'],c:2,ex:'1996: 30 მ-დ. GMT+4; შ. — GMT+5 (მ. წ.)'},
+];
+
+const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 ქვიზი'};
+
+function renderQuizSection(sec){
+  const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
+  return `<div id="quiz-root" data-qs='${JSON.stringify(qs).replace(/'/g,"&#39;")}'></div>
+  <script>
+  (function(){
+    const qs=JSON.parse(document.getElementById('quiz-root').dataset.qs);
+    const LETTERS=['ა','ბ','გ','დ'];
+    let cur=0,score=0,ans=false;
+    const root=document.getElementById('quiz-root');
+
+    function render(){
+      if(cur>=qs.length){showScore();return;}
+      const q=qs[cur];
+      const pct=Math.round(cur/qs.length*100);
+      root.innerHTML=\`
+      <div style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:500;color:var(--text3)">კითხვა \${cur+1}/\${qs.length}</span>
+          <span style="font-size:12px;color:var(--text3)">✅ \${score} სწორი</span>
+        </div>
+        <div style="background:var(--bg2);border-radius:99px;height:5px;overflow:hidden">
+          <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);width:\${pct}%;border-radius:99px;transition:width .4s"></div>
+        </div>
+      </div>
+      <div style="border:.5px solid var(--border2);border-radius:16px;padding:20px;background:var(--bg);margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:#7c3aed;letter-spacing:.08em;margin-bottom:8px">🎯 კითხვა</div>
+        <div style="font-size:15px;font-weight:500;color:var(--text);line-height:1.55">\${q.q}</div>
+      </div>
+      <div style="display:grid;gap:8px" id="qanswers">
+        \${q.a.map((a,i)=>\`<button id="qa\${i}" onclick="window._qa(\${i})" style="background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:8px" onmouseover="if(!window._qans)this.style.borderColor='var(--border2)'" onmouseout="if(!window._qans)this.style.borderColor='var(--border)'">
+          <span style="width:22px;height:22px;border-radius:6px;background:var(--bg2);font-size:10px;font-weight:700;color:#7c3aed;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">\${LETTERS[i]}</span>
+          \${a}
+        </button>\`).join('')}
+      </div>
+      <div id="qfb"></div>\`;
+      window._qans=false;
+      window._qa=function(i){
+        if(window._qans)return;
+        window._qans=true;
+        const btns=document.querySelectorAll('[id^="qa"]');
+        btns.forEach(b=>b.style.cursor='default');
+        const ok=i===q.c;
+        if(ok)score++;
+        btns[i].style.borderColor=ok?'#4ade80':'#f87171';
+        btns[i].style.background=ok?'#052e16':'#2d0a0a';
+        btns[i].style.color=ok?'#4ade80':'#f87171';
+        if(!ok){btns[q.c].style.borderColor='#4ade80';btns[q.c].style.background='#052e16';btns[q.c].style.color='#4ade80';}
+        document.getElementById('qfb').innerHTML=\`
+          <div style="margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;border:.5px solid \${ok?'#4ade80':'#f87171'};background:\${ok?'#052e16':'#2d0a0a'};color:\${ok?'#86efac':'#fca5a5'}">
+            \${ok?'✅':'❌'} \${q.ex}
+          </div>
+          <button onclick="window._qnext()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">
+            \${cur<qs.length-1?'შემდეგი →':'შედეგი 🌟'}
+          </button>\`;
+        window._qnext=function(){cur++;render();};
+      };
+    }
+
+    function showScore(){
+      const pct=Math.round(score/qs.length*100);
+      let em,ti,ms;
+      if(pct>=87){em='🌟';ti='ასტრო-მასტერი!';ms='შენ ასტროლოგიის სრულყოფილი ცოდნა გაქვს — ნიშნებიდან GMT კალკულატორამდე!';}
+      else if(pct>=70){em='🔮';ti='მაღალი დონე!';ms='შენი ცოდნა ძლიერია! კიდევ ერთი გადახედვა და მასტერი გახდები.';}
+      else if(pct>=50){em='🌙';ti='კარგი ცოდნა!';ms='საფუძვლები გაქვს, მაგრამ ზოგი ნიუანსი კიდევ სჭირდება სწავლას.';}
+      else{em='⭐';ti='ვარვარობ!';ms='სტიქიებით და ჯვრებით დაიწყე — ნელ-ნელა ყველაფერი გამოგივა!';}
+      root.innerHTML=\`
+        <div style="text-align:center;padding:32px 20px;border:.5px solid var(--border2);border-radius:20px;background:var(--bg)">
+          <div style="font-size:52px;margin-bottom:12px">\${em}</div>
+          <div style="font-size:18px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">\${ti}</div>
+          <div style="font-size:42px;font-weight:800;color:#a78bfa;margin:14px 0 4px">\${score}/\${qs.length}</div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:16px">\${pct}% სწორი</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;padding:12px;background:var(--bg2);border-radius:10px">\${ms}</div>
+          <button onclick="cur=0;score=0;ans=false;render();" style="background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">🔄 ხელახლა</button>
+        </div>\`;
+    }
+
+    render();
+  })();
+  <\/script>`;
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='elements')return renderElementsSection(sec);
+  if(sec.type==='quiz')return renderQuizSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
@@ -1815,6 +1945,16 @@ function openEditor(i){
     });
   }
   // ===== CROSSES =====
+  if(sec.type==='quiz'){
+    const qs=ls('as_quiz_questions')||JSON.parse(JSON.stringify(DEF_QUIZ_QUESTIONS));
+    qs.forEach((q,qi)=>{
+      const nq=document.getElementById('qq-q'+qi)?.value; if(nq!==undefined)q.q=nq;
+      q.a=[0,1,2,3].map(ai=>document.getElementById('qq-a'+qi+'-'+ai)?.value||q.a[ai]);
+      const nc=document.getElementById('qq-c'+qi)?.value; if(nc!==undefined)q.c=parseInt(nc)||0;
+      const nex=document.getElementById('qq-ex'+qi)?.value; if(nex!==undefined)q.ex=nex;
+    });
+    lss('as_quiz_questions',qs);
+  }
   if(sec.type==='crosses'){
     const cxData=[
       {i:0,title:'კარდინალური ჯვარი',sub:'ვერძი · კირჩხიბი · სასწორი · თხის რქა',keyword:'ვიწყებ',season:'სეზონის დასაწყისი',houses:'I, IV, VII, X',gift:'ინიციატივა · ლიდერობა · ენთუზიაზმი',challenge:'მოუთმენლობა · დაუმთავრებელი პ.',desc:'კარდინალური ნიშნები სეზონების გახსნაზე დგანან.'},
@@ -1995,6 +2135,25 @@ function saveEditor(){
       s.desc=document.getElementById('sd-'+si)?.value||'';
       s.triad=document.getElementById('st-'+si)?.value||'';
       s.opp=document.getElementById('so-'+si)?.value||'';
+    });
+  }
+  if(sec.type==='quiz'){
+    const qs=ls('as_quiz_questions')||JSON.parse(JSON.stringify(DEF_QUIZ_QUESTIONS));
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">კითხვების რედაქტირება</p>';
+    h+=`<button class="sbtn sec" onclick="addQuizQuestion()" style="margin-bottom:10px;width:100%">+ ახალი კითხვა</button>`;
+    qs.forEach((q,qi)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+        <summary style="padding:9px 12px;cursor:pointer;font-size:12px;font-weight:500">${qi+1}. ${q.q.substring(0,50)}${q.q.length>50?'...':''}</summary>
+        <div style="padding:10px 12px">
+          <div class="fg"><label>კითხვა</label><textarea id="qq-q${qi}" rows="2">${q.q}</textarea></div>
+          <div class="fg"><label>პასუხი ა</label><input type="text" id="qq-a${qi}-0" value="${q.a[0]||''}"></div>
+          <div class="fg"><label>პასუხი ბ</label><input type="text" id="qq-a${qi}-1" value="${q.a[1]||''}"></div>
+          <div class="fg"><label>პასუხი გ</label><input type="text" id="qq-a${qi}-2" value="${q.a[2]||''}"></div>
+          <div class="fg"><label>პასუხი დ</label><input type="text" id="qq-a${qi}-3" value="${q.a[3]||''}"></div>
+          <div class="fg"><label>სწორი (0=ა,1=ბ,2=გ,3=დ)</label><input type="number" id="qq-c${qi}" min="0" max="3" value="${q.c}"></div>
+          <div class="fg"><label>ახსნა</label><textarea id="qq-ex${qi}" rows="2">${q.ex}</textarea></div>
+          <button onclick="deleteQuizQ(${qi})" style="font-size:11px;padding:4px 10px;border:.5px solid #fca5a5;border-radius:6px;background:none;color:#A32D2D;cursor:pointer;margin-top:6px">✕ წაშლა</button>
+        </div></details>`;
     });
   }
   // Save sections + re-render specific page
@@ -2211,6 +2370,22 @@ function renderGlossaryGrid(){
     </div>`).join('');
 }
 
+// QUIZ HELPERS
+function addQuizQuestion(){
+  const qs=ls('as_quiz_questions')||JSON.parse(JSON.stringify(DEF_QUIZ_QUESTIONS));
+  qs.push({q:'ახალი კითხვა',a:['პ. ა','პ. ბ','პ. გ','პ. დ'],c:0,ex:'ახსნა'});
+  lss('as_quiz_questions',qs);
+  const i=SECTIONS.findIndex(s=>s.id==='s-quiz');
+  if(i>=0)openEditor(i);
+}
+function deleteQuizQ(qi){
+  if(!confirm('წაიშალოს?'))return;
+  const qs=ls('as_quiz_questions')||[];
+  qs.splice(qi,1);
+  lss('as_quiz_questions',qs);
+  const i=SECTIONS.findIndex(s=>s.id==='s-quiz');
+  if(i>=0)openEditor(i);
+}
 // GMT CALCULATOR
 function calcGMT(){
   const dateVal=document.getElementById('tz-date')?.value;
