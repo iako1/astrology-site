@@ -1663,10 +1663,23 @@ function renderCmsList(){
     const lastPlanetIdx=SECTIONS.indexOf(planetSecs[planetSecs.length-1]);
     const header=document.createElement('div');
     header.style.cssText='padding:8px 12px;background:#E6F1FB;display:flex;align-items:center;gap:8px;border-bottom:.5px solid #378ADD';
+    // Build position options for planet group
+    const regularCount=SECTIONS.filter(s=>!isPlanet(s)).length;
+    let posOpts='';
+    for(let p=0;p<=regularCount;p++){
+      const label=p===0?'თავში':p===regularCount?'ბოლოში':'პოზ. '+(p+1);
+      posOpts+=`<option value="${p}">${label}</option>`;
+    }
+    const curPos=SECTIONS.filter((s,idx)=>!isPlanet(s)&&idx<firstPlanetIdx).length;
     header.innerHTML=`<span style="font-size:13px">🪐</span>
       <span style="font-size:13px;font-weight:500;color:#0C447C;flex:1">პლანეტები ნიშნებში</span>
-      <button onclick="movePlanetGroup(-1)" style="border:.5px solid #378ADD;background:#fff;cursor:pointer;font-size:13px;padding:3px 10px;border-radius:6px;color:#0C447C;font-weight:500;margin-right:4px">↑ ზემოთ</button>
-      <button onclick="movePlanetGroup(1)" style="border:.5px solid #378ADD;background:#fff;cursor:pointer;font-size:13px;padding:3px 10px;border-radius:6px;color:#0C447C;font-weight:500">↓ ქვემოთ</button>`;
+      <select onchange="placePlanetGroup(parseInt(this.value))" style="font-size:12px;padding:3px 8px;border:.5px solid #378ADD;border-radius:6px;color:#0C447C;background:#fff;cursor:pointer;margin-right:6px">
+        ${posOpts}
+      </select>
+      <button onclick="movePlanetGroup(-1)" style="border:.5px solid #378ADD;background:#fff;cursor:pointer;font-size:13px;padding:3px 9px;border-radius:6px;color:#0C447C;font-weight:500;margin-right:3px">↑</button>
+      <button onclick="movePlanetGroup(1)" style="border:.5px solid #378ADD;background:#fff;cursor:pointer;font-size:13px;padding:3px 9px;border-radius:6px;color:#0C447C;font-weight:500">↓</button>`;
+    // set current value
+    header.querySelector('select').value=curPos;
     groupDiv.appendChild(header);
 
     // Planet items
@@ -1683,6 +1696,17 @@ function renderCmsList(){
 }
 
 function toggleVis(i){SECTIONS[i].visible=SECTIONS[i].visible===false?true:false;lss('as_sections',SECTIONS);renderCmsList();renderAll();}
+function placePlanetGroup(pos){
+  const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
+  const firstIdx=SECTIONS.findIndex(s=>isPlanet(s));
+  const lastIdx=SECTIONS.reduce((acc,s,i)=>isPlanet(s)?i:acc,-1);
+  if(firstIdx<0)return;
+  const planets=SECTIONS.splice(firstIdx,lastIdx-firstIdx+1);
+  // insert at position among non-planet sections
+  const nonPlanets=SECTIONS; // after splice
+  nonPlanets.splice(pos,0,...planets);
+  lss('as_sections',SECTIONS);renderCmsList();renderAll();
+}
 function movePlanetGroup(dir){
   const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
   const firstIdx=SECTIONS.findIndex(s=>isPlanet(s));
