@@ -711,7 +711,7 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_TIMEZONE,DEF_VENUS,DEF_MARS,DEF_GLOSSARY];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
