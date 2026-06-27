@@ -1279,84 +1279,71 @@ const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცად
 
 function renderQuizSection(sec){
   const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
-  return `<div id="quiz-root" data-qs='${JSON.stringify(qs).replace(/'/g,"&#39;")}'></div>
-  <script>
-  (function(){
-    const qs=JSON.parse(document.getElementById('quiz-root').dataset.qs);
-    const LETTERS=['ა','ბ','გ','დ'];
-    let cur=0,score=0,ans=false;
-    const root=document.getElementById('quiz-root');
-
-    function render(){
-      if(cur>=qs.length){showScore();return;}
-      const q=qs[cur];
-      const pct=Math.round(cur/qs.length*100);
-      root.innerHTML=\`
-      <div style="margin-bottom:24px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <span style="font-size:12px;font-weight:500;color:var(--text3)">კითხვა \${cur+1}/\${qs.length}</span>
-          <span style="font-size:12px;color:var(--text3)">✅ \${score} სწორი</span>
-        </div>
-        <div style="background:var(--bg2);border-radius:99px;height:5px;overflow:hidden">
-          <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);width:\${pct}%;border-radius:99px;transition:width .4s"></div>
-        </div>
-      </div>
-      <div style="border:.5px solid var(--border2);border-radius:16px;padding:20px;background:var(--bg);margin-bottom:14px">
-        <div style="font-size:11px;font-weight:600;color:#7c3aed;letter-spacing:.08em;margin-bottom:8px">🎯 კითხვა</div>
-        <div style="font-size:15px;font-weight:500;color:var(--text);line-height:1.55">\${q.q}</div>
-      </div>
-      <div style="display:grid;gap:8px" id="qanswers">
-        \${q.a.map((a,i)=>\`<button id="qa\${i}" onclick="window._qa(\${i})" style="background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:8px" onmouseover="if(!window._qans)this.style.borderColor='var(--border2)'" onmouseout="if(!window._qans)this.style.borderColor='var(--border)'">
-          <span style="width:22px;height:22px;border-radius:6px;background:var(--bg2);font-size:10px;font-weight:700;color:#7c3aed;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">\${LETTERS[i]}</span>
-          \${a}
-        </button>\`).join('')}
-      </div>
-      <div id="qfb"></div>\`;
-      window._qans=false;
-      window._qa=function(i){
-        if(window._qans)return;
-        window._qans=true;
-        const btns=document.querySelectorAll('[id^="qa"]');
-        btns.forEach(b=>b.style.cursor='default');
-        const ok=i===q.c;
-        if(ok)score++;
-        btns[i].style.borderColor=ok?'#4ade80':'#f87171';
-        btns[i].style.background=ok?'#052e16':'#2d0a0a';
-        btns[i].style.color=ok?'#4ade80':'#f87171';
-        if(!ok){btns[q.c].style.borderColor='#4ade80';btns[q.c].style.background='#052e16';btns[q.c].style.color='#4ade80';}
-        document.getElementById('qfb').innerHTML=\`
-          <div style="margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;border:.5px solid \${ok?'#4ade80':'#f87171'};background:\${ok?'#052e16':'#2d0a0a'};color:\${ok?'#86efac':'#fca5a5'}">
-            \${ok?'✅':'❌'} \${q.ex}
-          </div>
-          <button onclick="window._qnext()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">
-            \${cur<qs.length-1?'შემდეგი →':'შედეგი 🌟'}
-          </button>\`;
-        window._qnext=function(){cur++;render();};
-      };
-    }
-
-    function showScore(){
-      const pct=Math.round(score/qs.length*100);
-      let em,ti,ms;
-      if(pct>=87){em='🌟';ti='ასტრო-მასტერი!';ms='შენ ასტროლოგიის სრულყოფილი ცოდნა გაქვს — ნიშნებიდან GMT კალკულატორამდე!';}
-      else if(pct>=70){em='🔮';ti='მაღალი დონე!';ms='შენი ცოდნა ძლიერია! კიდევ ერთი გადახედვა და მასტერი გახდები.';}
-      else if(pct>=50){em='🌙';ti='კარგი ცოდნა!';ms='საფუძვლები გაქვს, მაგრამ ზოგი ნიუანსი კიდევ სჭირდება სწავლას.';}
-      else{em='⭐';ti='ვარვარობ!';ms='სტიქიებით და ჯვრებით დაიწყე — ნელ-ნელა ყველაფერი გამოგივა!';}
-      root.innerHTML=\`
-        <div style="text-align:center;padding:32px 20px;border:.5px solid var(--border2);border-radius:20px;background:var(--bg)">
-          <div style="font-size:52px;margin-bottom:12px">\${em}</div>
-          <div style="font-size:18px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">\${ti}</div>
-          <div style="font-size:42px;font-weight:800;color:#a78bfa;margin:14px 0 4px">\${score}/\${qs.length}</div>
-          <div style="font-size:12px;color:var(--text3);margin-bottom:16px">\${pct}% სწორი</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;padding:12px;background:var(--bg2);border-radius:10px">\${ms}</div>
-          <button onclick="cur=0;score=0;ans=false;render();" style="background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">🔄 ხელახლა</button>
-        </div>\`;
-    }
-
-    render();
-  })();
-  <\/script>`;
+  return `<div id="quiz-root" data-secid="${sec.id}"></div>`;
 }
+
+function initQuiz(secId){
+  const root=document.getElementById('quiz-root');
+  if(!root)return;
+  const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
+  const LETTERS=['ა','ბ','გ','დ'];
+  let cur=0,score=0;
+
+  function render(){
+    if(!document.getElementById('quiz-root'))return;
+    if(cur>=qs.length){showScore();return;}
+    const q=qs[cur];
+    const pct=Math.round(cur/qs.length*100);
+    root.innerHTML='<div style="margin-bottom:24px">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
+      '<span style="font-size:12px;font-weight:500;color:var(--text3)">კითხვა '+(cur+1)+'/'+qs.length+'</span>'+
+      '<span style="font-size:12px;color:var(--text3)">✅ '+score+' სწ.</span></div>'+
+      '<div style="background:var(--bg2);border-radius:99px;height:5px;overflow:hidden">'+
+      '<div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);width:'+pct+'%;border-radius:99px;transition:width .4s"></div></div></div>'+
+      '<div style="border:.5px solid var(--border2);border-radius:16px;padding:20px;background:var(--bg);margin-bottom:14px">'+
+      '<div style="font-size:11px;font-weight:600;color:#7c3aed;letter-spacing:.08em;margin-bottom:8px">🎯 კითხვა</div>'+
+      '<div style="font-size:15px;font-weight:500;color:var(--text);line-height:1.55">'+q.q+'</div></div>'+
+      '<div style="display:grid;gap:8px" id="qanswers">'+
+      q.a.map((a,i)=>'<button id="qa'+i+'" onclick="window._qa('+i+')" style="background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px">'+
+        '<span style="width:22px;height:22px;border-radius:6px;background:var(--bg2);font-size:10px;font-weight:700;color:#7c3aed;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">'+LETTERS[i]+'</span>'+a+'</button>').join('')+
+      '</div><div id="qfb"></div>';
+
+    window._qa=function(i){
+      if(window._qans)return;
+      window._qans=true;
+      const btns=document.querySelectorAll('[id^="qa"]');
+      btns.forEach(b=>b.style.cursor='default');
+      const ok=i===q.c;
+      if(ok)score++;
+      btns[i].style.cssText+=(ok?';border-color:#4ade80;background:#052e16;color:#4ade80':';border-color:#f87171;background:#2d0a0a;color:#f87171');
+      if(!ok)btns[q.c].style.cssText+=';border-color:#4ade80;background:#052e16;color:#4ade80';
+      document.getElementById('qfb').innerHTML=
+        '<div style="margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;border:.5px solid '+(ok?'#4ade80':'#f87171')+';background:'+(ok?'#052e16':'#2d0a0a')+';color:'+(ok?'#86efac':'#fca5a5')+'">'+(ok?'✅':'❌')+' '+q.ex+'</div>'+
+        '<button onclick="window._qnext()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">'+(cur<qs.length-1?'შემდეგი →':'შედეგი 🌟')+'</button>';
+      window._qnext=function(){cur++;window._qans=false;render();};
+    };
+    window._qans=false;
+  }
+
+  function showScore(){
+    const pct=Math.round(score/qs.length*100);
+    let em,ti,ms;
+    if(pct>=87){em='🌟';ti='ასტრო-მასტერი!';ms='შენ ასტროლოგიის სრულყოფილი ცოდნა გაქვს — ნიშნებიდან GMT კალკულატორამდე!';}
+    else if(pct>=70){em='🔮';ti='მაღალი დონე!';ms='შენი ცოდნა ძლიერია! კიდევ ერთი გადახედვა და მასტერი გახდები.';}
+    else if(pct>=50){em='🌙';ti='კარგი ცოდნა!';ms='საფუძვლები გაქვს, მაგრამ ზოგი ნიუანსი კიდევ სჭირდება სწავლას.';}
+    else{em='⭐';ti='ვარვარობ!';ms='სტიქიებით და ჯვრებით დაიწყე — ნელ-ნელა ყველაფერი გამოგივა!';}
+    root.innerHTML='<div style="text-align:center;padding:32px 20px;border:.5px solid var(--border2);border-radius:20px;background:var(--bg)">'+
+      '<div style="font-size:52px;margin-bottom:12px">'+em+'</div>'+
+      '<div style="font-size:18px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">'+ti+'</div>'+
+      '<div style="font-size:42px;font-weight:800;color:#a78bfa;margin:14px 0 4px">'+score+'/'+qs.length+'</div>'+
+      '<div style="font-size:12px;color:var(--text3);margin-bottom:16px">'+pct+'% სწორი</div>'+
+      '<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;padding:12px;background:var(--bg2);border-radius:10px">'+ms+'</div>'+
+      '<button onclick="cur=0;score=0;window._qans=false;render();" style="background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">🔄 ხელახლა</button></div>';
+  }
+
+  render();
+}
+
 
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
@@ -1710,6 +1697,7 @@ function doCalc(secId){
 }
 
 function bindSectionEvents(sec,div){
+  if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
   if(sec.type==='glossary'){
     setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
   }
