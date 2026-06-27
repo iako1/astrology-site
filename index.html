@@ -1647,6 +1647,12 @@ function renderCmsList(){
 }
 
 function toggleVis(i){SECTIONS[i].visible=SECTIONS[i].visible===false?true:false;lss('as_sections',SECTIONS);renderCmsList();renderAll();}
+function moveSection(i,dir){
+  const j=i+dir;
+  if(j<0||j>=SECTIONS.length)return;
+  const tmp=SECTIONS[i];SECTIONS[i]=SECTIONS[j];SECTIONS[j]=tmp;
+  lss('as_sections',SECTIONS);renderCmsList();renderAll();
+}
 function deleteSection(i){if(!confirm('წაიშალოს?'))return;SECTIONS.splice(i,1);lss('as_sections',SECTIONS);renderCmsList();renderAll();document.getElementById('sec-editor-wrap').innerHTML='';}
 
 function addSection(type){
