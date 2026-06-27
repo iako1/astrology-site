@@ -1632,11 +1632,13 @@ function renderCmsList(){
     const PLANET_TYPES=['venus','mars'];
     const isPlanet=PLANET_TYPES.includes(sec.type)||(sec.id==='s-moon');
     const isInDropdown=isPlanet;
-    const planetBadge=isInDropdown?'<span style="font-size:10px;padding:1px 7px;border-radius:8px;background:#E6F1FB;color:#0C447C;border:.5px solid #378ADD;margin-right:4px">🪐 dropdown</span>':''
+    const planetBadge=isInDropdown?'<span style="font-size:10px;padding:1px 7px;border-radius:8px;background:#E6F1FB;color:#0C447C;border:.5px solid #378ADD;margin-right:4px">🪐</span>':''
     div.innerHTML=`<span class="cms-drag">⠿</span>
       ${planetBadge}
       <span class="cms-name">${sec.title}</span>
       <span class="cms-type">${typeLabel}</span>
+      <button onclick="moveSection(${i},-1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3);opacity:${i===0?'.2':'1'}" ${i===0?'disabled':''}>↑</button>
+      <button onclick="moveSection(${i},1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3);opacity:${i===SECTIONS.length-1?'.2':'1'}" ${i===SECTIONS.length-1?'disabled':''}>↓</button>
       <button class="cms-vis${sec.visible===false?' off':''}" onclick="toggleVis(${i})" title="ჩვენება/დამალვა">${sec.visible===false?'👁‍🗨':'👁'}</button>
       <button class="cms-edit" onclick="openEditor(${i})">✎</button>
       <button class="cms-del" onclick="deleteSection(${i})">✕</button>`;
