@@ -1871,8 +1871,12 @@ function saveEditor(){
       const sv=g('v-s'+i); if(sv!==undefined) s.selfeval=sv;
     });
     lss('as_venus_signs',vd);
-    // reload VENUS from saved data
+    // reload VENUS in-place
     VENUS.splice(0,VENUS.length,...JSON.parse(JSON.stringify(vd)));
+    // force re-render venus section
+    activeVenus=null;
+    const vPg=SECTIONS.find(s=>s.type==='venus');
+    if(vPg){const vDiv=document.getElementById('pg-'+vPg.id);if(vDiv){vDiv.innerHTML=renderVenusSection(vPg);bindSectionEvents(vPg,vDiv);}}
   }
   if(sec.type==='mars'){
     const md=JSON.parse(JSON.stringify(MARS||[]));
@@ -1889,6 +1893,10 @@ function saveEditor(){
     });
     lss('as_mars_signs',md);
     MARS.splice(0,MARS.length,...JSON.parse(JSON.stringify(md)));
+    // force re-render mars section
+    activeMars=null;
+    const mPg=SECTIONS.find(s=>s.type==='mars');
+    if(mPg){const mDiv=document.getElementById('pg-'+mPg.id);if(mDiv){mDiv.innerHTML=renderMarsSection(mPg);bindSectionEvents(mPg,mDiv);}}
   }
   if(sec.type==='signs'){
     sec.intro=document.getElementById('ed-intro')?.value||'';
