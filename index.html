@@ -1914,7 +1914,22 @@ function saveEditor(){
       s.opp=document.getElementById('so-'+si)?.value||'';
     });
   }
-  lss('as_sections',SECTIONS);renderCmsList();renderAll();badge('sv-ed');
+  // Save sections + re-render specific page
+  lss('as_sections',SECTIONS);
+  // re-render current section page specifically
+  const secDiv=document.getElementById('pg-'+sec.id);
+  if(secDiv){
+    secDiv.innerHTML=renderSection(sec);
+    bindSectionEvents(sec,secDiv);
+  }
+  renderCmsList();
+  badge('sv-ed');
+  // close editor
+  setTimeout(()=>{
+    const w=document.getElementById('editor-wrap');
+    if(w)w.style.display='none';
+    editSecId=null;
+  },1200);
 }
 
 // GLOSSARY RENDER
