@@ -1616,37 +1616,86 @@ function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=docu
 // CMS LIST
 function renderCmsList(){
   const c=document.getElementById('cms-list');c.innerHTML='';
-  SECTIONS.forEach((sec,i)=>{
+  const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
+  const typeLabel=s=>({signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',
+    calc:'კალკ.',article:'სტატია',crosses:'ჯვრები',elements:'სტიქიები',
+    venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'გლოსარი'}[s.type]||s.type);
+
+  // Separate sections into regular and planet
+  const regularSecs=SECTIONS.filter(s=>!isPlanet(s));
+  const planetSecs=SECTIONS.filter(s=>isPlanet(s));
+
+  function makeItem(sec,i,canUp,canDown,extraStyle){
     const div=document.createElement('div');
     div.className='cms-item';div.draggable=true;div.dataset.idx=i;
     div.ondragstart=e=>{dragSrc=i;div.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
-    div.ondragend=()=>{document.querySelectorAll('.cms-item').forEach(d=>{d.classList.remove('dragging','drag-over');});};
+    div.ondragend=()=>{document.querySelectorAll('.cms-item').forEach(d=>d.classList.remove('dragging','drag-over'));};
     div.ondragover=e=>{e.preventDefault();div.classList.add('drag-over');};
     div.ondragleave=()=>div.classList.remove('drag-over');
     div.ondrop=e=>{e.preventDefault();div.classList.remove('drag-over');if(dragSrc===null||dragSrc===i)return;const moved=SECTIONS.splice(dragSrc,1)[0];SECTIONS.splice(i,0,moved);dragSrc=null;lss('as_sections',SECTIONS);renderCmsList();renderAll();};
-    const typeLabel={
-      signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',
-      calc:'კალკ.',article:'სტატია',crosses:'ჯვრები',
-      venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'გლოსარი'
-    }[sec.type]||sec.type;
-    const PLANET_TYPES=['venus','mars'];
-    const isPlanet=PLANET_TYPES.includes(sec.type)||(sec.id==='s-moon');
-    const isInDropdown=isPlanet;
-    const planetBadge=isInDropdown?'<span style="font-size:10px;padding:1px 7px;border-radius:8px;background:#E6F1FB;color:#0C447C;border:.5px solid #378ADD;margin-right:4px">🪐</span>':''
+    if(extraStyle)div.style.cssText=extraStyle;
     div.innerHTML=`<span class="cms-drag">⠿</span>
-      ${planetBadge}
       <span class="cms-name">${sec.title}</span>
-      <span class="cms-type">${typeLabel}</span>
-      <button onclick="moveSection(${i},-1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3);opacity:${i===0?'.2':'1'}" ${i===0?'disabled':''}>↑</button>
-      <button onclick="moveSection(${i},1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3);opacity:${i===SECTIONS.length-1?'.2':'1'}" ${i===SECTIONS.length-1?'disabled':''}>↓</button>
+      <span class="cms-type">${typeLabel(sec)}</span>
+      <button onclick="moveSection(${i},-1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3)${!canUp?';opacity:.2':''}" ${!canUp?'disabled':''}>↑</button>
+      <button onclick="moveSection(${i},1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:var(--text3)${!canDown?';opacity:.2':''}" ${!canDown?'disabled':''}>↓</button>
       <button class="cms-vis${sec.visible===false?' off':''}" onclick="toggleVis(${i})" title="ჩვენება/დამალვა">${sec.visible===false?'👁‍🗨':'👁'}</button>
       <button class="cms-edit" onclick="openEditor(${i})">✎</button>
       <button class="cms-del" onclick="deleteSection(${i})">✕</button>`;
-    c.appendChild(div);
+    return div;
+  }
+
+  // 1. Regular sections
+  regularSecs.forEach((sec)=>{
+    const i=SECTIONS.indexOf(sec);
+    const canUp=i>0&&!isPlanet(SECTIONS[i-1]);
+    const canDown=i<SECTIONS.length-1&&!isPlanet(SECTIONS[i+1]);
+    c.appendChild(makeItem(sec,i,canUp,canDown,''));
   });
+
+  // 2. Planet group block
+  if(planetSecs.length>0){
+    const groupDiv=document.createElement('div');
+    groupDiv.style.cssText='border:.5px solid #378ADD;border-radius:var(--r);margin-top:8px;overflow:hidden';
+
+    // Group header with ↑↓ for whole group
+    const firstPlanetIdx=SECTIONS.indexOf(planetSecs[0]);
+    const lastPlanetIdx=SECTIONS.indexOf(planetSecs[planetSecs.length-1]);
+    const header=document.createElement('div');
+    header.style.cssText='padding:8px 12px;background:#E6F1FB;display:flex;align-items:center;gap:8px;border-bottom:.5px solid #378ADD';
+    header.innerHTML=`<span style="font-size:13px">🪐</span>
+      <span style="font-size:13px;font-weight:500;color:#0C447C;flex:1">პლანეტები ნიშნებში (dropdown)</span>
+      <button onclick="movePlanetGroup(-1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:#0C447C" title="ჯგუფი ზემოთ">↑</button>
+      <button onclick="movePlanetGroup(1)" style="border:none;background:none;cursor:pointer;font-size:14px;padding:0 4px;color:#0C447C" title="ჯგუფი ქვემოთ">↓</button>`;
+    groupDiv.appendChild(header);
+
+    // Planet items
+    planetSecs.forEach((sec,pi)=>{
+      const i=SECTIONS.indexOf(sec);
+      const canUp=pi>0;
+      const canDown=pi<planetSecs.length-1;
+      const item=makeItem(sec,i,canUp,canDown,'padding-left:8px');
+      item.style.borderTop=pi>0?'.5px solid #dbeafe':'none';
+      groupDiv.appendChild(item);
+    });
+    c.appendChild(groupDiv);
+  }
 }
 
 function toggleVis(i){SECTIONS[i].visible=SECTIONS[i].visible===false?true:false;lss('as_sections',SECTIONS);renderCmsList();renderAll();}
+function movePlanetGroup(dir){
+  const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
+  const firstIdx=SECTIONS.findIndex(s=>isPlanet(s));
+  const lastIdx=SECTIONS.reduce((acc,s,i)=>isPlanet(s)?i:acc,-1);
+  if(firstIdx<0)return;
+  const planets=SECTIONS.splice(firstIdx,lastIdx-firstIdx+1);
+  const newPos=firstIdx+dir;
+  if(newPos<0||newPos>SECTIONS.length){
+    SECTIONS.splice(firstIdx,0,...planets);return;
+  }
+  SECTIONS.splice(newPos,0,...planets);
+  lss('as_sections',SECTIONS);renderCmsList();renderAll();
+}
 function moveSection(i,dir){
   const j=i+dir;
   if(j<0||j>=SECTIONS.length)return;
