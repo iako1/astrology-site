@@ -1344,9 +1344,10 @@ function initQuiz(secId){
 
 function renderGameHub(root){
   const games=[
-    {id:'quiz',  icon:'🎯', title:'ქვიზი',              desc:'30 კითხვა — ასტროლოგიის ყველა თემა',      color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
-    {id:'match', icon:'🃏', title:'შეუსაბამე ბარათები', desc:'სტიქია, ჯვარი, ეგზ., ვარდ., მმართ.',    color:'#db2777',bg:'#fdf2f8',border:'#f9a8d4'},
-    {id:'wheel', icon:'🔮', title:'ზოდიაქოს წრე',       desc:'12 ნიშანი სწორ ადგილს დაუყარე',          color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
+    {id:'quiz',  icon:'🎯', title:'ქვიზი',              desc:'30 კითხვა — ასტროლოგიის ყველა თემა',    color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
+    {id:'match', icon:'🃏', title:'შეუსაბამე ბარათები', desc:'სტიქია, ჯვარი, ეგზალტ., ვარდ., მმართ.',color:'#db2777',bg:'#fdf2f8',border:'#f9a8d4'},
+    {id:'wheel', icon:'🔮', title:'ზოდიაქოს წრე',       desc:'12 ნიშანი სწორ ადგილს დაუყარე',         color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
+    {id:'whois', icon:'🌟', title:'ვინ ვარ?',            desc:'მინიშნებები → ნიშანი გამოიცანი',        color:'#d97706',bg:'#fffbeb',border:'#fcd34d'},
   ];
   let h=`<div style="max-width:500px;margin:0 auto">
     <div style="text-align:center;margin-bottom:24px">
@@ -1372,6 +1373,7 @@ function renderGameHub(root){
     if(id==='quiz') startQuizGame(root);
     else if(id==='match') {renderMatchingMenu(root,getMatchingData());}
     else if(id==='wheel') startWheelGame(root);
+    else if(id==='whois') startWhoAmI(root);
   };
 }
 
@@ -1940,6 +1942,205 @@ function showWheelScore(root,moves,t,onRetry){
       <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
     </div>
   </div>`;
+}
+
+// ===== WHO AM I GAME =====
+const WHOIS_DATA=[
+  {sign:'ვერძი',sym:'♈',el:'fire',cr:'cardinal',ruler:'♂ მარსი',hints:[
+    'ვარ 12 ნიშნის პირველი',
+    'ვმართავ გაზაფხულის დასაწყისს',
+    'ჩემი სტიქია ცეცხლია',
+    'ჩემი ჯვარი კარდინალურია — ვიწყებ',
+    'ჩემი მმართველია ♂ მარსი',
+  ]},
+  {sign:'კური',sym:'♉',el:'earth',cr:'fixed',ruler:'♀ ვენერა',hints:[
+    'ვარ მიწის სტიქიის ნიშანი',
+    'ვარ ფიქსირებული ჯვარი',
+    'ჩემი მმართველია ♀ ვენერა',
+    'ჩემ ნიშანში ☽ მთვარე ეგზალტირდება 3°-ზე',
+    'ვარ მეორე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'ტყუპები',sym:'♊',el:'air',cr:'mutable',ruler:'☿ მერკური',hints:[
+    'ვარ ჰაერის სტიქიის ნიშანი',
+    'ვარ მუტაბელური ჯვარი',
+    'ჩემი მმართველია ☿ მერკური',
+    'ჩემი სიმბოლო — ორი ადამიანი',
+    'ვარ მესამე ნიშანი, გაზაფხულის ბოლოში',
+  ]},
+  {sign:'კირჩხიბი',sym:'♋',el:'water',cr:'cardinal',ruler:'☽ მთვარე',hints:[
+    'ვარ წყლის სტიქიის ნიშანი',
+    'ჩემი მმართველია ☽ მთვარე',
+    'ვვართ კარდინალური ჯვარი — ზაფხულს ვიწყებ',
+    'ჩემ ნიშანში ♃ იუპიტერი ეგზალტირდება 15°-ზე',
+    'ვარ მეოთხე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'ლომი',sym:'♌',el:'fire',cr:'fixed',ruler:'☉ მზე',hints:[
+    'ვარ ცეცხლის სტიქიის ნიშანი',
+    'ვარ ფიქსირებული ჯვარი',
+    'ჩემი მმართველია ☉ მზე — ერთადერთი ნიშანი',
+    'ჩემ ნიშანში ☉ ყველაზე ძლიერია — ოიკოსი',
+    'ვარ მეხუთე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'ქალწული',sym:'♍',el:'earth',cr:'mutable',ruler:'☿ მერკური',hints:[
+    'ვარ მიწის სტიქიის ნიშანი',
+    'ვარ მუტაბელური ჯვარი',
+    'ჩემი მმართველია ☿ მერკური',
+    'ჩემ ნიშანში ☿ მერკური ეგზალტირდება 15°-ზე',
+    'ვარ მეექვსე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'სასწორი',sym:'♎',el:'air',cr:'cardinal',ruler:'♀ ვენერა',hints:[
+    'ვარ ჰაერის სტიქიის ნიშანი',
+    'ვარ კარდინალური ჯვარი — შემოდგომას ვიწყებ',
+    'ჩემი მმართველია ♀ ვენერა',
+    'ჩემ ნიშანში ♄ სატ. ეგზალტირდება 21°-ზე',
+    'ჩემი საპირისპიროა ♈ ვერძი',
+  ]},
+  {sign:'მორიელი',sym:'♏',el:'water',cr:'fixed',ruler:'♂ მარსი',hints:[
+    'ვარ წყლის სტიქიის ნიშანი',
+    'ვარ ფიქსირებული ჯვარი',
+    'ჩემი ტრადიც. მმართველია ♂ მარსი',
+    'ჩემ ნიშანში ☽ მთვარე ვარდება',
+    'ვარ მერვე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'მშვილდოსანი',sym:'♐',el:'fire',cr:'mutable',ruler:'♃ იუპიტერი',hints:[
+    'ვარ ცეცხლის სტიქიის ნიშანი',
+    'ვარ მუტაბელური ჯვარი',
+    'ჩემი მმართველია ♃ იუპიტერი',
+    'ჩემი სიმბოლო ისარია — ვესვრი სამიზნეს',
+    'ვარ მეცხრე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'თხის რქა',sym:'♑',el:'earth',cr:'cardinal',ruler:'♄ სატ.',hints:[
+    'ვარ მიწის სტიქიის ნიშანი',
+    'ვარ კარდინალური ჯვარი — ზამთარს ვიწყებ',
+    'ჩემი მმართველია ♄ სატ.',
+    'ჩემ ნიშანში ♂ მარსი ეგზალტირდება 28°-ზე',
+    'ვარ მეათე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'მერწყული',sym:'♒',el:'air',cr:'fixed',ruler:'♄ სატ. / ♅ ურ.',hints:[
+    'ვარ ჰაერის სტიქიის ნიშანი',
+    'ვარ ფიქსირებული ჯვარი',
+    'ჩემი თანამ. მმართველია ♅ ურანი',
+    'ჩემ ნიშანში ☉ მზე ვარდება',
+    'ვარ მეთერთმეტე ნიშანი ზოდიაქოში',
+  ]},
+  {sign:'თევზები',sym:'♓',el:'water',cr:'mutable',ruler:'♆ ნეპ.',hints:[
+    'ვარ წყლის სტიქიის ნიშანი',
+    'ვარ მუტაბელური ჯვარი — ბოლო ნიშანი',
+    'ჩემი თანამ. მმართველია ♆ ნეპტ.',
+    'ჩემ ნიშანში ♀ ვენერა ეგზალტირდება 27°-ზე',
+    'ვარ თორმეტე ნიშანი — ციკლს ვასრულებ',
+  ]},
+];
+
+function startWhoAmI(root){
+  const cards=shuffleArr([...WHOIS_DATA]);
+  let cardIdx=0,hintsShown=1,score=0,moves=0,done=false;
+  let answered=false;
+
+  function render(){
+    if(cardIdx>=cards.length){showWhoScore();return;}
+    const card=cards[cardIdx];
+    const visibleHints=card.hints.slice(0,hintsShown);
+    const pts=card.hints.length-hintsShown+1; // more hints = less points
+
+    // Sign options - current sign + 3 random wrong
+    const wrong=shuffleArr(WHOIS_DATA.filter(d=>d.sign!==card.sign)).slice(0,3);
+    const options=shuffleArr([card,...wrong]);
+
+    root.innerHTML=`<div style="max-width:500px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">🌟 ვინ ვარ?</div>
+        <span style="font-size:12px;color:var(--text3)">⭐ ${score} ქ. · ${cardIdx+1}/${cards.length}</span>
+      </div>
+      <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:16px;overflow:hidden">
+        <div style="height:100%;background:linear-gradient(90deg,#d97706,#f59e0b);border-radius:99px;width:${(cardIdx/cards.length)*100}%;transition:width .4s"></div>
+      </div>
+
+      <div style="border:1.5px solid #fcd34d;border-radius:16px;padding:18px 20px;background:#fffbeb;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.08em;margin-bottom:12px">🔍 მინიშნებები (${hintsShown}/${card.hints.length})</div>
+        <div style="display:grid;gap:7px">
+          ${visibleHints.map((h,i)=>`<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:${i<hintsShown-1?'#6b7280':'#92400e'};font-weight:${i===hintsShown-1?'600':'400'}">
+            <span style="flex-shrink:0;font-size:11px;background:#fde68a;color:#92400e;padding:1px 6px;border-radius:6px;margin-top:1px">${i+1}</span>
+            <span>${h}</span>
+          </div>`).join('')}
+        </div>
+        ${!answered&&hintsShown<card.hints.length?`<button onclick="window._whi_hint()" style="margin-top:12px;padding:6px 14px;border-radius:8px;border:1.5px solid #fcd34d;background:#fff;font-size:12px;color:#92400e;cursor:pointer;font-weight:500">+ კიდევ მინიშნება (${pts-1} ქ.)</button>`:''}
+      </div>
+
+      <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px">
+        სწ. პასუხი — <strong style="color:#d97706">${pts} ქ.</strong>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${options.map(opt=>`<button onclick="window._whi_ans('${opt.sign}','${opt.sym}')" ${answered?'disabled':''} style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:14px;font-weight:600;cursor:${answered?'default':'pointer'};text-align:center;transition:all .2s" id="whi-${opt.sign}">
+          <div style="font-size:22px">${opt.sym}</div>
+          <div style="font-size:12px;margin-top:3px;color:var(--text2)">${opt.sign}</div>
+        </button>`).join('')}
+      </div>
+      <div id="whi-fb"></div>
+    </div>`;
+
+    window._whi_hint=function(){
+      hintsShown=Math.min(hintsShown+1,card.hints.length);
+      render();
+    };
+    window._whi_ans=function(sign,sym){
+      if(answered)return;
+      answered=true;moves++;
+      const ok=sign===card.sign;
+      const pts2=card.hints.length-hintsShown+1;
+      if(ok)score+=pts2;
+      // Color buttons
+      options.forEach(opt=>{
+        const btn=document.getElementById('whi-'+opt.sign);
+        if(!btn)return;
+        if(opt.sign===card.sign){btn.style.borderColor='#4ade80';btn.style.background='#052e16';btn.style.color='#4ade80';}
+        else if(opt.sign===sign&&!ok){btn.style.borderColor='#f87171';btn.style.background='#2d0a0a';btn.style.color='#f87171';}
+      });
+      const fb=document.getElementById('whi-fb');
+      if(fb)fb.innerHTML=`<div style="margin-top:10px;padding:11px 16px;border-radius:12px;font-size:13px;border:.5px solid ${ok?'#4ade80':'#f87171'};background:${ok?'#052e16':'#2d0a0a'};color:${ok?'#86efac':'#fca5a5'};line-height:1.65">
+        ${ok?'✅ სწორია!':'❌ '+card.sym+' '+card.sign} ${ok?'+'+pts2+' ქ.':''}<br>
+        <span style="font-size:11px;opacity:.8">სტ: ${card.el==='fire'?'ცეცხლი':card.el==='earth'?'მიწა':card.el==='air'?'ჰაერი':'წყალი'} · ჯვ: ${card.cr==='cardinal'?'კარდინ.':card.cr==='fixed'?'ფიქსირ.':'მუტაბ.'} · მმ: ${card.ruler}</span>
+      </div>
+      <button onclick="window._whi_next()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#d97706,#f59e0b);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">
+        ${cardIdx<cards.length-1?'შემდეგი →':'შედეგი 🌟'}
+      </button>`;
+      window._whi_next=function(){cardIdx++;hintsShown=1;answered=false;render();};
+    };
+  }
+
+  function showWhoScore(){
+    const maxScore=WHOIS_DATA.reduce((s,_,i)=>s+(WHOIS_DATA[i].hints.length),0);
+    const pct=Math.round((score/maxScore)*100);
+    let emoji,title,msg;
+    if(pct>=80){emoji='🌟';title='ასტრო-გენიოსი!';msg='12 ნიშანი სახეზე გიჩანს! ყველა ნიუანსი — მმართველი, სტიქია, ეგზალტ. — ყველაფერი!';}
+    else if(pct>=60){emoji='🔮';title='ძლიერი ცოდნა!';msg='შენ კარგად იცი ნიშნების თვისებები. კიდევ ერთი გამეორება და სრულყოფილი გახდები!';}
+    else if(pct>=40){emoji='🌙';title:'კარგი დასაწყისი!';msg='ზოგი ნიშანი ადვილად ამოიცანი, ზოგი კი — მინიშნებები დასჭირდა. ვარჯიში გვჭირდება!';}
+    else{emoji='⭐';title='ვარვარობ!';msg='12 ნიშანი ცოტა ბევრია ერთბაშად! ჯერ სტიქიებით გაიმეორე, შემდეგ მმართველები.';}
+
+    root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">
+      <div style="font-size:56px;margin-bottom:8px">${emoji}</div>
+      <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px">${title}</div>
+      <div style="padding:12px 16px;border-radius:14px;background:#fffbeb;border:1px solid #fcd34d;font-size:13px;color:#92400e;line-height:1.7;margin-bottom:16px;text-align:left">${msg}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+        <div style="padding:12px;border-radius:12px;background:#fffbeb;border:1px solid #fcd34d">
+          <div style="font-size:24px;font-weight:700;color:#d97706">${score}</div>
+          <div style="font-size:11px;color:#6b7280">ქულა</div>
+        </div>
+        <div style="padding:12px;border-radius:12px;background:#f0fdf4;border:1px solid #4ade80">
+          <div style="font-size:24px;font-weight:700;color:#16a34a">${pct}%</div>
+          <div style="font-size:11px;color:#6b7280">სიზუსტე</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="startWhoAmI(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-size:13px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
+      </div>
+    </div>`;
+  }
+
+  render();
 }
 
 function renderSection(sec){
