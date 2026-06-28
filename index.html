@@ -3013,10 +3013,11 @@ function checkPw(){
   }else{document.getElementById('pw-err').style.display='block';}
 }
 function aTab(id,btn){
-  ['pages','site','glossary'].forEach(t=>document.getElementById('at-'+t).style.display='none');
+  ['pages','site','glossary','texts'].forEach(t=>{const el=document.getElementById('at-'+t);if(el)el.style.display='none';});
   document.getElementById('at-'+id).style.display='';
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   if(id==='glossary')renderAdminGloss();
+  if(id==='texts')renderTextsEditor();
 }
 function clearSiteCache(){
   // kept for compatibility
