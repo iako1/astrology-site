@@ -236,7 +236,8 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       <div style="margin-bottom:12px;padding:10px 14px;background:#fee2e2;border-radius:var(--r);border:.5px solid #fca5a5">
         <div style="font-size:12px;font-weight:500;color:#991b1b;margin-bottom:6px">⚠️ Cache-ის გასუფთავება</div>
         <div style="font-size:11px;color:#7f1d1d;margin-bottom:8px">თუ ახალი ცვლილებები არ ჩანს — დააჭირე ამ ღილაკს</div>
-        <button class="sbtn" onclick="clearSiteCache()" style="background:#991b1b">🗑️ Cache გასუფთავება და განახლება</button>
+        <button class="sbtn" onclick="clearSiteCache()" style="background:#b45309;width:100%;margin-bottom:5px">🗑️ სტრუქტ. გადატვირთვა (ტექსტები შენარჩ.)</button>
+        <button class="sbtn" onclick="clearAllCache()" style="background:#991b1b;width:100%">⚠️ სრული გასუფთ. (ყველაფ. წაიშ.)</button>
       </div>
       <div class="fg"><label>სათაური (H1)</label><input type="text" id="es-h1"></div>
       <div class="fg"><label>ქვესათაური</label><input type="text" id="es-sub"></div>
@@ -2901,11 +2902,16 @@ function aTab(id,btn){
   if(id==='glossary')renderAdminGloss();
 }
 function clearSiteCache(){
-  if(!confirm('ყველა შენახული ცვლილება წაიშლება და საწყისი მონაცემები ჩაიტვირთება. გავაგრძელოთ?'))return;
-  const keys=['as_sections','as_signs','as_els','as_crs','as_triad','as_tbl','as_pl','as_site',
-    'as_version','as_show_triad','as_venus_signs','as_venus_els','as_mars_signs',
-    'as_glossary_terms','as_crosses_data','as_moon'];
-  keys.forEach(k=>localStorage.removeItem(k));
+  if(!confirm('სექციების განლაგება და სტრუქტ. გადაიტვირთება. თქვენი შეყვანილი ტექსტები, კითხვები და თამაშის მონ. შენარჩუნდება. გავაგრძელოთ?'))return;
+  // Clear only structure/layout - NOT text edits, quiz, games data
+  const structKeys=['as_sections','as_version'];
+  structKeys.forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+function clearAllCache(){
+  if(!confirm('⚠️ ყველაფერი წაიშლება — ტექსტები, კითხვები, თამაშები, განლაგება. გავაგრძელოთ?'))return;
+  localStorage.clear();
   location.reload();
 }
 function renderTextsEditor(){
@@ -3698,10 +3704,13 @@ function initTriadToggle(){
     document.getElementById('triad-status').textContent=isOn?'ჩართული':'გამორთული';
   }
 }
-// Version check — clears stale localStorage when code updates
+// Version check — only removes sections if version changed, preserves all text/game data
 const SITE_VERSION='v2.6';
 if(ls('as_version')!==SITE_VERSION){
+  // Only clear sections structure, keep all user content
   localStorage.removeItem('as_sections');
+  // Keep: as_ui_texts, as_quiz_questions, as_matching_data, as_wheel_signs, 
+  //        as_moon_signs, as_venus_signs, as_mars_signs, as_glossary_terms
   lss('as_version',SITE_VERSION);
 }
 renderAll();</script>
