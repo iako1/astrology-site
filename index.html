@@ -763,16 +763,12 @@ function initSections(){
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
   const hasQuiz=saved.some(s=>s.id==='s-quiz');
   const hasMoonGame=saved.some(s=>s.id==='s-moon-game');
-  const hasMatching=saved.some(s=>s.id==='s-matching');
-  const hasWheel=saved.some(s=>s.id==='s-wheel');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasMoonGame) saved.push(DEF_MOON_GAME);
-  if(!hasMatching) saved.push(DEF_MATCHING);
-  if(!hasWheel) saved.push(DEF_WHEEL);
   return saved;
 }
 let SECTIONS=initSections();
@@ -3622,7 +3618,7 @@ function initTriadToggle(){
   }
 }
 // Version check — clears stale localStorage when code updates
-const SITE_VERSION='v2.5';
+const SITE_VERSION='v2.6';
 if(ls('as_version')!==SITE_VERSION){
   localStorage.removeItem('as_sections');
   lss('as_version',SITE_VERSION);
