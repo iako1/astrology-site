@@ -646,6 +646,7 @@ const GLOSSARY_TERMS=[
    url:'https://cafeastrology.com/glossaryofastrology.html'},
 ];
 
+const DEF_MATCHING={id:'s-matching',type:'matching',title:'🃏 შეუსაბამე ბარათები',visible:true,tab:'🃏 შეუსაბამე'};
 const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 გამოსცადე ცოდნა'};
 let DEF_TIMEZONE={
   id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
@@ -712,17 +713,19 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MATCHING,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
   const hasQuiz=saved.some(s=>s.id==='s-quiz');
+  const hasMatching=saved.some(s=>s.id==='s-matching');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
+  if(!hasMatching) saved.push(DEF_MATCHING);
   return saved;
 }
 let SECTIONS=initSections();
@@ -1396,10 +1399,306 @@ function initQuiz(secId){
 }
 
 
+// ===== MATCHING GAME =====
+const DEF_MATCHING_DATA={
+  modes:[
+    {id:'el',label:'ნიშანი → სტიქია',icon:'🔥',type:'group',
+     categories:[
+       {id:'fire', label:'ცეცხლი 🔥', bg:'#FAECE7',tc:'#712B13',border:'#D85A30'},
+       {id:'earth',label:'მიწა 🌿',   bg:'#EAF3DE',tc:'#27500A',border:'#639922'},
+       {id:'air',  label:'ჰაერი 💨',  bg:'#E6F1FB',tc:'#0C447C',border:'#378ADD'},
+       {id:'water',label:'წყალი 💧',  bg:'#EEEDFE',tc:'#3C3489',border:'#7F77DD'},
+     ],
+     items:[
+       {sym:'♈',name:'ვერძი',   cat:'fire'}, {sym:'♉',name:'კური',     cat:'earth'},
+       {sym:'♊',name:'ტყუპები',cat:'air'},  {sym:'♋',name:'კირჩხიბი',cat:'water'},
+       {sym:'♌',name:'ლომი',   cat:'fire'}, {sym:'♍',name:'ქალწული', cat:'earth'},
+       {sym:'♎',name:'სასწორი',cat:'air'},  {sym:'♏',name:'მორიელი', cat:'water'},
+       {sym:'♐',name:'მშვ-ნი', cat:'fire'}, {sym:'♑',name:'თხის რქა',cat:'earth'},
+       {sym:'♒',name:'მერწყული',cat:'air'},{sym:'♓',name:'თევზები', cat:'water'},
+     ]},
+    {id:'cr',label:'ნიშანი → ჯვარი',icon:'✚',type:'group',
+     categories:[
+       {id:'cardinal',label:'კარდინ. 🌱',bg:'#FEF3C7',tc:'#92400E',border:'#F59E0B'},
+       {id:'fixed',   label:'ფიქსირ. 🏛️', bg:'#F3E8FF',tc:'#6B21A8',border:'#A855F7'},
+       {id:'mutable', label:'მუტაბ. 🌊', bg:'#E0F2FE',tc:'#0C4A6E',border:'#38BDF8'},
+     ],
+     items:[
+       {sym:'♈',name:'ვერძი',   cat:'cardinal'},{sym:'♉',name:'კური',     cat:'fixed'},
+       {sym:'♊',name:'ტყუპები',cat:'mutable'}, {sym:'♋',name:'კირჩხიბი',cat:'cardinal'},
+       {sym:'♌',name:'ლომი',   cat:'fixed'},   {sym:'♍',name:'ქალწული', cat:'mutable'},
+       {sym:'♎',name:'სასწორი',cat:'cardinal'},{sym:'♏',name:'მორიელი', cat:'fixed'},
+       {sym:'♐',name:'მშვ-ნი', cat:'mutable'}, {sym:'♑',name:'თხის რქა',cat:'cardinal'},
+       {sym:'♒',name:'მერწყული',cat:'fixed'}, {sym:'♓',name:'თევზები', cat:'mutable'},
+     ]},
+    {id:'ruler',label:'პლანეტა → მმართველობა',icon:'👑',type:'pairs',
+     pairs:[
+       {id:1,left:'☉ მზე',   right:'♌ ლომი'},
+       {id:2,left:'☽ მთვ.',  right:'♋ კირჩხ.'},
+       {id:3,left:'☿ მერკ.',right:'♊/♍ ტყ./ქ.'},
+       {id:4,left:'♀ ვენ.',  right:'♉/♎ კ./სასწ.'},
+       {id:5,left:'♂ მარ.',  right:'♈/♏ ვ./მ.'},
+       {id:6,left:'♃ იუპ.',  right:'♐/♓ მშვ./თ.'},
+       {id:7,left:'♄ სატ.',  right:'♑/♒ თხ./მ.'},
+     ]},
+    {id:'exalt',label:'პლანეტა → ეგზალტაცია',icon:'⭐',type:'pairs',
+     pairs:[
+       {id:1,left:'☉ მზე',   right:'♈ ვ. 19°'},
+       {id:2,left:'☽ მთვ.',  right:'♉ კ. 3°'},
+       {id:3,left:'☿ მერკ.',right:'♍ ქ. 15°'},
+       {id:4,left:'♀ ვენ.',  right:'♓ თ. 27°'},
+       {id:5,left:'♂ მარ.',  right:'♑ თხ. 28°'},
+       {id:6,left:'♃ იუპ.',  right:'♋ კ. 15°'},
+       {id:7,left:'♄ სატ.',  right:'♎ სასწ. 21°'},
+     ]},
+    {id:'captive',label:'პლანეტა → ტყვეობა',icon:'🔗',type:'pairs',
+     pairs:[
+       {id:1,left:'☉ მზე',   right:'♒/♑'},
+       {id:2,left:'☽ მთვ.',  right:'♑ თხა'},
+       {id:3,left:'☿ მერკ.',right:'♓/♐'},
+       {id:4,left:'♀ ვენ.',  right:'♏/♈'},
+       {id:5,left:'♂ მარ.',  right:'♎/♉'},
+       {id:6,left:'♃ იუპ.',  right:'♍/♊'},
+       {id:7,left:'♄ სატ.',  right:'♋/♌'},
+     ]},
+    {id:'fall',label:'პლანეტა → ვარდნა',icon:'⬇️',type:'pairs',
+     pairs:[
+       {id:1,left:'☉ მზე',   right:'♎ სასწ.'},
+       {id:2,left:'☽ მთვ.',  right:'♏ მორ.'},
+       {id:3,left:'☿ მერკ.',right:'♓ თევ.'},
+       {id:4,left:'♀ ვენ.',  right:'♈ ვერ.'},
+       {id:5,left:'♂ მარ.',  right:'♋ კირ.'},
+       {id:6,left:'♃ იუპ.',  right:'♑ თხა'},
+       {id:7,left:'♄ სატ.',  right:'♈ ვერ.'},
+     ]},
+  ]
+};
+
+function getMatchingData(){return ls('as_matching_data')||DEF_MATCHING_DATA;}
+
+function renderMatchingSection(sec){
+  return '<div id="matching-root"></div>';
+}
+
+function initMatching(secId){
+  const root=document.getElementById('matching-root');
+  if(!root)return;
+  const data=getMatchingData();
+  renderMatchingMenu(root,data);
+}
+
+function shuffleArr(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+function renderMatchingMenu(root,data){
+  const CL_COLORS={
+    ruler:  {bg:'#FEF9C3',border:'#EAB308',tc:'#713F12'},
+    exalt:  {bg:'#F0FDF4',border:'#4ADE80',tc:'#166534'},
+    captive:{bg:'#FEF2F2',border:'#F87171',tc:'#7F1D1D'},
+    fall:   {bg:'#FFF7ED',border:'#FB923C',tc:'#7C2D12'},
+    el:     {bg:'#FAECE7',border:'#D85A30',tc:'#712B13'},
+    cr:     {bg:'#F3E8FF',border:'#A855F7',tc:'#6B21A8'},
+  };
+  let h=`<div style="max-width:480px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:40px;margin-bottom:6px">🃏</div>
+      <div style="font-size:18px;font-weight:600;color:var(--text)">შეუსაბამე ბარათები</div>
+    </div>
+    <div style="background:var(--bg2);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.7">
+      <strong>📖 როგორ ვთამაშოთ:</strong><br>
+      1️⃣ მარცხნივ კატეგ. (სტ./ჯვ.) ან პლანეტა დააჭირე<br>
+      2️⃣ შესაბამისი ბარათ(ებ)ი მონიშნე<br>
+      3️⃣ <strong>✓ დადასტ.</strong> — ყველა ერთბაშად მოწმდება
+    </div>
+    <div style="display:grid;gap:8px">`;
+  data.modes.forEach(m=>{
+    const c=CL_COLORS[m.id]||{bg:'var(--bg2)',border:'var(--border)',tc:'var(--text2)'};
+    h+=`<button onclick="startMatching('${m.id}')" style="padding:14px 16px;border-radius:14px;border:1.5px solid ${c.border};background:${c.bg};font-size:14px;font-weight:600;color:${c.tc};cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px">
+      <span style="font-size:24px">${m.icon}</span>
+      <span>${m.label}</span>
+    </button>`;
+  });
+  h+=`</div></div>`;
+  root.innerHTML=h;
+  window.startMatching=function(modeId){
+    const data=getMatchingData();
+    const mode=data.modes.find(m=>m.id===modeId);
+    if(!mode)return;
+    if(mode.type==='group') runGroupGame(root,mode,data);
+    else runPairsGame(root,mode,data);
+  };
+}
+
+function runGroupGame(root,mode,data){
+  let matched={},selCat=null,pending=[],moves=0,t=0,done=false;
+  const shuffled=shuffleArr(mode.items);
+  const timer=setInterval(()=>{if(!done)t++;},1000);
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+  function render(){
+    const total=mode.items.length;
+    const matchedCount=Object.keys(matched).length;
+    const needed=selCat?mode.items.filter(i=>i.cat===selCat).length:0;
+    let catBtns=mode.categories.map(cat=>{
+      const isSel=selCat===cat.id;
+      const cnt=Object.values(matched).filter(v=>v===cat.id).length;
+      const full=cnt===mode.items.filter(i=>i.cat===cat.id).length;
+      return `<button onclick="window._mc('${cat.id}')" style="padding:10px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;min-width:85px;min-height:52px;text-align:center;border:2px solid ${isSel?'#7c3aed':full?cat.border:'var(--border)'};background:${isSel?'var(--bg3,#1a1a2e)':full?cat.bg:'var(--bg)'};color:${isSel?'#a78bfa':full?cat.tc:'var(--text2)'};transition:all .2s">
+        ${cat.label}<div style="font-size:10px;margin-top:3px;opacity:.65">${cnt}/${mode.items.filter(i=>i.cat===cat.id).length}</div>
+      </button>`;
+    }).join('');
+
+    if(selCat){
+      catBtns+=`<button onclick="window._mconf()" ${pending.length===0?'disabled':''} style="margin-top:6px;padding:10px;border-radius:12px;font-size:12px;font-weight:700;border:none;cursor:${pending.length===0?'not-allowed':'pointer'};background:${pending.length===0?'var(--bg2)':'linear-gradient(135deg,#7c3aed,#db2777)'};color:${pending.length===0?'var(--text3)':'#fff'};transition:all .2s">
+        ✓ დადასტ. ${pending.length>0?'('+pending.length+'/'+needed+')':''}
+      </button>`;
+    }
+
+    const itemBtns=shuffled.map(item=>{
+      const isMat=!!matched[item.sym];
+      const isPend=pending.includes(item.sym);
+      const mCat=isMat?mode.categories.find(c=>c.id===matched[item.sym]):null;
+      const sCat=selCat?mode.categories.find(c=>c.id===selCat):null;
+      let bg='var(--bg)',border='var(--border)',color='var(--text2)';
+      if(isMat){bg=mCat.bg;border=mCat.border;color=mCat.tc;}
+      else if(isPend&&sCat){bg=sCat.bg;border=sCat.border;color=sCat.tc;}
+      return `<button onclick="window._mi('${item.sym}')" ${isMat?'disabled':''} id="mit-${item.sym}" style="padding:8px 6px;border-radius:10px;font-size:11px;font-weight:500;cursor:${isMat?'default':'pointer'};min-height:46px;text-align:center;border:${isPend||isMat?'2px':'1.5px'} solid ${border};background:${bg};color:${color};transform:${isPend?'scale(1.04)':'scale(1)'};transition:all .2s">
+        <div style="font-size:17px">${item.sym}</div><div>${item.name}</div>${isMat?'<div style="font-size:9px;margin-top:1px">✓</div>':isPend?'<div style="font-size:9px;margin-top:1px">●</div>':''}
+      </button>`;
+    }).join('');
+
+    root.innerHTML=`<div style="max-width:500px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <button onclick="window._mback()" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← უკან</button>
+        <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves} · ${matchedCount}/${total}</span>
+      </div>
+      <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:10px;overflow:hidden">
+        <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);border-radius:99px;width:${(matchedCount/total)*100}%;transition:width .4s"></div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:12px;min-height:16px">
+        ${!selCat?'👈 ჯერ მარცხნივ კატ. აირჩიე':`✦ "${mode.categories.find(c=>c.id===selCat)?.label}" — ${needed} ნიშანი მონიშნე`}
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:7px">${catBtns}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${itemBtns}</div>
+      </div>
+    </div>`;
+
+    window._mc=cat=>{selCat=selCat===cat?null:cat;pending=[];render();};
+    window._mi=sym=>{
+      if(!selCat||matched[sym])return;
+      pending=pending.includes(sym)?pending.filter(s=>s!==sym):[...pending,sym];
+      render();
+    };
+    window._mconf=()=>{
+      if(!selCat||pending.length===0)return;
+      moves++;
+      const needed2=mode.items.filter(i=>i.cat===selCat).map(i=>i.sym);
+      const ok=pending.length===needed2.length&&pending.every(s=>needed2.includes(s));
+      if(ok){
+        pending.forEach(s=>{matched[s]=selCat;});
+        selCat=null;pending=[];
+        if(Object.keys(matched).length===mode.items.length){done=true;clearInterval(timer);showMatchScore(root,moves,t,data);}
+        else render();
+      } else {
+        const wrongs=pending.filter(s=>!needed2.includes(s));
+        const shake=wrongs.length>0?wrongs:pending;
+        shake.forEach(sym=>{const el=document.getElementById('mit-'+sym);if(el){el.style.background='#2d0a0a';el.style.borderColor='#f87171';el.style.color='#f87171';el.style.transform='translateX(4px)';}});
+        setTimeout(()=>{pending=[];render();},700);
+      }
+    };
+    window._mback=()=>{clearInterval(timer);renderMatchingMenu(root,data);};
+  }
+  render();
+}
+
+function runPairsGame(root,mode,data){
+  const lefts=shuffleArr(mode.pairs);
+  const rights=shuffleArr(mode.pairs);
+  let selL=null,selR=null,matched=[],wrong=[],moves=0,t=0,done=false;
+  const timer=setInterval(()=>{if(!done)t++;},1000);
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+  function render(){
+    const pct=Math.round((matched.length/mode.pairs.length)*100);
+    const mkBtn=(item,side,field)=>{
+      const isMat=matched.includes(item.id);
+      const isSel=side==='L'?selL?.id===item.id:selR?.id===item.id;
+      const isW=wrong.includes(item.id+side);
+      return `<button onclick="window._pb('${side}',${item.id})" ${isMat?'disabled':''}
+        style="padding:10px 8px;border-radius:11px;font-size:12px;font-weight:500;cursor:${isMat?'default':'pointer'};min-height:46px;text-align:center;border:1.5px solid ${isW?'#f87171':isSel?'#a78bfa':isMat?'#4ade80':'var(--border)'};background:${isW?'#2d0a0a':isSel?'var(--bg3,#1a1a2e)':isMat?'#052e16':'var(--bg)'};color:${isW?'#f87171':isSel?'#a78bfa':isMat?'#4ade80':'var(--text2)'};transform:${isW?'scale(.96)':'scale(1)'};transition:all .2s">
+        ${item[field]}${isMat?' ✓':''}
+      </button>`;
+    };
+    root.innerHTML=`<div style="max-width:500px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <button onclick="window._mback()" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← უკან</button>
+        <span style="font-size:13px;font-weight:600;color:var(--text)">${mode.label}</span>
+        <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves}</span>
+      </div>
+      <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:14px;overflow:hidden">
+        <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);border-radius:99px;width:${pct}%;transition:width .4s"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="display:flex;flex-direction:column;gap:6px">${lefts.map(i=>mkBtn(i,'L','left')).join('')}</div>
+        <div style="display:flex;flex-direction:column;gap:6px">${rights.map(i=>mkBtn(i,'R','right')).join('')}</div>
+      </div>
+    </div>`;
+
+    window._pb=(side,id)=>{
+      const item=(side==='L'?lefts:rights).find(i=>i.id===id);
+      if(!item||matched.includes(id))return;
+      if(side==='L'){selL=selL?.id===id?null:item;}
+      else{selR=selR?.id===id?null:item;}
+      if(selL&&selR){
+        moves++;
+        if(selL.id===selR.id){
+          matched=[...matched,selL.id];selL=null;selR=null;
+          if(matched.length===mode.pairs.length){done=true;clearInterval(timer);showMatchScore(root,moves,t,data);}
+          else render();
+        } else {
+          wrong=[selL.id+'L',selR.id+'R'];
+          render();
+          setTimeout(()=>{wrong=[];selL=null;selR=null;render();},700);
+        }
+      } else render();
+    };
+    window._mback=()=>{clearInterval(timer);renderMatchingMenu(root,data);};
+  }
+  render();
+}
+
+function showMatchScore(root,moves,t,data){
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:400px;margin:0 auto">
+    <div style="font-size:52px;margin-bottom:8px">🎉</div>
+    <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:14px">გამარჯვება!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+      <div style="padding:12px;border-radius:12px;background:#f5f3ff;border:1px solid #a78bfa">
+        <div style="font-size:24px;font-weight:700;color:#7c3aed">${moves}</div>
+        <div style="font-size:11px;color:#6b7280">მცდელობა</div>
+      </div>
+      <div style="padding:12px;border-radius:12px;background:#f0fdf4;border:1px solid #4ade80">
+        <div style="font-size:24px;font-weight:700;color:#16a34a">${fmt(t)}</div>
+        <div style="font-size:11px;color:#6b7280">დრო</div>
+      </div>
+    </div>
+    <button onclick="renderMatchingMenu(document.getElementById('matching-root'),getMatchingData())" style="padding:12px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:14px;font-weight:600;cursor:pointer">🏠 მენიუ</button>
+  </div>`;
+}
+
+function renderMatchingSection(sec){
+  return '<div id="matching-root" style="padding:16px"></div>';
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='elements')return renderElementsSection(sec);
   if(sec.type==='quiz')return renderQuizSection(sec);
+  if(sec.type==='matching')return renderMatchingSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
@@ -1748,7 +2047,46 @@ function doCalc(secId){
 }
 
 function bindSectionEvents(sec,div){
+  if(sec.type==='matching'){
+    const md=getMatchingData();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">'+md.modes.length+' თამაშის რეჟიმი</p>';
+    md.modes.forEach((mode,mi)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+        <summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${mode.icon} ${mode.label}</summary>
+        <div style="padding:10px 12px">
+          <div class="fg"><label>სათაური</label><input type="text" id="mm-lbl${mi}" value="${mode.label}"></div>
+          ${mode.type==='pairs'?mode.pairs.map((p,pi)=>`
+          <div class="g2" style="margin-bottom:6px">
+            <div class="fg"><label>მარცხნივ ${pi+1}</label><input type="text" id="mm-l${mi}-${pi}" value="${p.left}"></div>
+            <div class="fg"><label>მარჯვნივ ${pi+1}</label><input type="text" id="mm-r${mi}-${pi}" value="${p.right}"></div>
+          </div>`).join('')
+          :mode.categories.map((cat,ci)=>`
+          <div class="fg"><label>კატ. ${ci+1} სახელი</label><input type="text" id="mm-cat${mi}-${ci}" value="${cat.label}"></div>`).join('')}
+        </div></details>`;
+    });
+  }
+  if(sec.type==='matching'){
+    const md=getMatchingData();
+    md.modes.forEach((mode,mi)=>{
+      const lbl=document.getElementById('mm-lbl'+mi);
+      if(lbl)mode.label=lbl.value;
+      if(mode.type==='pairs'){
+        mode.pairs.forEach((p,pi)=>{
+          const l=document.getElementById('mm-l'+mi+'-'+pi);
+          const r=document.getElementById('mm-r'+mi+'-'+pi);
+          if(l)p.left=l.value;if(r)p.right=r.value;
+        });
+      } else {
+        mode.categories.forEach((cat,ci)=>{
+          const c=document.getElementById('mm-cat'+mi+'-'+ci);
+          if(c)cat.label=c.value;
+        });
+      }
+    });
+    lss('as_matching_data',md);
+  }
   if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
+  if(sec.type==='matching'){setTimeout(()=>initMatching(sec.id),50);}
   if(sec.type==='glossary'){
     setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
   }
