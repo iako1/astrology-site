@@ -714,7 +714,7 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MATCHING,DEF_WHEEL,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -1333,13 +1333,49 @@ const DEF_QUIZ_QUESTIONS=[
 ];
 
 function renderQuizSection(sec){
-  const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
-  return `<div id="quiz-root" data-secid="${sec.id}"></div>`;
+  return `<div id="quiz-root"></div>`;
 }
 
 function initQuiz(secId){
   const root=document.getElementById('quiz-root');
   if(!root)return;
+  renderGameHub(root);
+}
+
+function renderGameHub(root){
+  const games=[
+    {id:'quiz',  icon:'🎯', title:'ქვიზი',              desc:'30 კითხვა — ასტროლოგიის ყველა თემა',      color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
+    {id:'match', icon:'🃏', title:'შეუსაბამე ბარათები', desc:'სტიქია, ჯვარი, ეგზ., ვარდ., მმართ.',    color:'#db2777',bg:'#fdf2f8',border:'#f9a8d4'},
+    {id:'wheel', icon:'🔮', title:'ზოდიაქოს წრე',       desc:'12 ნიშანი სწორ ადგილს დაუყარე',          color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
+  ];
+  let h=`<div style="max-width:500px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:44px;margin-bottom:8px">🎮</div>
+      <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">გამოსცადე ცოდნა</div>
+      <div style="font-size:13px;color:var(--text3)">აირჩიე თამაში</div>
+    </div>
+    <div style="display:grid;gap:12px">`;
+  games.forEach(g=>{
+    h+=`<button onclick="window._ghub('${g.id}')" style="padding:18px 20px;border-radius:16px;border:1.5px solid ${g.border};background:${g.bg};cursor:pointer;text-align:left;display:flex;align-items:center;gap:14px;transition:all .2s;width:100%" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="font-size:36px;flex-shrink:0">${g.icon}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:${g.color};margin-bottom:3px">${g.title}</div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.5">${g.desc}</div>
+      </div>
+      <div style="margin-left:auto;font-size:18px;color:${g.border}">→</div>
+    </button>`;
+  });
+  h+=`</div></div>`;
+  root.innerHTML=h;
+
+  window._ghub=function(id){
+    if(id==='quiz') startQuizGame(root);
+    else if(id==='match') {renderMatchingMenu(root,getMatchingData());}
+    else if(id==='wheel') startWheelGame(root);
+  };
+}
+
+function startQuizGame(root){
   const qs=ls('as_quiz_questions')||DEF_QUIZ_QUESTIONS;
   const LETTERS=['ა','ბ','გ','დ'];
   let cur=0,score=0;
@@ -1506,9 +1542,9 @@ function renderMatchingMenu(root,data){
     cr:     {bg:'#F3E8FF',border:'#A855F7',tc:'#6B21A8'},
   };
   let h=`<div style="max-width:480px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:40px;margin-bottom:6px">🃏</div>
-      <div style="font-size:18px;font-weight:600;color:var(--text)">შეუსაბამე ბარათები</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
+      <div style="font-size:16px;font-weight:700;color:var(--text)">🃏 შეუსაბამე ბარათები</div>
     </div>
     <div style="background:var(--bg2);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.7">
       <strong>📖 როგორ ვთამაშოთ:</strong><br>
@@ -1812,6 +1848,7 @@ function startWheelGame(root){
     root.innerHTML=`
       <div style="max-width:500px;margin:0 auto">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
           <div style="font-size:14px;font-weight:700;color:var(--text)">🔮 ზოდიაქოს წრე</div>
           <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves} · ${placed}/12</span>
         </div>
@@ -1898,7 +1935,10 @@ function showWheelScore(root,moves,t,onRetry){
         <div style="font-size:11px;color:#6b7280">დრო</div>
       </div>
     </div>
-    <button onclick="(${onRetry.toString()})()" style="width:100%;padding:12px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:14px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="(${onRetry.toString()})()" style="padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:13px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
+      <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
+    </div>
   </div>`;
 }
 
