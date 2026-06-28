@@ -1947,11 +1947,11 @@ function showWheelScore(root,moves,t,onRetry){
 // ===== WHO AM I GAME =====
 const WHOIS_DATA=[
   {sign:'ვერძი',sym:'♈',el:'fire',cr:'cardinal',ruler:'♂ მარსი',hints:[
-    'ვარ 12 ნიშნის პირველი',
-    'ვმართავ გაზაფხულის დასაწყისს',
-    'ჩემი სტიქია ცეცხლია',
-    'ჩემი ჯვარი კარდინალურია — ვიწყებ',
-    'ჩემი მმართველია ♂ მარსი',
+    'ჩემი მმართველი პლანეტა ♂ — მოქმედება, ენერგია, ომი',
+    'ვარ კარდინალური ჯვარი — სეზონს ვიწყებ',
+    'ვარ 12 ნიშნის პირველი — ციკლს ვხსნი',
+    'გაზაფხულის პირველი ნიშანი ვარ',
+    'ჩემი სტიქია ცეცხლია 🔥',
   ]},
   {sign:'კური',sym:'♉',el:'earth',cr:'fixed',ruler:'♀ ვენერა',hints:[
     'ვარ მიწის სტიქიის ნიშანი',
@@ -2034,16 +2034,19 @@ const WHOIS_DATA=[
 
 function startWhoAmI(root){
   const cards=shuffleArr([...WHOIS_DATA]);
-  let cardIdx=0,hintsShown=1,score=0,moves=0,done=false;
-  let answered=false;
+  let cardIdx=0,hintsShown=1,score=0,answered=false;
+
+  // Hints are ordered: hard (ruler, special) → easy (element last)
+  // Each card's hints[0] = hardest, hints[4] = easiest (element/position)
 
   function render(){
     if(cardIdx>=cards.length){showWhoScore();return;}
     const card=cards[cardIdx];
+    // Show hints from index 0 up to hintsShown
     const visibleHints=card.hints.slice(0,hintsShown);
-    const pts=card.hints.length-hintsShown+1; // more hints = less points
+    // Score = 1 point per card, no penalty for hints
+    const pts=1;
 
-    // Sign options - current sign + 3 random wrong
     const wrong=shuffleArr(WHOIS_DATA.filter(d=>d.sign!==card.sign)).slice(0,3);
     const options=shuffleArr([card,...wrong]);
 
@@ -2051,30 +2054,31 @@ function startWhoAmI(root){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
         <div style="font-size:13px;font-weight:600;color:var(--text)">🌟 ვინ ვარ?</div>
-        <span style="font-size:12px;color:var(--text3)">⭐ ${score} ქ. · ${cardIdx+1}/${cards.length}</span>
+        <span style="font-size:12px;color:var(--text3)">✅ ${score}/${cardIdx+1} · ${cardIdx+1}/${cards.length}</span>
       </div>
       <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:16px;overflow:hidden">
         <div style="height:100%;background:linear-gradient(90deg,#d97706,#f59e0b);border-radius:99px;width:${(cardIdx/cards.length)*100}%;transition:width .4s"></div>
       </div>
 
       <div style="border:1.5px solid #fcd34d;border-radius:16px;padding:18px 20px;background:#fffbeb;margin-bottom:14px">
-        <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.08em;margin-bottom:12px">🔍 მინიშნებები (${hintsShown}/${card.hints.length})</div>
-        <div style="display:grid;gap:7px">
-          ${visibleHints.map((h,i)=>`<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:${i<hintsShown-1?'#6b7280':'#92400e'};font-weight:${i===hintsShown-1?'600':'400'}">
-            <span style="flex-shrink:0;font-size:11px;background:#fde68a;color:#92400e;padding:1px 6px;border-radius:6px;margin-top:1px">${i+1}</span>
-            <span>${h}</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.08em">🔍 მინიშნებები</div>
+          <div style="font-size:11px;color:#b45309">${hintsShown}/${card.hints.length} ჩანს</div>
+        </div>
+        <div style="display:grid;gap:8px">
+          ${visibleHints.map((h,i)=>`<div style="display:flex;align-items:flex-start;gap:8px">
+            <span style="flex-shrink:0;min-width:20px;height:20px;border-radius:6px;background:${i===hintsShown-1?'#d97706':'#fde68a'};color:${i===hintsShown-1?'#fff':'#92400e'};font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">${i+1}</span>
+            <span style="font-size:13px;color:${i===hintsShown-1?'#92400e':'#a16207'};font-weight:${i===hintsShown-1?'600':'400'};line-height:1.5">${h}</span>
           </div>`).join('')}
         </div>
-        ${!answered&&hintsShown<card.hints.length?`<button onclick="window._whi_hint()" style="margin-top:12px;padding:6px 14px;border-radius:8px;border:1.5px solid #fcd34d;background:#fff;font-size:12px;color:#92400e;cursor:pointer;font-weight:500">+ კიდევ მინიშნება (${pts-1} ქ.)</button>`:''}
-      </div>
-
-      <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px">
-        სწ. პასუხი — <strong style="color:#d97706">${pts} ქ.</strong>
+        ${!answered&&hintsShown<card.hints.length?`<button onclick="window._whi_hint()" style="margin-top:12px;padding:7px 16px;border-radius:10px;border:1.5px solid #fcd34d;background:#fff;font-size:12px;color:#92400e;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:6px">
+          <span>💡</span> კიდევ ერთი მინიშნება
+        </button>`:''}
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        ${options.map(opt=>`<button onclick="window._whi_ans('${opt.sign}','${opt.sym}')" ${answered?'disabled':''} style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:14px;font-weight:600;cursor:${answered?'default':'pointer'};text-align:center;transition:all .2s" id="whi-${opt.sign}">
-          <div style="font-size:22px">${opt.sym}</div>
+        ${options.map(opt=>`<button onclick="window._whi_ans('${opt.sign}','${opt.sym}')" ${answered?'disabled':''} style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:14px;font-weight:600;cursor:${answered?'default':'pointer'};text-align:center;transition:all .2s" id="whi-${opt.sign.replace(/[^a-zA-Z]/g,'')}" onmouseover="if(!${answered})this.style.borderColor='#fcd34d'" onmouseout="if(!${answered})this.style.borderColor='var(--border)'">
+          <div style="font-size:24px">${opt.sym}</div>
           <div style="font-size:12px;margin-top:3px;color:var(--text2)">${opt.sign}</div>
         </button>`).join('')}
       </div>
@@ -2085,39 +2089,57 @@ function startWhoAmI(root){
       hintsShown=Math.min(hintsShown+1,card.hints.length);
       render();
     };
+
     window._whi_ans=function(sign,sym){
       if(answered)return;
-      answered=true;moves++;
+      answered=true;
       const ok=sign===card.sign;
-      const pts2=card.hints.length-hintsShown+1;
-      if(ok)score+=pts2;
+      if(ok)score++;
+
       // Color buttons
       options.forEach(opt=>{
-        const btn=document.getElementById('whi-'+opt.sign);
+        const safeId='whi-'+opt.sign.replace(/[^a-zA-Z]/g,'');
+        const btn=document.getElementById(safeId);
         if(!btn)return;
-        if(opt.sign===card.sign){btn.style.borderColor='#4ade80';btn.style.background='#052e16';btn.style.color='#4ade80';}
-        else if(opt.sign===sign&&!ok){btn.style.borderColor='#f87171';btn.style.background='#2d0a0a';btn.style.color='#f87171';}
+        if(opt.sign===card.sign){
+          btn.style.borderColor='#4ade80';btn.style.background='#052e16';btn.style.color='#4ade80';
+        } else if(opt.sign===sign&&!ok){
+          btn.style.borderColor='#f87171';btn.style.background='#2d0a0a';btn.style.color='#f87171';
+        }
+        btn.disabled=true;
       });
+
+      const elLabel=card.el==='fire'?'ცეცხლი 🔥':card.el==='earth'?'მიწა 🌿':card.el==='air'?'ჰაერი 💨':'წყალი 💧';
+      const crLabel=card.cr==='cardinal'?'კარდინ.':card.cr==='fixed'?'ფიქსირ.':'მუტაბ.';
+
       const fb=document.getElementById('whi-fb');
-      if(fb)fb.innerHTML=`<div style="margin-top:10px;padding:11px 16px;border-radius:12px;font-size:13px;border:.5px solid ${ok?'#4ade80':'#f87171'};background:${ok?'#052e16':'#2d0a0a'};color:${ok?'#86efac':'#fca5a5'};line-height:1.65">
-        ${ok?'✅ სწორია!':'❌ '+card.sym+' '+card.sign} ${ok?'+'+pts2+' ქ.':''}<br>
-        <span style="font-size:11px;opacity:.8">სტ: ${card.el==='fire'?'ცეცხლი':card.el==='earth'?'მიწა':card.el==='air'?'ჰაერი':'წყალი'} · ჯვ: ${card.cr==='cardinal'?'კარდინ.':card.cr==='fixed'?'ფიქსირ.':'მუტაბ.'} · მმ: ${card.ruler}</span>
-      </div>
-      <button onclick="window._whi_next()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#d97706,#f59e0b);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">
-        ${cardIdx<cards.length-1?'შემდეგი →':'შედეგი 🌟'}
-      </button>`;
-      window._whi_next=function(){cardIdx++;hintsShown=1;answered=false;render();};
+      if(fb)fb.innerHTML=`
+        <div style="margin-top:10px;padding:12px 16px;border-radius:12px;border:.5px solid ${ok?'#4ade80':'#f87171'};background:${ok?'#052e16':'#2d0a0a'};color:${ok?'#86efac':'#fca5a5'};line-height:1.7;font-size:13px">
+          ${ok?'✅ სწორია!':'❌ '+card.sym+' <strong>'+card.sign+'</strong>'}
+          <div style="font-size:11px;margin-top:5px;opacity:.85;display:flex;gap:10px;flex-wrap:wrap">
+            <span>სტ: ${elLabel}</span>
+            <span>ჯვ: ${crLabel}</span>
+            <span>მმ: ${card.ruler}</span>
+          </div>
+        </div>
+        <button onclick="window._whi_next()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#d97706,#f59e0b);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">
+          ${cardIdx<cards.length-1?'შემდეგი ბარათი →':'შედეგი 🌟'}
+        </button>`;
+
+      window._whi_next=function(){
+        cardIdx++;hintsShown=1;answered=false;render();
+      };
     };
   }
 
   function showWhoScore(){
-    const maxScore=WHOIS_DATA.reduce((s,_,i)=>s+(WHOIS_DATA[i].hints.length),0);
-    const pct=Math.round((score/maxScore)*100);
+    const total=cards.length;
+    const pct=Math.round((score/total)*100);
     let emoji,title,msg;
-    if(pct>=80){emoji='🌟';title='ასტრო-გენიოსი!';msg='12 ნიშანი სახეზე გიჩანს! ყველა ნიუანსი — მმართველი, სტიქია, ეგზალტ. — ყველაფერი!';}
-    else if(pct>=60){emoji='🔮';title='ძლიერი ცოდნა!';msg='შენ კარგად იცი ნიშნების თვისებები. კიდევ ერთი გამეორება და სრულყოფილი გახდები!';}
-    else if(pct>=40){emoji='🌙';title:'კარგი დასაწყისი!';msg='ზოგი ნიშანი ადვილად ამოიცანი, ზოგი კი — მინიშნებები დასჭირდა. ვარჯიში გვჭირდება!';}
-    else{emoji='⭐';title='ვარვარობ!';msg='12 ნიშანი ცოტა ბევრია ერთბაშად! ჯერ სტიქიებით გაიმეორე, შემდეგ მმართველები.';}
+    if(pct===100)    {emoji='🌟';title='სრულყოფილი!';msg='12/12 — ყველა ნიშანი პირველი მინიშნებიდანვე! შენ ნამდვილი ასტრო-გენიოსი ხარ.';}
+    else if(pct>=75) {emoji='🔮';title='შესანიშნავი!';msg='ნიშნების უმეტესობა ადვილად გამოიცანი. კიდევ ცოტა ვარჯიში — და 12/12!';}
+    else if(pct>=50) {emoji='🌙';title='კარგი შედეგი!';msg='ნახევარზე მეტი სწ.! ზოგი ნიშანი კი ბოლო მინიშნებამდე დაიყოვნა. ვარჯიში გჭირდება.';}
+    else             {emoji='⭐';title='კარგი დასაწყისი!';msg='12 ნიშანი ცოტა ბევრია — ჯერ სტიქიებით და ჯვრებით გაიმეორე!';}
 
     root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">
       <div style="font-size:56px;margin-bottom:8px">${emoji}</div>
@@ -2125,11 +2147,11 @@ function startWhoAmI(root){
       <div style="padding:12px 16px;border-radius:14px;background:#fffbeb;border:1px solid #fcd34d;font-size:13px;color:#92400e;line-height:1.7;margin-bottom:16px;text-align:left">${msg}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
         <div style="padding:12px;border-radius:12px;background:#fffbeb;border:1px solid #fcd34d">
-          <div style="font-size:24px;font-weight:700;color:#d97706">${score}</div>
-          <div style="font-size:11px;color:#6b7280">ქულა</div>
+          <div style="font-size:28px;font-weight:700;color:#d97706">${score}/${total}</div>
+          <div style="font-size:11px;color:#6b7280">სწორი</div>
         </div>
         <div style="padding:12px;border-radius:12px;background:#f0fdf4;border:1px solid #4ade80">
-          <div style="font-size:24px;font-weight:700;color:#16a34a">${pct}%</div>
+          <div style="font-size:28px;font-weight:700;color:#16a34a">${pct}%</div>
           <div style="font-size:11px;color:#6b7280">სიზუსტე</div>
         </div>
       </div>
