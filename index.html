@@ -236,7 +236,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       <div style="margin-bottom:12px;padding:10px 14px;background:#fee2e2;border-radius:var(--r);border:.5px solid #fca5a5">
         <div style="font-size:12px;font-weight:500;color:#991b1b;margin-bottom:6px">⚠️ Cache-ის გასუფთავება</div>
         <div style="font-size:11px;color:#7f1d1d;margin-bottom:8px">თუ ახალი ცვლილებები არ ჩანს — დააჭირე ამ ღილაკს</div>
-        <button class="sbtn" onclick="clearSiteCache()" style="background:#b45309;width:100%">🗑️ მენიუს განლაგების გადატვირთვა</button>
+        <button class="sbtn" onclick="hardReload()" style="background:#b45309;width:100%">🔄 ბრაუზერის ქეშის გასუფთავება</button>
       </div>
       <div class="fg"><label>სათაური (H1)</label><input type="text" id="es-h1"></div>
       <div class="fg"><label>ქვესათაური</label><input type="text" id="es-sub"></div>
@@ -2901,10 +2901,14 @@ function aTab(id,btn){
   if(id==='glossary')renderAdminGloss();
 }
 function clearSiteCache(){
-  if(!confirm('მენიუს განლაგება გადაიტვირთება. ყველა ტექსტი, ქვიზი და თამაშის მონაცემი შენარჩუნდება. გავაგრძელოთ?'))return;
-  // Only removes sections order - nothing else touched
+  // kept for compatibility
   localStorage.removeItem('as_sections');
   location.reload();
+}
+function hardReload(){
+  // Force browser to fetch fresh files from server, ignore cache
+  // Does NOT touch localStorage - all user data preserved
+  window.location.href=window.location.href.split('?')[0]+'?v='+Date.now();
 }
 
 function renderTextsEditor(){
