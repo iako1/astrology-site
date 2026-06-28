@@ -648,6 +648,7 @@ const GLOSSARY_TERMS=[
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
 const DEF_MATCHING={id:'s-matching',type:'matching',title:'🃏 შეუსაბამე ბარათები',visible:true,tab:'🃏 შეუსაბამე'};
+const DEF_MOON_GAME={id:'s-moon-game',type:'moon-game',title:'🌙 მთვარე — ტიპაჟები',visible:true,tab:'🌙 მთვარე თამაში'};
 const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 გამოსცადე ცოდნა'};
 let DEF_TIMEZONE={
   id:'s-timezone',type:'article',title:'🕐 საქართველოს დროის სარტყელი',visible:true,tab:'🕐 დროის სარტყ.',
@@ -712,14 +713,56 @@ let VENUS=(()=>{const s=ls('as_venus_signs');return s?JSON.parse(JSON.stringify(
 let VENUS_ELS=ls('as_venus_els')||DEF_VENUS_ELS;
 let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_MARS_SIGNS));})();
 // ---- merge venus/mars into saved sections ----
+// ===== MOON GAME DATA =====
+const DEF_MOON_SIGNS=[
+  {id:1,sym:'♈',name:'ვერძი',color:'#E05C3A',bg:'#FDF0EC',tc:'#7A2E15',mood:'ენერგიული',outfit:'sporty',hair:'wild',accessory:'flame',hairColor:'#CC2200',skinTone:'#F4A460',outfitColor:'#E05C3A',
+   speech:['ახლა ვგრძნობ! ახლა ვმოქმედებ!','ლოდინი ჩემთვის საერთოდ არ არის!','გული მირჩევს — ყოველთვის.','პირდაპირ ვიტყვი. ახლავე.'],
+   feel:'ემოცია ჩქარი ალივით — სწრაფად ანთდება, სწრაფად ქრება',need:'მოქმედება · დამოუკიდებლობა · სიახლე'},
+  {id:2,sym:'♉',name:'კური',color:'#5A8F2A',bg:'#EDF5E0',tc:'#2E5A0A',mood:'სტაბილური',outfit:'cozy',hair:'neat',accessory:'cup',hairColor:'#4A3728',skinTone:'#DEB887',outfitColor:'#5A8F2A',
+   speech:['ნელა... ნელა... ჩემი ტემპი სწორია.','ვგრძნობ სანამ ვიტყვი. ყოველთვის.','კომფორტი — ეს ჩემი სიყვარულის ენაა.','შეცვალე — ოღონდ ნელ-ნელა.'],
+   feel:'ემოცია ღრმა და ნელი — ვუყვები, მაგრამ ვერ ვშლი',need:'კომფორტი · სტაბილობა · ფიზიკური სიახლოვე'},
+  {id:3,sym:'♊',name:'ტყუპები',color:'#3A7FCC',bg:'#E8F2FC',tc:'#0C3D6E',mood:'ცვალებადი',outfit:'colorful',hair:'bun',accessory:'phone',hairColor:'#DAA520',skinTone:'#FFDAB9',outfitColor:'#3A7FCC',
+   speech:['ახლა ასე ვგრძნობ, ახლა — სხვანაირად!','ვისაუბრო — ეს ჩემი სიყვარულია.','ათი გრძნობა ერთდროულად — ნორმალურია!','ვაანალიზებ ემოციას სანამ ვგრძნობ.'],
+   feel:'ემოციებს სიტყვებით ვამუშავებ — ვფიქრობ თუ ვგრძნობ?',need:'კომუნიკაცია · ცვლილება · ინტელექტუალური სტიმული'},
+  {id:4,sym:'♋',name:'კირჩხიბი',color:'#6B5FCC',bg:'#EEEAFC',tc:'#2D2469',mood:'მგრძნობიარე',outfit:'soft',hair:'wavy',accessory:'heart',hairColor:'#2C3E50',skinTone:'#F0C8A0',outfitColor:'#6B5FCC',
+   speech:['ვგრძნობ ყველაფერს. ყველა ტკივილს.','სახლი — ჩემი სიმტკიცეა.','ყველაფერი მახსოვს. ყოველთვის.','ვინც საჭიროებს — ჩემი კარი ღიაა.'],
+   feel:'ემოცია ოკეანეა — მთვარის ყველა ფაზა ჩემშია',need:'უსაფრთხოება · ოჯახი · ემოციური კავშირი'},
+  {id:5,sym:'♌',name:'ლომი',color:'#D97706',bg:'#FEF3E2',tc:'#7C3A00',mood:'გამომხატველი',outfit:'dramatic',hair:'mane',accessory:'crown',hairColor:'#8B4513',skinTone:'#E8B88A',outfitColor:'#D97706',
+   speech:['ვგრძნობ — დრამატულად, ნათლად!','ყველამ გამიგოს! ყველამ დამინახოს!','სიყვარული? ბრწყინვალება! სრული!','ჩემი გული სათბური ყველასთვისაა.'],
+   feel:'ემოცია ნათელი, ბრწყინვალე — ვფარავ? არასდროს!',need:'აღიარება · სიყვარული · შემოქმედება'},
+  {id:6,sym:'♍',name:'ქალწული',color:'#3D8B4E',bg:'#E4F5E8',tc:'#1A4E27',mood:'ანალიტიკური',outfit:'neat',hair:'straight',accessory:'clipboard',hairColor:'#5C4033',skinTone:'#FAEBD7',outfitColor:'#3D8B4E',
+   speech:['ვგრძნობ... ვაანალიზებ... ვეხმარები.','სიზუსტე — ჩემი ენაა.','ვიაზრებ ემოციას, შემდეგ ვგრძნობ.','სიყვარული = ყოველდღიური ზრუნვა.'],
+   feel:'ემოცია გაფილტრული, პრაქტიკული — ვაკეთებ, არ ვყვირი',need:'სიზუსტე · სასარგებლო ყოფნა · სიმშვიდე'},
+  {id:7,sym:'♎',name:'სასწორი',color:'#4A8EC2',bg:'#E5F0F9',tc:'#1B4E78',mood:'ჰარმონიული',outfit:'elegant',hair:'perfect',accessory:'flowers',hairColor:'#8B7355',skinTone:'#FFE4C4',outfitColor:'#4A8EC2',
+   speech:['ბალანსი... სადაა ბალანსი?','კამათი ჩემს სულს ევნება.','ყველა ბედნიერი — ეს ჩემი ბედნიერებაა.','გადაწყვეტა... ოდნავ მოიცა...'],
+   feel:'ემოცია გარემოდან — ვამრეკლავ სხვების განწყობას',need:'ჰარმონია · პარტნიორობა · სილამაზე'},
+  {id:8,sym:'♏',name:'მორიელი',color:'#6B35BB',bg:'#EDE9FC',tc:'#3A1F8A',mood:'ინტენსიური',outfit:'mysterious',hair:'dark_sweep',accessory:'gem',hairColor:'#1A1A2E',skinTone:'#D4A574',outfitColor:'#6B35BB',
+   speech:['ვგრძნობ ღრმად. ყველა ფარულ ნაფლეთს.','ნდობა? ოქროზე ძვირფასია.','ყველაფერი ვიცი — ვფარავ. ვიცდი.','ტრანსფორმაცია? ვარ მასთან მეგობარი.'],
+   feel:'ემოცია ვულკანია — ჩუმია სანამ არ ამოფრქვევა',need:'სიღრმე · ნდობა · ძალა · ტრანსფორმაცია'},
+  {id:9,sym:'♐',name:'მშვილდოსანი',color:'#CC6B3A',bg:'#FAEDEA',tc:'#6B2E10',mood:'თავისუფალი',outfit:'adventure',hair:'windswept',accessory:'backpack',hairColor:'#6B3A2A',skinTone:'#F5CBA7',outfitColor:'#CC6B3A',
+   speech:['ავდივარ! ვფრინავ! ვეძებ!','ემოცია? გავარიგე — გავაგრძელე!','სიყვარული? კი! ოღონდ სივრცე მომეცი.','მთელი სამყარო ჩემი სახლია!'],
+   feel:'ემოცია სწრაფად გადის — მომავალი ბედნიერებს',need:'თავისუფლება · ავანტიურა · ფილოსოფიური სიღრმე'},
+  {id:10,sym:'♑',name:'თხის რქა',color:'#4A6741',bg:'#E8F0E5',tc:'#2A4018',mood:'კონტროლირებული',outfit:'business',hair:'slicked',accessory:'briefcase',hairColor:'#2A2A2A',skinTone:'#E8C9A0',outfitColor:'#4A6741',
+   speech:['ემოცია? მოვისმინე. შევინახე. გავაგრძელე.','სისუსტე — ჩემთვის პირადია.','მიზანი მაქვს. ემოცია ხელს არ შეუშლის.','ვინც ითმენს — ბოლოს იმარჯვებს.'],
+   feel:'ემოცია გარსის მიღმა — ვმართავ მე',need:'სტაბილობა · აღიარება · კარიერა · მიღწევა'},
+  {id:11,sym:'♒',name:'მერწყული',color:'#3A8ECC',bg:'#E4F1FA',tc:'#0E3D6E',mood:'განსხვავებული',outfit:'quirky',hair:'unusual',accessory:'headphones',hairColor:'#1C4A8A',skinTone:'#FDDBB4',outfitColor:'#3A8ECC',
+   speech:['ვგრძნობ... ოღონდ სხვანაირად ვიდრე ყველა.','ემოცია კოლექტიური — ჩემი და ყველას.','სტანდარტული? ეს ჩემი სიტყვა არ არის.','სიყვარული — მეგობრობა სიღრმეში.'],
+   feel:'ემოცია ინტელექტუალური — ვანალიზებ სანამ ვგრძნობ',need:'დამოუკიდებლობა · ინოვაცია · საზოგადოება · სივრცე'},
+  {id:12,sym:'♓',name:'თევზები',color:'#7055CC',bg:'#EDEAFC',tc:'#311B92',mood:'სულიერი',outfit:'dreamy',hair:'flowing',accessory:'stars',hairColor:'#5A4080',skinTone:'#F2D9C0',outfitColor:'#7055CC',
+   speech:['ვგრძნობ ყველაფერს... ყველა ემოციას...','საზღვარი? სად არის საზღვარი?','ოცნება — ჩემი სახლია.','ყველა ტკივილი ჩემშია — ეს ჩემი ძალაა.'],
+   feel:'ემოცია ოკეანეა — ვიძირები და ვბრუნდები',need:'სულიერება · ხელოვნება · ოცნება · ემპათია'},
+];
+function getMoonSigns(){return ls('as_moon_signs')||DEF_MOON_SIGNS;}
+
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MOON_GAME,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
   const hasQuiz=saved.some(s=>s.id==='s-quiz');
+  const hasMoonGame=saved.some(s=>s.id==='s-moon-game');
   const hasMatching=saved.some(s=>s.id==='s-matching');
   const hasWheel=saved.some(s=>s.id==='s-wheel');
   if(!hasVenus) saved.push(DEF_VENUS);
@@ -727,6 +770,7 @@ function initSections(){
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
+  if(!hasMoonGame) saved.push(DEF_MOON_GAME);
   if(!hasMatching) saved.push(DEF_MATCHING);
   if(!hasWheel) saved.push(DEF_WHEEL);
   return saved;
@@ -1348,6 +1392,7 @@ function renderGameHub(root){
     {id:'match', icon:'🃏', title:'შეუსაბამე ბარათები', desc:'სტიქია, ჯვარი, ეგზალტ., ვარდ., მმართ.',color:'#db2777',bg:'#fdf2f8',border:'#f9a8d4'},
     {id:'wheel', icon:'🔮', title:'ზოდიაქოს წრე',       desc:'12 ნიშანი სწორ ადგილს დაუყარე',         color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
     {id:'whois', icon:'🌟', title:'ვინ ვარ?',            desc:'მინიშნებები → ნიშანი გამოიცანი',        color:'#d97706',bg:'#fffbeb',border:'#fcd34d'},
+    {id:'moon',  icon:'🌙', title:'მთვარის ტიპაჟები',  desc:'პერსონაჟი ლაპარაკობს → მთვარე გამოიცანი', color:'#6b35bb',bg:'#ede9fc',border:'#a78bfa'},
   ];
   let h=`<div style="max-width:500px;margin:0 auto">
     <div style="text-align:center;margin-bottom:24px">
@@ -1374,6 +1419,7 @@ function renderGameHub(root){
     else if(id==='match') {renderMatchingMenu(root,getMatchingData());}
     else if(id==='wheel') startWheelGame(root);
     else if(id==='whois') startWhoAmI(root);
+    else if(id==='moon') startMoonGame(document.getElementById('quiz-root'));
   };
 }
 
@@ -2165,12 +2211,209 @@ function startWhoAmI(root){
   render();
 }
 
+// ===== MOON GAME =====
+function renderMoonGameSection(sec){
+  return '<div id="moon-game-root" style="padding:16px"></div>';
+}
+
+function initMoonGame(secId){
+  const root=document.getElementById('moon-game-root');
+  if(!root)return;
+  startMoonGame(root);
+}
+
+function startMoonGame(root){
+  const signs=getMoonSigns();
+  const shuffled=[...signs].sort(()=>Math.random()-.5);
+  let idx=0,score=0,speechIdx=0,answered=false,selected=null;
+  let timer=null;
+
+  function getOpts(card){
+    const wrong=signs.filter(s=>s.id!==card.id).sort(()=>Math.random()-.5).slice(0,3);
+    return [...wrong,card].sort(()=>Math.random()-.5);
+  }
+
+  function drawSVG(sign,talking){
+    const c=sign.outfitColor,sk=sign.skinTone,h=sign.hairColor;
+    const mouth=talking
+      ?`<ellipse cx="60" cy="70" rx="7" ry="5" fill="#8B2020"/>`
+      :`<path d="M50,70 Q60,76 70,70" stroke="#8B2020" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    const cheeks=['ენერგიული','მგრძნობიარე','გამომხატველი','თავისუფალი'].includes(sign.mood)
+      ?`<ellipse cx="40" cy="62" rx="8" ry="5" fill="#FFB7B7" opacity="0.4"/><ellipse cx="80" cy="62" rx="8" ry="5" fill="#FFB7B7" opacity="0.4"/>`:'';
+    const intense=sign.mood==='ინტენსიური'
+      ?`<path d="M33,46 Q42,40 51,46" stroke="${h}" stroke-width="2.5" fill="none"/><path d="M69,46 Q78,40 87,46" stroke="${h}" stroke-width="2.5" fill="none"/>`
+      :`<path d="M36,48 Q42,44 50,48" stroke="${h}" stroke-width="2" fill="none"/><path d="M70,48 Q78,44 84,48" stroke="${h}" stroke-width="2" fill="none"/>`;
+
+    const accessories={
+      flame:`<path d="M90,25 Q95,14 88,8 Q94,14 98,10 Q96,20 90,25Z" fill="#FF6B00" opacity="0.9"/>`,
+      cup:`<rect x="82" y="105" width="15" height="18" rx="3" fill="#8B4513"/><path d="M97,110 Q104,113 97,118" stroke="#8B4513" stroke-width="2" fill="none"/>`,
+      phone:`<rect x="82" y="102" width="13" height="20" rx="3" fill="#222"/><rect x="83" y="104" width="11" height="14" rx="2" fill="#4FC3F7"/>`,
+      heart:`<path d="M85,104 Q85,99 90,99 Q95,99 95,104 Q95,110 90,115 Q85,110 85,104Z" fill="#FF6B88"/>`,
+      crown:`<polygon points="50,14 57,24 65,16 73,24 80,14 80,28 50,28" fill="#FFD700" stroke="#DAA520" stroke-width="1"/><circle cx="65" cy="18" r="3" fill="#FF4444"/>`,
+      clipboard:`<rect x="80" y="100" width="18" height="22" rx="2" fill="#E8E0D0"/><rect x="86" y="96" width="8" height="5" rx="2" fill="#888"/><line x1="84" y1="108" x2="96" y2="108" stroke="#888" stroke-width="1.5"/><line x1="84" y1="113" x2="96" y2="113" stroke="#888" stroke-width="1.5"/>`,
+      flowers:`<circle cx="57" cy="18" r="5" fill="#FFB7C5"/><circle cx="65" cy="14" r="4" fill="#FF8FAB"/><circle cx="73" cy="18" r="4" fill="#FFB7C5"/><circle cx="65" cy="18" r="2" fill="#FFD700"/>`,
+      gem:`<polygon points="86,98 94,98 98,104 90,111 82,104" fill="#9B59B6" opacity="0.9"/>`,
+      backpack:`<rect x="76" y="97" width="18" height="22" rx="4" fill="${c}" opacity="0.8"/><rect x="80" y="93" width="10" height="5" rx="3" fill="${c}"/>`,
+      briefcase:`<rect x="77" y="106" width="20" height="16" rx="3" fill="#4A3728"/><rect x="83" y="102" width="10" height="5" rx="2" fill="#4A3728" stroke="#6B5040" stroke-width="1"/>`,
+      headphones:`<path d="M48,38 Q48,26 64,26 Q80,26 80,38" stroke="#1A1A2E" stroke-width="3" fill="none"/><rect x="44" y="36" width="8" height="12" rx="3" fill="#1A1A2E"/><rect x="76" y="36" width="8" height="12" rx="3" fill="#1A1A2E"/>`,
+      stars:`<text x="12" y="40" font-size="10" fill="#FFD700" opacity="0.8">✦</text><text x="98" y="34" font-size="8" fill="#FFD700" opacity="0.7">✦</text><text x="10" y="72" font-size="7" fill="#C8A0FF" opacity="0.8">✦</text><text x="100" y="68" font-size="8" fill="#FFD700" opacity="0.6">✦</text>`,
+    };
+
+    const hairStyles={
+      wild:`<ellipse cx="64" cy="40" rx="28" ry="22" fill="${h}"/><path d="M36,32 Q28,16 36,10 Q34,22 40,18" fill="${h}"/><path d="M92,32 Q100,16 92,10 Q94,22 88,18" fill="${h}"/><path d="M64,18 Q60,6 64,2 Q68,6 64,18" fill="${h}"/>`,
+      neat:`<ellipse cx="64" cy="42" rx="26" ry="20" fill="${h}"/>`,
+      bun:`<ellipse cx="64" cy="44" rx="26" ry="18" fill="${h}"/><ellipse cx="64" cy="24" rx="11" ry="11" fill="${h}"/>`,
+      wavy:`<ellipse cx="64" cy="42" rx="27" ry="20" fill="${h}"/><path d="M38,48 Q30,58 34,72 Q38,62 42,68 Q46,58 50,66" fill="${h}"/><path d="M90,48 Q98,58 94,72 Q90,62 86,68 Q82,58 78,66" fill="${h}"/>`,
+      mane:`<ellipse cx="64" cy="40" rx="32" ry="24" fill="${h}"/><path d="M32,38 Q22,52 30,66 Q36,54 38,64 Q42,52 44,62" fill="${h}"/><path d="M96,38 Q106,52 98,66 Q92,54 90,64 Q86,52 84,62" fill="${h}"/><path d="M64,16 Q55,4 58,0 Q62,7 64,4 Q66,7 70,0 Q73,4 64,16" fill="${h}"/>`,
+      straight:`<ellipse cx="64" cy="42" rx="26" ry="20" fill="${h}"/><path d="M38,48 L34,82" stroke="${h}" stroke-width="9" stroke-linecap="round"/><path d="M90,48 L94,82" stroke="${h}" stroke-width="9" stroke-linecap="round"/>`,
+      perfect:`<ellipse cx="64" cy="42" rx="26" ry="20" fill="${h}"/><path d="M38,48 Q36,62 38,76 Q42,66 46,74" fill="${h}"/><path d="M90,48 Q92,62 90,76 Q86,66 82,74" fill="${h}"/>`,
+      dark_sweep:`<ellipse cx="64" cy="42" rx="28" ry="22" fill="${h}"/><path d="M90,38 Q100,52 96,70 Q90,56 88,66" fill="${h}"/><path d="M42,34 Q32,40 38,52 Q44,42 48,50 Q54,38 50,36 Q48,34 42,34Z" fill="${h}"/>`,
+      windswept:`<ellipse cx="64" cy="42" rx="27" ry="20" fill="${h}"/><path d="M38,38 Q27,32 32,22 Q37,28 36,36" fill="${h}"/><path d="M90,38 Q103,28 98,18 Q94,26 92,34" fill="${h}"/>`,
+      slicked:`<ellipse cx="64" cy="42" rx="26" ry="18" fill="${h}"/>`,
+      unusual:`<ellipse cx="64" cy="42" rx="26" ry="20" fill="${h}"/><path d="M64,20 Q70,8 76,12 Q68,16 70,22" fill="#FF44AA"/><path d="M64,20 Q58,8 52,12 Q60,16 58,22" fill="#44AAFF"/>`,
+      flowing:`<ellipse cx="64" cy="42" rx="27" ry="20" fill="${h}"/><path d="M38,48 Q32,62 36,80 Q42,66 44,78 Q50,62 52,74" fill="${h}" opacity="0.85"/><path d="M90,48 Q96,62 92,80 Q86,66 84,78 Q78,62 80,74" fill="${h}" opacity="0.85"/>`,
+    };
+
+    const outfits={
+      sporty:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/><path d="M44,98 L54,103 L64,98 L74,103 L84,98" stroke="white" stroke-width="2" fill="none" opacity="0.5"/>`,
+      cozy:`<path d="M26,106 Q30,97 45,97 L54,103 Q64,108 74,103 L83,97 Q98,97 102,106 L106,150 Q64,158 22,150Z" fill="${c}"/>`,
+      colorful:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/><path d="M28,124 L103,124" stroke="white" stroke-width="11" opacity="0.2"/>`,
+      soft:`<path d="M26,106 Q30,98 44,97 L54,103 Q64,109 74,103 L83,97 Q97,97 102,106 L107,150 Q64,162 21,150Z" fill="${c}" opacity="0.9"/>`,
+      dramatic:`<path d="M26,105 Q28,97 43,97 L54,103 Q64,109 74,103 L85,97 Q100,97 102,105 L110,150 Q64,164 18,150Z" fill="${c}"/>`,
+      neat:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/><line x1="64" y1="98" x2="64" y2="148" stroke="white" stroke-width="2" opacity="0.4"/>`,
+      elegant:`<path d="M24,106 Q28,96 43,96 L54,103 Q64,111 74,103 L85,96 Q100,96 104,106 L110,152 Q64,166 18,152Z" fill="${c}" opacity="0.85"/>`,
+      mysterious:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/>`,
+      adventure:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/>`,
+      business:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/><line x1="54" y1="98" x2="54" y2="148" stroke="white" stroke-width="1.5" opacity="0.3"/><line x1="74" y1="98" x2="74" y2="148" stroke="white" stroke-width="1.5" opacity="0.3"/>`,
+      quirky:`<path d="M28,106 Q32,99 44,98 L54,103 Q64,107 74,103 L84,98 Q96,99 100,106 L103,148 Q64,156 25,148Z" fill="${c}"/><circle cx="44" cy="114" r="8" fill="white" opacity="0.2"/><circle cx="84" cy="126" r="6" fill="white" opacity="0.2"/>`,
+      dreamy:`<path d="M24,106 Q28,96 43,96 L54,103 Q64,113 74,103 L85,96 Q100,96 104,106 L112,154 Q64,168 16,154Z" fill="${c}" opacity="0.8"/>`,
+    };
+
+    return `<svg width="128" height="185" viewBox="0 0 128 185" style="display:block;margin:0 auto">
+      ${accessories[sign.accessory]||''}
+      <rect x="55" y="82" width="18" height="17" rx="4" fill="${sk}"/>
+      ${outfits[sign.outfit]||''}
+      <path d="M28,106 Q12,118 14,138 Q18,143 24,140 Q22,122 30,112Z" fill="${c}"/>
+      <path d="M100,106 Q116,118 114,138 Q110,143 104,140 Q106,122 98,112Z" fill="${c}"/>
+      <ellipse cx="16" cy="143" rx="8" ry="6" fill="${sk}"/>
+      <ellipse cx="112" cy="143" rx="8" ry="6" fill="${sk}"/>
+      ${sign.accessory!=='stars'&&sign.accessory!=='flowers'&&sign.accessory!=='headphones'&&sign.accessory!=='crown'&&sign.accessory!=='gem'?accessories[sign.accessory]||'':''}
+      ${sign.accessory==='crown'?accessories.crown:''}
+      ${hairStyles[sign.hair]||`<ellipse cx="64" cy="42" rx="26" ry="20" fill="${h}"/>`}
+      <ellipse cx="64" cy="55" rx="28" ry="30" fill="${sk}"/>
+      ${sign.accessory==='gem'?accessories.gem:''}
+      ${intense}
+      <ellipse cx="52" cy="52" rx="7" ry="6" fill="white"/><ellipse cx="76" cy="52" rx="7" ry="6" fill="white"/>
+      <circle cx="52" cy="53" r="4" fill="#1a1a2e"/><circle cx="76" cy="53" r="4" fill="#1a1a2e"/>
+      <circle cx="53" cy="51" r="1.5" fill="white"/><circle cx="77" cy="51" r="1.5" fill="white"/>
+      <path d="M60,62 Q64,67 68,62" stroke="${h}88" stroke-width="1.5" fill="none"/>
+      ${cheeks}
+      ${mouth}
+      <rect x="44" y="148" width="14" height="30" rx="6" fill="${c}" opacity="0.85"/>
+      <rect x="70" y="148" width="14" height="30" rx="6" fill="${c}" opacity="0.85"/>
+      <ellipse cx="51" cy="178" rx="11" ry="6" fill="#3A2A1A"/>
+      <ellipse cx="77" cy="178" rx="11" ry="6" fill="#3A2A1A"/>
+    </svg>`;
+  }
+
+  function render(){
+    if(idx>=shuffled.length){showMoonScore();return;}
+    const card=shuffled[idx];
+    const opts=getOpts(card);
+    const pct=Math.round((idx/shuffled.length)*100);
+
+    const optBtns=opts.map(opt=>{
+      const isC=opt.id===card.id,isS=selected?.id===opt.id;
+      let bg='var(--bg)',border='var(--border)',color='var(--text2)';
+      if(answered){if(isC){bg='#052e16';border='#4ade80';color='#4ade80';}else if(isS){bg='#2d0a0a';border='#f87171';color='#f87171';}}
+      return `<button onclick="window._mna(${opt.id})" ${answered?'disabled':''} style="padding:12px 8px;border-radius:12px;border:2px solid ${border};background:${bg};color:${color};font-size:13px;font-weight:600;cursor:${answered?'default':'pointer'};text-align:center;transition:all .2s">
+        <div style="font-size:20px;margin-bottom:2px">${opt.sym}</div><div>${opt.name}</div>
+      </button>`;
+    }).join('');
+
+    root.innerHTML=`<div style="max-width:440px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
+        <span style="font-size:13px;font-weight:600;color:var(--text)">🌙 მთვარე — ტიპაჟი</span>
+        <span style="font-size:12px;color:var(--text3)">✅ ${score} · ${idx+1}/${shuffled.length}</span>
+      </div>
+      <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:14px;overflow:hidden">
+        <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);border-radius:99px;width:${pct}%;transition:width .4s"></div>
+      </div>
+      <div style="border-radius:20px;padding:18px 14px 22px;margin-bottom:12px;background:linear-gradient(160deg,${card.bg},#fff);border:2px solid ${card.color}33;display:flex;flex-direction:column;align-items:center;gap:0;min-height:240px">
+        <div style="align-self:flex-start;margin-left:4px;margin-bottom:10px;background:#fff;border:2px solid ${card.color};border-radius:16px 16px 16px 4px;padding:10px 14px;font-size:14px;color:#1e1b4b;line-height:1.6;font-style:italic;font-weight:500;max-width:240px;box-shadow:0 3px 12px ${card.color}22;position:relative">
+          "${card.speech[speechIdx]}"
+          <div style="position:absolute;bottom:-10px;left:16px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid ${card.color}"></div>
+        </div>
+        ${drawSVG(card, !answered)}
+        ${!answered?`<div style="display:flex;gap:6px;margin-top:8px">${card.speech.map((_,i)=>`<button onclick="window._mns(${i})" style="width:8px;height:8px;border-radius:50%;border:2px solid ${card.color};background:${i===speechIdx?card.color:'transparent'};cursor:pointer;padding:0"></button>`).join('')}</div>`:''}
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);text-align:center;margin-bottom:10px">🌙 ეს რომელი მთვარის ნიშანია?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${optBtns}</div>
+      <div id="moon-fb"></div>
+    </div>`;
+
+    window._mns=i=>{speechIdx=i;render();};
+    window._mna=id=>{
+      if(answered)return;
+      answered=true;
+      const opt=shuffled.find(s=>s.id===id)||opts.find(o=>o.id===id);
+      selected=opt;
+      if(id===card.id)score++;
+      render();
+      const fb=document.getElementById('moon-fb');
+      if(fb)fb.innerHTML=`<div style="margin-top:10px;padding:12px 16px;border-radius:12px;background:${id===card.id?'#052e16':'#2d0a0a'};border:1px solid ${id===card.id?'#4ade80':'#f87171'};color:${id===card.id?'#86efac':'#fca5a5'};font-size:12px;line-height:1.7">
+        <div style="margin-bottom:5px">${id===card.id?'✅ სწორია!':'❌ ეს იყო '+card.sym+' '+card.name}</div>
+        <div style="opacity:.85;font-size:11px"><strong>გრძნობს:</strong> ${card.feel}<br><strong>სჭირდება:</strong> ${card.need}</div>
+      </div>
+      <button onclick="window._mnn()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:600;color:#fff;cursor:pointer">
+        ${idx+1<shuffled.length?'შემდეგი →':'შედეგი 🌟'}
+      </button>`;
+      window._mnn=()=>{idx++;speechIdx=0;answered=false;selected=null;clearInterval(timer);startSpeechTimer();render();};
+    };
+    clearInterval(timer);startSpeechTimer();
+  }
+
+  function startSpeechTimer(){
+    const card=shuffled[idx];
+    if(!card)return;
+    timer=setInterval(()=>{
+      if(!answered){speechIdx=(speechIdx+1)%card.speech.length;render();}
+    },2800);
+  }
+
+  function showMoonScore(){
+    const total=shuffled.length,pct=Math.round((score/total)*100);
+    let e,t,m;
+    if(pct>=83){e='🌕';t='მთვარის ოსტატი!';m='12 ტიპაჟი სახეზე გიჩანს — ემოციური ინტელექტი უმაღლეს დონეზე!';}
+    else if(pct>=67){e='🌖';t='შესანიშნავი!';m='ემოციების ენა კარგად გესმის. კიდევ ერთი გამეორება — და 12/12!';}
+    else if(pct>=50){e='🌗';t='კარგი შედეგი!';m='ზოგი ტიპაჟი ამოიცანი, ზოგი კი ოდნავ გაგარია. გაიმეორე!';}
+    else{e='🌑';t='კარგი დასაწყისი!';m='12 ემოციური ტიპაჟი ბევრია ერთბაშად! გაიმეორე მთვარის ნიშნები.';}
+    root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">
+      <div style="font-size:52px;margin-bottom:8px">${e}</div>
+      <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px">${t}</div>
+      <div style="padding:12px 16px;border-radius:14px;background:#f5f3ff;border:1px solid #a78bfa;font-size:13px;color:#5b21b6;line-height:1.7;margin-bottom:16px;text-align:left">${m}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+        <div style="padding:12px;border-radius:12px;background:#f5f3ff;border:1px solid #a78bfa"><div style="font-size:28px;font-weight:700;color:#7c3aed">${score}/${total}</div><div style="font-size:11px;color:#6b7280">სწორი</div></div>
+        <div style="padding:12px;border-radius:12px;background:#f0fdf4;border:1px solid #4ade80"><div style="font-size:28px;font-weight:700;color:#16a34a">${pct}%</div><div style="font-size:11px;color:#6b7280">სიზუსტე</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="startMoonGame(document.getElementById('moon-game-root'))" style="padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:13px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
+      </div>
+    </div>`;
+  }
+
+  render();
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='elements')return renderElementsSection(sec);
   if(sec.type==='quiz')return renderQuizSection(sec);
   if(sec.type==='matching')return renderMatchingSection(sec);
   if(sec.type==='wheel')return renderWheelSection(sec);
+  if(sec.type==='moon-game')return renderMoonGameSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
@@ -2560,7 +2803,35 @@ function bindSectionEvents(sec,div){
     });
     lss('as_wheel_signs',ws);
   }
-  if(sec.type==='matching'){
+  if(sec.type==='moon-game'){
+    const ms=getMoonSigns();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ტიპაჟის რედაქტირება</p>';
+    ms.forEach((sign,si)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px">
+        <summary style="padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500">${sign.sym} ${sign.name} — ${sign.mood}</summary>
+        <div style="padding:10px 12px">
+          <div class="g2">
+            <div class="fg"><label>სახელი</label><input type="text" id="mg-n${si}" value="${sign.name}"></div>
+            <div class="fg"><label>განწყობა</label><input type="text" id="mg-m${si}" value="${sign.mood}"></div>
+          </div>
+          ${sign.speech.map((sp,pi)=>`<div class="fg"><label>ფრაზა ${pi+1}</label><textarea id="mg-sp${si}-${pi}" rows="2">${sp}</textarea></div>`).join('')}
+          <div class="fg"><label>გრძნობს</label><textarea id="mg-feel${si}" rows="2">${sign.feel}</textarea></div>
+          <div class="fg"><label>სჭირდება</label><textarea id="mg-need${si}" rows="2">${sign.need}</textarea></div>
+        </div></details>`;
+    });
+  }
+    if(sec.type==='moon-game'){
+    const ms=getMoonSigns();
+    ms.forEach((sign,si)=>{
+      const n=document.getElementById('mg-n'+si);if(n)sign.name=n.value;
+      const m=document.getElementById('mg-m'+si);if(m)sign.mood=m.value;
+      sign.speech=sign.speech.map((_,pi)=>{const el=document.getElementById('mg-sp'+si+'-'+pi);return el?el.value:_;});
+      const feel=document.getElementById('mg-feel'+si);if(feel)sign.feel=feel.value;
+      const need=document.getElementById('mg-need'+si);if(need)sign.need=need.value;
+    });
+    lss('as_moon_signs',ms);
+  }
+    if(sec.type==='matching'){
     const md=getMatchingData();
     h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">'+md.modes.length+' თამაშის რეჟიმი</p>';
     md.modes.forEach((mode,mi)=>{
@@ -2601,6 +2872,7 @@ function bindSectionEvents(sec,div){
   if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
   if(sec.type==='matching'){setTimeout(()=>initMatching(sec.id),50);}
   if(sec.type==='wheel'){setTimeout(()=>initWheel(sec.id),50);}
+  if(sec.type==='moon-game'){setTimeout(()=>initMoonGame(sec.id),50);}
   if(sec.type==='glossary'){
     setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
   }
