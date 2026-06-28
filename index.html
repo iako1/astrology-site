@@ -2873,6 +2873,123 @@ function bindSectionEvents(sec,div){
     });
     lss('as_matching_data',md);
   }
+  if(sec.type==='elements'){
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">4 სტიქიის ტექსტები</p>';
+    const EL_KEYS=['fire','earth','air','water'];
+    const EL_LABELS=['ცეცხლი 🔥','მიწა 🌿','ჰაერი 💨','წყალი 💧'];
+    EL_KEYS.forEach((key,ei)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+        <summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${EL_LABELS[ei]}</summary>
+        <div style="padding:10px 12px">
+          <div class="fg"><label>სათაური</label><input type="text" id="el-t${ei}" value="${(ls('as_el_texts')||{})[key+'_title']||''}"></div>
+          <div class="fg"><label>ნიშნები</label><input type="text" id="el-n${ei}" value="${(ls('as_el_texts')||{})[key+'_names']||''}"></div>
+          <div class="fg"><label>Keyword</label><input type="text" id="el-kw${ei}" value="${(ls('as_el_texts')||{})[key+'_keyword']||''}"></div>
+          <div class="fg"><label>განმარტება</label><textarea id="el-d${ei}" rows="3">${(ls('as_el_texts')||{})[key+'_desc']||''}</textarea></div>
+          <div class="fg"><label>ძლიერი მხარეები</label><textarea id="el-g${ei}" rows="2">${(ls('as_el_texts')||{})[key+'_gifts']||''}</textarea></div>
+          <div class="fg"><label>გამოწვევები</label><textarea id="el-c${ei}" rows="2">${(ls('as_el_texts')||{})[key+'_challenges']||''}</textarea></div>
+          <div class="fg"><label>სიყვარულში</label><textarea id="el-l${ei}" rows="2">${(ls('as_el_texts')||{})[key+'_love']||''}</textarea></div>
+          <div class="fg"><label>კარიერა</label><textarea id="el-w${ei}" rows="2">${(ls('as_el_texts')||{})[key+'_work']||''}</textarea></div>
+          <div class="fg"><label>Shadow</label><textarea id="el-s${ei}" rows="2">${(ls('as_el_texts')||{})[key+'_shadow']||''}</textarea></div>
+          <div class="fg"><label>მმართველები</label><input type="text" id="el-r${ei}" value="${(ls('as_el_texts')||{})[key+'_ruler']||''}"></div>
+        </div></details>`;
+    });
+  }
+  if(sec.type==='matching'){
+    const md=getMatchingData();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">'+md.modes.length+' თამაშის რეჟიმი</p>';
+    md.modes.forEach((mode,mi)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+        <summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${mode.icon} ${mode.label}</summary>
+        <div style="padding:10px 12px">
+          <div class="fg"><label>სათაური</label><input type="text" id="mm-lbl${mi}" value="${mode.label}"></div>
+          ${mode.type==='pairs'?mode.pairs.map((p,pi)=>`
+          <div class="g2" style="margin-bottom:6px">
+            <div class="fg"><label>მარცხ. ${pi+1}</label><input type="text" id="mm-l${mi}-${pi}" value="${p.left}"></div>
+            <div class="fg"><label>მარჯვ. ${pi+1}</label><input type="text" id="mm-r${mi}-${pi}" value="${p.right}"></div>
+          </div>`).join('')
+          :mode.categories.map((cat,ci)=>`
+          <div class="fg"><label>კატ. ${ci+1}</label><input type="text" id="mm-cat${mi}-${ci}" value="${cat.label}"></div>`).join('')}
+        </div></details>`;
+    });
+  }
+  if(sec.type==='wheel'){
+    const ws=getWheelSigns();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ნიშნის რედ.</p>';
+    ws.forEach((sign,si)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px">
+        <summary style="padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500">${sign.sym} ${sign.name}</summary>
+        <div style="padding:10px 12px">
+          <div class="g2">
+            <div class="fg"><label>სახ.</label><input type="text" id="ws-n${si}" value="${sign.name}"></div>
+            <div class="fg"><label>სიმბ.</label><input type="text" id="ws-sym${si}" value="${sign.sym}"></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><label>სტ.</label><select id="ws-el${si}"><option value="fire"${sign.el==='fire'?' selected':''}>ცეცხლი</option><option value="earth"${sign.el==='earth'?' selected':''}>მიწა</option><option value="air"${sign.el==='air'?' selected':''}>ჰაერი</option><option value="water"${sign.el==='water'?' selected':''}>წყალი</option></select></div>
+            <div class="fg"><label>ჯვ.</label><select id="ws-cr${si}"><option value="cardinal"${sign.cr==='cardinal'?' selected':''}>კარდინ.</option><option value="fixed"${sign.cr==='fixed'?' selected':''}>ფიქსირ.</option><option value="mutable"${sign.cr==='mutable'?' selected':''}>მუტაბ.</option></select></div>
+          </div>
+        </div></details>`;
+    });
+  }
+  if(sec.type==='moon-game'){
+    const ms=getMoonSigns();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ტიპაჟის რედ.</p>';
+    ms.forEach((sign,si)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px">
+        <summary style="padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500">${sign.sym} ${sign.name} — ${sign.mood}</summary>
+        <div style="padding:10px 12px">
+          <div class="g2">
+            <div class="fg"><label>სახ.</label><input type="text" id="mg-n${si}" value="${sign.name}"></div>
+            <div class="fg"><label>განწ.</label><input type="text" id="mg-m${si}" value="${sign.mood}"></div>
+          </div>
+          ${sign.speech.map((sp,pi)=>`<div class="fg"><label>ფრ. ${pi+1}</label><textarea id="mg-sp${si}-${pi}" rows="2">${sp}</textarea></div>`).join('')}
+          <div class="fg"><label>გრძნ.</label><textarea id="mg-feel${si}" rows="2">${sign.feel}</textarea></div>
+          <div class="fg"><label>სჭ.</label><textarea id="mg-need${si}" rows="2">${sign.need}</textarea></div>
+        </div></details>`;
+    });
+  }
+  if(sec.type==='elements'){
+    const EL_KEYS=['fire','earth','air','water'];
+    const fields=['title','names','keyword','desc','gifts','challenges','love','work','shadow','ruler'];
+    const pfx={'title':'t','names':'n','keyword':'kw','desc':'d','gifts':'g','challenges':'c','love':'l','work':'w','shadow':'s','ruler':'r'};
+    const existing=ls('as_el_texts')||{};
+    EL_KEYS.forEach((key,ei)=>{
+      fields.forEach(f=>{
+        const el=document.getElementById('el-'+pfx[f]+ei);
+        if(el)existing[key+'_'+f]=el.value;
+      });
+    });
+    lss('as_el_texts',existing);
+  }
+  if(sec.type==='matching'){
+    const md=getMatchingData();
+    md.modes.forEach((mode,mi)=>{
+      const lbl=document.getElementById('mm-lbl'+mi);if(lbl)mode.label=lbl.value;
+      if(mode.type==='pairs'){mode.pairs.forEach((p,pi)=>{const l=document.getElementById('mm-l'+mi+'-'+pi);const r=document.getElementById('mm-r'+mi+'-'+pi);if(l)p.left=l.value;if(r)p.right=r.value;});}
+      else{mode.categories.forEach((cat,ci)=>{const c=document.getElementById('mm-cat'+mi+'-'+ci);if(c)cat.label=c.value;});}
+    });
+    lss('as_matching_data',md);
+  }
+  if(sec.type==='wheel'){
+    const ws=getWheelSigns();
+    ws.forEach((sign,si)=>{
+      const n=document.getElementById('ws-n'+si);if(n)sign.name=n.value;
+      const sym=document.getElementById('ws-sym'+si);if(sym)sign.sym=sym.value;
+      const el=document.getElementById('ws-el'+si);if(el)sign.el=el.value;
+      const cr=document.getElementById('ws-cr'+si);if(cr)sign.cr=cr.value;
+    });
+    lss('as_wheel_signs',ws);
+  }
+  if(sec.type==='moon-game'){
+    const ms=getMoonSigns();
+    ms.forEach((sign,si)=>{
+      const n=document.getElementById('mg-n'+si);if(n)sign.name=n.value;
+      const m=document.getElementById('mg-m'+si);if(m)sign.mood=m.value;
+      sign.speech=sign.speech.map((_,pi)=>{const el=document.getElementById('mg-sp'+si+'-'+pi);return el?el.value:_;});
+      const feel=document.getElementById('mg-feel'+si);if(feel)sign.feel=feel.value;
+      const need=document.getElementById('mg-need'+si);if(need)sign.need=need.value;
+    });
+    lss('as_moon_signs',ms);
+  }
   if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
   if(sec.type==='matching'){setTimeout(()=>initMatching(sec.id),50);}
   if(sec.type==='wheel'){setTimeout(()=>initWheel(sec.id),50);}
