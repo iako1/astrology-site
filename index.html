@@ -646,6 +646,7 @@ const GLOSSARY_TERMS=[
    url:'https://cafeastrology.com/glossaryofastrology.html'},
 ];
 
+const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
 const DEF_MATCHING={id:'s-matching',type:'matching',title:'🃏 შეუსაბამე ბარათები',visible:true,tab:'🃏 შეუსაბამე'};
 const DEF_QUIZ_SEC={id:'s-quiz',type:'quiz',title:'🎯 გამოსცადე ცოდნა',visible:true,tab:'🎯 გამოსცადე ცოდნა'};
 let DEF_TIMEZONE={
@@ -713,19 +714,21 @@ let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)
 // ---- merge venus/mars into saved sections ----
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MATCHING,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MATCHING,DEF_WHEEL,DEF_GLOSSARY,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
   const hasQuiz=saved.some(s=>s.id==='s-quiz');
   const hasMatching=saved.some(s=>s.id==='s-matching');
+  const hasWheel=saved.some(s=>s.id==='s-wheel');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasMatching) saved.push(DEF_MATCHING);
+  if(!hasWheel) saved.push(DEF_WHEEL);
   return saved;
 }
 let SECTIONS=initSections();
@@ -1694,11 +1697,217 @@ function renderMatchingSection(sec){
   return '<div id="matching-root" style="padding:16px"></div>';
 }
 
+// ===== ZODIAC WHEEL GAME =====
+const DEF_WHEEL_SIGNS=[
+  {id:1, sym:'♈',name:'ვერძი',    el:'fire', cr:'cardinal'},
+  {id:2, sym:'♉',name:'კური',     el:'earth',cr:'fixed'},
+  {id:3, sym:'♊',name:'ტყუპები', el:'air',  cr:'mutable'},
+  {id:4, sym:'♋',name:'კირჩხიბი',el:'water',cr:'cardinal'},
+  {id:5, sym:'♌',name:'ლომი',    el:'fire', cr:'fixed'},
+  {id:6, sym:'♍',name:'ქალწული', el:'earth',cr:'mutable'},
+  {id:7, sym:'♎',name:'სასწორი', el:'air',  cr:'cardinal'},
+  {id:8, sym:'♏',name:'მორიელი', el:'water',cr:'fixed'},
+  {id:9, sym:'♐',name:'მშვ-ოსანი',el:'fire',cr:'mutable'},
+  {id:10,sym:'♑',name:'თხის რქა',el:'earth',cr:'cardinal'},
+  {id:11,sym:'♒',name:'მერწყული',el:'air',  cr:'fixed'},
+  {id:12,sym:'♓',name:'თევზები', el:'water',cr:'mutable'},
+];
+const WHEEL_EL={
+  fire: {fill:'#D85A30',light:'#FAECE7',dark:'#712B13'},
+  earth:{fill:'#639922',light:'#EAF3DE',dark:'#27500A'},
+  air:  {fill:'#378ADD',light:'#E6F1FB',dark:'#0C447C'},
+  water:{fill:'#7F77DD',light:'#EEEDFE',dark:'#3C3489'},
+};
+const WHEEL_CR={cardinal:'#F59E0B',fixed:'#A855F7',mutable:'#38BDF8'};
+
+function getWheelSigns(){return ls('as_wheel_signs')||DEF_WHEEL_SIGNS;}
+
+function shuffleWheel(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+function renderWheelSection(sec){
+  return '<div id="wheel-root" style="padding:16px"></div>';
+}
+
+function initWheel(secId){
+  const root=document.getElementById('wheel-root');
+  if(!root)return;
+  startWheelGame(root);
+}
+
+function startWheelGame(root){
+  const signs=getWheelSigns();
+  let hand=shuffleWheel(signs);
+  let placements={};
+  let selCard=null;
+  let correct=[];
+  let moves=0,t=0,done=false;
+  const timer=setInterval(()=>{if(!done)t++;},1000);
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+  function drawWheel(){
+    const size=300,cx=150,cy=150,outerR=140,innerR=80,symR=110,numR=127;
+    function polar(deg,r){const rad=(deg-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)};}
+    function sector(a1,a2,r1,r2){
+      const s1=polar(a1,r1),e1=polar(a2,r1),s2=polar(a1,r2),e2=polar(a2,r2);
+      return `M${s2.x},${s2.y}L${s1.x},${s1.y}A${r1},${r1},0,0,1,${e1.x},${e1.y}L${e2.x},${e2.y}A${r2},${r2},0,0,0,${s2.x},${s2.y}Z`;
+    }
+    let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block;margin:0 auto;cursor:default">
+      <circle cx="${cx}" cy="${cy}" r="${outerR}" fill="#f8f8fc" stroke="#e2e0f0" stroke-width="1.5"/>`;
+
+    signs.forEach((sign,i)=>{
+      const angle=i*30;
+      const a1=angle-15,a2=angle+15;
+      const el=WHEEL_EL[sign.el];
+      const placed=placements[sign.id];
+      const isCor=correct.includes(sign.id);
+      const isAct=selCard&&!placed;
+      let fill=el.light,stroke=el.fill,opacity='0.75';
+      if(isCor){opacity='1';fill=el.light;stroke=el.fill;}
+      const sp=polar(angle,symR),np=polar(angle,numR-13);
+
+      svg+=`<path d="${sector(a1,a2,outerR,innerR)}" fill="${fill}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="${isCor?2:1}" onclick="window._ws(${sign.id})" style="cursor:pointer"/>`;
+      svg+=`<path d="${sector(a1,a2,innerR,innerR-9)}" fill="${WHEEL_CR[sign.cr]}" fill-opacity="0.3" stroke="${WHEEL_CR[sign.cr]}" stroke-width="0.5" onclick="window._ws(${sign.id})" style="cursor:pointer"/>`;
+      svg+=`<line x1="${polar(a1,innerR-9).x}" y1="${polar(a1,innerR-9).y}" x2="${polar(a1,outerR).x}" y2="${polar(a1,outerR).y}" stroke="#e2e0f0" stroke-width="0.8"/>`;
+
+      if(placed){
+        const bg=isCor?el.fill:'#6d28d9';
+        svg+=`<circle cx="${sp.x}" cy="${sp.y}" r="14" fill="${bg}" fill-opacity="0.9" onclick="window._ws(${sign.id})" style="cursor:pointer"/>`;
+        svg+=`<text x="${sp.x}" y="${sp.y}" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="#fff" font-weight="bold" onclick="window._ws(${sign.id})" style="cursor:pointer">${placed.sym}</text>`;
+        if(isCor)svg+=`<text x="${sp.x+10}" y="${sp.y-10}" font-size="10">✓</text>`;
+      } else {
+        const ac=selCard&&!isCor;
+        svg+=`<circle cx="${sp.x}" cy="${sp.y}" r="12" fill="${ac?'rgba(109,40,217,0.15)':'rgba(200,200,220,0.15)'}" stroke="${ac?'#7c3aed':'#d1d5db'}" stroke-width="${ac?2:1}" stroke-dasharray="${ac?'none':'3,2'}" onclick="window._ws(${sign.id})" style="cursor:pointer"/>`;
+        svg+=`<text x="${sp.x}" y="${sp.y}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="${ac?'#7c3aed':'#9ca3af'}" onclick="window._ws(${sign.id})" style="cursor:pointer">?</text>`;
+      }
+      svg+=`<text x="${np.x}" y="${np.y}" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="${el.dark}" opacity="0.55">${i+1}</text>`;
+    });
+
+    svg+=`<circle cx="${cx}" cy="${cy}" r="${innerR-9}" fill="white" stroke="#e2e0f0" stroke-width="1"/>
+      <text x="${cx}" y="${cy-8}" text-anchor="middle" font-size="22">🔮</text>
+      <text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="9" fill="#6b7280">ზოდიაქო</text>
+      <text x="${cx}" y="${cy+22}" text-anchor="middle" font-size="8" fill="#9ca3af">წრე</text>
+    </svg>`;
+    return svg;
+  }
+
+  function render(){
+    const placed=Object.keys(placements).length;
+    const hint=selCard
+      ?`✦ "${selCard.sym} ${selCard.name}" — წრეზე სწორ სექტ. დააჭირე`
+      :'ქვემოდან ნიშანი აირჩიე → წრეზე ადგილს დააჭირე';
+
+    let cards='';
+    hand.forEach(sign=>{
+      const el=WHEEL_EL[sign.el];
+      const isSel=selCard?.id===sign.id;
+      cards+=`<button onclick="window._wc(${sign.id})" style="padding:8px 10px;border-radius:12px;border:2px solid ${isSel?'#7c3aed':el.fill};background:${isSel?'#1e1b4b':el.light};color:${isSel?'#a78bfa':el.dark};font-size:12px;font-weight:600;cursor:pointer;transform:${isSel?'translateY(-4px) scale(1.05)':'scale(1)'};transition:all .2s;min-width:52px;text-align:center">
+        <div style="font-size:18px">${sign.sym}</div><div style="font-size:10px;margin-top:2px">${sign.name}</div>
+      </button>`;
+    });
+
+    root.innerHTML=`
+      <div style="max-width:500px;margin:0 auto">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:14px;font-weight:700;color:var(--text)">🔮 ზოდიაქოს წრე</div>
+          <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves} · ${placed}/12</span>
+        </div>
+        <div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:10px;overflow:hidden">
+          <div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);width:${(placed/12)*100}%;border-radius:99px;transition:width .4s"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px;min-height:18px">${hint}</div>
+        ${drawWheel()}
+        <div style="display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap">
+          ${[['🔥','ცეცხლი','#D85A30'],['🌿','მიწა','#639922'],['💨','ჰაერი','#378ADD'],['💧','წყალი','#7F77DD']].map(([i,l,c])=>`<span style="font-size:11px;padding:3px 8px;border-radius:8px;background:${c}22;color:${c};border:1px solid ${c}44;font-weight:500">${i} ${l}</span>`).join('')}
+          ${[['🌱','კარდინ.','#F59E0B'],['🏛️','ფიქსირ.','#A855F7'],['🌊','მუტაბ.','#38BDF8']].map(([i,l,c])=>`<span style="font-size:11px;padding:3px 8px;border-radius:8px;background:${c}22;color:${c};border:1px solid ${c}44;font-weight:500">${i} ${l}</span>`).join('')}
+        </div>
+        ${hand.length>0?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--text3);margin-bottom:6px;text-align:center">ხელში: ${hand.length} ნიშანი</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${cards}</div></div>`:''}
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button onclick="window._wcheck()" ${placed===0?'disabled':''} style="flex:2;padding:12px;border-radius:12px;border:none;background:${placed>0?'linear-gradient(135deg,#7c3aed,#db2777)':'#e2e0f0'};color:${placed>0?'#fff':'#9ca3af'};font-size:14px;font-weight:600;cursor:${placed>0?'pointer':'not-allowed'}">✓ შემოწმება (${placed}/12)</button>
+          <button onclick="window._wreset()" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🔄 თავ.</button>
+        </div>
+        <div id="wheel-fb"></div>
+      </div>`;
+
+    window._wc=id=>{
+      const sign=signs.find(s=>s.id===id);
+      selCard=selCard?.id===id?null:sign;
+      render();
+    };
+    window._ws=slotId=>{
+      if(selCard){
+        const prev=placements[slotId];
+        placements={...placements,[slotId]:selCard};
+        hand=hand.filter(s=>s.id!==selCard.id);
+        if(prev)hand=[...hand,prev];
+        selCard=null;moves++;render();
+      } else if(placements[slotId]){
+        const sign=placements[slotId];
+        const np={...placements};delete np[slotId];
+        placements=np;hand=[...hand,sign];selCard=sign;render();
+      }
+    };
+    window._wcheck=()=>{
+      const cor=[];
+      signs.forEach(sign=>{if(placements[sign.id]?.id===sign.id)cor.push(sign.id);});
+      correct=cor;
+      if(cor.length===12){done=true;clearInterval(timer);showWheelScore(root,moves,t,()=>startWheelGame(root));}
+      else{
+        render();
+        const n=cor.length;
+        const fb=document.getElementById('wheel-fb');
+        if(fb){
+          let msg,bg,border,color;
+          if(n>=9){msg=`✅ ${n}/12 — კარგია! კიდევ ${12-n} შეასწ.`;bg='#fefce8';border='#fde047';color='#854d0e';}
+          else if(n>=6){msg=`⚠️ ${n}/12 — ნახევარზე მეტი სწ.! გამარჯვება ახლოსაა!`;bg='#fefce8';border='#fde047';color='#854d0e';}
+          else if(n>0){msg=`❌ ${n}/12 — ნიშნები გაარია, კიდევ სცადე!`;bg='#fef2f2';border='#fca5a5';color='#7f1d1d';}
+          else{msg='❌ ჯერ ვერცერთი სწ.! მოემზადე და კიდევ სცადე.';bg='#fef2f2';border='#fca5a5';color='#7f1d1d';}
+          fb.innerHTML=`<div style="margin-top:10px;padding:10px 14px;border-radius:12px;background:${bg};border:1px solid ${border};font-size:12px;color:${color};line-height:1.6">${msg}</div>`;
+        }
+      }
+    };
+    window._wreset=()=>{clearInterval(timer);startWheelGame(root);};
+  }
+  render();
+}
+
+function showWheelScore(root,moves,t,onRetry){
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  let emoji,title,msg,stars;
+  if(moves<=12)     {stars=3;emoji='🌟';title='სრულყოფილი!';msg='ზოდიაქო ხელის გულზე გაქვს! 12 ნიშანი სწ. თანმ. — ეს ნამ. ასტრო-ოსტატია.';}
+  else if(moves<=16){stars=3;emoji='✨';title='შესანიშნავი!';msg='ძალიან კარგი! პატარა ჯანჯლი იყო, მაგრამ ბოლოს ყველაფერი ადგილზე დადგა.';}
+  else if(moves<=20){stars=2;emoji='🔮';title='კარგი ცოდნა!';msg='ნიშნები გახსოვს! კიდევ ერთი მცდელობა — და მასტერი გახდები.';}
+  else if(moves<=28){stars=2;emoji='🌙';title='ვარჯიში სჭ.!';msg='ნახევარი ადვილად დადე, ბოლო ნაწ. კი — ოდნ. გაარეოდ. კიდევ სცადე!';}
+  else              {stars=1;emoji='⭐';title='კარგი დასაწყ.!';msg='12 ნ. თანმ. კომ.! ვარჯ. და ყველ. ადგ. დადგება.';}
+
+  root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">
+    <div style="font-size:56px;margin-bottom:8px">${emoji}</div>
+    <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px">${title}</div>
+    <div style="font-size:28px;margin-bottom:14px">${'⭐'.repeat(stars)}</div>
+    <div style="padding:12px 16px;border-radius:14px;background:#f5f3ff;border:1px solid #a78bfa;font-size:13px;color:#5b21b6;line-height:1.7;margin-bottom:16px;text-align:left">${msg}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+      <div style="padding:12px;border-radius:12px;background:#f5f3ff;border:1px solid #a78bfa">
+        <div style="font-size:24px;font-weight:700;color:#7c3aed">${moves}</div>
+        <div style="font-size:11px;color:#6b7280">გადაადგ.</div>
+      </div>
+      <div style="padding:12px;border-radius:12px;background:#f0fdf4;border:1px solid #4ade80">
+        <div style="font-size:24px;font-weight:700;color:#16a34a">${fmt(t)}</div>
+        <div style="font-size:11px;color:#6b7280">დრო</div>
+      </div>
+    </div>
+    <button onclick="(${onRetry.toString()})()" style="width:100%;padding:12px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:14px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
+  </div>`;
+}
+
 function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='elements')return renderElementsSection(sec);
   if(sec.type==='quiz')return renderQuizSection(sec);
   if(sec.type==='matching')return renderMatchingSection(sec);
+  if(sec.type==='wheel')return renderWheelSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
@@ -2047,6 +2256,47 @@ function doCalc(secId){
 }
 
 function bindSectionEvents(sec,div){
+  if(sec.type==='wheel'){
+    const ws=getWheelSigns();
+    h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">12 ნიშნის რედაქტირება</p>';
+    ws.forEach((sign,si)=>{
+      h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:5px">
+        <summary style="padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500">${sign.sym} ${sign.name}</summary>
+        <div style="padding:10px 12px">
+          <div class="g2">
+            <div class="fg"><label>სახელი</label><input type="text" id="ws-n${si}" value="${sign.name}"></div>
+            <div class="fg"><label>სიმბოლო</label><input type="text" id="ws-sym${si}" value="${sign.sym}" style="font-size:18px;text-align:center"></div>
+          </div>
+          <div class="g2">
+            <div class="fg"><label>სტიქია</label>
+              <select id="ws-el${si}">
+                <option value="fire"${sign.el==='fire'?' selected':''}>ცეცხლი 🔥</option>
+                <option value="earth"${sign.el==='earth'?' selected':''}>მიწა 🌿</option>
+                <option value="air"${sign.el==='air'?' selected':''}>ჰაერი 💨</option>
+                <option value="water"${sign.el==='water'?' selected':''}>წყალი 💧</option>
+              </select>
+            </div>
+            <div class="fg"><label>ჯვარი</label>
+              <select id="ws-cr${si}">
+                <option value="cardinal"${sign.cr==='cardinal'?' selected':''}>კარდინ. 🌱</option>
+                <option value="fixed"${sign.cr==='fixed'?' selected':''}>ფიქსირ. 🏛️</option>
+                <option value="mutable"${sign.cr==='mutable'?' selected':''}>მუტაბ. 🌊</option>
+              </select>
+            </div>
+          </div>
+        </div></details>`;
+    });
+  }
+  if(sec.type==='wheel'){
+    const ws=getWheelSigns();
+    ws.forEach((sign,si)=>{
+      const n=document.getElementById('ws-n'+si);if(n)sign.name=n.value;
+      const sym=document.getElementById('ws-sym'+si);if(sym)sign.sym=sym.value;
+      const el=document.getElementById('ws-el'+si);if(el)sign.el=el.value;
+      const cr=document.getElementById('ws-cr'+si);if(cr)sign.cr=cr.value;
+    });
+    lss('as_wheel_signs',ws);
+  }
   if(sec.type==='matching'){
     const md=getMatchingData();
     h+='<p style="font-size:12px;color:var(--text3);margin-bottom:10px">'+md.modes.length+' თამაშის რეჟიმი</p>';
@@ -2087,6 +2337,7 @@ function bindSectionEvents(sec,div){
   }
   if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
   if(sec.type==='matching'){setTimeout(()=>initMatching(sec.id),50);}
+  if(sec.type==='wheel'){setTimeout(()=>initWheel(sec.id),50);}
   if(sec.type==='glossary'){
     setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
   }
