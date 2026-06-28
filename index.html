@@ -236,8 +236,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       <div style="margin-bottom:12px;padding:10px 14px;background:#fee2e2;border-radius:var(--r);border:.5px solid #fca5a5">
         <div style="font-size:12px;font-weight:500;color:#991b1b;margin-bottom:6px">⚠️ Cache-ის გასუფთავება</div>
         <div style="font-size:11px;color:#7f1d1d;margin-bottom:8px">თუ ახალი ცვლილებები არ ჩანს — დააჭირე ამ ღილაკს</div>
-        <button class="sbtn" onclick="clearSiteCache()" style="background:#b45309;width:100%;margin-bottom:5px">🗑️ სტრუქტ. გადატვირთვა (ტექსტები შენარჩ.)</button>
-        <button class="sbtn" onclick="clearAllCache()" style="background:#991b1b;width:100%">⚠️ სრული გასუფთ. (ყველაფ. წაიშ.)</button>
+        <button class="sbtn" onclick="clearSiteCache()" style="background:#b45309;width:100%">🗑️ სტრუქტ. გადატვირთვა (ტექსტები შენარჩ.)</button>
       </div>
       <div class="fg"><label>სათაური (H1)</label><input type="text" id="es-h1"></div>
       <div class="fg"><label>ქვესათაური</label><input type="text" id="es-sub"></div>
@@ -2909,11 +2908,6 @@ function clearSiteCache(){
   location.reload();
 }
 
-function clearAllCache(){
-  if(!confirm('⚠️ ყველაფერი წაიშლება — ტექსტები, კითხვები, თამაშები, განლაგება. გავაგრძელოთ?'))return;
-  localStorage.clear();
-  location.reload();
-}
 function renderTextsEditor(){
   const tx=getUITexts();
   const groups=[
