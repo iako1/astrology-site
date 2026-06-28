@@ -2900,6 +2900,79 @@ function clearSiteCache(){
   keys.forEach(k=>localStorage.removeItem(k));
   location.reload();
 }
+function renderTextsEditor(){
+  const tx=getUITexts();
+  const groups=[
+    {label:'🌐 საიტი',keys:['site_title','site_sub','site_footer','admin_btn']},
+    {label:'🧭 ნავიგაცია',keys:['nav_planets','tab_signs','tab_elements','tab_crosses','tab_table','tab_calc','tab_quiz','tab_glossary','tab_timezone','tab_moon','tab_venus','tab_mars']},
+    {label:'🎮 გამოსცადე ცოდნა — Hub',keys:['hub_title','hub_sub','hub_quiz_desc','hub_match_desc','hub_wheel_desc','hub_whois_desc','hub_moon_desc']},
+    {label:'🎯 ქვიზი',keys:['quiz_next','quiz_result','quiz_restart','quiz_back']},
+    {label:'🃏 შეუსაბამე ბარათები',keys:['match_confirm','match_how_title','match_how1','match_how2','match_how3','match_how4']},
+    {label:'🔮 ზოდიაქოს წრე',keys:['wheel_title','wheel_hint_default','wheel_check','wheel_reset']},
+    {label:'🌟 ვინ ვარ?',keys:['whois_title','whois_hint_btn']},
+    {label:'🌙 მთვარის ტიპაჟები',keys:['moon_title','moon_question']},
+    {label:'🧮 კალკულატორი',keys:['calc_btn','calc_placeholder']},
+    {label:'📖 გლოსარი',keys:['glossary_search']},
+    {label:'✦ საერთო ღილაკები',keys:['btn_next','btn_back','btn_menu','btn_restart','btn_correct','btn_wrong','btn_save']},
+  ];
+  const labels={
+    site_title:'სათაური (H1)',site_sub:'ქვე-სათაური',site_footer:'Footer ტექსტი',admin_btn:'ადმინ ღილაკი',
+    nav_planets:'Dropdown სათაური',tab_signs:'12 ნიშანი — tab',tab_elements:'სტიქიები — tab',tab_crosses:'ჯვრები — tab',
+    tab_table:'პლ. პოზ. — tab',tab_calc:'ქულები — tab',tab_quiz:'გამოსცადე — tab',tab_glossary:'გლოსარი — tab',
+    tab_timezone:'GMT — tab',tab_moon:'მთვარე — tab',tab_venus:'ვენერა — tab',tab_mars:'მარსი — tab',
+    hub_title:'Hub სათაური',hub_sub:'Hub ქვე-სათ.',hub_quiz_desc:'ქვიზი — აღწ.',hub_match_desc:'შეუს. — აღწ.',
+    hub_wheel_desc:'წრე — აღწ.',hub_whois_desc:'ვინ ვარ — აღწ.',hub_moon_desc:'მთვარე — აღწ.',
+    quiz_next:'შემდ. ღილ.',quiz_result:'შედ. ღილ.',quiz_restart:'ხელახ. ღილ.',quiz_back:'უკ. ღილ.',
+    match_confirm:'დადასტ. ღილ.',match_how_title:'გასაღები სათ.',match_how1:'ნ. 1',match_how2:'ნ. 2',match_how3:'ნ. 3',match_how4:'ნ. 4',
+    wheel_title:'სათაური',wheel_hint_default:'Hint ტ.',wheel_check:'შემ. ღ.',wheel_reset:'თავ. ღ.',
+    whois_title:'სათ.',whois_hint_btn:'მინ. ღ.',moon_title:'სათ.',moon_question:'კ-ვა',
+    calc_btn:'გამ. ღ.',calc_placeholder:'Placeholder',glossary_search:'ძ. placeholder',
+    btn_next:'შემდ.',btn_back:'უკ.',btn_menu:'მენიუ',btn_restart:'ხელახ.',btn_correct:'სწ.',btn_wrong:'არასწ.',btn_save:'შენ.',
+  };
+  let h='';
+  groups.forEach(g=>{
+    h+=`<details style="border:.5px solid var(--border);border-radius:var(--r);margin-bottom:6px">
+      <summary style="padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500">${g.label}</summary>
+      <div style="padding:10px 12px;display:grid;gap:6px">`;
+    g.keys.forEach(k=>{
+      const val=(tx[k]||DEF_UI_TEXTS[k]||'').replace(/"/g,'&quot;');
+      h+=`<div class="fg"><label>${labels[k]||k}</label><input type="text" id="utx-${k}" value="${val}"></div>`;
+    });
+    h+='</div></details>';
+  });
+  const ed=document.getElementById('texts-editor');
+  if(ed)ed.innerHTML=h;
+}
+
+function saveUITexts(){
+  const tx=getUITexts();
+  Object.keys(DEF_UI_TEXTS).forEach(k=>{
+    const el=document.getElementById('utx-'+k);
+    if(el)tx[k]=el.value;
+  });
+  lss('as_ui_texts',tx);
+  // Apply immediately
+  applyUITexts();
+  badge('sv-ed');
+}
+
+function resetUITexts(){
+  if(!confirm('ნაგულისხმევი ტექსტები აღდგება. გავაგრძელოთ?'))return;
+  localStorage.removeItem('as_ui_texts');
+  renderTextsEditor();
+  applyUITexts();
+}
+
+function applyUITexts(){
+  const tx=getUITexts();
+  // Apply site texts
+  const h1=document.getElementById('site-h1');if(h1)h1.textContent=tx.site_title;
+  const sub=document.getElementById('site-sub');if(sub)sub.textContent=tx.site_sub;
+  const ft=document.getElementById('site-footer-txt');if(ft)ft.textContent=tx.site_footer;
+  // Re-render nav for tab names
+  renderAll();
+}
+
 function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=document.getElementById('es-sub').value;SITE.footer=document.getElementById('es-footer').value;lss('as_site',SITE);renderSite();badge('sv-site');}
 
 // CMS LIST
