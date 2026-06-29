@@ -2886,9 +2886,15 @@ function saveUITexts(){
     if(el)tx[k]=el.value;
   });
   lss('as_ui_texts',tx);
-  // Apply immediately
   applyUITexts();
-  badge('sv-ed');
+  // Show toast confirmation
+  const btn=document.querySelector('#at-texts .sbtn');
+  if(btn){
+    const orig=btn.innerHTML;
+    btn.innerHTML='✅ შენახულია!';
+    btn.style.background='#166534';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';},2000);
+  }
 }
 
 function resetUITexts(){
