@@ -3030,6 +3030,37 @@ function hardReload(){
   window.location.href=window.location.href.split('?')[0]+'?v='+Date.now();
 }
 
+const DEF_UI_TEXTS={
+  site_title:'ასტროლოგია ✦ ზოდიაქო',site_sub:'სტიქიები · ჯვრები · მმართველები',
+  site_footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide',admin_btn:'✎ რედაქტირება',
+  nav_planets:'🪐 პლანეტები ნიშნებში',
+  tab_signs:'12 ნიშანი',tab_elements:'სტიქიები',tab_crosses:'ჯვრები',tab_table:'პლანეტების პოზიციები',
+  tab_calc:'ქულების კალკ.',tab_quiz:'🎯 გამოსცადე ცოდნა',tab_glossary:'📖 გლოსარი',
+  tab_timezone:'🕐 დროის სარტყელი',tab_moon:'🌙 მთვარე',tab_venus:'♀ ვენერა',tab_mars:'♂ მარსი',
+  hub_title:'გამოსცადე ცოდნა',hub_sub:'აირჩიე თამაში',
+  hub_quiz_desc:'30 კითხვა — ასტროლოგიის ყველა თემა',
+  hub_match_desc:'სტიქია, ჯვარი, ეგზალტ., ვარდ., მმართ.',
+  hub_wheel_desc:'12 ნიშანი სწორ ადგილს დაუყარე',
+  hub_whois_desc:'მინიშნებები → ნიშანი გამოიცანი',
+  hub_moon_desc:'პერსონაჟი ლაპარაკობს → მთვარე გამოიცანი',
+  quiz_next:'შემდეგი →',quiz_result:'შედეგი 🌟',quiz_restart:'🔄 ხელახლა',quiz_back:'← მენიუ',
+  match_confirm:'✓ დადასტ.',match_how_title:'📖 როგორ ვთამაშოთ',
+  match_how1:'მარცხნივ კატეგ. (სტიქია ან ჯვარი) დააჭირე',
+  match_how2:'მარჯვნივ შესაბამისი ნიშნები მონიშნე',
+  match_how3:'"✓ დადასტ." დააჭირე — ყველა ერთბაშად მოწმდება',
+  match_how4:'რაც ნაკლები მცდელობა — მით მეტი ვარსკვლავი!',
+  wheel_title:'🔮 ზოდიაქოს წრე',wheel_hint_default:'ქვემოდან ნიშანი აირჩიე → წრეზე ადგილს დააჭირე',
+  wheel_check:'✓ შემოწმება',wheel_reset:'🔄 თავიდან',
+  whois_title:'🌟 ვინ ვარ?',whois_hint_btn:'💡 კიდევ ერთი მინიშნება',
+  moon_title:'🌙 მთვარე ნიშნებში',moon_question:'🌙 ეს რომელი მთვარის ნიშანია?',
+  calc_btn:'გამოთვლა →',calc_placeholder:'შეიყვანე პლანეტები',
+  glossary_search:'🔍 მოძებნე ტერმინი...',
+  btn_next:'შემდეგი →',btn_back:'← უკან',btn_menu:'🏠 მენიუ',
+  btn_restart:'🔄 ხელახლა',btn_correct:'✅ სწორია!',btn_wrong:'❌ არასწ.',btn_save:'შენახვა',
+};
+function getUITexts(){return ls('as_ui_texts')||DEF_UI_TEXTS;}
+function t(key){const tx=getUITexts();return tx[key]||DEF_UI_TEXTS[key]||key;}
+
 function renderTextsEditor(){
   const tx=getUITexts();
   const groups=[
