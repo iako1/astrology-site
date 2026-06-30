@@ -187,7 +187,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
     <div class="atabs">
       <button class="atab on" onclick="aTab('pages',this)">📄 გვერდები</button>
       <button class="atab" onclick="aTab('site',this)">⚙️ საიტი</button>
-      <button class="atab" onclick="aTab('glossary',this)">📖 გლოსარი</button>
+      <button class="atab" onclick="aTab('glossary',this)">📖 ლექსიკონი</button>
       <button class="atab" onclick="aTab('texts',this)">📝 ტექსტები</button>
     </div>
 
@@ -481,7 +481,7 @@ const DEF_MARS_SIGNS=[
 
 let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
 let DEF_GLOSSARY={
-  id:'s-glossary',type:'glossary',title:'📖 გლოსარი',visible:true,tab:'📖 გლოსარი',
+  id:'s-glossary',type:'glossary',title:'📖 ლექსიკონი',visible:true,tab:'📖 ლექსიკონი',
 };
 
 const GLOSSARY_TERMS=[
@@ -653,6 +653,95 @@ const GLOSSARY_TERMS=[
   {ka:'ჰემისფეროს განაწილება',en:'Hemisphere Emphasis',cat:'ნატ. კარტა',
    def:'სად არის კარტის პლანეტების უმრავლესობა? ჩრდ. (I-VI სახ.) = ინტ-ბ., ახლ. ადამ.; სამ. (VII-XII) = სოც-ბ. ქ-ს.; დასავ. (I-IV) = ინდ-ლ.; აღმ. (VII-XII) = გარ-გ., ინ-ია.',
    url:'https://cafeastrology.com/glossaryofastrology.html'},
+,
+  // ===== ოკულტური ტერმინები (წიგნებიდან) =====
+  {ka:'ასტრალური სხეული',en:'Astral Body',cat:'ოკულტიზმი',
+   def:'ეზოთერული ტრადიციების მიხედვით, ადამიანის მეორე სხეული, რომელიც ფიზიკური სხეულის გარდა არსებობს. ასტრალურ სხეულს შეუძლია ღამით ან მედიტაციისას გამოეყოს ფიზიკურ სხეულს — ე.წ. ასტრალური მოგზაურობა. Leadbeater-ი და Panchadasi ამ ცნებას დეტალურად იხილავენ.',
+   url:'https://www.astroccult.net/the_astral_plane_by_leadbeater.pdf'},
+  {ka:'ასტრალური სამყარო',en:'Astral Plane',cat:'ოკულტიზმი',
+   def:'ეზოთერული კოსმოლოგიის მიხედვით, ფიზიკური სამყაროს შემდეგი, უხეში ფიზიკური გრძნობებისთვის მიუწვდომელი სფერო. Leadbeater-ის მიხედვით, ადამიანის ასტრალური სხეული ამ სამყაროში მოძრაობს ძილისა და გარდაცვალების შემდეგ.',
+   url:'https://archive.org/details/TheLightOfEgyptVolume1'},
+  {ka:'აურა',en:'Aura',cat:'ოკულტიზმი',
+   def:'ადამიანის სხეულს გარს შემოსული ენერგეტიკული ველი, რომელიც ეზოთერულ ტრადიციებში ასახავს ადამიანის ფიზიკურ, ემოციურ და სულიერ მდგომარეობას. Panchadasi-ს მიხედვით, სხვადასხვა ფერი სხვადასხვა მდგომარეობას ასახავს.',
+   url:'https://www.astroccult.net/The-Human-Aura-by-Swami-Panchadasi-(William-Walker-Atkinson).pdf'},
+  {ka:'ნათელხილვა',en:'Clairvoyance',cat:'ოკულტიზმი',
+   def:'ფარული ან შორეული ობიექტებისა და მოვლენების სუპერნორმალური აღქმის უნარი, ე.წ. "მეექვსე გრძნობა". Leadbeater განასხვავებს ბუნებრივ ნათელხილვას ინდუცირებულისგან. ასტროლოგიაში ნათელხილვა ხშირად ასტრალური სხეულის გამოყოფასთანაა დაკავშირებული.',
+   url:'https://www.astroccult.net/clairvoyance_by_leadbeater.pdf'},
+  {ka:'ტელეპათია',en:'Telepathy',cat:'ოკულტიზმი',
+   def:'აზრის ერთი გონიდან მეორეზე გადაცემა ფიზიკური საშუალებების გარეშე. Society for Psychical Research-ის მკვლევარი Baggally ამ ფენომენს სკეპტიკური, მაგრამ ღია გონებით იკვლევდა. ეზოთერულ ტრადიციებში ტელეპათია ასტრალური სხეულის ფუნქციად მიიჩნეოდა.',
+   url:'https://www.astroccult.net/telepathy_genuine_and_fradulent_by_baggally.pdf'},
+  {ka:'მედიუმობა',en:'Mediumship',cat:'ოკულტიზმი',
+   def:'უნარი იმოქმედოს როგორც გამტარი ან "არხი" ცოცხლების სამყაროსა და გარდაცვლილთა სამყაროს შორის კომუნიკაციისთვის. Atkinson (Swami Vishita) განასხვავებს ნამდვილ მედიუმობას ექსტრასენსორული აღქმის სხვა ფორმებისგან.',
+   url:'https://www.astroccult.net/Genuine%20Mediumship%20by%20Swami_Vishita%20(william-walker-atkinson).pdf'},
+  {ka:'კარმა',en:'Karma',cat:'სულიერება',
+   def:'ინდური ფილოსოფიის ფუნდამენტური ცნება — მიზეზ-შედეგობრიობის კანონი სულიერ სამყაროში. ყოველი ქმედება, სიტყვა და აზრი ქმნის კარმულ შედეგებს, რომლებიც ამ სიცოცხლეში ან შემდეგ განხორციელებებში იჩენს თავს. ასტროლოგიაში კარმული ვალდებულებები ხშირად ნატალური კარტის სატურნთან და კვანძებთანაა დაკავშირებული.',
+   url:'https://www.astroccult.net/Reincarnation_and_the_Law_of_Karma_by_WilliamWalkerAtkinson.pdf'},
+  {ka:'რეინკარნაცია',en:'Reincarnation',cat:'სულიერება',
+   def:'სულის ხელახლა განხორციელების დოქტრინა — რწმენა, რომ სული გარდაცვალების შემდეგ ახალ სხეულში ბრუნდება. ასტროლოგიაში მთვარის კვანძები, ნეპტუნი და XII სახლი ხშირად წინა სიცოცხლის გამოცდილებასთანაა დაკავშირებული.',
+   url:'https://www.astroccult.net/Reincarnation_and_the_Law_of_Karma_by_WilliamWalkerAtkinson.pdf'},
+  {ka:'პრანა',en:'Prana',cat:'სულიერება',
+   def:'სანსკრიტული ტერმინი — სასიცოცხლო ენერგია ან სასიცოცხლო ძალა, რომელიც ყველა ცოცხალ არსებაშია. Ramacharaka-ს მიხედვით, სუნთქვის ვარჯიშებით შესაძლებელია პრანას კონტროლი. ასტროლოგიაში მზე ხშირად სასიცოცხლო ენერგიის სიმბოლოდ მოიხსენიება.',
+   url:'https://www.astroccult.net/Hindu-Yogi-Science-of-Breath-by-Ramacharaka(William_Walker_Atkinson).pdf'},
+  {ka:'მედიტაცია',en:'Meditation',cat:'სულიერება',
+   def:'გონების გაწმენდისა და ფოკუსირების პრაქტიკა. პატანჯალის იოგა სუტრების მიხედვით, მედიტაცია (დჰიანა) გათავისუფლების გზის მე-7 ეტაპია. ასტროლოგიაში ნეპტუნი, XII სახლი და ვერძის ოპოზიცია ხშირად მედიტაციური მიდრეკილებასთანაა დაკავშირებული.',
+   url:'https://www.astroccult.net/The%20Yoga%20Sutras%20of%20Patanjali%20by%20Charles%20Johnston.pdf'},
+  {ka:'ეზოთერიზმი',en:'Esotericism',cat:'ოკულტიზმი',
+   def:'ფარული, შინაგანი ცოდნის სისტემა, რომელიც ღრმა სულიერ ჭეშმარიტებებს ეძებს. ეზოთერული ტრადიციებია: ჰერმეტიზმი, ქაბალა, ალქიმია, ასტროლოგია, ნუმეროლოგია, ტარო. წიგნები "The Light of Egypt" და "An Outline of Occult Science" ამ სფეროს ფუნდამენტური ნაშრომებია.',
+   url:'https://archive.org/details/TheLightOfEgyptVolume1'},
+  {ka:'ჰერმეტიზმი',en:'Hermeticism',cat:'ოკულტიზმი',
+   def:'ეზოთერული ფილოსოფია, რომელიც Hermes Trismegistus-ის სახელს ატარებს. ფუნდამენტური პრინციპია "As above, so below" — ციური და მიწიერი სამყაროს ანალოგია. ეს ასტროლოგიის ფილოსოფიური საფუძველია — ციური სხეულები ასახავენ მიწიერ რეალობას.',
+   url:'https://archive.org/details/TheLightOfEgyptVolume1'},
+  {ka:'ალქიმია',en:'Alchemy',cat:'ოკულტიზმი',
+   def:'შუა საუკუნეების ფილოსოფიური და პროტო-სამეცნიერო ტრადიცია, რომელიც ლითონების ოქრად გარდაქმნასა და სულიერ სრულყოფილებას ეძებდა. "The Light of Egypt"-ის მე-7 და მე-8 თავი ალქიმიას ეხება. ასტროლოგიაში პლანეტები ლითონებთანაა დაკავშირებული: მზე=ოქრო, მთვარე=ვერცხლი, სატ.=ტყვია.',
+   url:'https://archive.org/details/TheLightOfEgypt.Vol2'},
+  {ka:'ტარო',en:'Tarot',cat:'განჭვრეტა',
+   def:'78-ბარათიანი კარტების სისტემა, რომელიც განჭვრეტის, ინტუიციისა და სულიერი ასახვისთვის გამოიყენება. 22 მთავარი არკანი ასახავს სიცოცხლის ძირითად არქეტიპებს, 56 მცირე არკანი კი ყოველდღიურ სიტუაციებს. ასტროლოგიასთან კავშირი: ყოველ ბარათს შეესაბამება ნიშანი, პლანეტა ან ელემენტი.',
+   url:'https://www.obooko.com/book/the-tarot-and-you-vera-coe/read'},
+  {ka:'მთავარი არკანი',en:'Major Arcana',cat:'განჭვრეტა',
+   def:'ტაროს 22 ბარათი (0-21), რომლებიც ცხოვრების ძირითად გამოცდილებებს ასახავს. სასულე (The Fool) = 0, მაგი (The Magician) = I, მზე (The Sun) = XIX. ასტროლოგიური კავშირი: მაგი = მერკური, ბეჭედი = ვენერა, სასულე = ურანი.',
+   url:'https://www.obooko.com/book/the-tarot-and-you-vera-coe/read'},
+  {ka:'ნუმეროლოგია',en:'Numerology',cat:'განჭვრეტა',
+   def:'რიცხვების მისტიკური მნიშვნელობის კვლევა — სახელებისა და თარიღების ციფრული ანალიზი ადამიანის ხასიათისა და ბედის შესასწავლად. Pythagoras-ის ტრადიციას მიეწერება. ასტროლოგიასთან კავშირი: ორივე სისტემა დაბადების თარიღს იყენებს.',
+   url:'https://www.obooko.com/book/lucky-number-birth-number-bhatia/read'},
+  {ka:'რუნები',en:'Runes',cat:'განჭვრეტა',
+   def:'ჩრდილოევროპული ანბანი, რომელიც საკრალური სიმბოლოების სისტემადაც გამოიყენება. 24 ნიშნიანი ელდრ ფუთარქი განჭვრეტის, მაგიისა და სიმბოლური სისტემის საფუძველია. ასტროლოგიის მსგავსად, რუნები ბუნებრივ ციკლებსა და კოსმიურ ძალებს ასახავს.',
+   url:'https://www.obooko.com/book/runes-for-beginners-seger/read'},
+  {ka:'სიზმრის განმარტება',en:'Dream Interpretation',cat:'სიზმრები',
+   def:'სიზმრის სიმბოლოების მნიშვნელობის ძიების ხელოვნება. Miller-ის "Ten Thousand Dreams"-ი ყველაზე ვრცელ სიმბოლოთა ლექსიკონს შეადგენს. Bergson-ი ფილოსოფიური კუთხით იკვლევს სიზმარს: ძილში ცნობიერება გათავისუფლდება გრძნობიერი სამყაროს შეზღუდვებიდან.',
+   url:'https://www.astroccult.net/Ten_Thousand_Dreams_Interpreted_by_GustavusMiller.pdf'},
+  {ka:'ქვეცნობიერი',en:'Subconscious',cat:'სიზმრები',
+   def:'გონების ის ნაწილი, რომელიც ჩვეულებრივი ცნობიერების ქვეშ მდებარეობს და სიზმრებში, ინტუიციასა და ავტომატურ ქმედებებში ვლინდება. ასტროლოგიაში მთვარე, XII სახლი და ნეპტუნი ქვეცნობიერ სამყაროს ასახავს.',
+   url:'https://www.astroccult.net/DREAMS_by_Henri_Bergson.pdf'},
+  {ka:'ჰოროსკოპი',en:'Horoscope',cat:'ასტროლოგია',
+   def:'ციური სხეულების პოზიციების გრაფიკული გამოსახულება კონკრეტული მომენტისთვის — ყველაზე ხშირად დაბადების მომენტისთვის. სიტყვა ბერძნულიდან მომდინარეობს: horoskopos = "დროის გამყინვარება". Sepharial-ის წიგნი ჰოროსკოპის შედგენის სრულ გზამკვლევს შეადგენს.',
+   url:'https://www.gutenberg.org/cache/epub/46963/pg46963-images.html'},
+  {ka:'ნატალური კარტა',en:'Natal Chart / Birth Chart',cat:'ასტროლოგია',
+   def:'ჰოროსკოპი, შედგენილი ადამიანის დაბადების ზუსტი მომენტისა და ადგილისთვის. ასახავს ყველა პლანეტის პოზიციას 12 ნიშანსა და 12 სახლში. Alan Leo-ს მიხედვით, ნატალური კარტა "ატარებს სულის ევოლუციის ნიმუშს".',
+   url:'https://archive.org/details/in.ernet.dli.2015.238185'},
+  {ka:'ოიკოსი / მმართველობა (ჰელენ.)',en:'Domicile / Rulership',cat:'ასტროლოგია',
+   def:'ტრადიციულ ასტროლოგიაში, პლანეტის "სახლი" — ნიშანი, სადაც პლანეტა ყველაზე ძლიერად გამოიხატება. Ptolemy-ის Tetrabiblos-ში დეტალურად არის ჩამოყალიბებული: მზე=ლომი, მთვარე=კირჩხ., მარსი=ვერძი/მორ., ვენ.=კური/სასწ., მერკ.=ტყუპ./ქალვ., იუპ.=მშვ./თევზ., სატ.=თხა/მერწ.',
+   url:'https://www.gutenberg.org/cache/epub/70850/pg70850-images.html'},
+  {ka:'ჰოარარული ასტროლოგია',en:'Horary Astrology',cat:'ასტროლოგია',
+   def:'ასტროლოგიის ტრადიციული დარგი, სადაც კარტა შედგება კითხვის დასმის მომენტისთვის (არა დაბადების). ამ კარტის ანალიზი კითხვაზე პასუხს იძლევა. William Lilly-ის "Christian Astrology" horary ასტროლოგიის ყველაზე ვრცელი სახელმძღვანელოა.',
+   url:'https://archive.org/details/ChristianAstrologyByWilliamLilly'},
+  {ka:'ელექციური ასტროლოგია (Electional)',en:'Electional Astrology',cat:'ასტროლოგია',
+   def:'ასტროლოგიის დარგი, რომელიც ადგენს საუკეთესო დროს კონკრეტული ქმედებისთვის — ქორწინების, ბიზნეს-გახსნის, მოგზაურობის დასაწყებად. William Lilly-ის "Christian Astrology"-ის მეორე ნაწილი მთლიანად ელექციურ ასტროლოგიას ეძღვნება.',
+   url:'https://archive.org/details/ChristianAstrologyByWilliamLilly'},
+  {ka:'ტრადიციული ასტროლოგია',en:'Traditional Astrology',cat:'ასტროლოგია',
+   def:'პტოლემეოსიდან დაწყებული შუა საუკუნეების ბოლომდე განვითარებული ასტროლოგიის სისტემა. ეყრდნობა 7 ტრადიციულ პლანეტას, ხუთ ესენციურ ღირსებას (მმართვ., ეგზ., ტრიპლ., ტერმ., ფეისი) და სექტის დოქტრინას. Benjamin Dykes-ი ამ სისტემის ერთ-ერთი მთავარი მკვლევარია.',
+   url:'https://dn720002.ca.archive.org/0/items/traditional-astrology-books/Benjamin%20N.%20Dykes%20-%20Traditional%20Astrology%20for%20Today_%20An%20Introduction_text.pdf'},
+  {ka:'ვარსკვლავური რელიგია / ასტრო-თეოლოგია',en:'Astral Religion / Astro-Theology',cat:'ისტორია',
+   def:'ციური სხეულების — მზის, მთვარის, ვარსკვლავების — პატივისცემა, რომელიც ბევრი ძველი ცივილიზაციის რელიგიის საფუძველია. J. H. Hill-ის "Astral Worship" და Burgoyne-ის "The Light of Egypt"-ის II ტომი ამ ტრადიციას სისტემატურად შეისწავლიან.',
+   url:'https://www.astroccult.net/astralworship_by_jh_hill.pdf'},
+  {ka:'ჯადოქრობა / ვიჩქრაფტი',en:'Witchcraft',cat:'ისტორია',
+   def:'ქალებისა (და კაცების) ბრალდება ჯადოობაში — ევროპაში XV-XVIII საუკუნეებში მასიური დევნა. ასტროლოგიაც ხშირად იდევნებოდა ერეტიკულ პრაქტიკად. Wallace Notestein-ის კვლევა აჩვენებს, რომ ასტროლოგები და ჯადოქრები ხშირად ერთნაირ სამართლებრივ ბედს იყოფდნენ.',
+   url:'https://www.astroccult.net/HistoryOfWitchcraftInEngland_by_WallaceNotestein.pdf'},
+  {ka:'ანთროპოსოფია',en:'Anthroposophy',cat:'ოკულტიზმი',
+   def:'Rudolf Steiner-ის შემუშავებული სულიერი ფილოსოფია, რომელიც ბუნებამეცნიერებასა და სულიერ კვლევას აერთიანებს. "An Outline of Occult Science" ამ სისტემის ბიბლიის ეკვივალენტია. Steiner-ი ასტროლოგიის ელემენტებს სულიერ ევოლუციის კვლევაში იყენებდა.',
+   url:'https://www.astroccult.net/AnOutlineofOccultScience_by_RudolfSteiner.pdf'},
+  {ka:'ცრურწმენა',en:'Superstition',cat:'ისტორია',
+   def:'ირაციონალური რწმენა, რომელსაც მეცნიერება ვერ ადასტურებს — მოვლენებს შორის მიზეზ-შედეგობრივი კავშირის არარსებობისა მიუხედავად. Fanny Bergen-ი ცრურწმენებს ფოლკლორული ტრადიციების "გაქვავებულ" ნაშთად მოიაზრებს. ასტროლოგიაც ხშირად "ცრურწმენად" მოიხსენიება, თუმცა მისი ფუნქცია ისტორიულად ბევრად ღრმაა.',
+   url:'https://www.astroccult.net/current_superstitions_by_fanny_bergen.pdf'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -3225,7 +3314,7 @@ const DEF_UI_TEXTS={
   site_footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide',admin_btn:'✎ რედაქტირება',
   nav_planets:'🪐 პლანეტები ნიშნებში',
   tab_signs:'12 ნიშანი',tab_elements:'სტიქიები',tab_crosses:'ჯვრები',tab_table:'პლანეტების პოზიციები',
-  tab_calc:'ქულების კალკ.',tab_quiz:'🎯 გამოსცადე ცოდნა',tab_glossary:'📖 გლოსარი',
+  tab_calc:'ქულების კალკ.',tab_quiz:'🎯 გამოსცადე ცოდნა',tab_glossary:'📖 ლექსიკონი',
   tab_timezone:'🕐 დროის სარტყელი',tab_moon:'🌙 მთვარე',tab_venus:'♀ ვენერა',tab_mars:'♂ მარსი',
   hub_title:'გამოსცადე ცოდნა',hub_sub:'აირჩიე თამაში',
   hub_quiz_desc:'30 კითხვა — ასტროლოგიის ყველა თემა',
@@ -3263,13 +3352,13 @@ function renderTextsEditor(){
     {label:'🌟 ვინ ვარ?',keys:['whois_title','whois_hint_btn']},
     {label:'🌙 მთვარის ტიპაჟები',keys:['moon_title','moon_question']},
     {label:'🧮 კალკულატორი',keys:['calc_btn','calc_placeholder']},
-    {label:'📖 გლოსარი',keys:['glossary_search']},
+    {label:'📖 ლექსიკონი',keys:['glossary_search']},
     {label:'✦ საერთო ღილაკები',keys:['btn_next','btn_back','btn_menu','btn_restart','btn_correct','btn_wrong','btn_save']},
   ];
   const labels={
     site_title:'სათაური (H1)',site_sub:'ქვე-სათაური',site_footer:'Footer ტექსტი',admin_btn:'ადმინ ღილაკი',
     nav_planets:'Dropdown სათაური',tab_signs:'12 ნიშანი — tab',tab_elements:'სტიქიები — tab',tab_crosses:'ჯვრები — tab',
-    tab_table:'პლ. პოზ. — tab',tab_calc:'ქულები — tab',tab_quiz:'გამოსცადე — tab',tab_glossary:'გლოსარი — tab',
+    tab_table:'პლ. პოზ. — tab',tab_calc:'ქულები — tab',tab_quiz:'გამოსცადე — tab',tab_glossary:'ლექსიკონი — tab',
     tab_timezone:'GMT — tab',tab_moon:'მთვარე — tab',tab_venus:'ვენერა — tab',tab_mars:'მარსი — tab',
     hub_title:'Hub სათაური',hub_sub:'Hub ქვე-სათ.',hub_quiz_desc:'ქვიზი — აღწ.',hub_match_desc:'შეუს. — აღწ.',
     hub_wheel_desc:'წრე — აღწ.',hub_whois_desc:'ვინ ვარ — აღწ.',hub_moon_desc:'მთვარე — აღწ.',
@@ -3338,7 +3427,7 @@ function renderCmsList(){
   const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
   const typeLabel=s=>({signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',
     calc:'კალკ.',article:'სტატია',crosses:'ჯვრები',elements:'სტიქიები',
-    venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'გლოსარი'}[s.type]||s.type);
+    venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'ლექსიკონი'}[s.type]||s.type);
 
   // Separate sections into regular and planet
   const regularSecs=SECTIONS.filter(s=>!isPlanet(s));
