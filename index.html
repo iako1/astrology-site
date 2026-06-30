@@ -842,7 +842,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MOON_GAME,DEF_GLOSSARY,DEF_TIMEZONE,DEF_BOOKS];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_GLOSSARY,DEF_TIMEZONE,DEF_BOOKS];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
