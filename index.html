@@ -811,7 +811,7 @@ function getBooksData(){return ls('as_books_data')||DEF_BOOKS_DATA;}
 
 function renderBooksSection(sec){
   const books=getBooksData();
-  let h='<div style="max-width:720px;margin:0 auto">';
+  let h='<div style="max-width:680px;margin:0 auto">';
   h+=`<div style="text-align:center;margin-bottom:24px">
     <div style="font-size:13px;color:var(--text3);line-height:1.7;background:var(--bg2);border-radius:14px;padding:14px 18px;border:.5px solid var(--border)">
       📚 ეს წიგნები საჯარო დომენშია (საავტორო უფლება ამოწურულია) — თავისუფლად ჩამოსატვირთია. ქართული ნაწყვეტები მოცემულია <strong>შედარებისთვის</strong>, არა როგორც სრული თარგმანი.
@@ -820,25 +820,15 @@ function renderBooksSection(sec){
   
   books.forEach(b=>{
     h+=`<div style="border:1px solid var(--border);border-radius:18px;padding:22px 24px;margin-bottom:18px;background:var(--bg)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-        <div>
-          <div style="font-size:18px;font-weight:600;color:var(--text)">${b.title_ge}</div>
-          <div style="font-size:13px;color:var(--text3);margin-top:2px">${b.title_en} · ${b.author} · ${b.year}</div>
-        </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:18px;font-weight:600;color:var(--text)">${b.title_ge}</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:2px">${b.title_en} · ${b.author} · ${b.year}</div>
       </div>
-      <a href="${b.link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--accent,#7c3aed);color:#fff;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:18px">
+      <a href="${b.link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--accent,#7c3aed);color:#fff;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:20px">
         📖 წიგნის წაკითხვა — ${b.link_label} ↗
       </a>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
-        <div style="background:var(--bg2);border-radius:12px;padding:14px 16px;border-left:3px solid #4a8ec2">
-          <div style="font-size:10px;font-weight:700;color:#4a8ec2;letter-spacing:.06em;margin-bottom:8px">🇬🇧 ორიგინალი</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7;font-style:italic">"${b.excerpt_en}"</div>
-        </div>
-        <div style="background:var(--bg2);border-radius:12px;padding:14px 16px;border-left:3px solid #639922">
-          <div style="font-size:10px;font-weight:700;color:#639922;letter-spacing:.06em;margin-bottom:8px">🇬🇪 ქართულად (შედარებისთვის)</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7;font-style:italic">"${b.excerpt_ge}"</div>
-        </div>
-      </div>
+      <div style="font-size:15px;color:var(--text);line-height:1.9;font-style:italic;margin-bottom:10px">"${b.excerpt_en}"</div>
+      <div style="font-size:15px;color:var(--text);line-height:1.9;font-style:italic;margin-bottom:18px">"${b.excerpt_ge}"</div>
       <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px 16px">
         <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.06em;margin-bottom:6px">⭐ რა გავლენა ჰქონდა</div>
         <div style="font-size:13px;color:#78350f;line-height:1.7">${b.significance}</div>
