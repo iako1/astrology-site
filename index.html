@@ -1134,11 +1134,7 @@ function getBooksData(){return ls('as_books_data')||DEF_BOOKS_DATA;}
 function renderBooksSection(sec){
   const books=getBooksData();
   let h='<div style="max-width:680px;margin:0 auto">';
-  h+=`<div style="text-align:center;margin-bottom:24px">
-    <div style="font-size:13px;color:var(--text3);line-height:1.7;background:var(--bg2);border-radius:14px;padding:14px 18px;border:.5px solid var(--border)">
-      📚 ეს წიგნები საჯარო დომენშია (საავტორო უფლება ამოწურულია) — თავისუფლად ჩამოსატვირთია. ქართული ნაწყვეტები მოცემულია <strong>შედარებისთვის</strong>, არა როგორც სრული თარგმანი.
-    </div>
-  </div>`;
+
   
   books.forEach(b=>{
     h+=`<div style="border:1px solid var(--border);border-radius:18px;padding:22px 24px;margin-bottom:18px;background:var(--bg)">
