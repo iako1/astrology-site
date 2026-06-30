@@ -2232,10 +2232,14 @@ function startMoonGame(root){
   const shuffled=[...signs].sort(()=>Math.random()-.5);
   let idx=0,score=0,speechIdx=0,answered=false,selected=null;
   let timer=null;
-
-  function getOpts(card){
+  // Pre-generate options ONCE per card to avoid re-shuffling on every render
+  const optsCache=shuffled.map(card=>{
     const wrong=signs.filter(s=>s.id!==card.id).sort(()=>Math.random()-.5).slice(0,3);
     return [...wrong,card].sort(()=>Math.random()-.5);
+  });
+
+  function getOpts(){
+    return optsCache[idx];
   }
 
   function drawSVG(sign,talking){
@@ -2324,7 +2328,7 @@ function startMoonGame(root){
   function render(){
     if(idx>=shuffled.length){showMoonScore();return;}
     const card=shuffled[idx];
-    const opts=getOpts(card);
+    const opts=getOpts();
     const pct=Math.round((idx/shuffled.length)*100);
 
     const optBtns=opts.map(opt=>{
