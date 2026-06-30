@@ -763,21 +763,109 @@ const DEF_MOON_SIGNS=[
 ];
 function getMoonSigns(){return ls('as_moon_signs')||DEF_MOON_SIGNS;}
 
+// ===== BOOKS LIBRARY =====
+const DEF_BOOKS_DATA=[
+  {
+    id:1,
+    title_en:'Tetrabiblos',
+    title_ge:'ტეტრაბიბლოსი',
+    author:'კლავდიუს პტოლემეოსი',
+    author_en:'Claudius Ptolemy',
+    year:'დაახლ. 150 წ. ახ. წ.',
+    link:'https://www.gutenberg.org/files/70850/70850-h/70850-h.htm',
+    link_label:'Project Gutenberg — უფასო, საჯარო დომენი',
+    excerpt_en:'Of the celestial influences. The sun, by means of the seasons, governs all earthly things, not vines only and trees, but ourselves also.',
+    excerpt_ge:'ციური გავლენების შესახებ. მზე, სეზონების მეშვეობით, განაგებს ყველა მიწიერ მოვლენას — არა მხოლოდ ვაზსა და ხეებს, არამედ ჩვენც.',
+    significance:'ეს არის დასავლური ასტროლოგიის ფუნდამენტი — წიგნი, რომელმაც განსაზღვრა ასტროლოგიის სტრუქტურა თითქმის 1500 წლის განმავლობაში. პტოლემეოსმა პირველმა სისტემურად ჩამოაყალიბა პლანეტების, ნიშნების, ასპექტებისა და სახლების თეორია — ის საფუძველი, რომელზეც დღემდე დგას მთელი დასავლური ასტროლოგია. შუა საუკუნეების არაბულმა და ქრისტიანულმა ასტროლოგებმა მისგან ისწავლეს, რენესანსის უნივერსიტეტებში სავალდებულო წასაკითხი იყო.',
+  },
+  {
+    id:2,
+    title_en:'Christian Astrology',
+    title_ge:'ქრისტიანული ასტროლოგია',
+    author:'უილიამ ლილი',
+    author_en:'William Lilly',
+    year:'1647 წელი',
+    link:'https://archive.org/details/ChristianAstrologyByWilliamLilly',
+    link_label:'Internet Archive — უფასო, საჯარო დომენი',
+    excerpt_en:'Ask what you will, would you resolved be? Observe your time, learn your nativity.',
+    excerpt_ge:'რაც გინდა იკითხე, გინდა გაარკვიო? დააკვირდი დროს, შეისწავლე შენი დაბადების რუკა.',
+    significance:'ეს არის ინგლისურენოვანი ასტროლოგიის ერთ-ერთი ყველაზე გავლენიანი ნაშრომი. ლილიმ ეპიდემიისგან გაქცეული, სოფლად განმარტოებული, ერთ წელიწადში დაწერა წიგნი, რომელიც დღემდე ემსახურება horary (კითხვითი) ასტროლოგიის სახელმძღვანელოს. ის ცნობილი გახდა 1666 წლის ლონდონის ხანძრის ზუსტი წინასწარმეტყველებით — იმდენად ზუსტი, რომ ხანძრის გამოწვევაშიც კი ეჭვობდნენ.',
+  },
+  {
+    id:3,
+    title_en:'Astronomica',
+    title_ge:'ასტრონომიკა',
+    author:'მარკუს მანილიუსი',
+    author_en:'Marcus Manilius',
+    year:'დაახლ. 10-30 წ. ახ. წ.',
+    link:'https://archive.org/details/astronomica0000mani',
+    link_label:'Internet Archive — უფასო, საჯარო დომენი',
+    excerpt_en:'Who could know heaven but by heaven\'s gift, and find out God, save he were part divine?',
+    excerpt_ge:'ვინ შეიცნობდა ცას, ცის ნიჭის გარეშე, და იპოვიდა ღმერთს, თუ თვითონ ღვთაებრივი ნაწილი არ იყო?',
+    significance:'ეს არის უძველესი შემორჩენილი ვრცელი ასტროლოგიური ტექსტი — ლათინური პოემა ხუთ წიგნად, რომელიც ზოდიაქოს, სახლებსა და სტოიკურ ფილოსოფიას აერთიანებს ლექსად. მანილიუსი იშვიათ ცოდნას იძლევა იმაზე, თუ როგორ ესმოდათ ასტროლოგია რომის იმპერიის ადრეულ პერიოდში — ჯერ კიდევ პტოლემეოსამდე.',
+  },
+];
+
+function getBooksData(){return ls('as_books_data')||DEF_BOOKS_DATA;}
+
+function renderBooksSection(sec){
+  const books=getBooksData();
+  let h='<div style="max-width:720px;margin:0 auto">';
+  h+=`<div style="text-align:center;margin-bottom:24px">
+    <div style="font-size:13px;color:var(--text3);line-height:1.7;background:var(--bg2);border-radius:14px;padding:14px 18px;border:.5px solid var(--border)">
+      📚 ეს წიგნები საჯარო დომენშია (საავტორო უფლება ამოწურულია) — თავისუფლად ჩამოსატვირთია. ქართული ნაწყვეტები მოცემულია <strong>შედარებისთვის</strong>, არა როგორც სრული თარგმანი.
+    </div>
+  </div>`;
+  
+  books.forEach(b=>{
+    h+=`<div style="border:1px solid var(--border);border-radius:18px;padding:22px 24px;margin-bottom:18px;background:var(--bg)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:18px;font-weight:600;color:var(--text)">${b.title_ge}</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:2px">${b.title_en} · ${b.author} · ${b.year}</div>
+        </div>
+      </div>
+      <a href="${b.link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--accent,#7c3aed);color:#fff;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:18px">
+        📖 წიგნის წაკითხვა — ${b.link_label} ↗
+      </a>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+        <div style="background:var(--bg2);border-radius:12px;padding:14px 16px;border-left:3px solid #4a8ec2">
+          <div style="font-size:10px;font-weight:700;color:#4a8ec2;letter-spacing:.06em;margin-bottom:8px">🇬🇧 ორიგინალი</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7;font-style:italic">"${b.excerpt_en}"</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:12px;padding:14px 16px;border-left:3px solid #639922">
+          <div style="font-size:10px;font-weight:700;color:#639922;letter-spacing:.06em;margin-bottom:8px">🇬🇪 ქართულად (შედარებისთვის)</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7;font-style:italic">"${b.excerpt_ge}"</div>
+        </div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.06em;margin-bottom:6px">⭐ რა გავლენა ჰქონდა</div>
+        <div style="font-size:13px;color:#78350f;line-height:1.7">${b.significance}</div>
+      </div>
+    </div>`;
+  });
+  
+  h+='</div>';
+  return h;
+}
+
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MOON_GAME,DEF_GLOSSARY,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_MOON_GAME,DEF_GLOSSARY,DEF_TIMEZONE,DEF_BOOKS];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
   const hasGlossary=saved.some(s=>s.id==='s-glossary');
   const hasQuiz=saved.some(s=>s.id==='s-quiz');
   const hasMoonGame=saved.some(s=>s.id==='s-moon-game');
+  const hasBooks=saved.some(s=>s.id==='s-books');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasMoonGame) saved.push(DEF_MOON_GAME);
+  if(!hasBooks) saved.push(DEF_BOOKS);
   return saved;
 }
 let SECTIONS=initSections();
@@ -2423,6 +2511,7 @@ function renderSection(sec){
   if(sec.type==='matching')return renderMatchingSection(sec);
   if(sec.type==='wheel')return renderWheelSection(sec);
   if(sec.type==='moon-game')return renderMoonGameSection(sec);
+  if(sec.type==='books')return renderBooksSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
   if(sec.type==='table')return renderTableSection(sec);
@@ -3207,6 +3296,21 @@ function openEditor(i){
   h+=`<button class="sbtn" onclick="saveEditor()" style="margin-top:8px">შენახვა <span class="svbadge" id="sv-ed">✓</span></button></div>`;
   w.innerHTML=h;
   w.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function addBook(){
+  const bd=getBooksData();
+  bd.push({
+    id:Date.now(),
+    title_en:'ახალი წიგნი',title_ge:'ახალი წიგნი',
+    author:'ავტორი',author_en:'Author',year:'წელი',
+    link:'https://archive.org/',link_label:'წყარო',
+    excerpt_en:'Original excerpt...',excerpt_ge:'ციტატა ქართულად...',
+    significance:'რა გავლენა ჰქონდა ამ წიგნს...',
+  });
+  lss('as_books_data',bd);
+  const sec=SECTIONS.find(s=>s.type==='books');
+  if(sec)openEditor(SECTIONS.indexOf(sec));
 }
 
 function addCard(){
