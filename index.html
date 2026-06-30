@@ -1325,32 +1325,44 @@ function getBooksData(){return ls('as_books_data')||DEF_BOOKS_DATA;}
 function renderResourcesSection(sec){
   const tab=sec._tab||'books';
   const booksHTML=renderBooksSection({id:'s-books'});
-  const glossHTML=renderGlossarySection({id:'s-glossary'});
+  const glossHTML=`<div id="res-glossary-wrap"></div>`;
   return `<div>
     <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
-      <button onclick="window._resTab('books',this)" id="res-tab-books"
+      <button onclick="window._resTab('books')" id="res-tab-books"
         style="padding:10px 22px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='books'?'#7c3aed':'transparent'};color:${tab==='books'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
         📚 ბიბლიოთეკა
       </button>
-      <button onclick="window._resTab('lexicon',this)" id="res-tab-lexicon"
+      <button onclick="window._resTab('lexicon')" id="res-tab-lexicon"
         style="padding:10px 22px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='lexicon'?'#7c3aed':'transparent'};color:${tab==='lexicon'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
         📖 ლექსიკონი
       </button>
     </div>
-    <div id="res-books" style="padding-top:16px;display:${tab==='books'?'':'none'}">${booksHTML}</div>
-    <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'':'none'}">${glossHTML}</div>
+    <div id="res-books" style="padding-top:16px;display:${tab==='books'?'block':'none'}">${booksHTML}</div>
+    <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}">${glossHTML}</div>
   </div>`;
 }
 
 function initResourcesSection(){
-  window._resTab=function(tab,btn){
-    document.getElementById('res-books').style.display=tab==='books'?'':'none';
-    document.getElementById('res-lexicon').style.display=tab==='lexicon'?'':'none';
+  window._resTab=function(tab){
+    const booksDiv=document.getElementById('res-books');
+    const lexDiv=document.getElementById('res-lexicon');
+    if(!booksDiv||!lexDiv)return;
+    booksDiv.style.display=tab==='books'?'block':'none';
+    lexDiv.style.display=tab==='lexicon'?'block':'none';
     ['books','lexicon'].forEach(t=>{
       const b=document.getElementById('res-tab-'+t);
-      if(b){b.style.borderBottomColor=t===tab?'#7c3aed':'transparent';b.style.color=t===tab?'#7c3aed':'var(--text3)';}
+      if(b){
+        b.style.borderBottomColor=t===tab?'#7c3aed':'transparent';
+        b.style.color=t===tab?'#7c3aed':'var(--text3)';
+      }
     });
-    if(tab==='lexicon'){buildCatFilters();renderGlossaryGrid();}
+    if(tab==='lexicon'){
+      const wrap=document.getElementById('res-glossary-wrap');
+      if(wrap&&!wrap.innerHTML.trim()){
+        wrap.innerHTML=renderGlossarySection({id:'s-glossary'});
+      }
+      setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
+    }
   };
 }
 
