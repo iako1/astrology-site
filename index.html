@@ -1343,6 +1343,12 @@ function renderResourcesSection(sec){
 }
 
 function initResourcesSection(){
+  // Immediately render glossary HTML (it may be needed any time)
+  const wrap=document.getElementById('res-glossary-wrap');
+  if(wrap&&!wrap.innerHTML.trim()){
+    wrap.innerHTML=renderGlossarySection({id:'s-glossary'});
+    setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},100);
+  }
   window._resTab=function(tab){
     const booksDiv=document.getElementById('res-books');
     const lexDiv=document.getElementById('res-lexicon');
@@ -1357,10 +1363,6 @@ function initResourcesSection(){
       }
     });
     if(tab==='lexicon'){
-      const wrap=document.getElementById('res-glossary-wrap');
-      if(wrap&&!wrap.innerHTML.trim()){
-        wrap.innerHTML=renderGlossarySection({id:'s-glossary'});
-      }
       setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},50);
     }
   };
