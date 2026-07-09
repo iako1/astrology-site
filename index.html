@@ -1539,6 +1539,7 @@ function renderResourcesSection(sec){
 }
 
 function initResourcesSection(){
+  // Define _resTab immediately so onclick works before timeout fires
   window._resTab=function(tab){
     ['courses','books','lexicon'].forEach(t=>{
       const d=document.getElementById('res-'+t);
@@ -1552,11 +1553,12 @@ function initResourcesSection(){
     if(tab==='lexicon'){
       const wrap=document.getElementById('res-glossary-wrap');
       if(!wrap)return;
-      // Always re-render to ensure fresh content
       wrap.innerHTML=renderFullLexicon();
     }
   };
 }
+// Also define globally as fallback before section loads
+if(!window._resTab) window._resTab=function(tab){setTimeout(()=>window._resTab&&window._resTab(tab),100);};
 
 function renderFullLexicon(){
   const terms=getGlossaryTerms();
