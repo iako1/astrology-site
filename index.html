@@ -1567,36 +1567,35 @@ function renderFullLexicon(){
   const cats=[...new Set(allTerms.map(t=>t.cat))].sort();
   const sorted=[...allTerms].sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
 
-  let h=`<div>
-    <div style="position:relative;margin-bottom:12px">
-      <input type="text" id="lex-search" placeholder="🔍 ტერმინი მოძებნე ქართულად ან ინგლისურად..."
-        style="width:100%;padding:12px 16px;border:.5px solid var(--border2);border-radius:12px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit"
-        oninput="filterLexicon()">
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="lex-cats">
-      <button onclick="setLexCat('all',this)" class="lex-cat-btn"
-        style="padding:5px 13px;border:.5px solid var(--text);border-radius:12px;font-size:12px;cursor:pointer;background:var(--text);color:var(--bg)">ყველა</button>
-      ${cats.map(c=>`<button onclick="setLexCat('${c}',this)" class="lex-cat-btn"
-        style="padding:5px 13px;border:.5px solid var(--border);border-radius:12px;font-size:12px;cursor:pointer;background:var(--bg2);color:var(--text2)">${c}</button>`).join('')}
-    </div>
-    <div id="lex-count" style="font-size:12px;color:var(--text3);margin-bottom:12px">${allTerms.length} ტერმინი</div>
-    <div id="lex-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">
-      ${sorted.map(t=>`
-        <div class="lex-item" data-cat="${t.cat}" data-ka="${t.ka.toLowerCase()}" data-en="${t.en.toLowerCase()}" data-def="${t.def.toLowerCase()}"
-          style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg)">
-          <div style="margin-bottom:8px">
-            <div style="font-size:15px;font-weight:500;color:var(--text)">${t.ka}</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.en}</div>
-          </div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">${t.def}</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
-            <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
-            ${t.url?`<a href="${t.url}" target="_blank" rel="noopener" style="font-size:10px;color:var(--text3);text-decoration:none">📚 წყარო</a>`:''}
-          </div>
-        </div>`).join('')}
-    </div>
-  </div>`;
-  return h;
+  const catBtns='<button onclick="setLexCat(\'all\',this)" class="lex-cat-btn" style="padding:5px 13px;border:.5px solid var(--text);border-radius:12px;font-size:12px;cursor:pointer;background:var(--text);color:var(--bg)">ყველა</button>'
+    +cats.map(c=>'<button onclick="setLexCat(\''+c+'\',this)" class="lex-cat-btn" style="padding:5px 13px;border:.5px solid var(--border);border-radius:12px;font-size:12px;cursor:pointer;background:var(--bg2);color:var(--text2)">'+c+'</button>').join('');
+
+  const cards=sorted.map(t=>{
+    const sourceLink=t.url
+      ?'<a href="'+t.url+'" target="_blank" rel="noopener" style="font-size:10px;color:var(--text3);text-decoration:none">📚 წყარო</a>'
+      :'';
+    return '<div class="lex-item" data-cat="'+t.cat+'" data-ka="'+(t.ka||'').toLowerCase().replace(/"/g,'')+'" data-en="'+(t.en||'').toLowerCase().replace(/"/g,'')+'" data-def="'+(t.def||'').toLowerCase().replace(/"/g,'')+'"'
+      +' style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg)">'
+      +'<div style="margin-bottom:8px">'
+      +'<div style="font-size:15px;font-weight:500;color:var(--text)">'+t.ka+'</div>'
+      +'<div style="font-size:11px;color:var(--text3);margin-top:1px">'+t.en+'</div>'
+      +'</div>'
+      +'<div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">'+t.def+'</div>'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">'
+      +'<span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">'+t.cat+'</span>'
+      +sourceLink
+      +'</div></div>';
+  }).join('');
+
+  return '<div>'
+    +'<div style="position:relative;margin-bottom:12px">'
+    +'<input type="text" id="lex-search" placeholder="🔍 ტერმინი მოძებნე ქართულად ან ინგლისურად..." oninput="filterLexicon()" '
+    +'style="width:100%;padding:12px 16px;border:.5px solid var(--border2);border-radius:12px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit">'
+    +'</div>'
+    +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="lex-cats">'+catBtns+'</div>'
+    +'<div id="lex-count" style="font-size:12px;color:var(--text3);margin-bottom:12px">'+allTerms.length+' ტერმინი</div>'
+    +'<div id="lex-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">'+cards+'</div>'
+    +'</div>';
 }
 
 function setLexCat(cat,btn){
