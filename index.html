@@ -1473,10 +1473,19 @@ function getCourses(){return ls('as_courses_data')||DEF_COURSES;}
 
 function renderCoursesHTML(){
   const courses=getCourses();
-  const levelColor={'დამწყები':'#166534','დამწყები → საშ.':'#1a5fb4','დამწყები → მოწინ.':'#7c3aed','ყველა':'#374151'};
+  const levelColor={
+    'დამწყები':'#166534',
+    'დამწყები → საშუალო':'#1a5fb4',
+    'დამწყები → საშ.':'#1a5fb4',
+    'დამწყები → მოწინავე':'#7c3aed',
+    'დამწყები → მოწინ.':'#7c3aed',
+    'ყველა':'#374151',
+    'ყველა დონე':'#374151',
+  };
   let h='<div style="display:grid;gap:10px;max-width:720px">';
   courses.forEach(c=>{
     const lc=levelColor[c.level]||'#374151';
+    const detailsId='course-'+c.id;
     h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden">
       <summary style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;gap:12px">
         <div style="min-width:0">
