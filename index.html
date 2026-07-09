@@ -1551,12 +1551,76 @@ function initResourcesSection(){
     });
     if(tab==='lexicon'){
       const wrap=document.getElementById('res-glossary-wrap');
-      if(wrap&&!wrap.innerHTML.trim()){
-        wrap.innerHTML=renderGlossarySection({id:'s-glossary'});
-      }
-      setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},30);
+      if(!wrap)return;
+      // Always re-render to ensure fresh content
+      wrap.innerHTML=renderFullLexicon();
     }
   };
+}
+
+function renderFullLexicon(){
+  const terms=getGlossaryTerms();
+  const saved=ls('as_glossary_terms');
+  const allTerms=saved||terms;
+  const cats=[...new Set(allTerms.map(t=>t.cat))].sort();
+  const sorted=[...allTerms].sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
+
+  let h=`<div>
+    <div style="position:relative;margin-bottom:12px">
+      <input type="text" id="lex-search" placeholder="🔍 ტერმინი მოძებნე ქართულად ან ინგლისურად..."
+        style="width:100%;padding:12px 16px;border:.5px solid var(--border2);border-radius:12px;background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit"
+        oninput="filterLexicon()">
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="lex-cats">
+      <button onclick="setLexCat('all',this)" class="lex-cat-btn"
+        style="padding:5px 13px;border:.5px solid var(--text);border-radius:12px;font-size:12px;cursor:pointer;background:var(--text);color:var(--bg)">ყველა</button>
+      ${cats.map(c=>`<button onclick="setLexCat('${c}',this)" class="lex-cat-btn"
+        style="padding:5px 13px;border:.5px solid var(--border);border-radius:12px;font-size:12px;cursor:pointer;background:var(--bg2);color:var(--text2)">${c}</button>`).join('')}
+    </div>
+    <div id="lex-count" style="font-size:12px;color:var(--text3);margin-bottom:12px">${allTerms.length} ტერმინი</div>
+    <div id="lex-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">
+      ${sorted.map(t=>`
+        <div class="lex-item" data-cat="${t.cat}" data-ka="${t.ka.toLowerCase()}" data-en="${t.en.toLowerCase()}" data-def="${t.def.toLowerCase()}"
+          style="border:.5px solid var(--border);border-radius:12px;padding:14px;background:var(--bg)">
+          <div style="margin-bottom:8px">
+            <div style="font-size:15px;font-weight:500;color:var(--text)">${t.ka}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.en}</div>
+          </div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px">${t.def}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:.5px solid var(--border)">
+            <span style="font-size:10px;padding:2px 8px;background:var(--bg2);border-radius:8px;color:var(--text3)">${t.cat}</span>
+            ${t.url?`<a href="${t.url}" target="_blank" rel="noopener" style="font-size:10px;color:var(--text3);text-decoration:none">📚 წყარო</a>`:''}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+  return h;
+}
+
+function setLexCat(cat,btn){
+  window._lexCat=cat;
+  document.querySelectorAll('.lex-cat-btn').forEach(b=>{
+    b.style.background=b===btn?'var(--text)':'var(--bg2)';
+    b.style.color=b===btn?'var(--bg)':'var(--text2)';
+    b.style.borderColor=b===btn?'var(--text)':'var(--border)';
+  });
+  filterLexicon();
+}
+
+function filterLexicon(){
+  const search=(document.getElementById('lex-search')?.value||'').toLowerCase();
+  const cat=window._lexCat||'all';
+  const items=document.querySelectorAll('.lex-item');
+  let count=0;
+  items.forEach(el=>{
+    const matchCat=cat==='all'||el.dataset.cat===cat;
+    const matchSearch=!search||el.dataset.ka.includes(search)||el.dataset.en.includes(search)||el.dataset.def.includes(search);
+    const show=matchCat&&matchSearch;
+    el.style.display=show?'':'none';
+    if(show)count++;
+  });
+  const c=document.getElementById('lex-count');
+  if(c)c.textContent=count+' ტერმინი';
 }
 
 function renderBooksSection(sec){
