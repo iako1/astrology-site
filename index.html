@@ -1322,34 +1322,163 @@ const DEF_BOOKS_DATA=[
 
 function getBooksData(){return ls('as_books_data')||DEF_BOOKS_DATA;}
 
+const DEF_COURSES=[
+  {id:1,
+   title:'Astrology Library — Free Lessons (18 გაკვეთილი)',
+   provider:'AstroLibrary.org',
+   level:'დამწყები',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://astrolibrary.org/lessons/',
+   desc:'18 სტრუქტურირებული გაკვეთილი — სიმბოლოებიდან სინასტრამდე. მოიცავს: ნ. კარტა, 12 სახლი, პლანეტები, სტიქიები, ასპექტები, ასცენდანტი, სინასტრი, ტრანზიტები. ყველაზე სრულყოფილი უფასო ტექსტური კურსი ინტერნეტში.',
+  },
+  {id:2,
+   title:'Kepler College — Introduction to Astrology',
+   provider:'Kepler College',
+   level:'დამწყები',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://store.keplercollege.org/product/free-kepler-college-course-introduction-to-astrology/',
+   desc:'კეპლერი ერთ-ერთი ყველაზე პრესტიჟული ასტროლოგიის კოლეჯია. უფასო შესავალი კურსი მოიცავს ასტროლოგიის ისტორიას, ასტრონომიურ საფუძვლებს, ნიშნებს, სახლებს, პლანეტებსა და ასპექტებს. სწავლობ სულ მცირე ვალდებულების გარეშე.',
+  },
+  {id:3,
+   title:'Astro.com — Introduction to Astrology',
+   provider:'Astrodienst (Astro.com)',
+   level:'დამწყები → საშ.',
+   lang:'ინგლისური / გერმ.',
+   price:'უფასო',
+   link:'https://www.astro.com/astrology/in_general_e.htm',
+   desc:'Astro.com — ასტროლოგიის ყველაზე ცნობილი ვებ-საიტი პროფ. ასტროლოგებისთვის. უფასო შესავლის სექცია მოიცავს: პლანეტები, ნიშნები, სახლები, ასპექტები, ასტრო-ფსიქოლოგია. განსაკუთრებული ხაზი ასტრო-ფსიქოლოგიაზე (Jung x Astrology).',
+  },
+  {id:4,
+   title:'Cafe Astrology — Free Lessons & Articles',
+   provider:'CafeAstrology.com',
+   level:'დამწყები',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://cafeastrology.com/learnastrology.html',
+   desc:'ინტერნეტის ყველაზე პოპულარული ასტ. საიტი დამწყებებისთვის. გაკვეთილ-სტილის სტატიები: მზ. ნიშნები, ნ. კარტა, მთვ. ფაზები, ტრანზიტები. ასევე: სინასტრის, სოლარული რეთხის, ტრ. ოპ. და ქვ-ხ-ის სრული ინტერპ. ბაზა.',
+  },
+  {id:5,
+   title:'Learn Astrology Free — Western & Vedic Tutorials',
+   provider:'LearnAstrologyFree.com',
+   level:'დამწყები → მოწინ.',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://www.learnastrologyfree.com/',
+   desc:'სტრუქტ. გაკვეთილები დასავლური და ვედური ასტ-ში: "Becoming an Astrologer", "A Tale of Two Skies" (ზოდ. კომ.), ტრ. X ნ. კარტა. ზოგი ტოპიკი მოწ. დონეზეა — სასარგებლო მათ., ვინც დასავლურიდან ვედ-ზე გადადის.',
+  },
+  {id:6,
+   title:'Coursesity — 25+ Free Astrology Classes',
+   provider:'Coursesity.com',
+   level:'ყველა',
+   lang:'ინგლ. / სხვ.',
+   price:'უფასო',
+   link:'https://coursesity.com/free-tutorials-learn/astrology',
+   desc:'25-ზე მეტი კურსის კრებული Udemy, YouTube და სხვა პლათ-დან — ნ. კარტა, ვ. ასტ., ტარო, ნუმ., კ. ასტ. ოდ. ადგილიდან შეარჩიე შენ-ს მ-ბ. დამ-ი + ვ. ასტ-ის ფ-ბ.',
+  },
+  {id:7,
+   title:'Saptarishis Astrology — Free Vedic Course',
+   provider:'Saptarishis Astrology',
+   level:'დამწყები → საშ.',
+   lang:'ინგლისური',
+   price:'უფასო (სერთ. = ფასიანი)',
+   link:'https://saptarishisshop.com/online-astrology-course/',
+   desc:'ვედური ასტ-ის სპეციალ. სკ. — 5000+ სტუდ. გაატ. ფუნდ.: ვედ. ასტ. პრინციპები, ჯ. კარტა კ-ბ., ნ. და ბ. ენ-ი. სრ-ი შ. — სერ-ტ. ტ-ტ. + ი-ბ-ა.',
+  },
+  {id:8,
+   title:'Lunar Astro Vedic Academy — Free Starter Course',
+   provider:'LunarAstro.org',
+   level:'დამწყები',
+   lang:'ინგლ. / ჰინდ.',
+   price:'უფასო',
+   link:'https://lunarastro.org/free-astrology-course/',
+   desc:'ვ. ასტ-ის ა-ბ. — ჯ. კარტა, ნ. და ბ., ნ. ბ-ები, მ-ებ. და ბ-ბ-ი კ-ბ. ა. ვ. ასტ. ს-ა სიღ-ს ი. ამ ს-დ.',
+  },
+  {id:9,
+   title:'Astrology42 — Learning Hub',
+   provider:'Astrology42.com',
+   level:'დამწყები → საშ.',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://www.astrology42.com/learn/',
+   desc:'კომ-ბ. "სასწ. კვ." — ყ-ა ტ-ბ-ა მ-ბ-ულ თ-ებ-ად და ა-გ. გ-ბ-ებ-ად. პლ., ნ., სახ., ასპ., ტ-ბ-ი, რ-ბ-ა ს. ინგ-ში, ,,plain English" ე-ით.',
+  },
+  {id:10,
+   title:'Astrolibrary — Free eBooks & Printables',
+   provider:'AstroLibrary.org',
+   level:'ყველა',
+   lang:'ინგლისური',
+   price:'უფასო',
+   link:'https://astrolibrary.org/library/',
+   desc:'18+ ა. წ., ბ. ქ-ები, ც-ბ-ი, ბ. კ-ი ნ. და ბ. ი-ბ-ა-ბ. ა. ,,Free Synastry Report" — ა-ა-ი ი-ბ-ა. ასევე ი. ,,Astrology Printables" — ც-ბ-ი, ვ-ბ-ი ბ-ბ-ი.',
+  },
+];
+function getCourses(){return ls('as_courses_data')||DEF_COURSES;}
+
+function renderCoursesHTML(){
+  const courses=getCourses();
+  const levelColor={'დამწყები':'#166534','დამწყები → საშ.':'#1a5fb4','დამწყები → მოწინ.':'#7c3aed','ყველა':'#374151'};
+  let h='<div style="display:grid;gap:10px;max-width:720px">';
+  courses.forEach(c=>{
+    const lc=levelColor[c.level]||'#374151';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden">
+      <summary style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;gap:12px">
+        <div style="min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--text)">${c.title}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap">
+            <span>${c.provider}</span>
+            <span style="color:${lc};font-weight:500">${c.level}</span>
+            <span>${c.lang}</span>
+            <span style="color:#16a34a;font-weight:600">${c.price}</span>
+          </div>
+        </div>
+        <span style="font-size:18px;color:var(--text3);flex-shrink:0">›</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <p style="font-size:13px;color:var(--text2);line-height:1.7;margin:12px 0">${c.desc}</p>
+        <a href="${c.link}" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:10px;background:#7c3aed;color:#fff;font-size:13px;font-weight:600;text-decoration:none">
+          🎓 კურსზე გადასვლა ↗
+        </a>
+      </div>
+    </details>`;
+  });
+  h+='</div>';
+  return h;
+}
+
 function renderResourcesSection(sec){
-  const tab=sec._tab||'books';
+  const tab=sec._tab||'courses';
   const booksHTML=renderBooksSection({id:'s-books'});
   const glossHTML=`<div id="res-glossary-wrap"></div>`;
+  const coursesHTML=renderCoursesHTML();
   return `<div>
     <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
+      <button onclick="window._resTab('courses')" id="res-tab-courses"
+        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='courses'?'#7c3aed':'transparent'};color:${tab==='courses'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
+        🎓 კურსები
+      </button>
       <button onclick="window._resTab('books')" id="res-tab-books"
-        style="padding:10px 22px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='books'?'#7c3aed':'transparent'};color:${tab==='books'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
+        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='books'?'#7c3aed':'transparent'};color:${tab==='books'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
         📚 ბიბლიოთეკა
       </button>
       <button onclick="window._resTab('lexicon')" id="res-tab-lexicon"
-        style="padding:10px 22px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='lexicon'?'#7c3aed':'transparent'};color:${tab==='lexicon'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
+        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='lexicon'?'#7c3aed':'transparent'};color:${tab==='lexicon'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
         📖 ლექსიკონი
       </button>
     </div>
-    <div id="res-books" style="padding-top:16px;display:${tab==='books'?'block':'none'}">${booksHTML}</div>
+    <div id="res-courses" style="padding-top:16px;display:${tab==='courses'?'block':'none'}">${coursesHTML}</div>
+    <div id="res-books"   style="padding-top:16px;display:${tab==='books'  ?'block':'none'}">${booksHTML}</div>
     <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}">${glossHTML}</div>
   </div>`;
 }
 
 function initResourcesSection(){
   window._resTab=function(tab){
-    const booksDiv=document.getElementById('res-books');
-    const lexDiv=document.getElementById('res-lexicon');
-    if(!booksDiv||!lexDiv)return;
-    booksDiv.style.display=tab==='books'?'block':'none';
-    lexDiv.style.display=tab==='lexicon'?'block':'none';
-    ['books','lexicon'].forEach(t=>{
+    ['courses','books','lexicon'].forEach(t=>{
+      const d=document.getElementById('res-'+t);
+      if(d)d.style.display=t===tab?'block':'none';
       const b=document.getElementById('res-tab-'+t);
       if(b){
         b.style.borderBottomColor=t===tab?'#7c3aed':'transparent';
@@ -1357,16 +1486,11 @@ function initResourcesSection(){
       }
     });
     if(tab==='lexicon'){
-      // First make visible, THEN render (DOM must be visible for getElementById to work in grid)
       const wrap=document.getElementById('res-glossary-wrap');
       if(wrap&&!wrap.innerHTML.trim()){
         wrap.innerHTML=renderGlossarySection({id:'s-glossary'});
       }
-      // Must wait for display:block to take effect before building filters
-      setTimeout(()=>{
-        buildCatFilters();
-        renderGlossaryGrid();
-      },30);
+      setTimeout(()=>{buildCatFilters();renderGlossaryGrid();},30);
     }
   };
 }
