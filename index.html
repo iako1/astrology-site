@@ -1515,8 +1515,8 @@ function renderCoursesHTML(){
 function renderResourcesSection(sec){
   const tab=sec._tab||'courses';
   const booksHTML=renderBooksSection({id:'s-books'});
-  const glossHTML=`<div id="res-glossary-wrap"></div>`;
   const coursesHTML=renderCoursesHTML();
+  const glossHTML=renderFullLexicon();
   return `<div>
     <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
       <button onclick="window._resTab('courses')" id="res-tab-courses"
@@ -1550,11 +1550,7 @@ function initResourcesSection(){
         b.style.color=t===tab?'#7c3aed':'var(--text3)';
       }
     });
-    if(tab==='lexicon'){
-      const wrap=document.getElementById('res-glossary-wrap');
-      if(!wrap)return;
-      wrap.innerHTML=renderFullLexicon();
-    }
+
   };
 }
 // Also define globally as fallback before section loads
