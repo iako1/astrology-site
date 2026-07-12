@@ -2356,15 +2356,14 @@ function startQuizGame(root){
       '<div style="font-size:11px;font-weight:600;color:#7c3aed;letter-spacing:.08em;margin-bottom:8px">🎯 კითხვა</div>'+
       '<div style="font-size:15px;font-weight:500;color:var(--text);line-height:1.55">'+q.q+'</div></div>'+
       '<div style="display:grid;gap:8px" id="qanswers">'+
-      q.a.map((a,i)=>'<button id="qa'+i+'" onclick="window._qa('+i+')" style="background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px">'+
+      q.a.map((a,i)=>'<button id="qa'+i+'" class="quiz-ans-btn" onclick="window._qa('+i+')" style="background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px">'+
         '<span style="width:22px;height:22px;border-radius:6px;background:var(--bg2);font-size:10px;font-weight:700;color:#7c3aed;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">'+LETTERS[i]+'</span>'+a+'</button>').join('')+
       '</div><div id="qfb"></div>';
 
     window._qa=function(i){
       if(window._qans)return;
       window._qans=true;
-      const container=document.getElementById('qanswers');
-      const btns=container?container.querySelectorAll('button'):document.querySelectorAll('[id^="qa"]');
+      const btns=document.getElementById('qanswers')?.querySelectorAll('.quiz-ans-btn')||[];
       btns.forEach(b=>b.style.cursor='default');
       const ok=i===q.c;
       if(ok)score++;
