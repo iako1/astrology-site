@@ -151,15 +151,17 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 /* Planet tooltip */
 .plt-wrap{position:relative;display:inline-flex;}
 .plt-tip{
-  display:none;position:fixed;
-  background:#1e1b4b;color:#e0e7ff;font-size:12px;line-height:1.7;
-  padding:12px 16px;border-radius:12px;width:300px;z-index:9999;
-  box-shadow:0 6px 24px rgba(0,0,0,.4);pointer-events:none;
+  visibility:hidden;opacity:0;position:absolute;
+  bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#1e1b4b;color:#e0e7ff;font-size:12px;line-height:1.65;
+  padding:10px 14px;border-radius:10px;width:240px;z-index:9999;
+  box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;
   border:.5px solid rgba(139,92,246,.5);
+  transition:opacity .15s;white-space:normal;
 }
-.plt-wrap:hover .plt-tip{display:block;}
-.plt-tip strong{color:#a78bfa;display:block;margin-bottom:4px;font-size:13px;}
-.plt-tip em{color:#93c5fd;font-style:normal;font-size:11px;display:block;margin-top:3px;}
+.plt-wrap:hover .plt-tip{visibility:visible;opacity:1;}
+.plt-tip strong{color:#a78bfa;display:block;margin-bottom:3px;font-size:12px;font-weight:700;}
+.plt-tip em{color:#93c5fd;font-style:normal;font-size:11px;display:block;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -4607,19 +4609,6 @@ if(ls('as_version')!==SITE_VERSION){
   lss('as_version',SITE_VERSION);
 }
 renderAll();
-
-// Planet tooltip — follow cursor, never clip
-document.addEventListener('mousemove',function(e){
-  document.querySelectorAll('.plt-tip').forEach(function(tip){
-    if(tip.style.display==='block'){
-      var tw=300,th=tip.offsetHeight||130;
-      var x=e.clientX+16,y=e.clientY-th-16;
-      if(x+tw>window.innerWidth-16)x=e.clientX-tw-16;
-      if(y<10)y=e.clientY+20;
-      tip.style.left=x+'px';
-      tip.style.top=y+'px';
-    }
-  });
-});</script>
+</script>
 </body>
 </html>
