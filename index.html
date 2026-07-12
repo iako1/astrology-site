@@ -4556,7 +4556,8 @@ const SITE_VERSION='v2.8';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure, keep all user content
   localStorage.removeItem('as_sections');
-  // Keep: as_ui_texts, as_quiz_questions, as_matching_data, as_wheel_signs, 
+  localStorage.removeItem('as_quiz_questions');
+  // Keep: as_ui_texts, as_matching_data, as_wheel_signs,
   //        as_moon_signs, as_venus_signs, as_mars_signs, as_glossary_terms
   lss('as_version',SITE_VERSION);
 }
