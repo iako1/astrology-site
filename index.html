@@ -4604,6 +4604,31 @@ if(ls('as_version')!==SITE_VERSION){
   lss('as_version',SITE_VERSION);
 }
 renderAll();
+
+// Global planet tooltip
+(function(){
+  var tip=document.createElement('div');
+  tip.id='plt-global-tip';
+  document.body.appendChild(tip);
+  document.addEventListener('mouseover',function(e){
+    var el=e.target.closest?e.target.closest('.plt-wrap'):null;
+    if(el){
+      tip.innerHTML='<strong>'+el.dataset.tipn+'</strong>'+(el.dataset.tipb||'');
+      tip.style.display='block';
+    } else {
+      tip.style.display='none';
+    }
+  });
+  document.addEventListener('mousemove',function(e){
+    if(tip.style.display==='block'){
+      var tw=230,th=tip.offsetHeight||100;
+      var x=e.clientX+14,y=e.clientY-th-12;
+      if(x+tw>window.innerWidth-10)x=e.clientX-tw-14;
+      if(y<8)y=e.clientY+16;
+      tip.style.left=x+'px';tip.style.top=y+'px';
+    }
+  });
+})();
 </script>
 </body>
 </html>
