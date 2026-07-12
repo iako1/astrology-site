@@ -4606,6 +4606,20 @@ if(ls('as_version')!==SITE_VERSION){
   //        as_moon_signs, as_venus_signs, as_mars_signs, as_glossary_terms
   lss('as_version',SITE_VERSION);
 }
-renderAll();</script>
+renderAll();
+
+// Planet tooltip — follow cursor, never clip
+document.addEventListener('mousemove',function(e){
+  document.querySelectorAll('.plt-tip').forEach(function(tip){
+    if(tip.style.display==='block'){
+      var tw=300,th=tip.offsetHeight||130;
+      var x=e.clientX+16,y=e.clientY-th-16;
+      if(x+tw>window.innerWidth-16)x=e.clientX-tw-16;
+      if(y<10)y=e.clientY+20;
+      tip.style.left=x+'px';
+      tip.style.top=y+'px';
+    }
+  });
+});</script>
 </body>
 </html>
