@@ -2357,7 +2357,9 @@ function startQuizGame(root){
         btns[q.c].setAttribute('style','background:#052e16;border:2px solid #4ade80;border-radius:12px;padding:12px 14px;font-size:13px;color:#4ade80;cursor:default;text-align:left;display:flex;align-items:center;gap:8px');
       }
       document.getElementById('qfb').innerHTML=
-        '<div style="margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;border:.5px solid '+(ok?'#4ade80':'#f87171')+';background:'+(ok?'#052e16':'#2d0a0a')+';color:'+(ok?'#86efac':'#fca5a5')+'">'+(ok?'✅':'❌')+' '+q.ex+'</div>'+
+        '<div style="margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;border:.5px solid '+(ok?'#4ade80':'#f87171')+';background:'+(ok?'#052e16':'#2d0a0a')+';color:'+(ok?'#86efac':'#fca5a5')+'">'
+        +(ok?'✅ სწორია! ':'❌ არასწორია! სწ. პ.: <strong>'+q.opts[q.c]+'</strong><br>')
+        +q.ex+'</div>'+
         '<button onclick="window._qnext()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;color:#fff;cursor:pointer">'+(cur<qs.length-1?'შემდეგი →':'შედეგი 🌟')+'</button>';
       window._qnext=function(){cur++;window._qans=false;render();};
     };
