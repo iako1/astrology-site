@@ -2363,7 +2363,8 @@ function startQuizGame(root){
     window._qa=function(i){
       if(window._qans)return;
       window._qans=true;
-      const btns=document.querySelectorAll('[id^="qa"]');
+      const container=document.getElementById('qanswers');
+      const btns=container?container.querySelectorAll('button'):document.querySelectorAll('[id^="qa"]');
       btns.forEach(b=>b.style.cursor='default');
       const ok=i===q.c;
       if(ok)score++;
