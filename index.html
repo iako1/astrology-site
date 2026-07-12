@@ -1516,7 +1516,6 @@ function renderResourcesSection(sec){
   const tab=sec._tab||'courses';
   const booksHTML=renderBooksSection({id:'s-books'});
   const coursesHTML=renderCoursesHTML();
-  const glossHTML=renderFullLexicon();
   return `<div>
     <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
       <button onclick="window._resTab('courses')" id="res-tab-courses"
@@ -1533,13 +1532,12 @@ function renderResourcesSection(sec){
       </button>
     </div>
     <div id="res-courses" style="padding-top:16px;display:${tab==='courses'?'block':'none'}">${coursesHTML}</div>
-    <div id="res-books"   style="padding-top:16px;display:${tab==='books'  ?'block':'none'}">${booksHTML}</div>
-    <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}">${glossHTML}</div>
+    <div id="res-books"   style="padding-top:16px;display:${tab==='books'?'block':'none'}">${booksHTML}</div>
+    <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}"><div id="res-glossary-wrap"></div></div>
   </div>`;
 }
 
 function initResourcesSection(){
-  // Define _resTab immediately so onclick works before timeout fires
   window._resTab=function(tab){
     ['courses','books','lexicon'].forEach(t=>{
       const d=document.getElementById('res-'+t);
@@ -1550,7 +1548,12 @@ function initResourcesSection(){
         b.style.color=t===tab?'#7c3aed':'var(--text3)';
       }
     });
-
+    if(tab==='lexicon'){
+      const wrap=document.getElementById('res-glossary-wrap');
+      if(wrap&&!wrap.hasChildNodes()){
+        wrap.innerHTML=renderFullLexicon();
+      }
+    }
   };
 }
 // Also define globally as fallback before section loads
