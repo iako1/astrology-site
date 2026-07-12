@@ -149,19 +149,16 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 .dropdown-item.on{font-weight:500}
 
 /* Planet tooltip */
-.plt-wrap{position:relative;display:inline-flex;}
-.plt-tip{
-  visibility:hidden;opacity:0;position:absolute;
-  bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+.plt-wrap{display:inline-flex;cursor:help;}
+#plt-global-tip{
+  display:none;position:fixed;
   background:#1e1b4b;color:#e0e7ff;font-size:12px;line-height:1.65;
-  padding:10px 14px;border-radius:10px;width:240px;z-index:9999;
-  box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;
+  padding:10px 14px;border-radius:10px;width:230px;z-index:99999;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);pointer-events:none;
   border:.5px solid rgba(139,92,246,.5);
-  transition:opacity .15s;white-space:normal;
 }
-.plt-wrap:hover .plt-tip{visibility:visible;opacity:1;}
-.plt-tip strong{color:#a78bfa;display:block;margin-bottom:3px;font-size:12px;font-weight:700;}
-.plt-tip em{color:#93c5fd;font-style:normal;font-size:11px;display:block;margin-top:2px;}
+#plt-global-tip strong{color:#a78bfa;display:block;margin-bottom:3px;font-size:12px;font-weight:700;}
+#plt-global-tip em{color:#93c5fd;font-style:normal;font-size:11px;display:block;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -3521,24 +3518,22 @@ function renderTableSection(sec){
     const cfg=COL[colType];
     const info=PLANET_INFO[p.sym]||{name:p.name,meaning:'',cycle:''};
     const posInfo=POS_INFO[colType]||'';
-    const rxNote=p.rx?'<em>Rx — რეტროგრადული: ენერგია შიდა, ჩაღრმავებული</em>':'';
-    const cycleNote=info.cycle&&info.cycle!=='?'?'<em>ციკლი: '+info.cycle+'</em>':'';
-    const tipHTML='<strong>'+info.name+'</strong>'
-      +(info.meaning?info.meaning+'<br>':'')
-      +(rxNote?rxNote+'<br>':'')
-      +'<em>'+posInfo+'</em>'
-      +(cycleNote?'<br>'+cycleNote:'');
+    const rxNote=p.rx?' · Rx — რეტროგრადული: ენერგია შიდა, ჩაღრმავებული':'';
+    const cycleNote=info.cycle&&info.cycle!=='?'?' · ციკლი: '+info.cycle:'';
+    const tipName=info.name;
+    const tipBody=(info.meaning||'')+rxNote+' | '+posInfo+cycleNote;
     const flags=[];
     if(p.rx)flags.push('<span style="font-size:9px;font-weight:700;background:rgba(163,45,45,.15);color:#A32D2D;padding:1px 4px;border-radius:4px">Rx</span>');
     const opacity=p.secondary?'opacity:.75;':'';
     const border=p.secondary?'border:.5px dashed '+cfg.border:'border:.5px solid '+cfg.border;
-    return '<span class="plt-wrap" style="'+opacity+'">'
-      +'<span style="display:inline-flex;align-items:center;gap:4px;'+border+';border-radius:8px;padding:3px 8px;margin:2px;background:'+cfg.bg+';cursor:help">'
+    const dn=tipName.replace(/"/g,'&quot;');
+    const db=tipBody.replace(/"/g,'&quot;');
+    return '<span class="plt-wrap" data-tipn="'+dn+'" data-tipb="'+db+'"'
+      +' style="display:inline-flex;align-items:center;gap:4px;'+border
+      +';border-radius:8px;padding:3px 8px;margin:2px;background:'+cfg.bg+';'+opacity+'">'
       +'<span style="font-size:15px">'+p.sym+'</span>'
       +'<span style="font-size:11px;font-weight:'+(p.secondary?'400':'500')+';color:'+cfg.tc+'">'+p.name+'</span>'
       +flags.join('')
-      +'</span>'
-      +'<div class="plt-tip">'+tipHTML+'</div>'
       +'</span>';
   }
 
