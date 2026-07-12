@@ -147,6 +147,23 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 .dropdown-item{display:block;width:100%;padding:9px 14px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;white-space:nowrap}
 .dropdown-item:hover,.dropdown-item.on{background:var(--bg2);color:var(--text)}
 .dropdown-item.on{font-weight:500}
+
+/* Planet tooltip */
+.plt-wrap{position:relative;display:inline-flex;}
+.plt-tip{
+  display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:#1e1b4b;color:#e0e7ff;font-size:12px;line-height:1.6;
+  padding:10px 14px;border-radius:10px;width:260px;z-index:999;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;
+  border:.5px solid rgba(139,92,246,.4);
+}
+.plt-tip::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:#1e1b4b;
+}
+.plt-wrap:hover .plt-tip{display:block;}
+.plt-tip strong{color:#a78bfa;display:block;margin-bottom:3px;font-size:13px;}
+.plt-tip em{color:#93c5fd;font-style:normal;font-size:11px;}
 </style>
 </head>
 <body>
@@ -3506,17 +3523,24 @@ function renderTableSection(sec){
     const cfg=COL[colType];
     const info=PLANET_INFO[p.sym]||{name:p.name,meaning:'',cycle:''};
     const posInfo=POS_INFO[colType]||'';
-    const rxNote=p.rx?' · Rx — რეტროგრადული: ენერგია შიდა, ჩაღრმავებული':'';
-    const cycleNote=info.cycle&&info.cycle!=='?'?' · ციკლი: '+info.cycle:'';
-    const tooltip=info.name+(info.meaning?' — '+info.meaning:'')+rxNote+' | '+posInfo+cycleNote;
+    const rxNote=p.rx?'<em>Rx — რეტროგრადული: ენერგია შიდა, ჩაღრმავებული</em>':'';
+    const cycleNote=info.cycle&&info.cycle!=='?'?'<em>ციკლი: '+info.cycle+'</em>':'';
+    const tipHTML='<strong>'+info.name+'</strong>'
+      +(info.meaning?info.meaning+'<br>':'')
+      +(rxNote?rxNote+'<br>':'')
+      +'<em>'+posInfo+'</em>'
+      +(cycleNote?'<br>'+cycleNote:'');
     const flags=[];
     if(p.rx)flags.push('<span style="font-size:9px;font-weight:700;background:rgba(163,45,45,.15);color:#A32D2D;padding:1px 4px;border-radius:4px">Rx</span>');
     const opacity=p.secondary?'opacity:.75;':'';
     const border=p.secondary?'border:.5px dashed '+cfg.border:'border:.5px solid '+cfg.border;
-    return '<span title="'+tooltip.replace(/"/g,'&quot;')+'" style="display:inline-flex;align-items:center;gap:4px;'+border+';border-radius:8px;padding:3px 8px;margin:2px;background:'+cfg.bg+';'+opacity+'cursor:help">'
+    return '<span class="plt-wrap" style="'+opacity+'">'
+      +'<span style="display:inline-flex;align-items:center;gap:4px;'+border+';border-radius:8px;padding:3px 8px;margin:2px;background:'+cfg.bg+';cursor:help">'
       +'<span style="font-size:15px">'+p.sym+'</span>'
       +'<span style="font-size:11px;font-weight:'+(p.secondary?'400':'500')+';color:'+cfg.tc+'">'+p.name+'</span>'
       +flags.join('')
+      +'</span>'
+      +'<div class="plt-tip">'+tipHTML+'</div>'
       +'</span>';
   }
 
