@@ -1662,22 +1662,25 @@ function renderResourcesSection(sec){
 }
 
 function initResourcesSection(){
-  window._resTab=function(tab){
-    ['ai','courses','books','lexicon'].forEach(t=>{
-      const d=document.getElementById('res-'+t);
-      if(d)d.style.display=t===tab?'block':'none';
-      const b=document.getElementById('res-tab-'+t);
-      if(b){
-        b.style.borderBottomColor=t===tab?'#7c3aed':'transparent';
-        b.style.color=t===tab?'#7c3aed':'var(--text3)';
-      }
-    });
-    if(tab==='lexicon'){
-      const wrap=document.getElementById('res-glossary-wrap');
-      if(wrap){wrap.innerHTML=renderFullLexicon();}
-    }
-  };
+  // _resTab is now defined globally below, this is just for any future init needs
 }
+
+// Global _resTab - always available, no timing dependency
+window._resTab=function(tab){
+  ['ai','courses','books','lexicon'].forEach(function(t){
+    var d=document.getElementById('res-'+t);
+    if(d)d.style.display=t===tab?'block':'none';
+    var b=document.getElementById('res-tab-'+t);
+    if(b){
+      b.style.borderBottomColor=t===tab?'#7c3aed':'transparent';
+      b.style.color=t===tab?'#7c3aed':'var(--text3)';
+    }
+  });
+  if(tab==='lexicon'){
+    var wrap=document.getElementById('res-glossary-wrap');
+    if(wrap){wrap.innerHTML=renderFullLexicon();}
+  }
+};
 // Also define globally as fallback before section loads
 if(!window._resTab) window._resTab=function(tab){setTimeout(()=>window._resTab&&window._resTab(tab),100);};
 
