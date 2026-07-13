@@ -1483,6 +1483,95 @@ const DEF_COURSES=[
 ];
 function getCourses(){return ls('as_courses_data')||DEF_COURSES;}
 
+const DEF_AI_TOOLS=[
+  {id:1, cat:'vedic',
+   title:'AstroSage AI',
+   link:'https://www.astrosage.com/',
+   tag:'უფასო + პრემიუმ',
+   tagColor:'#16a34a',
+   desc:'ინდოეთის ყველაზე პოპულარული AI ასტროლოგიური პლატფორმა — ზუსტი კუნდლი, AI ასტროლოგთან ჩატი, დაშა, ყოგები და უზარმაზარი მონაცემთა ბაზა.',
+   note:'კარგია: ყოველდღიური პრედიქციები, Muhurta, მატჩმეიქინგი'
+  },
+  {id:2, cat:'vedic',
+   title:'Lagna360',
+   link:'https://app.lagna360.com/',
+   tag:'სპეციალიზებული',
+   tagColor:'#7c3aed',
+   desc:'ტრადიციული Jyotish-ისთვის შექმნილი AI — NASA-ს დონის ზუსტი გამოთვლები და კლასიკური Vedic წესები. სიღრმისეული ნატალური ანალიზისთვის იდეალური.',
+   note:'კარგია: ღრმა Vedic ანალიზი, კლასიკური ტექსტების ინტერპრეტაცია'
+  },
+  {id:3, cat:'vedic',
+   title:'KundliGPT',
+   link:'https://kundligpt.com/',
+   tag:'უფასო',
+   tagColor:'#16a34a',
+   desc:'GPT-ზე დაფუძნებული უფასო Vedic ასტროლოგი — პერსონალიზებული კუნდლი, დაშა სისტემა, იოგების ანალიზი და კითხვებზე პასუხები. მხარდაჭერილი ენები: ინგლისური, ჰინდი და სხვ.',
+   note:'კარგია: სწრაფი კუნდლი ინტერპრეტაცია, Q&A ფორმატი'
+  },
+  {id:4, cat:'vedic',
+   title:'AstroGPT',
+   link:'https://www.astrogpt.ai/',
+   tag:'უფასო + პრემიუმ',
+   tagColor:'#16a34a',
+   desc:'პერსონალური AI ასტროლოგი, რომელიც Vedic ტრადიციასა და თანამედროვე AI-ს აერთიანებს. ჰოროსკოპები, კარიერა, ურთიერთობები, სულიერი ხელმძღვანელობა.',
+   note:'კარგია: ყოველდღიური ჰოროსკოპი, პიროვნული წაკითხვები'
+  },
+  {id:5, cat:'western',
+   title:'AstroChart.ai',
+   link:'https://astrochart.ai/',
+   tag:'მრავალ-სისტემა',
+   tagColor:'#0891b2',
+   desc:'Western, Vedic, Human Design და სხვა სისტემები ერთ პლატფორმაზე. შედარებითი ასტროლოგია, პერსონალიზებული ინსაითები და ავტომატური ნატალური ანალიზი.',
+   note:'კარგია: სისტემების შედარება, Human Design-თან ინტეგრაცია'
+  },
+  {id:6, cat:'database',
+   title:'Astro.com',
+   link:'https://www.astro.com/',
+   tag:'პროფესიონალური',
+   tagColor:'#b45309',
+   desc:'მსოფლიოში ყველაზე ზუსტი ასტროლოგიური პლატფორმა პროფესიონალებისთვის — უფასო ჩარტების გენერაცია, ეფემერიდები, სინასტრი, ტრანზიტები.',
+   note:'💡 რეკომენდაცია: ჯერ Astro.com-ზე გააკეთე ზუსტი ჩარტი, შემდეგ AI-ს გაუგზავნე ანალიზისთვის'
+  },
+];
+function getAITools(){return ls('as_ai_tools')||DEF_AI_TOOLS;}
+
+function renderAIToolsHTML(){
+  const tools=getAITools();
+  const cats=[
+    {id:'vedic', label:'🕉️ Vedic ასტროლოგიის AI', color:'#7c3aed', bg:'#f5f3ff'},
+    {id:'western', label:'⭐ Western & მრავალ-სისტემა', color:'#0891b2', bg:'#ecfeff'},
+    {id:'database', label:'🗄️ მონაცემთა ბაზები (AI-სთან ერთად)', color:'#b45309', bg:'#fffbeb'},
+  ];
+  let h='<div style="max-width:720px">';
+  h+='<p style="font-size:13px;color:var(--text3);margin-bottom:20px;line-height:1.7">AI ასტროლოგიური ინსტრუმენტები — ნატალური ჩარტის ანალიზი, პრედიქციები და პერსონალური ხელმძღვანელობა. რეკომენდებულია: ჯერ Astro.com-ზე ზუსტი ჩარტი, შემდეგ AI-ს გაუგზავნე.</p>';
+  cats.forEach(cat=>{
+    const catTools=tools.filter(t=>t.cat===cat.id);
+    if(!catTools.length)return;
+    h+=`<div style="margin-bottom:24px">
+      <div style="font-size:14px;font-weight:700;color:${cat.color};margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid ${cat.color}22">${cat.label}</div>
+      <div style="display:grid;gap:10px">`;
+    catTools.forEach(t=>{
+      h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:16px 18px;background:var(--bg)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:12px;flex-wrap:wrap">
+          <div style="font-size:15px;font-weight:600;color:var(--text)">${t.title}</div>
+          <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:${t.tagColor}18;color:${t.tagColor}">${t.tag}</span>
+        </div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px">${t.desc}</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <span style="font-size:11px;color:var(--text3);font-style:italic">${t.note}</span>
+          <a href="${t.link}" target="_blank" rel="noopener"
+            style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:9px;background:${cat.color};color:#fff;font-size:12px;font-weight:600;text-decoration:none">
+            გახსნა ↗
+          </a>
+        </div>
+      </div>`;
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
 function renderCoursesHTML(){
   const courses=getCourses();
   const levelColor={
@@ -1528,8 +1617,13 @@ function renderResourcesSection(sec){
   const tab=sec._tab||'courses';
   const booksHTML=renderBooksSection({id:'s-books'});
   const coursesHTML=renderCoursesHTML();
+  const aiHTML=renderAIToolsHTML();
   return `<div>
     <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
+      <button onclick="window._resTab('ai')" id="res-tab-ai"
+        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='ai'?'#7c3aed':'transparent'};color:${tab==='ai'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
+        🤖 AI ინსტრ.
+      </button>
       <button onclick="window._resTab('courses')" id="res-tab-courses"
         style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='courses'?'#7c3aed':'transparent'};color:${tab==='courses'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
         🎓 კურსები
@@ -1543,6 +1637,7 @@ function renderResourcesSection(sec){
         📖 ლექსიკონი
       </button>
     </div>
+    <div id="res-ai"      style="padding-top:16px;display:${tab==='ai'     ?'block':'none'}">${aiHTML}</div>
     <div id="res-courses" style="padding-top:16px;display:${tab==='courses'?'block':'none'}">${coursesHTML}</div>
     <div id="res-books"   style="padding-top:16px;display:${tab==='books'?'block':'none'}">${booksHTML}</div>
     <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}"><div id="res-glossary-wrap"></div></div>
@@ -1551,7 +1646,7 @@ function renderResourcesSection(sec){
 
 function initResourcesSection(){
   window._resTab=function(tab){
-    ['courses','books','lexicon'].forEach(t=>{
+    ['ai','courses','books','lexicon'].forEach(t=>{
       const d=document.getElementById('res-'+t);
       if(d)d.style.display=t===tab?'block':'none';
       const b=document.getElementById('res-tab-'+t);
