@@ -1635,30 +1635,26 @@ function renderResourcesSection(sec){
   const booksHTML=renderBooksSection({id:'s-books'});
   const coursesHTML=renderCoursesHTML();
   const aiHTML=renderAIToolsHTML();
-  return `<div>
-    <div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">
-      <button onclick="window._resTab('ai')" id="res-tab-ai"
-        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='ai'?'#7c3aed':'transparent'};color:${tab==='ai'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
-        🤖 AI ინსტრ.
-      </button>
-      <button onclick="window._resTab('courses')" id="res-tab-courses"
-        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='courses'?'#7c3aed':'transparent'};color:${tab==='courses'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
-        🎓 კურსები
-      </button>
-      <button onclick="window._resTab('books')" id="res-tab-books"
-        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='books'?'#7c3aed':'transparent'};color:${tab==='books'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
-        📚 ბიბლიოთეკა
-      </button>
-      <button onclick="window._resTab('lexicon')" id="res-tab-lexicon"
-        style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid ${tab==='lexicon'?'#7c3aed':'transparent'};color:${tab==='lexicon'?'#7c3aed':'var(--text3)'};margin-bottom:-2px;transition:all .2s">
-        📖 ლექსიკონი
-      </button>
-    </div>
-    <div id="res-ai"      style="padding-top:16px;display:${tab==='ai'     ?'block':'none'}">${aiHTML}</div>
-    <div id="res-courses" style="padding-top:16px;display:${tab==='courses'?'block':'none'}">${coursesHTML}</div>
-    <div id="res-books"   style="padding-top:16px;display:${tab==='books'?'block':'none'}">${booksHTML}</div>
-    <div id="res-lexicon" style="padding-top:16px;display:${tab==='lexicon'?'block':'none'}"><div id="res-glossary-wrap"></div></div>
-  </div>`;
+  const lexHTML=renderFullLexicon();
+
+  const tabBtn=(id,icon,label)=>'<button onclick="window._resTab(\''+id+'\')" id="res-tab-'+id+'"'
+    +' style="padding:10px 20px;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;'
+    +'border-bottom:2px solid '+(tab===id?'#7c3aed':'transparent')+';'
+    +'color:'+(tab===id?'#7c3aed':'var(--text3)')+';margin-bottom:-2px;transition:all .2s">'
+    +icon+' '+label+'</button>';
+
+  return '<div>'
+    +'<div style="display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)">'
+    +tabBtn('ai','🤖','AI ინსტრ.')
+    +tabBtn('courses','🎓','კურსები')
+    +tabBtn('books','📚','ბიბლიოთეკა')
+    +tabBtn('lexicon','📖','ლექსიკონი')
+    +'</div>'
+    +'<div id="res-ai"      style="padding-top:16px;display:'+(tab==='ai'?'block':'none')+'">'+aiHTML+'</div>'
+    +'<div id="res-courses" style="padding-top:16px;display:'+(tab==='courses'?'block':'none')+'">'+coursesHTML+'</div>'
+    +'<div id="res-books"   style="padding-top:16px;display:'+(tab==='books'?'block':'none')+'">'+booksHTML+'</div>'
+    +'<div id="res-lexicon" style="padding-top:16px;display:'+(tab==='lexicon'?'block':'none')+'">'+lexHTML+'</div>'
+    +'</div>';
 }
 
 function initResourcesSection(){
