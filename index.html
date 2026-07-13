@@ -1683,9 +1683,9 @@ if(!window._resTab) window._resTab=function(tab){setTimeout(()=>window._resTab&&
 function renderFullLexicon(){
   const terms=getGlossaryTerms();
   const saved=ls('as_glossary_terms');
-  const allTerms=saved||terms;
+  const allTerms=(saved||terms).filter(t=>t&&t.ka&&t.cat);
   const cats=[...new Set(allTerms.map(t=>t.cat))].sort();
-  const sorted=[...allTerms].sort((a,b)=>a.ka.localeCompare(b.ka,'ka'));
+  const sorted=[...allTerms].sort((a,b)=>(a.ka||'').localeCompare((b.ka||''),'ka'));
 
   const catBtns='<button onclick="setLexCat(\'all\',this)" class="lex-cat-btn" style="padding:5px 13px;border:.5px solid var(--text);border-radius:12px;font-size:12px;cursor:pointer;background:var(--text);color:var(--bg)">ყველა</button>'
     +cats.map(c=>'<button onclick="setLexCat(\''+c+'\',this)" class="lex-cat-btn" style="padding:5px 13px;border:.5px solid var(--border);border-radius:12px;font-size:12px;cursor:pointer;background:var(--bg2);color:var(--text2)">'+c+'</button>').join('');
