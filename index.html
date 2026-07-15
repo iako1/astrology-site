@@ -2753,6 +2753,10 @@ function renderGameHub(root){
     else if(id==='wheel') startWheelGame(root);
     else if(id==='whois') startWhoAmI(root);
     else if(id==='moon') startMoonGame(document.getElementById('quiz-root'));
+    else if(id==='tetris') {
+      root.innerHTML='<div id="tetris-root"></div>';
+      setTimeout(()=>initTetris('s-tetris'),50);
+    }
   };
 }
 
