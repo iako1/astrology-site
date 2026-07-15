@@ -2537,7 +2537,11 @@ function startQuizGame(root){
     if(cur>=qs.length){showScore();return;}
     const q=qs[cur];
     const pct=Math.round(cur/qs.length*100);
-    root.innerHTML='<div style="margin-bottom:24px">'+
+    root.innerHTML='<div style="margin-bottom:12px">'+
+        '<button onclick="renderGameHub(document.getElementById(\'quiz-root\'))" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">'+
+        '← hub-ზე დაბრუნება'+
+        '</button>'+
+        '</div>'+'<div style="margin-bottom:24px">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
       '<span style="font-size:12px;font-weight:500;color:var(--text3)">კითხვა '+(cur+1)+'/'+qs.length+'</span>'+
       '<span style="font-size:12px;color:var(--text3)">✅ '+score+' სწ.</span></div>'+
@@ -2697,7 +2701,7 @@ function renderMatchingMenu(root,data){
   };
   let h=`<div style="max-width:480px;margin:0 auto">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-      <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
+      <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
       <div style="font-size:16px;font-weight:700;color:var(--text)">🃏 შეუსაბამე ბარათები</div>
     </div>
     <div style="background:var(--bg2);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.7">
@@ -2764,6 +2768,11 @@ function runGroupGame(root,mode,data){
     }).join('');
 
     root.innerHTML=`<div style="max-width:500px;margin:0 auto">
+      <div style="margin-bottom:12px">
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">
+          ← Hub-ზე დაბრუნება
+        </button>
+      </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <button onclick="window._mback()" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← უკან</button>
         <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves} · ${matchedCount}/${total}</span>
@@ -3001,8 +3010,13 @@ function startWheelGame(root){
 
     root.innerHTML=`
       <div style="max-width:500px;margin:0 auto">
+        <div style="margin-bottom:12px">
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">
+          ← Hub-ზე დაბრუნება
+        </button>
+      </div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
+          <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მთ. მენიუ</button>
           <div style="font-size:14px;font-weight:700;color:var(--text)">🔮 ზოდიაქოს წრე</div>
           <span style="font-size:12px;color:var(--text3)">🕐 ${fmt(t)} · 👟 ${moves} · ${placed}/12</span>
         </div>
@@ -3091,7 +3105,7 @@ function showWheelScore(root,moves,t,onRetry){
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <button onclick="(${onRetry.toString()})()" style="padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:13px;font-weight:600;cursor:pointer">🔄 ხელახლა</button>
-      <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
+      <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)">🏠 მენიუ</button>
     </div>
   </div>`;
 }
@@ -3204,7 +3218,7 @@ function startWhoAmI(root){
 
     root.innerHTML=`<div style="max-width:500px;margin:0 auto">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
+        <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
         <div style="font-size:13px;font-weight:600;color:var(--text)">🌟 ვინ ვარ?</div>
         <span style="font-size:12px;color:var(--text3)">✅ ${score}/${cardIdx+1} · ${cardIdx+1}/${cards.length}</span>
       </div>
@@ -3443,7 +3457,7 @@ function startMoonGame(root){
 
     root.innerHTML=`<div style="max-width:440px;margin:0 auto">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
+        <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
         <span style="font-size:13px;font-weight:600;color:var(--text)">🌙 მთვარე — ტიპაჟი</span>
         <span style="font-size:12px;color:var(--text3)">✅ ${score} · ${idx+1}/${shuffled.length}</span>
       </div>
