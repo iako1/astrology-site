@@ -1706,68 +1706,85 @@ function initTetris(secId){
   const ECOL={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
   const BASE_SPD={1:4000,2:2800,3:1800};
   const SPD_INC={1:300,2:250,3:200};
-  const ROUNDS=5,SPR=8;
-  let st={},dropInt=null,dropY=8;
+  const ROUNDS=5, SPR=8;
+  let st={}, dropInt=null, dropY=8;
 
   function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
   function upd(){
-    root.querySelector('#t-score').textContent=st.score+' ქ.';
-    root.querySelector('#t-round').textContent='რ. '+st.round+'/'+ROUNDS;
+    const sc=root.querySelector('#t-score');
+    const rn=root.querySelector('#t-round');
+    if(sc)sc.textContent=st.score+' ქ.';
+    if(rn)rn.textContent='რ. '+st.round+'/'+ROUNDS;
   }
   function feedback(txt,good){
     const fb=root.querySelector('#t-fb');
+    if(!fb)return;
     fb.textContent=txt;
     fb.style.color=good?ECOL.fire:'#e24b4a';
     fb.style.opacity='1';
-    setTimeout(()=>fb.style.opacity='0',500);
+    setTimeout(()=>{fb.style.opacity='0';},500);
   }
   function buildCatchers(){
     const c=root.querySelector('#t-catchers');
+    if(!c)return;
     c.innerHTML='';
-    ELEMS.forEach(elem=>{
-      const es=SIGNS.filter(s=>s.elem===elem);
+    ELEMS.forEach(function(elem){
+      const es=SIGNS.filter(function(s){return s.elem===elem;});
       const rep=es[0];
       const shown=shuffle(es).slice(0,3);
       const d=document.createElement('div');
       d.className='tc';
       d.dataset.elem=elem;
-      d.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;padding:6px 2px;border:1px solid transparent;transition:all 0.12s;gap:2px';
-      d.innerHTML='<span style="font-size:22px">'+rep.elemSym+'</span>'
-        +'<span style="font-size:9px;color:var(--text-secondary)">'+rep.elemName+'</span>'
-        +'<span style="font-size:9px;color:'+ECOL[elem]+'">'+shown.map(s=>s.sym).join(' ')+'</span>';
-      d.onclick=()=>check(elem);
+      d.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;padding:6px 2px;border:1px solid transparent;transition:all 0.12s;gap:2px;min-width:0';
+      d.innerHTML='<span style="font-size:22px;line-height:1">'+rep.elemSym+'</span>'
+        +'<span style="font-size:9px;color:var(--text-secondary);text-align:center">'+rep.elemName+'</span>'
+        +'<span style="font-size:9px;color:'+ECOL[elem]+';text-align:center">'+shown.map(function(s){return s.sym;}).join(' ')+'</span>';
+      d.onclick=function(){check(elem);};
       c.appendChild(d);
     });
   }
+  function showS(s){
+    root.querySelectorAll('.ts').forEach(function(el){el.style.display='none';});
+    const el=root.querySelector('#ts-'+s);
+    if(el)el.style.display='block';
+  }
   function nextSign(){
     if(st.locked)return;
-    if(!st.queue.length){endRound();return;}
+    if(!st.queue||!st.queue.length){endRound();return;}
     st.current=st.queue.shift();
     st.answered=false;
     dropY=8;
     const fp=root.querySelector('#t-piece');
+    if(!fp)return;
     fp.style.top='8px';
-    fp.querySelector('.tp-sym').textContent=st.current.sym;
-    fp.querySelector('.tp-name').textContent=st.current.name;
-    fp.style.opacity='1';
+    const sym=fp.querySelector('.tp-sym');
+    const nm=fp.querySelector('.tp-name');
+    if(sym)sym.textContent=st.current.sym;
+    if(nm)nm.textContent=st.current.name;
     const spd=Math.max(800,st.speed-(st.round-1)*SPD_INC[st.level]);
     const arena=root.querySelector('#t-arena');
+    if(!arena)return;
     const ah=arena.offsetHeight-80-60;
-    const steps=30,delay=spd/steps;
+    const steps=30, delay=spd/steps;
     let step=0;
     clearInterval(dropInt);
-    dropInt=setInterval(()=>{
+    dropInt=setInterval(function(){
       if(st.answered){clearInterval(dropInt);return;}
       step++;
       dropY=8+(ah*step/steps);
-      fp.style.top=dropY+'px';
+      if(fp)fp.style.top=dropY+'px';
       if(step>=steps){
         clearInterval(dropInt);
-        if(!st.answered){feedback('❌',false);st.roundTotal++;st.total++;setTimeout(nextSign,800);}
+        if(!st.answered){
+          feedback('❌',false);
+          st.roundTotal++;st.total++;
+          setTimeout(nextSign,800);
+        }
       }
     },delay);
-    const done=SPR-st.queue.length-1;
-    root.querySelector('#t-prog').style.width=(done/SPR*100)+'%';
+    const done=SPR-(st.queue?st.queue.length:0)-1;
+    const prog=root.querySelector('#t-prog');
+    if(prog)prog.style.width=(Math.max(0,done)/SPR*100)+'%';
   }
   function check(elem){
     if(st.answered||!st.current||st.locked)return;
@@ -1779,16 +1796,16 @@ function initTetris(secId){
     if(ok){
       const pts=Math.max(10,Math.round(50*(1-dropY/300)));
       st.score+=pts;st.roundScore+=pts;st.roundCorrect++;st.correct++;
-      c.style.background='var(--bg-success)';c.style.borderColor='var(--border-success)';
+      if(c){c.style.background='var(--bg-success)';c.style.borderColor='var(--border-success)';}
       feedback('✓ +'+pts,true);upd();
-      setTimeout(()=>{c.style.background='';c.style.borderColor='transparent';nextSign();},600);
+      setTimeout(function(){if(c){c.style.background='';c.style.borderColor='transparent';}nextSign();},600);
     } else {
-      c.style.background='var(--bg-danger)';c.style.borderColor='var(--border-danger)';
+      if(c){c.style.background='var(--bg-danger)';c.style.borderColor='var(--border-danger)';}
       const cc=root.querySelector('.tc[data-elem="'+st.current.elem+'"]');
       if(cc){cc.style.background='var(--bg-success)';cc.style.borderColor='var(--border-success)';}
       feedback('✗',false);
-      setTimeout(()=>{
-        c.style.background='';c.style.borderColor='transparent';
+      setTimeout(function(){
+        if(c){c.style.background='';c.style.borderColor='transparent';}
         if(cc){cc.style.background='';cc.style.borderColor='transparent';}
         nextSign();
       },800);
@@ -1796,27 +1813,28 @@ function initTetris(secId){
   }
   function endRound(){
     clearInterval(dropInt);
-    root.querySelector('#t-prog').style.width='100%';
+    const prog=root.querySelector('#t-prog');
+    if(prog)prog.style.width='100%';
     if(st.round>=ROUNDS){endGame();return;}
     const acc=st.roundTotal>0?Math.round(st.roundCorrect/st.roundTotal*100):0;
-    root.querySelector('#t-rs-txt').innerHTML='სწორი: '+st.roundCorrect+'/'+st.roundTotal+'<br>სიზუსტე: '+acc+'%<br>ქულა: +'+st.roundScore;
+    const txt=root.querySelector('#t-rs-txt');
+    if(txt)txt.innerHTML='სწორი: '+st.roundCorrect+'/'+st.roundTotal+'<br>სიზუსტე: '+acc+'%<br>ქულა: +'+st.roundScore;
     showS('round');
   }
   function endGame(){
     const acc=st.total>0?Math.round(st.correct/st.total*100):0;
-    root.querySelector('#t-final-score').textContent=st.score+' ქ.';
-    root.querySelector('#t-final-stats').innerHTML='სწორი: '+st.correct+'/'+st.total+'<br>სიზუსტე: '+acc+'%';
+    const fs=root.querySelector('#t-final-score');
+    const fst=root.querySelector('#t-final-stats');
+    if(fs)fs.textContent=st.score+' ქ.';
+    if(fst)fst.innerHTML='სწორი: '+st.correct+'/'+st.total+'<br>სიზუსტე: '+acc+'%';
     showS('end');
   }
-  function showS(s){
-    root.querySelectorAll('.ts').forEach(el=>el.style.display='none');
-    root.querySelector('#ts-'+s).style.display='block';
-  }
   function beginGame(lv){
-    st={level:lv,round:1,score:0,roundScore:0,correct:0,total:0,roundCorrect:0,roundTotal:0,speed:BASE_SPD[lv],queue:[],current:null,answered:false,locked:false};
-    showS('game');upd();buildCatchers();
-    st.queue=shuffle([...shuffle(SIGNS)]).slice(0,SPR);
-    nextSign();
+    st={level:lv,round:1,score:0,roundScore:0,correct:0,total:0,
+        roundCorrect:0,roundTotal:0,speed:BASE_SPD[lv],
+        queue:shuffle([...shuffle(SIGNS)]).slice(0,SPR),
+        current:null,answered:false,locked:false};
+    showS('game');upd();buildCatchers();nextSign();
   }
   function nextRound(){
     st.round++;st.roundScore=0;st.roundCorrect=0;st.roundTotal=0;
@@ -1824,28 +1842,31 @@ function initTetris(secId){
     showS('game');upd();buildCatchers();nextSign();
   }
 
+  const HUB_BTN='<button onclick="renderGameHub(document.getElementById(\'tetris-root\'))" style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-secondary)">← Hub-ზე</button>';
+
   root.innerHTML=
     '<div style="font-family:var(--font-sans)">'
+
     +'<div class="ts" id="ts-start" style="text-align:center;padding:24px 12px">'
     +'<div style="font-size:36px;margin-bottom:8px">🌟</div>'
     +'<div style="font-size:18px;font-weight:500;margin-bottom:6px;color:var(--text-primary)">ასტრო-ტეტრისი</div>'
-    +'<div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;line-height:1.6">ნიშანი ჩამოდის — სწორ სტიქიაზე დაამარტყე!<br>🔥 ცეცხლი · 🌿 მიწა · 💨 ჰაერი · 💧 წყალი</div>'
-    +'<div style="margin-bottom:12px"><button onclick="renderGameHub(document.getElementById('tetris-root'))" style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-secondary)">← Hub-ზე</button></div>'
+    +'<div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">ნიშანი ჩამოდის — სწორ სტიქიაზე დაამარტყე!<br>🔥 ცეცხლი · 🌿 მიწა · 💨 ჰაერი · 💧 წყალი</div>'
+    +'<div style="margin-bottom:14px">'+HUB_BTN+'</div>'
     +'<div style="display:flex;gap:8px">'
-    +'<button onclick="window._initTetrisGame(1)" style="flex:1;padding:12px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\"font-size:20px\">🌱</div>ადვილი</button>'
-    +'<button onclick="window._initTetrisGame(2)" style="flex:1;padding:12px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\"font-size:20px\">⚡</div>საშუალო</button>'
-    +'<button onclick="window._initTetrisGame(3)" style="flex:1;padding:12px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\"font-size:20px\">🔥</div>ძნელი</button>'
+    +'<button onclick="window._tetrisBegin(1)" style="flex:1;padding:12px 6px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\\"font-size:20px;margin-bottom:4px\\">🌱</div>ადვილი</button>'
+    +'<button onclick="window._tetrisBegin(2)" style="flex:1;padding:12px 6px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\\"font-size:20px;margin-bottom:4px\\">⚡</div>საშუალო</button>'
+    +'<button onclick="window._tetrisBegin(3)" style="flex:1;padding:12px 6px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:13px;color:var(--text-primary)"><div style=\\"font-size:20px;margin-bottom:4px\\">🔥</div>ძნელი</button>'
     +'</div></div>'
 
-    +'<div class="ts" id="ts-game" style="display:none">'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px">'
+    +'<div class="ts" id="ts-game" style="display:none;padding:4px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
     +'<span id="t-score" style="font-size:18px;font-weight:500;color:var(--text-primary)">0 ქ.</span>'
     +'<span id="t-round" style="font-size:13px;color:var(--text-secondary)">რ. 1/5</span>'
-    +'<button onclick="window._tetrisGoStart()" style="font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;color:var(--text-secondary)">← Hub-ზე</button>'
+    +'<button onclick="showS(\'start\')" style="font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;color:var(--text-secondary)">← Hub-ზე</button>'
     +'</div>'
     +'<div style="height:3px;background:var(--border);border-radius:2px;margin-bottom:10px"><div id="t-prog" style="height:3px;background:var(--fill-accent);border-radius:2px;width:0%;transition:width 0.3s"></div></div>'
     +'<div id="t-arena" style="position:relative;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:320px">'
-    +'<div id="t-piece" style="position:absolute;top:8px;left:0;right:0;text-align:center;transition:top 0.15s linear">'
+    +'<div id="t-piece" style="position:absolute;top:8px;left:0;right:0;text-align:center">'
     +'<div class="tp-sym" style="font-size:36px;line-height:1">♈</div>'
     +'<div class="tp-name" style="font-size:11px;color:var(--text-secondary);margin-top:2px">ვერძი</div>'
     +'</div>'
@@ -1865,14 +1886,15 @@ function initTetris(secId){
     +'<div style="font-size:18px;font-weight:500;margin-bottom:4px;color:var(--text-primary)">თამაში დასრულდა</div>'
     +'<div id="t-final-score" style="font-size:40px;font-weight:500;color:var(--text-accent);margin:12px 0">0 ქ.</div>'
     +'<div id="t-final-stats" style="font-size:13px;color:var(--text-secondary);line-height:2;margin-bottom:20px"></div>'
-    +'<button onclick="window._tetrisGoStart()" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:14px;color:var(--text-primary);margin-bottom:8px">ხელახლა</button>'
-    +'<button onclick="renderGameHub(document.getElementById('tetris-root'))" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:14px;color:var(--text-secondary)">← Hub-ზე</button>'
+    +'<button onclick="window._tetrisBegin(st_lv)" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:14px;color:var(--text-primary);margin-bottom:8px">ხელახლა</button>'
+    +'<div style="margin-top:6px">'+HUB_BTN+'</div>'
     +'</div>'
     +'</div>';
 
-  window._initTetrisGame = (lv) => beginGame(lv);
-  window._tetrisNextRound = () => nextRound();
-  window._tetrisGoStart = () => showS('start');
+  let st_lv=1;
+  window._tetrisBegin=function(lv){st_lv=lv;beginGame(lv);};
+  window._tetrisNextRound=nextRound;
+  window.showS=showS;
 }
 
 function renderCoursesHTML(){
