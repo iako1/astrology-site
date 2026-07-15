@@ -80,7 +80,18 @@ table.main-tbl tbody tr.upper td{background:var(--bg2)}
 .pi{display:flex;align-items:center;gap:4px;white-space:nowrap;margin-bottom:3px}
 /* calc */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-@media(max-width:580px){.cgrid{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .cgrid{grid-template-columns:1fr}
+  .tab{padding:8px 10px;font-size:12px}
+  .sec{padding:14px 12px}
+  .cards-grid{grid-template-columns:1fr!important}
+  #lex-grid{grid-template-columns:1fr!important}
+  #res-tab-ai,#res-tab-courses,#res-tab-books,#res-tab-lexicon{padding:8px 10px;font-size:12px}
+  details summary{padding:12px 14px}
+  #plt-global-tip{width:220px;font-size:11px}
+  input[type=text]{font-size:16px}
+  .quiz-ans-btn{font-size:13px;padding:10px 12px}
+}}
 .prow2{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r);border:.5px solid var(--border);margin-bottom:5px;background:var(--bg2)}
 .psym{font-size:17px;width:24px;text-align:center}
 .pname{font-size:13px;font-weight:500;color:var(--text);flex:1}
