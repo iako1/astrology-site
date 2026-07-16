@@ -295,7 +295,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
 <script>
 const PW='astro2026';
 const EL={fire:{label:'ცეცხლი',bg:'var(--fire-bg)',tc:'var(--fire-tc)',bc:'var(--fire-bc)',hex:'#D85A30'},earth:{label:'მიწა',bg:'var(--earth-bg)',tc:'var(--earth-tc)',bc:'var(--earth-bc)',hex:'#639922'},air:{label:'ჰაერი',bg:'var(--air-bg)',tc:'var(--air-tc)',bc:'var(--air-bc)',hex:'#378ADD'},water:{label:'წყალი',bg:'var(--water-bg)',tc:'var(--water-tc)',bc:'var(--water-bc)',hex:'#7F77DD'}};
-const CR={cardinal:'კარდინ.',fixed:'ფიქსირ.',mutable:'მუტაბ.'};
+const CR={cardinal:'კარდინალური',fixed:'ფიქსირ.',mutable:'მუტაბ.'};
 const ELC={fire:{label:'ცეცხლი',hex:'#D85A30',desc:'ენერგია, ინიციატივა, ვნება'},earth:{label:'მიწა',hex:'#639922',desc:'პრაქტიკულობა, სტაბილობა'},air:{label:'ჰაერი',hex:'#378ADD',desc:'გონება, კომუნიკაცია'},water:{label:'წყალი',hex:'#7F77DD',desc:'ემოცია, ინტუიცია, სიღრმე'}};
 const CRC={cardinal:{label:'კარდინალური',hex:'#D85A30',desc:'ინიციატივა, ახლის დაწყება'},fixed:{label:'ფიქსირებული',hex:'#854F0B',desc:'გამძლეობა, სიმტკიცე'},mutable:{label:'მუტაბელური',hex:'#185FA5',desc:'ადაპტაცია, მოქნილობა'}};
 const SIGN_OPTS=['♈ ვერძი','♉ კურო','♊ ტყუპები','♋ კირჩხიბი','♌ ლომი','♍ ქალწული','♎ სასწორი','♏ მორიელი','♐ მშვილდ.','♑ თხის რქა','♒ მერწყ.','♓ თევზები'];
@@ -320,9 +320,9 @@ const DEF_SECTIONS=[
     {n:'სასწორი',sym:'♎',num:'07',el:'air',cr:'cardinal',hier:'upper',ruler:'♀ ვენერა',impulse:'პარტნიორობა',keywords:['ბალანსი','დიზაინი','მოდა','სამართ.'],opp:'♈ ვერძი — ინსტინქტი',triad:'',desc:'"ჩვენ"-ის სამყარო. კომუნიკაცია, ბალანსი.'},
     {n:'მორიელი',sym:'♏',num:'08',el:'water',cr:'fixed',hier:'upper',ruler:'⚵ ვულკ., ♂ მარსი Rx',impulse:'სიღრმე',keywords:['ფსიქოლოგია','ენერგეტიკა','ტრანსფ.'],opp:'♉ კურო — კომფორტი',triad:'',desc:'ჩაკეტილი ენერგია. სიღრმე, ფსიქოლოგია.'},
     {n:'მშვილდ.',sym:'♐',num:'09',el:'fire',cr:'mutable',hier:'upper',ruler:'♃ იუპიტ.',impulse:'სიბრძნე',keywords:['ამბიცია','მოგზაურობა','ფილოსოფია'],opp:'♊ ტყუპ. — დეტალი',triad:'',desc:'იუპიტერი მართავს. ამბიცია, სწავლა, მოგზაურობა.'},
-    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'♄ სატ., ♅ ურ. Rx',impulse:'სტრუქტურა',keywords:['შრომა','სტატუსი','პასუხისმგ.'],opp:'♋ კირჩხ. — ემოცია',triad:'',desc:'სატურნი. სტრუქტურა, კარიერა.'},
-    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'♅ ურანი, ♄ სატ. Rx',impulse:'კოლექტივი',keywords:['ინტუიცია','ტექნოლ.','მეგობრობა'],opp:'♌ ლომი — ეგო',triad:'',desc:'ურანი. ძლიერი ინტუიცია, ტექნოლოგია.'},
-    {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'♆ ნეპტ., ♃ იუპ. Rx',impulse:'შერწყმა',keywords:['ინტუიცია','ქაოსი','მუსიკა','სულიერება'],opp:'♍ ქალწ. — სიზუსტე',triad:'',desc:'ნეპტუნი. ინტუიცია, ფერადი სათვალე.'},
+    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'♄ სატურნი, ♅ ურანი Rx',impulse:'სტრუქტურა',keywords:['შრომა','სტატუსი','პასუხისმგ.'],opp:'♋ კირჩხ. — ემოცია',triad:'',desc:'სატურნი. სტრუქტურა, კარიერა.'},
+    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'♅ ურანი, ♄ სატურნი Rx',impulse:'კოლექტივი',keywords:['ინტუიცია','ტექნოლ.','მეგობრობა'],opp:'♌ ლომი — ეგო',triad:'',desc:'ურანი. ძლიერი ინტუიცია, ტექნოლოგია.'},
+    {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'♆ ნეპტუნი, ♃ იუპიტერი Rx',impulse:'შერწყმა',keywords:['ინტუიცია','ქაოსი','მუსიკა','სულიერება'],opp:'♍ ქალწ. — სიზუსტე',triad:'',desc:'ნეპტუნი. ინტუიცია, ფერადი სათვალე.'},
    ]
   },
   {id:'s-elements',type:'elements',title:'სტიქიები',visible:true,tab:'სტიქიები'},
@@ -344,7 +344,7 @@ const DEF_SECTIONS=[
     ['♓','თევზები','♆ ნეპტუნი, ♃ იუპიტერი Rx','♀ ვენერა, ⚷ ქირონი Rx','☿ მერკური, ⚴ პროზერპინა','⚴ პროზერპინა Rx, ☿ მერკური Rx'],
    ]
   },
-  {id:'s-calc',type:'calc',title:'ქულების კალკ.',visible:true,tab:'ქულები',
+  {id:'s-calc',type:'calc',title:'ქულების კალკულატორი',visible:true,tab:'ქულები',
    planets:[
     {sym:'☉',name:'მზე',pts:5},{sym:'☽',name:'მთვარე',pts:5},
     {sym:'☿',name:'მერკური',pts:3},{sym:'♀',name:'ვენერა',pts:3},{sym:'♂',name:'მარსი',pts:3},
@@ -362,9 +362,9 @@ const DEF_SECTIONS=[
     {n:'ქალწული',sym:'♍',num:'06',el:'earth',cr:'mutable',hier:'lower',ruler:'ნერვოზი',impulse:'სიზუსტე',keywords:['გეგმა','ემოც.ცივი','ნერვოზი','ჯანსაღი კვება'],opp:'კაცებს მოსწონთ მოწესრ. ქალები',triad:'',desc:'ნერვოზისკენ. სრულყოფილად ასრულებს. ემოციურად ცივი, პრაქტიკულად მზრუნველი.'},
     {n:'სასწორი',sym:'♎',num:'07',el:'air',cr:'cardinal',hier:'upper',ruler:'დახვეწილი',impulse:'ბალანსი',keywords:['ადვოკ.','ბრენდი','კოლექტ.','სტილი'],opp:'კაცებს მოსწონთ სტილური ქალები',triad:'',desc:'ადვოკატი, სამართლიანი. პარფიუმერია. ყოველთვის კოლექტივი სჭირდება. ბრენდი, სტილი.'},
     {n:'მორიელი',sym:'♏',num:'08',el:'water',cr:'fixed',hier:'upper',ruler:'დაცემული ⚠️',impulse:'სიღრმე',keywords:['შიში','ეჭვიანობა','ბოლომდე','ფსიქოლ.'],opp:'ღრმა, ვნებიანი ურთიერთობა',triad:'',desc:'რთული მთვარე. ემოციები შინ დუღს. მუდმივი შიში ბავშვობიდან. ეჭვიანი. ფსიქოლოგია კარგია.'},
-    {n:'მშვილდ.',sym:'♐',num:'09',el:'fire',cr:'mutable',hier:'upper',ruler:'თავისუფალი',impulse:'ახალი ცოდნა',keywords:['მოგზაურ.','იუმორი','აზარტი','შეზღუდვ. სიძ.'],opp:'პარტნიორს იუმორი უნდა ჰქონდეს',triad:'',desc:'ახალი ცოდნა. შეზღუდვა ვერ იტანს. მოგზაურობა. დეპრესია ნაკლებად.'},
-    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'ძალიან რთული',impulse:'სტრუქტ.',keywords:['ემ.ჩაკეტ.','სტატუსი','ფრთხილი','დისტანცია'],opp:'სტატუსი, სტაბილური',triad:'',desc:'ემოციის გამოხატვა ძალიან უჭირს. ცივი, დისტანციური. ადაპტაცია ძნელი.'},
-    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'განსაკუთრ.',impulse:'თავისუფლება',keywords:['ბანალ.სიძ.','განქ.ნიშ.','არასტანდ.','ურანი'],opp:'უნიკალური, მეგობარი ქალი',triad:'',desc:'სიყვარული vs მეგობრობა. ბანალურობის სიძულვილი. განქ. ნიშანი. არასტანდ. ურთ.'},
+    {n:'მშვილდ.',sym:'♐',num:'09',el:'fire',cr:'mutable',hier:'upper',ruler:'თავისუფალი',impulse:'ახალი ცოდნა',keywords:['მოგზაურ.','იუმორი','აზარტი','შეზღუდვის სიძულვილი'],opp:'პარტნიორს იუმორი უნდა ჰქონდეს',triad:'',desc:'ახალი ცოდნა. შეზღუდვა ვერ იტანს. მოგზაურობა. დეპრესია ნაკლებად.'},
+    {n:'თხის რქა',sym:'♑',num:'10',el:'earth',cr:'cardinal',hier:'upper',ruler:'ძალიან რთული',impulse:'სტრუქტ.',keywords:['ემოციური ჩაკეტვა','სტატუსი','ფრთხილი','დისტანცია'],opp:'სტატუსი, სტაბილური',triad:'',desc:'ემოციის გამოხატვა ძალიან უჭირს. ცივი, დისტანციური. ადაპტაცია ძნელი.'},
+    {n:'მერწყ.',sym:'♒',num:'11',el:'air',cr:'fixed',hier:'upper',ruler:'განსაკუთრ.',impulse:'თავისუფლება',keywords:['ბანალობის სიძულვილი','განქარვების ნიშნები','არასტანდარტული','ურანი'],opp:'უნიკალური, მეგობარი ქალი',triad:'',desc:'სიყვარული vs მეგობრობა. ბანალურობის სიძულვილი. განქ. ნიშანი. არასტანდ. ურთ.'},
     {n:'თევზ.',sym:'♓',num:'12',el:'water',cr:'mutable',hier:'upper',ruler:'ნაყოფიერი',impulse:'ემოცია',keywords:['ნაყოფ.','რომანტ.','ობ.უჭ.','წარსული'],opp:'ნაზი, სათუთი ქალი',triad:'',desc:'ნაყოფიერი. გადამეტებული ემოციები. ობიექტ. უჭირს. რომანტიკოსი.'},
    ]
   },
@@ -584,7 +584,7 @@ const GLOSSARY_TERMS=[
    def:'პლანეტა მზიდან 8 გრადუსის ფარგლებში — ენთება, სუსტდება. მთვარე კომბუსტიაში = ახალი მთვარეს ახლოს. 1 გრადუსის ფარგლებში = კაზიმი (ყველაზე ძლიერი). ტრადიციულ ასტროლოგიაში კომბუსტია სერიოზული სისუსტეა, გარდა კაზიმისა.',
    url:'https://cafeastrology.com/signs/glossary.html'},
   {ka:'კომპოზიტური კარტა',en:'Composite Chart',cat:'ურთ-ბები',
-   def:'ორი ადამიანის ნატ. კარტების "საშუალო" — ახალი კარტა, სადაც ორი ადამიანის პლანეტების საშუალო პოზიციებია. ასახავს ურთიერთობის არსს. სინასტრისგან განსხვავება: "ჩვენი ურთიერთობის კარტა".',
+   def:'ორი ადამიანის ნატალური კარტების "საშუალო" — ახალი კარტა, სადაც ორი ადამიანის პლანეტების საშუალო პოზიციებია. ასახავს ურთიერთობის არსს. სინასტრისგან განსხვავება: "ჩვენი ურთიერთობის კარტა".',
    url:'https://cafeastrology.com/articles/compositecharts.html'},
   {ka:'კრიტიკული გრადუსი',en:'Critical Degree',cat:'ტექნიკა',
    def:'განსაკუთრებით მგრძნობიარე გრადუსები: კარდინ. ნიშნებში 0°, 13°, 26°; ფიქს. ნიშნებში 8-9° და 21-22°. ნებისმიერ ნიშანში 0° = "ახალი დაწყება"; 29° = "გარდამავალი ეტაპი, კრიზისი".',
@@ -593,7 +593,7 @@ const GLOSSARY_TERMS=[
    def:'"მძიმე" ასპექტები: კონიუნქცია (0°), კვადრატი (90°), ოპოზიცია (180°) — გამოწვევა, ხასიათის ამამაღლებელი. "ნარმალური" ასპექტები: სექსტილი (60°), ტრინი (120°) — ნიჭი, ადვილი ენერგია.',
    url:'https://cafeastrology.com/zodiac-signs.html'},
   {ka:'ლუნარული რევოლუცია',en:'Lunar Return',cat:'პროგნოზი',
-   def:'კარტა, კასტი მომენტში, როცა მთვარე ნატ. კარტის ზუსტ პოზიციაში ბრუნდება (~28 დღეში). ასახავს მომდევნო თვის ემოციურ ტემპს. ასცენდანტი და სახლები — ამ თვის მოვლენების საკვანძო ინდიკატორები.',
+   def:'კარტა, კასტი მომენტში, როცა მთვარე ნატალური კარტის ზუსტ პოზიციაში ბრუნდება (~28 დღეში). ასახავს მომდევნო თვის ემოციურ ტემპს. ასცენდანტი და სახლები — ამ თვის მოვლენების საკვანძო ინდიკატორები.',
    url:'https://cafeastrology.com/zodiac-signs.html'},
   {ka:'ლოტი',en:'Lot',cat:'ჰელენური',
    def:'= არაბული ნაწილი. ჰელენური ასტროლოგიის გამოთვლილი სენსიტიური წერტილი ნატალურ კარტაში. ვეტიუს ვალენსი 97 ლოტს აღწერს. ყველაზე ცნობილი: ბედის ლოტი. ლოტი პლანეტა არ არის — ეს ფორმულით გამოთვლილი მათემატიკური წერტილია.',
@@ -644,7 +644,7 @@ const GLOSSARY_TERMS=[
    def:'ანტიკური პრინციპი: "დღის კარტა" (მზე ჰორიზონტზე) vs "ღამის კარტა". დღის ბენეფიკი = იუპიტ.; ღამის ბენეფ. = ვენ. დღის მალ. = სატ.; ღამის მალ. = მარსი. სექტი ცხრილებში მნ. ინდიკატორია.',
    url:'https://cafeastrology.com/signs/glossary.html'},
   {ka:'სოლარული რევოლუცია',en:'Solar Return',cat:'პროგნოზი',
-   def:'კარტა, კასტი მომენტში, როცა მზე ნატ. კარტის ზუსტ პოზიციაში ბრუნდება (~365 დღეში). ასახავს მომდევნო წლის ძირითად თემებს. SR ასცენდანტი, SR სახლები და პლანეტები — ამ წლის ინდიკატორები.',
+   def:'კარტა, კასტი მომენტში, როცა მზე ნატალური კარტის ზუსტ პოზიციაში ბრუნდება (~365 დღეში). ასახავს მომდევნო წლის ძირითად თემებს. SR ასცენდანტი, SR სახლები და პლანეტები — ამ წლის ინდიკატორები.',
    url:'https://cafeastrology.com/zodiac-signs.html'},
   {ka:'სექსტილი',en:'Sextile',cat:'ასპექტები',
    def:'60 გრადუსი — ხელსაყრელი ასპექტი. ტრინის მსგავსი, ნაკლებად ძლიერი. შესაძლებლობებს ხსნის, განსაკუთრებით მუშაობის გზით. ერთმანეთის მომიჯნავე სტიქიებს შორის ხდება (ცეცხლი-ჰაერი, მიწა-წყალი). ნაკლებად ავტომატური — სხვა ასპექტებისგან განსხვავებით ძალისხმევა სჭირდება.',
@@ -673,7 +673,7 @@ const GLOSSARY_TERMS=[
   {ka:'ხუთი ესენციური ღირსება',en:'Five Essential Dignities',cat:'დიგნიტეტები',
    def:'ესსენციური ღირსებების სისტემა: ოიკოსი (5 ქულა) + ეგზალტაცია (4 ქულა) + ტრიპლიციტი (3 ქულა) + ტერმი (2 ქულა) + ფეისი (1 ქულა). ჯამი 15 ქულა = პლანეტა ყველა ღირსებაშია. ეს სისტემა ძველ წელთაღრიცხვის II საუკუნიდან მომდინარეობს. Benjamin Dykes ამ სისტემას ტრადიციული ასტროლოგიის სახელმძღვანელოში სრულად ხსნის.',
    url:'https://www.skyscript.co.uk/glossary.html'},
-  {ka:'ჰემისფეროს განაწილება',en:'Hemisphere Emphasis',cat:'ნატ. კარტა',
+  {ka:'ჰემისფეროს განაწილება',en:'Hemisphere Emphasis',cat:'ნატალური კარტა',
    def:'სად არის კარტის პლანეტების უმრავლესობა? ჩრდილოეთი (I-VI სახლი) = ინტროვერსია, ახლო ადამიანები; სამხრეთი (VII-XII) = სოციალობა, საჯარო ცხოვრება; აღმოსავლეთი (X-III) = დამოუკიდებლობა; დასავლეთი (IV-IX) = სხვებზე ორიენტაცია. ჰემისფეროს ანალიზი ნატალური კარტის პირველი სწრაფი განხილვის ნაწილია.',
    url:'https://cafeastrology.com/zodiac-signs.html'},
 ,
@@ -776,10 +776,10 @@ const GLOSSARY_TERMS=[
   {ka:'ჯვარი / მოდალობა',en:'Modality / Quadruplicity',cat:'ასტროლოგია',
    def:'ნიშნების სამ ჯგუფად კლასიფიკაცია: კარდინალური (♈♋♎♑) — სეზონის დასაწყისი, ინიციატივა; ფიქსირებული (♉♌♏♒) — სეზონის შუა, სიმტკიცე; მუტაბელური (♊♍♐♓) — სეზონის ბოლო, ადაპტაცია. "ჯვარი" იმიტომ, რომ ოთხი ნიშანი ზოდიაქოს წრეში ჯვარს ქმნის.',
    url:'https://cafeastrology.com/modalities.html'},
-  {ka:'სახლი (ასტ.)',en:'House',cat:'ასტროლოგია',
+  {ka:'სახლი (ასტროლ.)',en:'House',cat:'ასტროლოგია',
    def:'ნატალური კარტის 12 სექტორი, რომელთაგან თითოეული ცხოვრების კონკრეტულ სფეროს მართავს. I = პიროვნება, II = ფინანსები, III = კომუნიკაცია, IV = სახლი/ოჯახი, V = შემოქმედება, VI = ჯანმრთელობა/სამსახური, VII = პარტნიორობა, VIII = ტრანსფორმაცია/მემკვიდრეობა, IX = ფილოსოფია, X = კარიერა, XI = მეგობრობა, XII = ჩაკეტილობა/სულიერება. სახლები ასცენდანტიდან ვიწყებთ.',
    url:'https://cafeastrology.com/houses.html'},
-  {ka:'პლანეტა (ასტ.)',en:'Planet',cat:'ასტროლოგია',
+  {ka:'პლანეტა (ასტროლ.)',en:'Planet',cat:'ასტროლოგია',
    def:'ასტროლოგიაში 10 ძირითადი ციური სხეული: ☉ მზე, ☽ მთვარე, ☿ მერკური, ♀ ვენერა, ♂ მარსი, ♃ იუპიტერი, ♄ სატურნი (7 ტრადიციული); ♅ ურანი, ♆ ნეპტუნი, ♇ პლუტონი (თანამედ. დამატება). ყოველ პლანეტას მმართველი ნიშანი, ხასიათი და ცხოვრების სფერო გააჩნია.',
    url:'https://cafeastrology.com/planets.html'},
   {ka:'☉ მზე (ასტ.)',en:'Sun',cat:'ასტროლოგია',
@@ -824,7 +824,7 @@ const GLOSSARY_TERMS=[
   {ka:'მიდჰევენი (MC)',en:'Midheaven (MC)',cat:'ასტროლოგია',
    def:'X სახლის საწყისი — ასახავს კარიერას, სოციალური მდგომარეობასა და საჯარო სახეს. "Medium Coeli" — ლათინური "ცის შუა". ნატალური კარტის ყველაზე მაღალი საკვანძო წერტილი. MC-ის მმართველი პლანეტა კარიერის გზის ბუნებას ასახავს. IC (Imum Coeli) — მის საპირისპირო, ოჯახის ფესვები, IV სახლი.',
    url:'https://cafeastrology.com/midheaven.html'},
-  {ka:'კვანძები (მთვ.)',en:'Lunar Nodes',cat:'ასტროლოგია',
+  {ka:'კვანძები (მთვარის)',en:'Lunar Nodes',cat:'ასტროლოგია',
    def:'ჩრდილოეთის კვანძი (☊) და სამხრეთის კვანძი (☋) — ეკლიპტიკასა და მთვარის ორბიტის გადაკვეთის წერტილები. ტრადიციულ ასტროლოგიაში: ჩრდილოეთის კვანძი = "კარმის მიზანი" = სულის ბუნებრივი მიმართულება; სამხრეთის კვანძი = "კარმის ბარგი" = წინა სულიერი გამოცდილება. სინასტრსა და ტრადიციულ ასტროლოგიაში კარმულ ვალდებულებებს განსაზღვრავს.',
    url:'https://cafeastrology.com/articles/lunarnodesastrology.html'},
   {ka:'ანგულარული / სუქდენტული / კადენტი',en:'Angular / Succedent / Cadent',cat:'ასტროლოგია',
@@ -849,7 +849,7 @@ const GLOSSARY_TERMS=[
    def:'180° — ძლიერი ასპექტი. ორი პლანეტა "პოლარებულია" — ერთმანეთს განაპირობებს. ოპოზიცია არ არის მხოლოდ "გამოწვევის" ასპექტი — ასევე ბალანსისა და ინტეგრაციის მოწოდებაა. ოპოზიციის ღერძი ყოველთვის ერთ ჯვრს ეკუთვნის: I/VII სახლი — "მე"/"შენ"; ♋/♑ — "დედა"/"ოჯახი"; ♊/♐ — "ტყუპები"/"მშვილდოსანი" და ა.შ.',
    url:'https://cafeastrology.com/opposition.html'},
   {ka:'პლანეტების ფეისი / დეკანი',en:'Face / Decan',cat:'ასტროლოგია',
-   def:'ყოველი ნიშნის 30 გრადუსის სამ ნაწილად (10° × 3) გაყოფა = 36 სეგმენტი. ყოველ სეგმენტს "მმართველი პლანეტა" გააჩნია — ცხრელმომდევნო ქალდეური გზის ინდიკატორი. პლანეტა ამ სახლის მმართველის გავლენაში ექცევა. მაგ.: ♈ I სეგმ. (0-10°) = ♂ მარსი; II სეგმ. (10-20°) = ☉ მზე; III სეგმ. (20-30°) = ♀ ვენერა. ჯ. ინდ. ტ.',
+   def:'ყოველი ნიშნის 30 გრადუსის სამ ნაწილად (10° × 3) გაყოფა = 36 სეგმენტი. ყოველ სეგმენტს "მმართველი პლანეტა" გააჩნია — ცხრელმომდევნო ქალდეური გზის ინდიკატორი. პლანეტა ამ სახლის მმართველის გავლენაში ექცევა. მაგ.: ♈ I სეგმ. (0-10°) = ♂ მარსი; II სეგმენტი (10-20°) = ☉ მზე; III სეგმენტი (20-30°) = ♀ ვენერა. ჯ. ინდ. ტ.',
    url:'https://www.skyscript.co.uk/decans.html'},
   {ka:'სოლარული რეთხი / Arc',en:'Solar Arc',cat:'ასტროლოგია',
    def:'პლანეტების დირექციის ტექნიკა: ყოველი "ინტერვალი" 1 წელი = ☉-ის ყოველდღიური გავლილი გრადუსი (≈ 1°). ყოველი პლანეტა "გადადის" მსგავსი მანძილით, ზუსტად ამ ამოცდის ოდენობით. შედეგი: 30 წელი = 30° "გადაადგილება" ყოველ პლანეტაზე. Rudolph Steiner-ი ასევე Solar Arc-ს ინტუიციურ ინსტრუმენტად მოიხსენიებდა.',
@@ -970,8 +970,8 @@ let DEF_TIMEZONE={
 
 <div style="margin-bottom:16px;font-size:14px;color:var(--text2);line-height:1.7">საქართველო სხვადასხვა პერიოდში სხვადასხვა დროის სარტყელში იყო. ნატალური კარტის სწორი გამოთვლისთვის მნიშვნელოვანია დაბადების დროს მოქმედი GMT გამოვიყენოთ.</div>
 <div class="tbl-outer"><table class="main-tbl"><thead><tr><th>წელი</th><th>ზაფხული (დან)</th><th>ზამთარი (დან)</th><th>შენიშვნა</th></tr></thead><tbody>
-<tr><td>1924–1957</td><td>01.05-დან GMT+3</td><td>—</td><td>1924 წლის 1 მაისიდან 1957 წლის 28 თებ.</td></tr>
-<tr class="upper"><td>1957–1981</td><td>28.02-დან GMT+4</td><td>—</td><td>1957 წლის 28 თებ.-დან 1981 წლის 31 მარტამდე</td></tr>
+<tr><td>1924–1957</td><td>01.05-დან GMT+3</td><td>—</td><td>1924 წლის 1 მაისიდან 1957 წლის 28 თებერვალი</td></tr>
+<tr class="upper"><td>1957–1981</td><td>28.02-დან GMT+4</td><td>—</td><td>1957 წლის 28 თებერვალი-დან 1981 წლის 31 მარტამდე</td></tr>
 <tr><td>1981</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1981-ში 31 მარტიდან 30 სექტემბრამდე (+5), დანარჩენი (+4)</td></tr>
 <tr class="upper"><td>1982</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1982-ში 31 მარტიდან 30 სექტემბრამდე (+5)</td></tr>
 <tr><td>1983</td><td>31.03 GMT+5</td><td>30.09 GMT+4</td><td>1983-ში 31 მარტიდან 30 სექტემბრამდე (+5)</td></tr>
@@ -1389,7 +1389,7 @@ const DEF_BOOKS_DATA=[
   {id:37, cat:'occult',
    title_en:'In Search of Reality',
    title_ge:'რეალობის ძიებაში',
-   author:'ნოვ.',year:'თანამედროვე',
+   author:'ნოველისტი',year:'თანამედროვე',
    link:'https://www.obooko.com/book/in-search-of-reality/read',link_label:'obooko.com — უფასო',
    excerpt_en:'Reality is not what it appears to be on the surface — beneath the material world lies a deeper order waiting to be discovered.',
    excerpt_ge:'რეალობა ისეთი არ არის, როგორც ზედაპირზე ჩანს — მატერიალური სამყაროს ქვეშ ღრმა წესრიგი დევს, რომლის აღმოჩენა გვიცდის.',
@@ -1398,7 +1398,7 @@ const DEF_BOOKS_DATA=[
   {id:38, cat:'occult',
    title_en:'Star Beings',
    title_ge:'ვარსკვლავური არსებები',
-   author:'ნოვ.',year:'თანამედროვე',
+   author:'ნოველისტი',year:'თანამედროვე',
    link:'https://www.obooko.com/book/star-beings/read',link_label:'obooko.com — უფასო',
    excerpt_en:'Throughout human history, people have looked to the stars and imagined beings of light and wisdom dwelling in the celestial realm.',
    excerpt_ge:'ადამიანთა ისტორიის განმავლობაში ხალხი ვარსკვლავებს გვყვრებოდა და ციურ სფეროში სინათლისა და სიბრძნის არსებებს წარმოიდგენდა.',
@@ -1603,15 +1603,15 @@ const DEF_AI_TOOLS=[
    tag:'მრავალ-სისტემა',tagColor:'#0891b2',
    desc:'Western, Vedic, Human Design და სხვა სისტემები ერთ პლატფორმაზე. შედარებითი ასტროლოგია, პერსონალიზებული ინსაიტები და ავტომატური ნატალური ანალიზი.',
    note:'კარგია: სისტემების შედარება, Human Design-თან ინტეგრაცია'},
-  // === პროფ. ხელსაწყოები ===
+  // === პროფესიონალური ხელსაწყოები ===
   {id:6,cat:'pro',
    title:'Astro-Seek.com',link:'https://www.astro-seek.com/',
-   tag:'უფასო · პროფ.',tagColor:'#0f766e',
+   tag:'უფასო · პროფესიონალური',tagColor:'#0f766e',
    desc:'პროფესიონალური ხელსაწყოების ყველაზე სრულყოფილი კრებული — Swiss Ephemeris სიზუსტით. ნატალური ჩარტი, სინასტრი, ტრანზიტები, პროგრესიები, Solar Return, Astro-Cartography, 1000-წლიანი ეფემერიდების ძიება, ნაქშატრები და კიდევ ათობით ინსტრუმენტი.',
    note:'💡 განსაკუთრებული: პლანეტარული კონფიგურაციების ძიება ნებისმიერი თარიღით'},
   {id:7,cat:'pro',
    title:'Astro.com',link:'https://www.astro.com/',
-   tag:'პროფ. სტანდარტი',tagColor:'#b45309',
+   tag:'პროფესიონალური სტანდარტი',tagColor:'#b45309',
    desc:'მსოფლიოში ყველაზე ზუსტი ასტროლოგიური პლატფორმა — ინდუსტრიის სტანდარტი 1990-იანებიდან. Swiss Ephemeris, მრავალი სახლის სისტემა, კვლევის ინსტრუმენტები, ჰოროსკოპების ბაზა და ეფემერიდები.',
    note:'💡 რეკომენდაცია: ჯერ Astro.com-ზე ზუსტი ჩარტი გააკეთე, შემდეგ AI-ს გაუგზავნე ანალიზისთვის'},
   {id:8,cat:'pro',
@@ -1632,12 +1632,12 @@ const DEF_AI_TOOLS=[
   // === მონაცემთა ბაზები ===
   {id:11,cat:'database',
    title:'Swiss Ephemeris',link:'https://www.astro.com/swisseph/',
-   tag:'მონ. ბაზა',tagColor:'#64748b',
+   tag:'მონაცემთა ბაზა',tagColor:'#64748b',
    desc:'ასტროლოგიური გამოთვლების ოქროს სტანდარტი — NASA-ს JPL მონაცემებზე დაფუძნებული, ზუსტობა რამდენიმე რკალ-წამამდე. გამოიყენება Astro.com, Astro-Seek, ZET და სხვა ყველა პროფ. ინსტრუმენტის მიერ. Python ბიბლიოთეკაც ხელმისაწვდომია.',
    note:'ეს არ არის საიტი, არამედ ბიბლიოთეკა — ყველა კარგი ინსტრუმენტი ამას იყენებს'},
   {id:12,cat:'database',
    title:'Astrodienst Atlas',link:'https://www.astro.com/atlas',
-   tag:'მონ. ბაზა · უფასო',tagColor:'#64748b',
+   tag:'მონაცემთა ბაზა · უფასო',tagColor:'#64748b',
    desc:'მსოფლიოს ყველაზე ზუსტი გეოგრაფიული კოორდინატებისა და დროის ზონების ბაზა ასტროლოგიური გამოთვლებისთვის — 250 000-ზე მეტი ადგილი. ასცენდანტის ზუსტი გამოთვლისთვის სახელწოდება სწორი კოორდინატები აუცილებელია.',
    note:'💡 ყოველთვის გადაამოწმე შენი დაბადების ადგილის კოორდინატები ამ ბაზით'},
 ];
@@ -2496,7 +2496,7 @@ function renderElementsSection(sec){
       keyword:'ვაშენებ',
       ruler:'♀ ვენერა, ☿ მერკური, ♄ სატურნი',
       body:'კისერი, მუცელი, მუხლი',
-      season:'გაზაფხ. შ. (კ.), ზაფ. შ. (ქ.), შემ. შ. (თ.)',
+      season:'გაზაფხ. შუა (კ.), ზაფხ. შუა (ქ.), შემ. შუა (თ.)',
       desc:'მიწის სტიქია <strong>ყველაზე პრაქტიკული</strong> სტიქიაა. ეს ადამიანები <strong>ხელებით ქმნიან</strong>, ფიზიკური სამყარო მათი სივრცეა. მიწა — ეს არის სტაბილობა, სიმტკიცე, მოთმინება. <strong>ფინანსები, სხეული, ბუნება, ხელობა</strong> — ეს არის მათი სფეროები. ნელა მოქმედებენ, მაგრამ საიმედოდ.',
       gifts:'სიმტკიცე · მოთმინება · პრაქტიკულობა · საიმედოობა · სენსუალობა · ეკონომიურობა',
       challenges:'სიჯიუტე · ცვლილებებთან ადაპტაცია · გრიგალობა · მატერიალიზმი',
@@ -2512,7 +2512,7 @@ function renderElementsSection(sec){
       keyword:'ვფიქრობ',
       ruler:'☿ მერკური, ♀ ვენერა, ♅ ურანი',
       body:'ფილტვები, თირკმელი, კანჭი',
-      season:'გაზ. ბ. (ტ.), შემ. (ს.), ზამ. შ. (მ.)',
+      season:'გაზაფხული დ. (ტ.), შემოდგომა (ს.), ზამთ. შ. (მ.)',
       desc:'ჰაერის სტიქია <strong>ყველაზე ინტელექტუალური</strong> სტიქიაა. ეს ადამიანები <strong>იდეებით და კომუნიკაციით</strong> ცხოვრობენ. ჰაერი — ეს არის გონება, ენა, კავშირები. <strong>ინფორმაცია, ურთიერთობები, სოციალობა</strong> — ეს მათი სამყაროა. ყოველთვის ახალ ადამიანებს, იდეებს, სიტუაციებს ეძებენ.',
       gifts:'კომუნიკაბელობა · გონება · ობიექტურობა · სოციალობა · ვერსატილობა · სიახლე',
       challenges:'ზედაპირულობა · გადაწყვეტილება · ემოციური სიღრმე · ერთ ადგილას ყოფნა',
@@ -2528,7 +2528,7 @@ function renderElementsSection(sec){
       keyword:'ვგრძნობ',
       ruler:'☽ მთვარე, ♇ პლუტო, ♆ ნეპტუნი',
       body:'მკერდი, სასქესო ორგ., ფეხები',
-      season:'ზაფ. (კ.), ზამ. (მ.), ზამ. ბ. (თ.)',
+      season:'ზაფხული (კ.), ზამთარი (მ.), ზამთ. ბ. (თ.)',
       desc:'წყლის სტიქია <strong>ყველაზე ემოციური და ინტუიციური</strong> სტიქიაა. ეს ადამიანები <strong>გრძნობებით ხედავენ</strong> სამყაროს. წყალი — ეს არის სიღრმე, ემპათია, ფარული სამყარო. <strong>ფსიქოლოგია, სულიერება, ხელოვნება, განკურნება</strong> — ეს მათი ბუნებრივი სფეროებია.',
       gifts:'ემპათია · ინტუიცია · სიღრმე · შემოქმედება · განკურნება · სიყვარული',
       challenges:'ობიექტურობა · საზღვრები · ჭარბი ემოცია · სხვის ენერგიის შეთვისება',
@@ -2652,7 +2652,7 @@ const DEF_QUIZ_QUESTIONS=[
    ex:'Cadent = III, VI, IX, XII სახლები — ადაპტაცია, ანალიზი, გარდამავლობა.'},
   {q:'ფიქსირებული ჯვრის საკვანძო სიტყვა?',
    a:['ვიწყებ','ვაშენებ','ვადაპტირდები','ვფიქრობ'],c:1,
-   ex:'ფიქსირებული ჯვარი = ვაშენებ. კარდ.=ვიწყებ, მუტ.=ვადაპტ. — სამი ენერგია.'},
+   ex:'ფიქსირებული ჯვარი = ვაშენებ. კარდინალური=ვიწყებ, მუტაბელური=ვადაპტირდები. — სამი ენერგია.'},
   {q:'სად ეგზალტირდება მზე ☉?',
    a:['ლომი ♌','ვერძი ♈ 19°','კირჩხიბი ♋','სასწორი ♎'],c:1,
    ex:'მზე ☉ ეგზალტირდება ვერძში ♈ 19°-ზე — ძალა, ლიდერობა, ენერგია.'},
@@ -2667,10 +2667,10 @@ const DEF_QUIZ_QUESTIONS=[
    ex:'სატურნი ♄ ეგზალტირდება სასწორში ♎ 21°-ზე — სამართლიანობა და სტრუქტურა.'},
   {q:'მზე ☉ + მთვარე ☽ — რამდენი ქულა?',
    a:['3 ქულა','2 ქულა','5 ქულა','1 ქულა'],c:2,
-   ex:'მზე ☉ და მთვარე ☽ — ლუმინარები, თითო 5 ქ. ნატ. კარტის ქულების სისტემაში.'},
+   ex:'მზე ☉ და მთვარე ☽ — ლუმინარები, თითო 5 ქ. ნატალური კარტის ქულების სისტემაში.'},
   {q:'იუპიტერი ♃ + სატურნი ♄ — რამდენი ქულა?',
    a:['5 ქულა','3 ქულა','2 ქულა','1 ქულა'],c:2,
-   ex:'იუპიტერი ♃ და სატურნი ♄ — სოციალური პლ., 2 ქულა. ურ./ნეპ./პლ. = 1 ქ.'},
+   ex:'იუპიტერი ♃ და სატურნი ♄ — სოციალური პლანეტები, 2 ქულა. ურ./ნეპ./პლ. = 1 ქულა.'},
   {q:'♅ ურანი, ♆ ნეპტუნი, ♇ პლუტონი — რამდენი ქულა?',
    a:['5 ქულა','3 ქულა','2 ქულა','1 ქულა'],c:3,
    ex:'ტრანსპ. პლანეტები ♅♆♇ — 1 ქ. ეს პლ. სუსტად გამოხ. ნატ. კ. ქ. სისტემაში.'},
@@ -2678,8 +2678,8 @@ const DEF_QUIZ_QUESTIONS=[
    a:['სენსუალური','გამომხატველი','ინტენსიური','პრაქტიკული'],c:1,
    ex:'ვენერა ♀ ლომში ♌ — გამომხატველი: დრამა, ვნება, სიყვარული სრულ ჩვენებაში.'},
   {q:'♀ ვენერა ♏ მორიელში — ფინანსები:',
-   a:['კატეგ. დამ.','სხვ. რ., კ-ბ.','ინვ. ფ.','პ. ხ.'],c:1,
-   ex:'ვენ. ♀ მ. ♏-ში — სხვ. რ., მემკ., კ-ბ. ღრმა ურთ-ბ. ფ-ური მხ-ე.'},
+   a:['კატეგორიულად დამოუკიდებელი','სხვის რესურსები, კ-ბ.','ინვესტიციური ფინანსები','პირადი ხარჯები'],c:1,
+   ex:'ვენერა ♀ მორიელში ♏ — სხვის რესურსები, მემკვიდრეობა. ღრმა ურთიერთობის ფინანსური მხარე.'},
   {q:'♂ მარსი ♈ ვერძში — ეს რა პოზიციაა?',
    a:['ვარდნა','მმართველობა','ეგზალტაცია','ნეიტრალური'],c:1,
    ex:'♂ მარსი ♈ ვერძში — ოიკოსი (სახლი), ყველაზე ძლიერი პოზიცია. ენერგია.'},
@@ -2700,10 +2700,10 @@ const DEF_QUIZ_QUESTIONS=[
    ex:'1924-1957: საბჭოთა სტანდ. — GMT+3. შემდეგ 1957-1991 — GMT+4.'},
   {q:'2005 წლიდან საქართველო — GMT?',
    a:['GMT+3','GMT+5','GMT+6','GMT+4'],c:3,
-   ex:'2005 წ-დან საქ. GMT+4-ზეა. ზ. დ. არ გამოიყ. — მუდმ. GMT+4.'},
+   ex:'2005 წ-დან საქ. GMT+4-ზეა. ზამთრის დრო არ გამოიყენება — მუდმივად GMT+4.'},
   {q:'1996 — ყველა მოსკოვის ნ. — GMT?',
    a:['GMT+3','GMT+4','GMT+5','GMT+6'],c:2,
-   ex:'1996 — GMT+5 ყ. მ. ნ. (ზ. დ. პერ.). 1957-1991 ასევე GMT+4/5 იყო.'},
+   ex:'1996 — GMT+5 ყველა მოსკოვის ნ. (ზამთ. დ. პერიოდი). 1957-1991 წლებში ასევე GMT+4/5 იყო.'},
   {q:'ცეცხლის სტიქიის ნიშნებია:',
    a:['♈ ვერძი, ♌ ლომი, ♐ მშვილდოსანი','♉ კურო, ♍ ქალწული, ♑ თხის რქა','♊ ტყუპები, ♎ სასწორი, ♒ მერწყული','♋ კირჩხიბი, ♏ მორიელი, ♓ თევზები'],c:0,
    ex:'ცეცხლი: ♈ ვერძი, ♌ ლომი, ♐ მშვილდოსანი — ენერგია, ვნება, ლიდერობა.'},
@@ -2778,7 +2778,7 @@ function startQuizGame(root){
         '</div>'+'<div style="margin-bottom:24px">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
       '<span style="font-size:12px;font-weight:500;color:var(--text3)">კითხვა '+(cur+1)+'/'+qs.length+'</span>'+
-      '<span style="font-size:12px;color:var(--text3)">✅ '+score+' სწ.</span></div>'+
+      '<span style="font-size:12px;color:var(--text3)">✅ '+score+' სწორი</span></div>'+
       '<div style="background:var(--bg2);border-radius:99px;height:5px;overflow:hidden">'+
       '<div style="height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);width:'+pct+'%;border-radius:99px;transition:width .4s"></div></div></div>'+
       '<div style="border:.5px solid var(--border2);border-radius:16px;padding:20px;background:var(--bg);margin-bottom:14px">'+
@@ -2866,41 +2866,41 @@ const DEF_MATCHING_DATA={
      pairs:[
        {id:1,left:'☉ მზე',   right:'♌ ლომი'},
        {id:2,left:'☽ მთვ.',  right:'♋ კირჩხ.'},
-       {id:3,left:'☿ მერკ.',right:'♊/♍ ტყ./ქ.'},
-       {id:4,left:'♀ ვენ.',  right:'♉/♎ კ./სასწ.'},
-       {id:5,left:'♂ მარ.',  right:'♈/♏ ვ./მ.'},
-       {id:6,left:'♃ იუპ.',  right:'♐/♓ მშვ./თ.'},
-       {id:7,left:'♄ სატ.',  right:'♑/♒ თხ./მ.'},
+       {id:3,left:'☿ მერკური',right:'♊ ტყუპები / ♍ ქალწული'},
+       {id:4,left:'♀ ვენერა',  right:'♉ კურო / ♎ სასწორი'},
+       {id:5,left:'♂ მარსი',  right:'♈ ვერძი / ♏ მორიელი'},
+       {id:6,left:'♃ იუპიტერი',  right:'♐ მშვილდოსანი / ♓ თევზები'},
+       {id:7,left:'♄ სატურნი',  right:'♑ თხის რქა / ♒ მერწყული'},
      ]},
     {id:'exalt',label:'პლანეტა → ეგზალტაცია',icon:'⭐',type:'pairs',
      pairs:[
        {id:1,left:'☉ მზე',   right:'♈ ვ. 19°'},
        {id:2,left:'☽ მთვ.',  right:'♉ კ. 3°'},
-       {id:3,left:'☿ მერკ.',right:'♍ ქ. 15°'},
-       {id:4,left:'♀ ვენ.',  right:'♓ თ. 27°'},
-       {id:5,left:'♂ მარ.',  right:'♑ თხ. 28°'},
-       {id:6,left:'♃ იუპ.',  right:'♋ კ. 15°'},
-       {id:7,left:'♄ სატ.',  right:'♎ სასწ. 21°'},
+       {id:3,left:'☿ მერკური',right:'♍ ქ. 15°'},
+       {id:4,left:'♀ ვენერა',  right:'♓ თ. 27°'},
+       {id:5,left:'♂ მარსი',  right:'♑ თხის რქა 28°'},
+       {id:6,left:'♃ იუპიტერი',  right:'♋ კ. 15°'},
+       {id:7,left:'♄ სატურნი',  right:'♎ სასწორი 21°'},
      ]},
     {id:'captive',label:'პლანეტა → ტყვეობა',icon:'🔗',type:'pairs',
      pairs:[
        {id:1,left:'☉ მზე',   right:'♒/♑'},
        {id:2,left:'☽ მთვ.',  right:'♑ თხა'},
-       {id:3,left:'☿ მერკ.',right:'♓/♐'},
-       {id:4,left:'♀ ვენ.',  right:'♏/♈'},
-       {id:5,left:'♂ მარ.',  right:'♎/♉'},
-       {id:6,left:'♃ იუპ.',  right:'♍/♊'},
-       {id:7,left:'♄ სატ.',  right:'♋/♌'},
+       {id:3,left:'☿ მერკური',right:'♓/♐'},
+       {id:4,left:'♀ ვენერა',  right:'♏/♈'},
+       {id:5,left:'♂ მარსი',  right:'♎/♉'},
+       {id:6,left:'♃ იუპიტერი',  right:'♍/♊'},
+       {id:7,left:'♄ სატურნი',  right:'♋/♌'},
      ]},
     {id:'fall',label:'პლანეტა → ვარდნა',icon:'⬇️',type:'pairs',
      pairs:[
        {id:1,left:'☉ მზე',   right:'♎ სასწ.'},
        {id:2,left:'☽ მთვ.',  right:'♏ მორ.'},
-       {id:3,left:'☿ მერკ.',right:'♓ თევ.'},
-       {id:4,left:'♀ ვენ.',  right:'♈ ვერ.'},
-       {id:5,left:'♂ მარ.',  right:'♋ კირ.'},
-       {id:6,left:'♃ იუპ.',  right:'♑ თხა'},
-       {id:7,left:'♄ სატ.',  right:'♈ ვერ.'},
+       {id:3,left:'☿ მერკური',right:'♓ თევ.'},
+       {id:4,left:'♀ ვენერა',  right:'♈ ვერძი'},
+       {id:5,left:'♂ მარსი',  right:'♋ კირ.'},
+       {id:6,left:'♃ იუპიტერი',  right:'♑ თხა'},
+       {id:7,left:'♄ სატურნი',  right:'♈ ვერძი'},
      ]},
   ]
 };
@@ -3261,7 +3261,7 @@ function startWheelGame(root){
         ${drawWheel()}
         <div style="display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap">
           ${[['🔥','ცეცხლი','#D85A30'],['🌿','მიწა','#639922'],['💨','ჰაერი','#378ADD'],['💧','წყალი','#7F77DD']].map(([i,l,c])=>`<span style="font-size:11px;padding:3px 8px;border-radius:8px;background:${c}22;color:${c};border:1px solid ${c}44;font-weight:500">${i} ${l}</span>`).join('')}
-          ${[['🌱','კარდინ.','#F59E0B'],['🏛️','ფიქსირ.','#A855F7'],['🌊','მუტაბ.','#38BDF8']].map(([i,l,c])=>`<span style="font-size:11px;padding:3px 8px;border-radius:8px;background:${c}22;color:${c};border:1px solid ${c}44;font-weight:500">${i} ${l}</span>`).join('')}
+          ${[['🌱','კარდინალური','#F59E0B'],['🏛️','ფიქსირ.','#A855F7'],['🌊','მუტაბ.','#38BDF8']].map(([i,l,c])=>`<span style="font-size:11px;padding:3px 8px;border-radius:8px;background:${c}22;color:${c};border:1px solid ${c}44;font-weight:500">${i} ${l}</span>`).join('')}
         </div>
         ${hand.length>0?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--text3);margin-bottom:6px;text-align:center">ხელში: ${hand.length} ნიშანი</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${cards}</div></div>`:''}
         <div style="display:flex;gap:8px;margin-top:14px">
@@ -3316,11 +3316,11 @@ function startWheelGame(root){
 function showWheelScore(root,moves,t,onRetry){
   const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
   let emoji,title,msg,stars;
-  if(moves<=12)     {stars=3;emoji='🌟';title='სრულყოფილი!';msg='ზოდიაქო ხელის გულზე გაქვს! 12 ნიშანი სწ. თანმ. — ეს ნამ. ასტრო-ოსტატია.';}
+  if(moves<=12)     {stars=3;emoji='🌟';title='სრულყოფილი!';msg='ზოდიაქო ხელის გულზე გაქვს! 12 ნიშანი სწორი თანმიმდევრობით — ეს ნამდვილი ასტრო-ოსტატია.';}
   else if(moves<=16){stars=3;emoji='✨';title='შესანიშნავი!';msg='ძალიან კარგი! პატარა ჯანჯლი იყო, მაგრამ ბოლოს ყველაფერი ადგილზე დადგა.';}
   else if(moves<=20){stars=2;emoji='🔮';title='კარგი ცოდნა!';msg='ნიშნები გახსოვს! კიდევ ერთი მცდელობა — და მასტერი გახდები.';}
   else if(moves<=28){stars=2;emoji='🌙';title='ვარჯიში სჭ.!';msg='ნახევარი ადვილად დადე, ბოლო ნაწ. კი — ოდნ. გაარეოდ. კიდევ სცადე!';}
-  else              {stars=1;emoji='⭐';title='კარგი დასაწყ.!';msg='12 ნ. თანმ. კომ.! ვარჯ. და ყველ. ადგ. დადგება.';}
+  else              {stars=1;emoji='⭐';title='კარგი დასაწყ.!';msg='12 ნიშანი თანმიმდევრობით! ვარჯიშე და ყველა ადგ. დადგება.';}
 
   root.innerHTML=`<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">
     <div style="font-size:56px;margin-bottom:8px">${emoji}</div>
@@ -3409,7 +3409,7 @@ const WHOIS_DATA=[
     'ჩემი სიმბოლო ისარია — ვესვრი სამიზნეს',
     'ვარ მეცხრე ნიშანი ზოდიაქოში',
   ]},
-  {sign:'თხის რქა',sym:'♑',el:'earth',cr:'cardinal',ruler:'♄ სატ.',hints:[
+  {sign:'თხის რქა',sym:'♑',el:'earth',cr:'cardinal',ruler:'♄ სატურნი',hints:[
     'ვარ მიწის სტიქიის ნიშანი',
     'ვარ კარდინალური ჯვარი — ზამთარს ვიწყებ',
     'ჩემი მმართველია ♄ სატ.',
@@ -3423,7 +3423,7 @@ const WHOIS_DATA=[
     'ჩემ ნიშანში ☉ მზე ვარდება',
     'ვარ მეთერთმეტე ნიშანი ზოდიაქოში',
   ]},
-  {sign:'თევზები',sym:'♓',el:'water',cr:'mutable',ruler:'♆ ნეპ.',hints:[
+  {sign:'თევზები',sym:'♓',el:'water',cr:'mutable',ruler:'♆ ნეპტუნი',hints:[
     'ვარ წყლის სტიქიის ნიშანი',
     'ვარ მუტაბელური ჯვარი — ბოლო ნიშანი',
     'ჩემი თანამ. მმართველია ♆ ნეპტ.',
@@ -3510,7 +3510,7 @@ function startWhoAmI(root){
       });
 
       const elLabel=card.el==='fire'?'ცეცხლი 🔥':card.el==='earth'?'მიწა 🌿':card.el==='air'?'ჰაერი 💨':'წყალი 💧';
-      const crLabel=card.cr==='cardinal'?'კარდინ.':card.cr==='fixed'?'ფიქსირ.':'მუტაბ.';
+      const crLabel=card.cr==='cardinal'?'კარდინალური':card.cr==='fixed'?'ფიქსირ.':'მუტაბ.';
 
       const fb=document.getElementById('whi-fb');
       if(fb)fb.innerHTML=`
@@ -4109,7 +4109,7 @@ function renderCalcSection(sec){
           </div>
           <div>
             <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px">ჯვრები</div>
-            ${[['🌱','კარდინ.','♈♋♎♑'],['🏛️','ფიქსირ.','♉♌♏♒'],['🌊','მუტაბ.','♊♍♐♓']].map(([ico,name,signs])=>`
+            ${[['🌱','კარდინალური','♈♋♎♑'],['🏛️','ფიქსირ.','♉♌♏♒'],['🌊','მუტაბ.','♊♍♐♓']].map(([ico,name,signs])=>`
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
               <span>${ico}</span>
               <span style="font-size:12px;font-weight:500;color:var(--text);width:58px">${name}</span>
@@ -4147,7 +4147,7 @@ function doCalc(secId){
   ea.forEach(([k,v])=>{const m=ELC[k];const p=Math.round(v/tot*100);h+=`<div class="srow"><span style="font-size:13px;font-weight:500;color:var(--text);width:80px">${m.label}</span><div style="flex:1"><div class="bwrap"><div class="bfill" style="width:${p}%;background:${m.hex}"></div></div></div><span style="font-size:13px;font-weight:500;width:26px;text-align:right">${v}</span><span style="font-size:11px;color:var(--text3);width:32px;text-align:right">${p}%</span></div>`;});
   h+='<div style="font-size:11px;font-weight:500;color:var(--text3);margin:12px 0 9px">ჯვრები</div>';
   ca.forEach(([k,v])=>{const m=CRC[k];const p=Math.round(v/tot*100);h+=`<div class="srow"><span style="font-size:13px;font-weight:500;color:var(--text);width:100px">${m.label}</span><div style="flex:1"><div class="bwrap"><div class="bfill" style="width:${p}%;background:${m.hex}"></div></div></div><span style="font-size:13px;font-weight:500;width:26px;text-align:right">${v}</span><span style="font-size:11px;color:var(--text3);width:32px;text-align:right">${p}%</span></div>`;});
-  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 7px"><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომ. სტიქია</div><div style="font-size:20px;font-weight:500;color:${de.hex}">${de.label}</div></div><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომ. ჯვარი</div><div style="font-size:20px;font-weight:500;color:${dc.hex}">${dc.label}</div></div></div>
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 7px"><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომინანტი სტიქია</div><div style="font-size:20px;font-weight:500;color:${de.hex}">${de.label}</div></div><div class="rcard"><div style="font-size:11px;color:var(--text3);margin-bottom:3px">დომინანტი ჯვარი</div><div style="font-size:20px;font-weight:500;color:${dc.hex}">${dc.label}</div></div></div>
   <div class="ins" style="border-color:${de.hex};background:var(--bg2);color:var(--text2)"><strong style="color:${de.hex}">${de.label}+${dc.label}:</strong> ${de.desc}. ${dc.desc}.</div>`;
   document.getElementById('calc-res-'+secId).innerHTML=h;
 }
@@ -4197,7 +4197,7 @@ const DEF_UI_TEXTS={
   site_footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide',admin_btn:'✎ რედაქტირება',
   nav_planets:'🪐 პლანეტები ნიშნებში',
   tab_signs:'12 ნიშანი',tab_elements:'სტიქიები',tab_crosses:'ჯვრები',tab_table:'პლანეტების პოზიციები',
-  tab_calc:'ქულების კალკ.',tab_quiz:'🎯 გამოსცადე ცოდნა',tab_glossary:'📖 ლექსიკონი',
+  tab_calc:'ქულების კალკულატორი',tab_quiz:'🎯 გამოსცადე ცოდნა',tab_glossary:'📖 ლექსიკონი',
   tab_timezone:'🕐 დროის სარტყელი',tab_moon:'🌙 მთვარე',tab_venus:'♀ ვენერა',tab_mars:'♂ მარსი',
   hub_title:'გამოსცადე ცოდნა',hub_sub:'აირჩიე თამაში',
   hub_quiz_desc:'30 კითხვა — ასტროლოგიის ყველა თემა',
@@ -4241,16 +4241,16 @@ function renderTextsEditor(){
   const labels={
     site_title:'სათაური (H1)',site_sub:'ქვე-სათაური',site_footer:'Footer ტექსტი',admin_btn:'ადმინ ღილაკი',
     nav_planets:'Dropdown სათაური',tab_signs:'12 ნიშანი — tab',tab_elements:'სტიქიები — tab',tab_crosses:'ჯვრები — tab',
-    tab_table:'პლ. პოზ. — tab',tab_calc:'ქულები — tab',tab_quiz:'გამოსცადე — tab',tab_glossary:'ლექსიკონი — tab',
+    tab_table:'პლანეტების პოზიციები — tab',tab_calc:'ქულები — tab',tab_quiz:'გამოსცადე — tab',tab_glossary:'ლექსიკონი — tab',
     tab_timezone:'GMT — tab',tab_moon:'მთვარე — tab',tab_venus:'ვენერა — tab',tab_mars:'მარსი — tab',
-    hub_title:'Hub სათაური',hub_sub:'Hub ქვე-სათ.',hub_quiz_desc:'ქვიზი — აღწ.',hub_match_desc:'შეუს. — აღწ.',
-    hub_wheel_desc:'წრე — აღწ.',hub_whois_desc:'ვინ ვარ — აღწ.',hub_moon_desc:'მთვარე — აღწ.',
-    quiz_next:'შემდ. ღილ.',quiz_result:'შედ. ღილ.',quiz_restart:'ხელახ. ღილ.',quiz_back:'უკ. ღილ.',
-    match_confirm:'დადასტ. ღილ.',match_how_title:'გასაღები სათ.',match_how1:'ნ. 1',match_how2:'ნ. 2',match_how3:'ნ. 3',match_how4:'ნ. 4',
-    wheel_title:'სათაური',wheel_hint_default:'Hint ტ.',wheel_check:'შემ. ღ.',wheel_reset:'თავ. ღ.',
+    hub_title:'Hub სათაური',hub_sub:'Hub ქვე-სათაური',hub_quiz_desc:'ქვიზი — აღწერა',hub_match_desc:'შეუსაბამე — აღწერა',
+    hub_wheel_desc:'წრეე — აღწ.',hub_whois_desc:'ვინ ვარ — აღწერა',hub_moon_desc:'მთვარე — აღწერა',
+    quiz_next:'შემდეგი ღილაკი',quiz_result:'შედეგი ღილაკი',quiz_restart:'ხელახლა ღილ.',quiz_back:'უკან ღილაკი',
+    match_confirm:'დადასტ. ღილ.',match_how_title:'გასაღები სათაური',match_how1:'ნ. 1',match_how2:'ნ. 2',match_how3:'ნ. 3',match_how4:'ნ. 4',
+    wheel_title:'სათაური',wheel_hint_default:'Hint ტექსტი',wheel_check:'შემოწმება',wheel_reset:'თავიდან',
     whois_title:'სათ.',whois_hint_btn:'მინ. ღ.',moon_title:'სათ.',moon_question:'კ-ვა',
     calc_btn:'გამ. ღ.',calc_placeholder:'Placeholder',glossary_search:'ძ. placeholder',
-    btn_next:'შემდ.',btn_back:'უკ.',btn_menu:'მენიუ',btn_restart:'ხელახ.',btn_correct:'სწ.',btn_wrong:'არასწ.',btn_save:'შენ.',
+    btn_next:'შემდეგი',btn_back:'უკან',btn_menu:'მენიუ',btn_restart:'ხელახ.',btn_correct:'სწ.',btn_wrong:'არასწ.',btn_save:'შენ.',
   };
   let h='';
   groups.forEach(g=>{
@@ -4980,24 +4980,24 @@ function calcGMT(){
     if(s&&md>=s[0]&&md<=s[1]){gmt=5;note=y+': ზაფხული GMT+5';}
     else{gmt=4;note=y+': ზამთარი GMT+4';}
   }
-  else if(y===1991){if(md<=929){gmt=4;note='1991: 29 სექტ.-მდე GMT+4';}else{gmt=3;note='1991: 29 სექტ.-ის შემდეგ GMT+3';}}
+  else if(y===1991){if(md<=929){gmt=4;note='1991: 29 სექტემბერი-მდე GMT+4';}else{gmt=3;note='1991: 29 სექტემბერი-ის შემდეგ GMT+3';}}
   else if(y===1992){if(md>=328&&md<=926){gmt=4;note='1992: 28 მარ.–26 სექტ. GMT+4';}else{gmt=3;note='1992: სხვა GMT+3';}}
-  else if(y===1993){if(md>=327&&md<=925){gmt=4;note='1993: 27 მარ.–25 სექტ. GMT+4';}else{gmt=3;note='1993: სხვა GMT+3';}}
+  else if(y===1993){if(md>=327&&md<=925){gmt=4;note='1993: 27 მარტი–25 სექტ. GMT+4';}else{gmt=3;note='1993: სხვა GMT+3';}}
   else if(y===1994){gmt=4;note='1994: მთელი წელი GMT+4';}
   else if(y===1995){if(md>=325&&md<=923){gmt=5;note='1995: 25 მარ.–23 სექტ. GMT+5';}else{gmt=4;note='1995: სხვა GMT+4';}}
   else if(y===1996){if(md<330){gmt=4;note='1996: 30 მარტამდე GMT+4';}else{gmt=5;note='1996: 30 მარტის შემდეგ GMT+5';}}
-  else if(y===1997){if(md<=1025){gmt=5;note='1997: 25 ოქტ.-მდე GMT+5';}else{gmt=4;note='1997: 25 ოქტ.-ის შემდეგ GMT+4';}}
+  else if(y===1997){if(md<=1025){gmt=5;note='1997: 25 ოქტომბერი-მდე GMT+5';}else{gmt=4;note='1997: 25 ოქტომბერი-ის შემდეგ GMT+4';}}
   else if(y===1998){if(md>=328&&md<=1024){gmt=5;note='1998: 28 მარ.–24 ოქტ. GMT+5';}else{gmt=4;note='1998: სხვა GMT+4';}}
-  else if(y===1999){if(md>=327&&md<=1030){gmt=5;note='1999: 27 მარ.–30 ოქტ. GMT+5';}else{gmt=4;note='1999: სხვა GMT+4';}}
+  else if(y===1999){if(md>=327&&md<=1030){gmt=5;note='1999: 27 მარტი–30 ოქტომბერი GMT+5';}else{gmt=4;note='1999: სხვა GMT+4';}}
   else if(y===2000){if(md>=325&&md<=1028){gmt=5;note='2000: 25 მარ.–28 ოქტ. GMT+5';}else{gmt=4;note='2000: სხვა GMT+4';}}
   else if(y===2001){if(md>=324&&md<=1027){gmt=5;note='2001: 24 მარ.–27 ოქტ. GMT+5';}else{gmt=4;note='2001: სხვა GMT+4';}}
   else if(y===2002){if(md>=330&&md<=1026){gmt=5;note='2002: 30 მარ.–26 ოქტ. GMT+5';}else{gmt=4;note='2002: სხვა GMT+4';}}
-  else if(y===2003){if(md>=329&&md<=1025){gmt=5;note='2003: 29 მარ.–25 ოქტ. GMT+5';}else{gmt=4;note='2003: სხვა GMT+4';}}
+  else if(y===2003){if(md>=329&&md<=1025){gmt=5;note='2003: 29 მარ.–25 ოქტომბერი GMT+5';}else{gmt=4;note='2003: სხვა GMT+4';}}
   else if(y===2004){
     if(md<327){gmt=4;note='2004: 27 მარტამდე GMT+4';}
-    else if(md<626){gmt=5;note='2004: 27 მარ.–26 ივნ. GMT+5';}
-    else if(md<=1030){gmt=4;note='2004: 26 ივნ.–30 ოქტ. GMT+4';}
-    else{gmt=3;note='2004: 30 ოქტ.-ის შემდეგ GMT+3';}
+    else if(md<626){gmt=5;note='2004: 27 მარტი–26 ივნისი GMT+5';}
+    else if(md<=1030){gmt=4;note='2004: 26 ივნისი–30 ოქტომბერი GMT+4';}
+    else{gmt=3;note='2004: 30 ოქტომბერი-ის შემდეგ GMT+3';}
   }
   else if(y===2005){if(md<326){gmt=3;note='2005: 26 მარტამდე GMT+3';}else{gmt=4;note='2005: 26 მარტის შემდეგ GMT+4';}}
   else{gmt=4;note='2005 წლის შემდეგ: GMT+4 (მუდმივი)';}
