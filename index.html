@@ -2270,7 +2270,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_MOON_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -2280,7 +2280,6 @@ function initSections(){
   const hasBooks=saved.some(s=>s.id==='s-books');
   const hasResources=saved.some(s=>s.id==='s-resources');
   const hasMercury=saved.some(s=>s.id==='s-mercury');
-  const hasMoonSigns=saved.some(s=>s.id==='s-moon-signs');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
@@ -2288,7 +2287,6 @@ function initSections(){
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasResources) saved.push(DEF_RESOURCES);
   if(!hasMercury) saved.push(DEF_MERCURY);
-  if(!hasMoonSigns) saved.push(DEF_MOON_SECTION);
   return saved;
 }
 let SECTIONS=initSections();
@@ -2581,7 +2579,7 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='venus'||s.type==='mars'||s.type==='mercury'||s.type==='moon-signs'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
