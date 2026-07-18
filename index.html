@@ -2527,33 +2527,61 @@ function renderMercurySection(sec){
 }
 
 function renderVenusSection(sec){
+  const DC={'ეგზალტ. 27° ✦':'#7c3aed','ოიკოსი ✦':'#7c3aed','ვარდ. ⚠️':'#dc2626','ტყვ.':'#c07a00','ნეიტ.':'#64748b'};
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  const dignityMap={
+    '♈':'ვარდ. ⚠️','♉':'ნეიტ.','♊':'ნეიტ.','♋':'ნეიტ.',
+    '♌':'ნეიტ.','♍':'ვარდ. ⚠️','♎':'ოიკოსი ✦','♏':'ტყვ.',
+    '♐':'ნეიტ.','♑':'ნეიტ.','♒':'ნეიტ.','♓':'ეგზალტ. 27° ✦'
+  };
+  const hostMap={
+    '♈':'♂ მარსი (სტუმარი)','♉':'♀ ვენერა (სახლი)','♊':'☿ მერკური (სტუმარი)','♋':'☽ მთვარე (სტუმარი)',
+    '♌':'☉ მზე (სტუმარი)','♍':'☿ მერკური (სტუმარი)','♎':'♀ ვენერა (სახლი)','♏':'⚵ პლუტ./♂ მარსი (სტუმარი)',
+    '♐':'♃ იუპიტერი (სტუმარი)','♑':'♄ სატურნი (სტუმარი)','♒':'♅ ურანი (სტუმარი)','♓':'♆ ნეპტ./♃ იუპ. (სტუმარი)'
+  };
   let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
     <div style="font-size:22px;margin-bottom:6px">♀</div>
     <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">ვენერა ასტროლოგიაში</div>
-    <div style="font-size:13px;color:var(--text2);line-height:1.7">ვენერა — სიყვარულის, სილამაზის, ფინანსებისა და ღირებულებების პლანეტა. ყოველ 8 წელიწადში ვენერა ახდენს რეტროგრადულ მარყუჟს ნატალური რუკის ზუსტად იმავე წერტილში — ეს არის პერიოდი, როდესაც ხდება ღირებულებების, ურთიერთობებისა და ფინანსური დამოკიდებულებების კარდინალური გადაფასება. ვენერა არ არის მხოლოდ პლანეტა ურთიერთობებისთვის — ის არის ჩვენი შინაგანი სარკე.</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:14px">`;
-  VENUS_ELS.forEach(e=>{
-    h+=`<div style="border-radius:var(--r);padding:12px 14px;border:.5px solid ${e.color};background:var(--bg2)">
-      <div style="font-size:13px;font-weight:500;color:${e.color};margin-bottom:4px">${e.title}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:5px">${e.signs}</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.6">${e.desc}</div>
-    </div>`;
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">ვენერა — სიყვარულის, სილამაზის, ფინანსებისა და ღირებულებების პლანეტა. ეგზალტაცია ♓ თევზებში 27°-ზე, ვარდნა ♍ ქალწულში, ტყვეობა ♏ მორიელში. კუროსა და სასწორის მმართველი.</div>
+  </div>`;
+  VENUS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    const dkey=dignityMap[s.sym]||'ნეიტ.', dc=DC[dkey]||'#64748b';
+    const host=hostMap[s.sym]||'';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">♀ ვენერა ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">${host}</div>
+        </div>
+        <span style="font-size:11px;color:${dc};font-weight:600;flex-shrink:0">${dkey}</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <div style="display:grid;gap:8px;margin-top:12px">
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#db2777;margin-bottom:4px">💕 ურთიერთობა</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.rel}</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#16a34a;margin-bottom:4px">💰 ფინანსები</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.finance}</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#7c3aed;margin-bottom:4px">✨ თვითშეფასება</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.selfeval}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
   });
-  h+=`</div></div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:16px" id="venus-grid">`;
-  VENUS.forEach((s,i)=>{
-    const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
-    h+=`<div id="vc${i}" onclick="toggleVenus(${i})" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" style="border:.5px solid var(--border);border-radius:14px;padding:13px;cursor:pointer;background:var(--bg);transition:border-color .15s,transform .15s,box-shadow .15s;position:relative${activeVenus===i?';border-color:var(--border2);background:var(--bg2)':''}">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:3px">♀ ${s.sym}</div>
-      <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
-      <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
-      <span style="font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
-      <div style="position:absolute;top:8px;right:8px;font-size:11px;opacity:.45;color:${tc}">▼</div>
-    </div>`;
-  });
-  h+=`</div><div id="venus-det"></div>`;
   return h;
 }
+
 
 function toggleVenus(i){
   if(activeVenus===i){activeVenus=null;renderCurrentVenus();return;}
@@ -2606,35 +2634,65 @@ function renderCurrentVenus(){
 }
 
 function renderMarsSection(sec){
+  const DC={'ოიკოსი ✦':'#7c3aed','ეგზალტ. 28° ✦':'#7c3aed','დაცემა ⚠️':'#dc2626','ვარდ. ⚠️':'#dc2626','ჰაერი':'#4895ef','ცეცხლი':'#e85d04','მიწა':'#588157','წყალი':'#4cc9f0'};
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  const dignityMap={
+    '♈':'ოიკოსი ✦','♉':'დაცემა ⚠️','♊':'ჰაერი','♋':'ვარდ. ⚠️',
+    '♌':'ცეცხლი','♍':'მიწა','♎':'ვარდ. ⚠️','♏':'ოიკოსი ✦',
+    '♐':'ცეცხლი','♑':'ეგზალტ. 28° ✦','♒':'ჰაერი','♓':'წყალი'
+  };
+  const hostMap={
+    '♈':'♂ მარსი (სახლი)','♉':'♀ ვენერა (სტუმარი)','♊':'☿ მერკური (სტუმარი)','♋':'☽ მთვარე (სტუმარი)',
+    '♌':'☉ მზე (სტუმარი)','♍':'☿ მერკური (სტუმარი)','♎':'♀ ვენერა (სტუმარი)','♏':'♂ მარსი (სახლი)',
+    '♐':'♃ იუპიტერი (სტუმარი)','♑':'♄ სატურნი (სტუმარი)','♒':'♅ ურანი (სტუმარი)','♓':'♆ ნეპტ./♃ იუპ. (სტუმარი)'
+  };
   let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
     <div style="font-size:22px;margin-bottom:6px">♂</div>
     <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მარსი ასტროლოგიაში</div>
-    <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px">მარსი — მოქმედების, ენერგიის, მამაკაცური ძალის პლანეტა. სინთეზის ფორმულა: <strong>პლანეტა</strong> (რა?) + <strong>ნიშანი</strong> (როგორ?) + <strong>სახლი</strong> (სად?) + <strong>ასპექტები</strong> (ვინ ეხმარება/უშლის?) = ადამიანის უნიკალური ენერგეტიკული ხელწერა. ქალის რუკაში მარსი — ანიმუსი (შინაგანი მამაკაცური ენერგია) და სექსუალური პარტნიორის იდეალი. მამაკაცის რუკაში — იდენტობა და ფიზიკური გამოხატულება.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div style="background:#FAECE7;border-radius:var(--r);padding:12px 14px;border:.5px solid #D85A30">
-        <div style="font-size:12px;font-weight:500;color:#712B13;margin-bottom:5px">🛡️ წრე — ფარი</div>
-        <div style="font-size:12px;color:#712B13;line-height:1.6">პირადი საზღვრების დაცვა. ფიზიკური სხეული, ინდივიდის მთავარი საზღვარი გარე სამყაროსთან.</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">მარსი — მოქმედების, ენერგიის, სექსუალობისა და ამბიციის პლანეტა. ეგზალტაცია ♑ თხის რქაში 28°-ზე, ვარდნა ♋ კირჩხიბსა და ♎ სასწორში. ვერძისა და მორიელის მმართველი.</div>
+  </div>`;
+  MARS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    const dkey=dignityMap[s.sym]||'ნეიტ.', dc=DC[dkey]||'#64748b';
+    const host=hostMap[s.sym]||'';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">♂ მარსი ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">${host}</div>
+        </div>
+        <span style="font-size:11px;color:${dc};font-weight:600;flex-shrink:0">${dkey}</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <div style="display:grid;gap:8px;margin-top:12px">
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#e85d04;margin-bottom:4px">⚡ მოქმედების სტილი</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.style}</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#16a34a;margin-bottom:4px">🔥 ენერგია</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.energy}</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#dc2626;margin-bottom:4px">⚠️ გაღიზიანება</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.risk}</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:#7c3aed;margin-bottom:4px">💫 სექსუალური ენერგია</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.masc}</div>
+          </div>
+        </div>
       </div>
-      <div style="background:#FAECE7;border-radius:var(--r);padding:12px 14px;border:.5px solid #D85A30">
-        <div style="font-size:12px;font-weight:500;color:#712B13;margin-bottom:5px">↗️ ისარი — შუბი</div>
-        <div style="font-size:12px;color:#712B13;line-height:1.6">მიზანმიმართული, გარეთ მიმართული ქმედება. მარსის ენერგია კონცენტრირებულია ერთ წერტილში მოსახვედრად.</div>
-      </div>
-    </div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:16px" id="mars-grid">`;
-  MARS.forEach((s,i)=>{
-    const bg=EL_BGS[s.el];const tc=EL_TCS[s.el];const bc=EL_COLORS[s.el];
-    h+=`<div id="mc${i}" onclick="toggleMars(${i})" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" style="border:.5px solid var(--border);border-radius:14px;padding:13px;cursor:pointer;background:var(--bg);transition:border-color .15s,transform .15s,box-shadow .15s;position:relative${activeMars===i?';border-color:var(--border2);background:var(--bg2)':''}">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:3px">♂ ${s.sym}</div>
-      <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
-      <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
-      <span style="font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px;font-weight:500;border:.5px solid;background:${bg};color:${tc};border-color:${bc}">${s.badge}</span>
-      <div style="position:absolute;top:8px;right:8px;font-size:11px;opacity:.45;color:${tc}">▼</div>
-    </div>`;
+    </details>`;
   });
-  h+=`</div><div id="mars-det"></div>`;
   return h;
 }
+
 
 function toggleMars(i){
   if(activeMars===i){activeMars=null;renderCurrentMars();return;}
