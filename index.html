@@ -1003,8 +1003,99 @@ let DEF_TIMEZONE={
 </div>
 `
 };
+
+// ===== მერკური ნიშნებში =====
+const DEF_MERCURY_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'სწრაფი, პირდაპირი',
+   host:'♂ მარსი (სტუმარი)',
+   desc:'მერკური სტუმრად მარსთანაა — ვერძის მმართველი მარსია. ეს მერკური ელვის სისწრაფით ამუშავებს ინფორმაციას. მოქმედებისკენ უბიძგებს, იდეების არ ეშინია, პირდაპირია, ზოგჯერ ხისტიც. პირველ იმპულსს ამბობს — სჩვევია იტყვიან და დაავიწყდეთ კიდეც. არ ეშინია ახალი იდეებისა, მაგრამ სიღრმეებში ჩასვლა ყოველთვის არ ახერხებს.',
+   strength:'სწრაფი გადაწყვეტილება, პირდაპირი კომუნიკაცია, გამბედაობა',
+   weakness:'სიჩქარე, ხისტობა, ვერ ასრულებს დაწყებულს',
+   dignity:'ტყვეობა (♈ — ♎-ის საპირისპირო)'},
+
+  {sym:'♉',n:'კურო',el:'earth',badge:'ნელი, ძირფესვიანი',
+   host:'♀ ვენერა (სტუმარი)',
+   desc:'კურო ფიქსირებული ჯვარია და ვენერა მართავს — მერკური სტუმრად ვენერასთანაა. ასეთ ადამიანს სჭირდება დრო ინფორმაციის გადასამუშავებლად. რასაც სწავლობს — ძირფესვიანად სწავლობს, საძირკვლის გარეშე მოქმედება არ შეუძლია. საუბარი მშვიდი და აუღელვებელია. აჩქარება არ შეიძლება. საათობით შეუძლია ერთ საქმეზე მუშაობა. ადაპტაცია უჭირს, მაგრამ ლოგიკური და საიმედოა.',
+   strength:'სიღრმე, სანდოობა, შეუჩერებელი კონცენტრაცია',
+   weakness:'ნელი ადაპტაცია, სიჯიუტე, ცვლილებების შიში',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'მრავალმხრივი, მოძრავი',
+   host:'☿ მერკური (სახლი)',
+   desc:'ტყუპები მერკურის სახლია — აქ მერკური ყველაზე ძლიერ და ბუნებრივ გამოხატვას პოულობს. კომუნიკაციაში მსუბუქია, სივრცეს ავსებს, ყველაფერზე აქვს ინფორმაცია. ბევრ სხვადასხვა თემაზე შეუძლია ლაპარაკი. კონცენტრაცია ოდნავ უჭირს — სიღრმეებში ჩასვლა მისი ძლიერი მხარე არ არის. მასწავლებლობა, მოლაპარაკებები, ორატორობა — იდეალური. საუბრის დროს ხელებს იყენებს.',
+   strength:'კომუნიკაცია, სიმსუბუქე, ინფორმაციის ცოდნა, ადაპტაცია',
+   weakness:'ყურადღების გაბნევა, სიღრმის ნაკლებობა',
+   dignity:'მმართველობა (სახლი)'},
+
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'ემოციური, ინტუიციური',
+   host:'☽ მთვარე (სტუმარი)',
+   desc:'მთვარე მართავს კირჩხიბს და მერკური სტუმრად მასთანაა. სახეზე ეტყობათ რა ეწყინათ და რა არ მოეწონათ. ესაუბრები — ემოციები ეტყობათ, ინტუიციურია. ფიქრები ოჯახსა და შვილებს ეხება. ზოგჯერ ქვეცნობიერიდან მოდის ინფორმაცია — უცებ შეიძლება დავიწყდეს რაღაც. შეიძლება აკლდეს ობიექტურობა. მთვარის ენერგია ძალიან მოქმედებს: კარგ ხასიათზე — ადვილად ივისებს, ცუდ ხასიათზე — ვერ ამუშავებს.',
+   strength:'ემოციური ინტელექტი, ინტუიცია, ადამიანების გაგება',
+   weakness:'ობიექტურობის ნაკლებობა, განწყობაზე დამოკიდებულება',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♌',n:'ლომი',el:'fire',badge:'ქარიზმატული, მსახიობი',
+   host:'☉ მზე (სტუმარი)',
+   desc:'ლომის ენერგია მაშინვე იგრძნობა — მზეც ხშირად ლომშია ამ დროს. თავდაჯერებულია, კარგი "თამადა". დიდი იდეები, შემოქმედებითი ენერგია. "შეფუთვა" უყვარს — ლომი როცა საუბრობს, სცენაზე დგას. სანახაობად ააქცევს ყველაფერს. საკუთარი აზრი ავტორიტეტია, ბოლომდე იცავს პოზიციას. ხალხის გაყოლება შეუძლია. ქარიზმა აქვს, მაგრამ შეცდომის აღიარება არ უყვარს.',
+   strength:'ქარიზმა, ლიდერობა, შემოქმედებითობა, სცენა',
+   weakness:'ეგოიზმი, შეცდომის დაუშვება, სხვების მოსმენა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'ანალიტიკური, სრულყოფილება',
+   host:'☿ მერკური (სახლი + ეგზალტაცია)',
+   desc:'ქალწული მერკურის სახლია და ეგზალტაციაც — ყველაზე ძლიერი პოზიცია (15° — კულმინაცია). ყველაფერს მიკროსკოპში ატარებს, ანალიტიკური გონება, ყველაფრის გადამოწმება სურს. არგუმენტები უყვართ, დეტალებს ხსნიან, ლოგიკურად ააგებენ ყველაფერს. ყველაფერი ახსოვს. ემოციები საუბრის დროს ნაკლებადაა. უპასუხისმგებლო ქცევა არ ახასიათებს — ნერვული სისტემის სიმტკიცეც მათი ნიშანია.',
+   strength:'ანალიზი, სიზუსტე, ლოგიკა, სისტემატიზაცია',
+   weakness:'გადამეტებული კრიტიკა, სრულყოფილებისკენ სწრაფვა, ემოციების ჩახშობა',
+   dignity:'მმართველობა + ეგზალტაცია (15°)'},
+
+  {sym:'♎',n:'სასწორი',el:'air',badge:'დიპლომატი, დახვეწილი',
+   host:'♀ ვენერა (სტუმარი)',
+   desc:'ჰაერის სტიქია, კარდინალური ჯვარი, ვენერა მართავს — მერკური სტუმარია. სხვა ადამიანის აზრი ყოველთვის მნიშვნელოვანია. გარედან იდეალურად ჩანდნენ. გაწონასწორებულები. ბოლომდე მოუსმენს და კონფლიქტის გარეშე ისაუბრებს — ვერძი მერკური ზოგჯერ გაჭრის, სასწორი — არასოდეს. დახვეწილები არიან საუბარში, ცდილობენ არავის დაარჩინონ. მოლაპარაკებებში საუკეთესოები. ხელოვნება, მოდა — ინტერესი.',
+   strength:'დიპლომატია, დახვეწილობა, სამართლიანობა, ბალანსი',
+   weakness:'გადაწყვეტილების სიძნელე, ზედმეტი კომპრომისი',
+   dignity:'ვარდნა (♎ — ♈-ის საპირისპირო)'},
+
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ღრმა, მაგნეტური',
+   host:'⚵ პლუტონი / ♂ მარსი (სტუმარი)',
+   desc:'პლუტონის ღრმა ენერგია შემოდის. მზერა ისეთია, რომ გაყინავს ადამიანს — მოდის ძალიან ღრმიდან. ყველაფერს გააკეთებს სიმართლის გასაგებად, დაფარული ყველაფერი აინტერესებს. ინტუიცია განვითარებული, შიგნიდან გრძნობს, მოტივებს ხვდება. ბევრი ლაპარაკი არ უყვარს, სარკასტული იუმორი. საიდუმლოს კარგად ინახავს. კრიზისში ემოციები ითიშება და გასაკეთებელს აკეთებს. მაგნეტიზმი ახასიათებს.',
+   strength:'სიღრმე, ინტუიცია, ფსიქოლოგიური სიმახვილე, მაგნეტიზმი',
+   weakness:'ნეგატიური აზრები, პარანოია, ეჭვიანობა, კონტროლი',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'ფილოსოფოსი, ოპტიმისტი',
+   host:'♃ იუპიტერი (სტუმარი)',
+   desc:'ცეცხლის ენერგია, იუპიტერი მართავს — სულ კარგ ხასიათზეა, იცინის. მასშტაბური ხედვა, დეტალებში ჩასვლა უჭირს. ცოდნა, რაც აინტერესებს — სწავლობს, შეიძლება მუდმივ სტუდენტად იქცეს. სადაც შევა — გარშემო ხალხი გროვდება, განწყობას ქმნის. მოგზაურობა, ლექტორობა, ფილოსოფია — ბუნებრივი სფეროები. თუ სიღრმეში ჩავა — ძალიან ეფექტური.',
+   strength:'ოპტიმიზმი, ფართო ხედვა, ფილოსოფია, შთაბეჭდილება',
+   weakness:'ზედაპირულობა, დეტალების უგულებელყოფა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'სერიოზული, პრაქტიკული',
+   host:'♄ სატურნი (სტუმარი)',
+   desc:'სატურნის ენერგია — შეზღუდვა, დისციპლინა, სერიოზულობა. ფანტაზიებზე არ ხარჯავენ დროს — ყოველთვის პრაქტიკისკენ არიან მიმართული. ფაქტები, მტკიცებულებები. დავალებას ლოგიკურად შლიან. იუმორი განსხვავებული — სატირული, მშრალი. მომთხოვნები არიან საკუთარ თავთანაც და სხვებთანაც. ფართო ხედვა შეიძლება დაკლდეს, მაგრამ ყოვლისმომცველ სტრუქტურას ქმნიან.',
+   strength:'დისციპლინა, პრაქტიკულობა, პასუხისმგებლობა, სტრუქტურა',
+   weakness:'სიმკაცრე, პესიმიზმი, ემოციების ჩახშობა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ორიგინალი, ნოვატორი',
+   host:'♅ ურანი (სტუმარი)',
+   desc:'ურანი მართავს მერწყულს — გონების პლანეტა მერკური განსაკუთრებულ ადგილშია. მმავლის ხედვა გააჩნიათ, არაპროგნოზირებადები. იდეები თითქოს კოსმოსიდან მოდის — გამომგონებლები. ფიზიკა, მათემატიკა, პროგრამირება, ტექნოლოგია — ბუნებრივი სფეროები. სოციალურები და თავისუფლები. ელვისებური ინსაიტები ახასიათებთ.',
+   strength:'ინოვაცია, ორიგინალობა, ტექნოლოგია, სოციალური ხედვა',
+   weakness:'არათანმიმდევრულობა, ექსცენტრიკულობა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♓',n:'თევზები',el:'water',badge:'ინტუიციური, სენსიტიური',
+   host:'♆ ნეპტუნი / ♃ იუპიტერი (სტუმარი)',
+   desc:'ცუდ მდებარეობად ითვლება. ლოგიკური აზროვნება შეიძლება სუსტი იყოს, მაგრამ ენერგეტიკას გრძნობენ. სენსიტიურები, სხვის ემოციებს ივისებენ. კარგია პოეტებისთვის, მუსიკოსებისთვის, ასტროლოგებისთვის, ტაროსთვის. ზღვარი ეკარგებათ რეალობასა და ოცნებას შორის. ადამიანებს უსიტყვოდ ესმით — თელეპათიური უნარები. ბევრს უსმენენ სხვებს — ენერგია ეხარჯება. ციფრებთან მუშაობა უჭირს.',
+   strength:'ემპათია, ინტუიცია, შემოქმედება, სულიერება',
+   weakness:'ლოგიკის სისუსტე, ყურადღების გაფანტვა, ენერგიის დაკარგვა',
+   dignity:'ვარდნა (☿ ♓-ში ყველაზე სუსტია)'},
+];
+
+let MERCURY=(()=>{const s=ls('as_mercury_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_MERCURY_SIGNS));})();
+
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
+let DEF_MERCURY={id:'s-mercury',type:'mercury',title:'☿ მერკური ნიშნებში',visible:true,tab:'☿ მერკური'};
 let VENUS=(()=>{const s=ls('as_venus_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_VENUS_SIGNS));})();
 let VENUS_ELS=ls('as_venus_els')||DEF_VENUS_ELS;
 let MARS=(()=>{const s=ls('as_mars_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_MARS_SIGNS));})();
@@ -2088,7 +2179,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -2097,12 +2188,14 @@ function initSections(){
   const hasMoonGame=saved.some(s=>s.id==='s-moon-game');
   const hasBooks=saved.some(s=>s.id==='s-books');
   const hasResources=saved.some(s=>s.id==='s-resources');
+  const hasMercury=saved.some(s=>s.id==='s-mercury');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
   if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasResources) saved.push(DEF_RESOURCES);
+  if(!hasMercury) saved.push(DEF_MERCURY);
   return saved;
 }
 let SECTIONS=initSections();
@@ -2117,6 +2210,51 @@ let activeMars=null;
 const EL_COLORS={fire:'#D85A30',earth:'#639922',air:'#378ADD',water:'#7F77DD'};
 const EL_BGS={fire:'#FAECE7',earth:'#EAF3DE',air:'#E6F1FB',water:'#EEEDFE'};
 const EL_TCS={fire:'#712B13',earth:'#27500A',air:'#0C447C',water:'#3C3489'};
+
+function renderMercurySection(sec){
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:22px;margin-bottom:6px">☿</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მერკური ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">მერკური — კომუნიკაციის, ინტელექტის, სწავლის, ვაჭრობისა და გადაადგილების პლანეტა. ეგზალტაციაა ♍ ქალწულის 15°-ზე, ვარდნა ♓ თევზებში. ტყუპებისა და ქალწულის მმართველი.</div>
+  </div>`;
+
+  const EL_COLOR={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EL_BG={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  const DIGNITY_COLOR={'მმართველობა + ეგზალტაცია (15°)':'#7c3aed','მმართველობა (სახლი)':'#7c3aed','ეგზალტაცია':'#1a5fb4','ვარდნა (☿ ♓-ში ყველაზე სუსტია)':'#dc2626','ვარდნა (♎ — ♈-ის საპირისპირო)':'#dc2626','ტყვეობა (♈ — ♎-ის საპირისპირო)':'#c07a00','ნეიტრალური':'#64748b'};
+
+  MERCURY.forEach(s=>{
+    const ec=EL_COLOR[s.el]||'#64748b';
+    const eb=EL_BG[s.el]||'var(--bg2)';
+    const dc=DIGNITY_COLOR[s.dignity]||'#64748b';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">☿ მერკური ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.host}</div>
+        </div>
+        <span style="font-size:11px;color:${dc};font-weight:500;flex-shrink:0">${s.dignity}</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin:12px 0 10px">${s.desc}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+          <div style="background:var(--bg-success);border:.5px solid var(--border-success);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-success);margin-bottom:4px">✓ ძლიერი მხარე</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.strength}</div>
+          </div>
+          <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">△ გამოწვევა</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.weakness}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
 
 function renderVenusSection(sec){
   let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
@@ -3769,6 +3907,7 @@ function renderSection(sec){
   if(sec.type==='signs')return renderSignsSection(sec);
   if(sec.type==='elements')return renderElementsSection(sec);
   if(sec.type==='quiz')return renderQuizSection(sec);
+  if(sec.type==='mercury'){}
   if(sec.type==='matching')return renderMatchingSection(sec);
   if(sec.type==='wheel')return renderWheelSection(sec);
   if(sec.type==='moon-game')return renderMoonGameSection(sec);
@@ -3781,6 +3920,7 @@ function renderSection(sec){
   if(sec.type==='calc')return renderCalcSection(sec);
   if(sec.type==='article')return renderArticleSection(sec);
   if(sec.type==='glossary')return renderGlossarySection(sec);
+  if(sec.type==='mercury')return renderMercurySection(sec);
   if(sec.type==='venus')return renderVenusSection(sec);
   if(sec.type==='mars')return renderMarsSection(sec);
   return '';
