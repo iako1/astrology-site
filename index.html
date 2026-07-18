@@ -2812,12 +2812,20 @@ function renderAll(){
     const menu=document.createElement('div');
     menu.className='dropdown-menu';
     menu.id='planets-menu';
+    const PLANET_ICONS={'s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙'};
     planetSecs.forEach(sec=>{
       if(!firstPageId)firstPageId=sec.id;
       const item=document.createElement('button');
       item.className='dropdown-item';
       item.id='di-'+sec.id;
-      item.textContent=sec.tab||sec.title;
+      const icon=PLANET_ICONS[sec.id]||'🪐';
+      const ICON_COLORS={'♀':'#db2777','♂':'#e85d04','☿':'#4895ef','☉':'#f59e0b'};
+      const icolor=ICON_COLORS[icon];
+      const iconSpan=icolor
+        ?'<span style="margin-right:6px;font-size:14px;color:'+icolor+'">'+icon+'</span>'
+        :'<span style="margin-right:6px">'+icon+'</span>';
+      const tabName=(sec.tab||sec.title).replace(/^[♀♂☿☽☉🌙☀️🌟🪐]\s*/,'');
+      item.innerHTML=iconSpan+tabName;
       item.onclick=(e)=>{e.stopPropagation();showPage(sec.id);};
       menu.appendChild(item);
     });
