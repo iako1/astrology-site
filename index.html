@@ -1184,6 +1184,97 @@ const DEF_MOON_IN_SIGNS=[
 let DEF_MOON_SECTION={id:'s-moon-signs',type:'moon-signs',title:'☽ მთვარე ნიშნებში',visible:true,tab:'☽ მთვარე'};
 let MOON_IN_SIGNS=(()=>{const s=ls('as_moon_in_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_MOON_IN_SIGNS));})();
 
+
+// ===== მზე ნიშნებში =====
+const DEF_SUN_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'პიონერი, ლიდერი',
+   host:'♂ მარსი (სტუმარი)',
+   desc:'მზე ვერძში — სეზონის დასაწყისი, ახალი ციკლის პირველი ნაპერწკალი. ენერგია პირდაპირი, გაუტეხელი. ბუნებრივი ლიდერი — პირველი ყოფნა ინსტინქტია. სწრაფი გადაწყვეტილება, გამბედაობა. იწყებს, მაგრამ გრძელვადიანობა ზოგჯერ გამოწვევაა. "მე" ენერგია — ძლიერი ეგო, საკუთარი პოზიცია. ვერძი არ ელოდება — მოქმედება ახლავე.',
+   strength:'ლიდერობა, გამბედაობა, ენთუზიაზმი, ინიციატივა',
+   weakness:'მოუთმენლობა, სიჯიუტე, დაუსრულებელი პროექტები',
+   dignity:'ეგზალტაცია (19°)'},
+
+  {sym:'♉',n:'კურო',el:'earth',badge:'სტაბილური, შემქმნელი',
+   host:'♀ ვენერა (სტუმარი)',
+   desc:'მზე კუროში — ჩამოყალიბება, მატერიალური სამყაროს ათვისება. ნელი, მაგრამ ფუნდამენტური ძალა. ვენერა მართავს — სილამაზე, სენსუალობა, შემოქმედება. საიმედოობა და გამძლეობა — ძლიერი მხარე. ფინანსური მდგრადობა მოჰყვება. კომფორტი სულიერი საჭიროებაა. ხელნაკეთი, ბუნება, ხელოვნება — ბუნებრივი სფეროები.',
+   strength:'სტაბილურობა, სანდოობა, სისტემატიზება, ხელოვნება',
+   weakness:'სიჯიუტე, ადაპტაციის სიძნელე, მატერიალიზმი',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'მრავალმხრივი, ინტელექტუალი',
+   host:'☿ მერკური (სტუმარი)',
+   desc:'მზე ტყუპებში — ორმაგი ბუნება, ორი სახე. ცნობისმოყვარეობა ამოძრავებს — ყველაფერი საინტერესოა, ყველაფრის ცოდნა სურს. კომუნიკაციის ოსტატი, სიტყვები ინსტრუმენტია. ადაპტაციის ნიჭი გამოარჩევს. ხშირად ერთდროულად რამდენიმე პროექტს მიჰყვება. ყოვლისმცოდნეობა და ზედაპირულობა — ორი მხარე ერთი მონეტისა.',
+   strength:'კომუნიკაცია, ადაპტაცია, სიჩქარე, ინტელექტი',
+   weakness:'ყურადღების გაბნევა, ზედაპირულობა, ორმაგობა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'მზრუნველი, ინტუიციური',
+   host:'☽ მთვარე (სტუმარი)',
+   desc:'მზე კირჩხიბში — ოჯახი, ფესვები, სახლი. მთვარე მართავს, ამიტომ ემოციები ეგოს ნაწილია. სხვათა მზრუნველობა ბუნებრივია — "ნიანგი" — გარე კლდის გარსი, შიგნით — სინაზე. ინტუიცია ძლიერია. მთვარის ფაზები განწყობაზე მოქმედებს. ფსიქოლოგიური სიღრმე ახასიათებს. სახლი საკრალური ადგილია.',
+   strength:'ინტუიცია, მზრუნველობა, ემოციური ინტელექტი, ოჯახი',
+   weakness:'განწყობის ცვლა, ჩაკეტვა, ზედმეტი მიჯაჭვულობა',
+   dignity:'ვარდნა (☉ ♋-ში ♑-ის საპირისპირო)'},
+
+  {sym:'♌',n:'ლომი',el:'fire',badge:'სამეფო, ქარიზმატული',
+   host:'☉ მზე (სახლი)',
+   desc:'მზის სახლი — ყველაზე ძლიერი, ბუნებრივი პოზიცია. ლომი მეფეა — ქარიზმა, ავტორიტეტი, სცენა. შემოქმედება ცხოვრებისეული მიზანია. სიყვარული გულუხვია, ლოიალობა — უსაზღვრო. ყურადღება და აღიარება სასიცოცხლო ენერგია. ბავშვები — სულის გამოხატვა. ღირსება და სიამაყე — ორი სახე ერთი ბუნებისა.',
+   strength:'ქარიზმა, შემოქმედება, ლოიალობა, ლიდერობა',
+   weakness:'სიამაყე, შეცდომის დაუშვება, ყურადღების მოთხოვნა',
+   dignity:'მმართველობა (სახლი)'},
+
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'ანალიტიკური, სრულყოფილება',
+   host:'☿ მერკური (სტუმარი)',
+   desc:'მზე ქალწულში — სამსახური, ჯანმრთელობა, სრულყოფა. დეტალები ყველაფერი. ანალიტიკური გონება, კრიტიკული შეფასება. სხვათა გვერდში დგომა პრაქტიკული ქმედებით. სისუფთავე — სულიერი ჰიგიენა. სკეპტიციზმი — ჰვა­ლი ინსტრუმენტი. ყველაფერი უნდა სრულყოფდეს. ჯანმრთელობა პრიორიტეტია.',
+   strength:'ანალიზი, სიზუსტე, ჯანმრთელობა, სამსახური',
+   weakness:'ზედმეტი კრიტიკა, პერფექციონიზმი, შეშფოთება',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♎',n:'სასწორი',el:'air',badge:'დიპლომატი, ჰარმონია',
+   host:'♀ ვენერა (სტუმარი)',
+   desc:'მზე სასწორში — ურთიერთობა, ბალანსი, სამართლიანობა. "მე" ვლინდება "შენის" მეშვეობით. ვენერა მართავს — ესთეტიკა, ხელოვნება, კრასოტა. ყოველი გადაწყვეტილება ყველა მხარის მოსმენის შემდეგ. კონფლიქტი ძნელია — ჰარმონია ბუნებრივი მდგომარეობაა. მოლაპარაკება, დიპლომატია — ნიჭი.',
+   strength:'სამართლიანობა, დიპლომატია, ჰარმონია, ესთეტიკა',
+   weakness:'გადაწყვეტილების სიძნელე, კონფლიქტის თავიდან არიდება',
+   dignity:'ვარდნა (☉ ♎-ში — ♈-ის საპირისპირო)'},
+
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ღრმა, ტრანსფორმატორი',
+   host:'⚵ პლუტონი / ♂ მარსი (სტუმარი)',
+   desc:'მზე მორიელში — ყველაზე ღრმა, ინტენსიური ეგო. სიმართლე ყველაფრის ფასად. ფარული, ძლიერი ნება — "ვულკანი". ტრანსფორმაცია ცხოვრებისეული თემაა — კვდება და ახლდება. ძალაუფლება და კონტროლი. ფსიქოლოგია, ოკულტიზმი, სიღრმეები. ენდობა ძნელად, მაგრამ ეწყება — სამუდამოდ.',
+   strength:'სიღრმე, ძალა, ინტუიცია, ლოიალობა, ტრანსფ.',
+   weakness:'ეჭვი, კონტროლი, შურისძიება, ჩაკეტვა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'ფილოსოფოსი, მოგზაური',
+   host:'♃ იუპიტერი (სტუმარი)',
+   desc:'მზე მშვილდოსანში — თავისუფლება, ჭეშმარიტება, ფილოსოფია. ყოველთვის ჰორიზონტს გარეთ იყურება. იუპიტერი ამდიდრებს — სიბრძნე, ოპტიმიზმი, გულუხვობა. მოგზაურობა სულიერ საჭიროებაა. სწავლა — გაჩერება არ უნდა. ხალხი ირგვლივ გროვდება. სიცილი — ყველაზე კარგი მედიკამენტი.',
+   strength:'ოპტიმიზმი, ფილოსოფია, თავისუფლება, გულუხვობა',
+   weakness:'ვალდებულებების თავიდან არიდება, ზედაპირულობა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'ამბიციური, დისციპლინირებული',
+   host:'♄ სატურნი (სტუმარი)',
+   desc:'მზე თხის რქაში — პატივმოყვარეობა, კარიერა, სტრუქტურა. სატურნი მართავს — გრძელვადიანი მიზანი, ნელი მაგრამ მდგრადი წარმატება. ბავშვობიდან სერიოზული. ასაკთან ერთად ილბება. პრაქტიკული სიბრძნე — ინსტრუმენტი. კარიერა ეგოს ნაწილია. ადმინისტრაცია, მმართველობა, ბიზნესი.',
+   strength:'ამბიცია, დისციპლინა, სტრუქტურა, გამძლეობა',
+   weakness:'სიცივე, პესიმიზმი, ემოციების ჩახშობა',
+   dignity:'ეგზალტაცია (☉ ♑-ში — სატურნი ეგზ.)'},
+
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ნოვატორი, ჰუმანისტი',
+   host:'♅ ურანი (სტუმარი)',
+   desc:'მზე მერწყულში — ინდივიდუალობა კოლექტივის სასარგებლოდ. ურანი მართავს — მოულოდნელი, ორიგინალი, გენიური. ჯგუფი, საზოგადოება — ეგოს გამოხატვის არე. ტექნოლოგია, მეცნიერება, ჰუმანიტარული ღირებულებები. სხვებისგან განსხვავება — პრიდი. მომავლის ხედვა — ბუნებრივი ნიჭი.',
+   strength:'ორიგინალობა, ჰუმანიზმი, ინოვაცია, ვიზია',
+   weakness:'ემოციური სიცივე, ექსცენტრიკულობა, განუჩინებლობა',
+   dignity:'ნეიტრალური'},
+
+  {sym:'♓',n:'თევზები',el:'water',badge:'სულიერი, ემპათიური',
+   host:'♆ ნეპტუნი / ♃ იუპიტერი (სტუმარი)',
+   desc:'მზე თევზებში — ზღვარი ეკარგება "მე"-ს. ყველაფერს გრძნობს, ყველასი ხდება. ნეპტუნი მართავს — ოცნება, ხელოვნება, სულიერება, ილუზია. ემპათია ძლიერია — სხვების ტკივილი საკუთარივით. ინტუიცია, ტელეპათია. კინო, მუსიკა, ასტროლოგია, მისტიკა — ბუნებრივი სფეროები. ზღვრების სწავლა — ცხოვრებისეული გამოწვევა.',
+   strength:'ემპათია, ინტუიცია, სულიერება, შემოქმედება',
+   weakness:'ზღვრების არარსებობა, გაქცევა, დაბნეულობა',
+   dignity:'ნეიტრალური'},
+];
+
+let DEF_SUN_SECTION={id:'s-sun-signs',type:'sun-signs',title:'☉ მზე ნიშნებში',visible:true,tab:'☉ მზე'};
+let SUN_IN_SIGNS=(()=>{const s=ls('as_sun_in_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_SUN_SIGNS));})();
+
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
 let DEF_MERCURY={id:'s-mercury',type:'mercury',title:'☿ მერკური ნიშნებში',visible:true,tab:'☿ მერკური'};
@@ -2270,7 +2361,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -2280,6 +2371,7 @@ function initSections(){
   const hasBooks=saved.some(s=>s.id==='s-books');
   const hasResources=saved.some(s=>s.id==='s-resources');
   const hasMercury=saved.some(s=>s.id==='s-mercury');
+  const hasSun=saved.some(s=>s.id==='s-sun-signs');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
@@ -2287,6 +2379,7 @@ function initSections(){
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasResources) saved.push(DEF_RESOURCES);
   if(!hasMercury) saved.push(DEF_MERCURY);
+  if(!hasSun) saved.push(DEF_SUN_SECTION);
   return saved;
 }
 let SECTIONS=initSections();
@@ -2301,6 +2394,47 @@ let activeMars=null;
 const EL_COLORS={fire:'#D85A30',earth:'#639922',air:'#378ADD',water:'#7F77DD'};
 const EL_BGS={fire:'#FAECE7',earth:'#EAF3DE',air:'#E6F1FB',water:'#EEEDFE'};
 const EL_TCS={fire:'#712B13',earth:'#27500A',air:'#0C447C',water:'#3C3489'};
+
+function renderSunInSignsSection(sec){
+  const DC={'მმართველობა (სახლი)':'#7c3aed','ეგზალტაცია (19°)':'#1a5fb4','ეგზალტაცია (☉ ♑-ში — სატურნი ეგზ.)':'#1a5fb4','ვარდნა (☉ ♋-ში ♑-ის საპირისპირო)':'#dc2626','ვარდნა (☉ ♎-ში — ♈-ის საპირისპირო)':'#dc2626','ნეიტრალური':'#64748b'};
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:22px;margin-bottom:6px">☉</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მზე ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">მზე — ეგო, ვინაობა, სასიცოცხლო ძალისა და ნების პლანეტა. ეგზალტაციაა ♈ ვერძის 19°-ზე, ვარდნა ♎ სასწორსა და ♋ კირჩხიბში. ლომის მმართველი. 12 თვეში ზოდიაქოს ტოვებს.</div>
+  </div>`;
+  SUN_IN_SIGNS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)', dc=DC[s.dignity]||'#64748b';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">☉ მზე ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.host}</div>
+        </div>
+        <span style="font-size:11px;color:${dc};font-weight:500;flex-shrink:0;text-align:right;max-width:110px">${s.dignity}</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin:12px 0 10px">${s.desc}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--bg-success);border:.5px solid var(--border-success);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-success);margin-bottom:4px">✓ ძლიერი მხარე</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.strength}</div>
+          </div>
+          <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">△ გამოწვევა</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.weakness}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
 
 function renderMoonInSignsSection(sec){
   const DIGNITY_COLOR={'მმართველობა (სახლი)':'#7c3aed','ეგზალტაცია (3°)':'#1a5fb4','ეგზალტაცია (♓-ში ♀ ვენერაა — ☽-ს კარგ პოზიციაშია)':'#1a5fb4','ვარდნა (☽ ♈-ში — ♎-ის საპირისპირო)':'#dc2626','ვარდნა (ყველაზე ინტენსიური)':'#dc2626','ტყვეობა (♊ — ♐-ის საპირისპირო)':'#c07a00','ტყვეობა (♐ — ♊-ის საპირისპირო)':'#c07a00','ნეიტრალური':'#64748b'};
@@ -2579,7 +2713,7 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
@@ -4056,6 +4190,7 @@ function renderSection(sec){
   if(sec.type==='calc')return renderCalcSection(sec);
   if(sec.type==='article')return renderArticleSection(sec);
   if(sec.type==='glossary')return renderGlossarySection(sec);
+  if(sec.type==='sun-signs')return renderSunInSignsSection(sec);
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
   if(sec.type==='mercury')return renderMercurySection(sec);
   if(sec.type==='venus')return renderVenusSection(sec);
