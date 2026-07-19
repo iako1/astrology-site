@@ -1275,6 +1275,161 @@ const DEF_SUN_SIGNS=[
 let DEF_SUN_SECTION={id:'s-sun-signs',type:'sun-signs',title:'☉ მზე ნიშნებში',visible:true,tab:'☉ მზე'};
 let SUN_IN_SIGNS=(()=>{const s=ls('as_sun_in_signs');return s?JSON.parse(JSON.stringify(s)):JSON.parse(JSON.stringify(DEF_SUN_SIGNS));})();
 
+
+// ===== იუპიტერი ნიშნებში =====
+const DEF_JUPITER_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'გამარჯვება, გაბედვა',
+   host:'♂ მარსი (სტუმარი)',dignity:'ეგზალტ. ✦',
+   desc:'გამარჯვება და მოქმედება. შინაგანი განცდა — დაბრკოლების გადალახვა შეუძლია. გაუმართლებს რისკში, სპორტში, კონკურენციაში. კრიზისის დროს პასუხისმგებლობის აღება ბუნებრივია.',
+   plus:'რისკის გადალახვა, სპორტი, ლიდერობა, გამბედაობა',
+   minus:'გადამეტებული იმპულსები, ჩქარობა'},
+
+  {sym:'♉',n:'კურო',el:'earth',badge:'მყარი, მატერიალური',
+   host:'♀ ვენერა (სტუმარი)',dignity:'ნეიტ.',
+   desc:'მატერიაზე კონცენტრირებული, მყარად, ნელა. წარმატება მოდის მოთმინებით. იღბალი — რესურსები და ფინანსები. ეკონომია არ უყვარს. დიზაინი, სოფლის მეურნეობაც შეიძლება.',
+   plus:'ფინანსური იღბალი, სტაბილობა, მატერიალური სიმდიდრე',
+   minus:'სიხარბე, რესურსების არარაციონალური მართვა'},
+
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'კონტაქტები, ვაჭრობა',
+   host:'☿ მერკური (სტუმარი)',dignity:'ნეიტ.',
+   desc:'კონტაქტები შეიძლება მოიზიდოს. ყიდვა-გაყიდვა, სწავლა, ვაჭრობა, ჟურნალისტიკა. მასწავლებელი, მწერალი. ბევრ სფეროში ყოფნის სურვილი. ცოდნის განვითარება — მთავარი ამოცანა.',
+   plus:'ვაჭრობა, ჟურნალისტიკა, მასწავლებლობა, კომუნიკაცია',
+   minus:'ზედაპირულობა, შფოთვა, ნერვული სისტემის გადატვირთვა'},
+
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'ოჯახი, სახლი',
+   host:'☽ მთვარე (სტუმარი)',dignity:'ნეიტ.',
+   desc:'გამორჩეული ოჯახი. ბიზნესი ოჯახიდან, მშობლების მხარდაჭერა. დედობასთან კავშირი, კვება. შვილოსნობის შანსი, მრავალშვილიანი ოჯახი. ბავშვობასთან ახლობელი.',
+   plus:'ოჯახური მხარდაჭერა, კვება, ბავშვები, სახლი',
+   minus:'ზედმეტი მიჯაჭვულობა, ოჯახური ზეგავლენა'},
+
+  {sym:'♌',n:'ლომი',el:'fire',badge:'აღიარება, ბრწყინვალება',
+   host:'☉ მზე (სტუმარი)',dignity:'კარგი ✦',
+   desc:'კარგი მდებარეობა. ლიდერობა, დიდსულოვანობა. მსახიობები, წარმატებული ადამიანები ხშირად ამ პოზიციით. ფუფუნება, დღესასწაულები. ანათებს, ჩანს.',
+   plus:'ლიდერობა, შემოქმედება, ქარიზმა, წარმატება',
+   minus:'ამპარტავნობა, გადამეტება, ყურადღების მოთხოვნა'},
+
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'სამსახური, სიზუსტე',
+   host:'☿ მერკური (სტუმარი)',dignity:'ვარდ. ⚠️',
+   desc:'იუპიტერი სრულად ვერ ავლენს თავს. კარგად შესრულებული სამუშაო. სხვებისთვის მუშაობა, სამსახური, სიამოვნებს. მედიცინა, დიეტოლოგია. შინაური ცხოველები.',
+   plus:'სამსახური, მედიცინა, სიზუსტე, ჯანმრთელობა',
+   minus:'ნაკლოვანებების გაზვიადება, ზედმეტი კრიტიკა'},
+
+  {sym:'♎',n:'სასწორი',el:'air',badge:'ჰარმონია, პარტნიორობა',
+   host:'♀ ვენერა (სტუმარი)',dignity:'ნეიტ.',
+   desc:'ჰარმონიული მოგვარების რწმენა. ესთეტიკაში, მოდაში იღბალი. პარტნიორულ ურთიერთობებში. ბევრი პარტნიორი ან წარმატებული პარტნიორობა. ტურისტი, ხელოვანი.',
+   plus:'ჰარმონია, ესთეტიკა, პარტნიორობა, სამართლიანობა',
+   minus:'გადაწყვეტილების სიძნელე, ზედმეტი კომპრომისი'},
+
+  {sym:'♏',n:'მორიელი',el:'water',badge:'სიღრმე, ტრანსფ.',
+   host:'⚵ პლუტ./♂ მარსი (სტუმარი)',dignity:'ნეიტ.',
+   desc:'ტრანსფორმაცია. მანიპულაცია, ექსტრემი, რისკი. მისტიკისკენ მიდრეკილება. ქირურგებისთვის კარგია. ყველაფერი რთული ძალას გვაძლევს. მემკვიდრეობა, დიდი ფული, ფსიქოლოგია, ეზოთერიკა.',
+   plus:'ტრანსფ., ინტუიცია, ფსიქოლოგია, ეზოთ., სიღრმე',
+   minus:'მანიპულაცია, საიდუმლოება, ობსესიები'},
+
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'სწავლა, გაფართოება',
+   host:'♃ იუპიტერი (სახლი)',dignity:'მმართ. (სახლი) ✦',
+   desc:'გაფართოებული ცნობიერება, სწავლა, მაღალი მიზნები. მასწავლებლობა. უცხოეთთან კავშირი, მოგზაურობა. ფილოსოფია, სამართალი. ფანატიზმში გადასვლის საფრთხე.',
+   plus:'სწავლა, მოგზაურობა, ფილოსოფია, მასწავლებლობა',
+   minus:'ფანატიზმი, ზედაპირულობა, ზედმეტი მოლოდინი'},
+
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'ჩაჩქლიტებული',
+   host:'♄ სატურნი (სტუმარი)',dignity:'ვარდ. ⚠️',
+   desc:'დაჩქლარებული იუპიტერი. საჩუქრები ადვილად არ მოდის. ყველაფერს თავისი ფასი აქვს. დიდი ენერგიის ჩადება. სატურნი დროში წელავს. მიზანი ამართლებს საშუალებებს — კითხვა ეზიდება.',
+   plus:'გამძლეობა, სისტემურობა, გრძელვადიანი წარმ.',
+   minus:'პესიმიზმი, სიძუნწე, კანონის უგულებელყოფა'},
+
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ნოვატორი, კოლექტივი',
+   host:'♅ ურანი (სტუმარი)',dignity:'ნეიტ.',
+   desc:'ასტროლოგია, ავიაცია, ტექნოლოგია, მეგობრები, კოლექტივი. მეამბოხე, ძველი არ მოსწონს. ურანის ენერგია — მოულოდნელობა. ქაოსი შეიძლება შემოვიდეს.',
+   plus:'ტექნოლოგია, ასტროლ., მეგობრობა, ნოვაციები',
+   minus:'ქაოსი, მოულოდნელობა, ექსცენტრიკა'},
+
+  {sym:'♓',n:'თევზები',el:'water',badge:'მისტიკა, თანაგრძნობა',
+   host:'♆ ნეპტ./♃ იუპ. (სახლი)',dignity:'მმართ. (სახლი) ✦',
+   desc:'კომფორტულად გრძნობს თავს. მისტიური, თანაგრძნობა, უმაღლესი ძალების ნდობა. სხვების დახმარება, ინტუიცია, შემოქმედება, მედიტაცია, ხელოვნება. საზღვრების დაცვა საჭიროა.',
+   plus:'ინტუიცია, თანაგრძნობა, შემოქმ., სულიერება',
+   minus:'საზღვრების არარსებობა, ილუზია, განცალკევება'},
+];
+
+const DEF_SATURN_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'ენერგიის კონტროლი',
+   host:'♂ მარსი (სტუმარი)',dignity:'ვარდ. ⚠️',
+   desc:'მარცხის შიში. სპორტით უნდა დაკავდეს. მოტეხილობის საფრთხე. ბოლოს ისწავლის ენერგიის მართვას. იმპულსების კონტროლი — ცხოვრებისეული გამოწვევა.',
+   plus:'ენერგიის მართვა, სპორტი, გამძლეობა',
+   minus:'მარცხის შიში, ჩქარობა, მოტეხილობის საფრთხე'},
+
+  {sym:'♉',n:'კურო',el:'earth',badge:'ფინანსური შეზღუდვა',
+   host:'♀ ვენერა (სტუმარი)',dignity:'ნეიტ.',
+   desc:'ფინანსების მართვა გეგმის მიხედვით. სადავო ფულის სესხება. სწორი კვება. ცხოვრებაში ერთხელ მაინც განიცდა სიღარიბე. ფინანსების დაკარგვის შიში.',
+   plus:'გრძელვადიანი ფინ. გეგმა, ეკონომია, სანდოობა',
+   minus:'სიძუნწე, ფინ. შიში, ფულის არარაც. მართვა'},
+
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'საუბრის შიში',
+   host:'☿ მერკური (სტუმარი)',dignity:'ნეიტ.',
+   desc:'საუბრის შიში, არასწორი თქმის ეშინია. ნაკლებ ლაპარაკი გეგმებზე. ტექნიკის და დოკუმენტების სიფრთხილე. გადალახვის შემდეგ — ძალიან გააზრებულად ლაპარაკი. გერმანულთან ასოცირება.',
+   plus:'გააზრებული მეტყველება, სიზუსტე, ლოგიკა',
+   minus:'საუბრის შიში, კომუნიკაციის ბლოკი'},
+
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'კარმული ოჯახი',
+   host:'☽ მთვარე (სტუმარი)',dignity:'ნეიტ.',
+   desc:'კარმული ოჯახი. მოხუც ადამიანზე ზრუნვა. ემოციების გამოხატვის ბლოკები. შვილების შიში. ოჯახიდან განსაკუთრებული პასუხისმგებლობა. კომფორტი სახლში — გამოწვევა.',
+   plus:'პასუხისმგებლობა, ემოც. სიმწიფე, ოჯახური ერთგულება',
+   minus:'ემოციური ბლოკი, ოჯახის ტვირთი, შვილების შიში'},
+
+  {sym:'♌',n:'ლომი',el:'fire',badge:'სცენის შიში',
+   host:'☉ მზე (სტუმარი)',dignity:'ნეიტ.',
+   desc:'სცენა, მოქმედება, ყურადღება არ უყვარს. ჰობი პროფესიად უნდა აქციოს. კომპლექსები, თვითშეფასება სხვებზეა დამოკიდებული. ხელმძღვანელობისას — ცივი, დისციპლინირებული.',
+   plus:'ჰობი→პროფ., ფსიქოთ., ბუნება, დისციპლინა',
+   minus:'სცენის შიში, კომპლექსები, ცივი ლიდერობა'},
+
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'შრომა, სერვისი',
+   host:'☿ მერკური (სტუმარი)',dignity:'ეგზალტ. ✦',
+   desc:'დეტალები, ლოჯისტიკა, მედიცინა. მუდმივი შრომა, ხშირად უფასოდ. კონფლიქტები თანამშრომლებთან. ჯანსაღი ცხოვრება. გადამეტებული შრომა — ჯანმრთელობის პრობლემა.',
+   plus:'სიზუსტე, სამსახური, მედიცინა, ლოჯისტიკა',
+   minus:'გადამეტ. შრომა, დაუფასებლობა, ჯანმრთ. პრობლ.'},
+
+  {sym:'♎',n:'სასწორი',el:'air',badge:'ბალანსის ძიება',
+   host:'♀ ვენერა (სტუმარი)',dignity:'ეგზალტ. 21° ✦',
+   desc:'სატურნის ეგზალტ. სასწორში. ბალანსი და სამართლიანობა — კარმული გაკვეთილი. ურთიერთობებში სიძნელეები, ხანგრძლივი პარტნიორობის შენება.',
+   plus:'სამართლიანობა, ბალანსი, ხელოვნება, ესთეტ.',
+   minus:'გადაწყვეტ. სიძნელე, ურთ-ბ. გამოწვევები'},
+
+  {sym:'♏',n:'მორიელი',el:'water',badge:'კრიზისი → ძალა',
+   host:'⚵ პლუტ./♂ მარსი (სტუმარი)',dignity:'ნეიტ.',
+   desc:'ჩაკეტილი, ფრთხილი. რესურსებთან, ფინანსებთან სიფრთხილე. კრიზისებში იზრდება — რეგენერაციის უნარი. საიდუმლოს შენახვა. პარტნიორები არ იცვლება. ფსიქოლოგია.',
+   plus:'გამძლეობა, კრიზ. მართვა, ფსიქოლ., ლოიალ.',
+   minus:'ჩაკეტვა, კონტროლი, ვნება, ფინ. ფრთხ.'},
+
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'სტრუქტურა, ფილოსოფია',
+   host:'♃ იუპიტერი (სტუმარი)',dignity:'ნეიტ.',
+   desc:'სტრუქტურაში მოყვანა, სისტემა. შეიძლება ვერ მიიღო უმაღლ. განათლება, ვერ წახვიდე უცხოეთში — ეს შიში ან რეალობაა. სერიოზული სწავლა, სიღრმე.',
+   plus:'სისტემა, სერიოზ. განათლება, ფილოსოფია',
+   minus:'განათლ. შიში, ემიგ. სიძნ., ზედაპ. სწ-ის შიში'},
+
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'ექსალტ. — ერთგული',
+   host:'♄ სატურნი (სახლი)',dignity:'მმართ. (სახლი) ✦',
+   desc:'კარგი მდებარეობა. პასუხისმგ. სრულად მუშაობს. კარმულ. მკაცრი უფროსები. გვიან ასაკში წარმ. 20 წლის შემდეგ სად იქნება — იციან. მტკიცე. თავიდანვე სერიოზული.',
+   plus:'პასუხისმ., გამძელ., გვიანი მყარი წარმ.',
+   minus:'მარცხის შიში, სიმკაცრე, ემოც. ჩახ.'},
+
+  {sym:'♒',n:'მერწყული',el:'air',badge:'სოც. ბლოკი',
+   host:'♅ ურანი (სახლი)',dignity:'მმართ. (სახლი) ✦',
+   desc:'ასტროლოგიისთვის კარგია. კოლექტივში მოხვედრის შიში. ბევრი მეგობარი შეიძლება არ ყავდეს. სატურნი ახარისხებს. წინასწარ არ უნდა გაიზიარო გეგმები.',
+   plus:'ასტროლ., სელექციური კავშირები, გააზრ.',
+   minus:'სოც. შიში, იზოლ., ნაკლები მეგობარი'},
+
+  {sym:'♓',n:'თევზები',el:'water',badge:'პასუხ. + სულიერება',
+   host:'♆ ნეპტ./♃ იუპ. (სტუმარი)',dignity:'ნეიტ.',
+   desc:'პასუხისმგებლობა სუსტი. იოგა, ცურვა, მედიტაცია კარგია. მონასტერი, იზოლაცია. სატურნი+ნეპტუნი — საზღვარი+საზღვრის გარეშე. ეზოთ. ფარული მტრები. ინტოქსიკაციისგან სიფრთხ.',
+   plus:'სულიერება, ეზოთ., მედიტ., იზოლ.',
+   minus:'ინტოქს., ფარული მტრები, პასუხ-ს ნაკლ.'},
+];
+
+let DEF_JUPITER_SECTION={id:'s-jupiter',type:'jupiter',title:'♃ იუპიტერი ნიშნებში',visible:true,tab:'♃ იუპიტერი'};
+let DEF_SATURN_SECTION={id:'s-saturn',type:'saturn',title:'♄ სატურნი ნიშნებში',visible:true,tab:'♄ სატურნი'};
+let JUPITER_IN_SIGNS=(()=>{const s=ls('as_jupiter_signs');return s||JSON.parse(JSON.stringify(DEF_JUPITER_SIGNS));})();
+let SATURN_IN_SIGNS=(()=>{const s=ls('as_saturn_signs');return s||JSON.parse(JSON.stringify(DEF_SATURN_SIGNS));})();
+
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
 let DEF_MERCURY={id:'s-mercury',type:'mercury',title:'☿ მერკური ნიშნებში',visible:true,tab:'☿ მერკური'};
@@ -2361,7 +2516,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -2372,6 +2527,8 @@ function initSections(){
   const hasResources=saved.some(s=>s.id==='s-resources');
   const hasMercury=saved.some(s=>s.id==='s-mercury');
   const hasSun=saved.some(s=>s.id==='s-sun-signs');
+  const hasJupiter=saved.some(s=>s.id==='s-jupiter');
+  const hasSaturn=saved.some(s=>s.id==='s-saturn');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
@@ -2380,6 +2537,8 @@ function initSections(){
   if(!hasResources) saved.push(DEF_RESOURCES);
   if(!hasMercury) saved.push(DEF_MERCURY);
   if(!hasSun) saved.push(DEF_SUN_SECTION);
+  if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
+  if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   return saved;
 }
 let SECTIONS=initSections();
@@ -2394,6 +2553,60 @@ let activeMars=null;
 const EL_COLORS={fire:'#D85A30',earth:'#639922',air:'#378ADD',water:'#7F77DD'};
 const EL_BGS={fire:'#FAECE7',earth:'#EAF3DE',air:'#E6F1FB',water:'#EEEDFE'};
 const EL_TCS={fire:'#712B13',earth:'#27500A',air:'#0C447C',water:'#3C3489'};
+
+function renderPlanetInSignsSection(sec, signs, symbol, name, intro, iconColor){
+  const DC={'მმართ. (სახლი) ✦':'#7c3aed','ეგზალტ. ✦':'#1a5fb4','ეგზალტ. 21° ✦':'#1a5fb4','კარგი ✦':'#1a5fb4','ვარდ. ⚠️':'#dc2626','ნეიტ.':'#64748b'};
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:32px;margin-bottom:6px;background:linear-gradient(135deg,${iconColor});-webkit-background-clip:text;-webkit-text-fill-color:transparent">${symbol}</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">${name} ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">${intro}</div>
+  </div>`;
+  signs.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    const dc=DC[s.dignity]||'#64748b';
+    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">${symbol} ${name} ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.host}</div>
+        </div>
+        <span style="font-size:11px;color:${dc};font-weight:600;flex-shrink:0">${s.dignity}</span>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin:12px 0 10px">${s.desc}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--bg-success);border:.5px solid var(--border-success);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-success);margin-bottom:4px">✓ პოზიტიური</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.plus}</div>
+          </div>
+          <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">△ გამოწვევა</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.minus}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
+
+function renderJupiterSection(sec){
+  return renderPlanetInSignsSection(sec, JUPITER_IN_SIGNS, '♃', 'იუპიტერი',
+    'იუპიტერი — სიმდიდრე, იღბალი, პრესტიჟი, სამართალი, მასწავლებლები. 12-წლიანი ციკლი — ყოველ ნიშანში ~1 წელი. რომელ ნიშანშიც დგას, იმ სფეროში უმართლებს. პოზიტიური აზროვნება, გაფართოება. ეგზალტ. ♋ კირჩხ. 15°, ვარდ. ♑ თხ. რქა. მმართ. ♐ მშვ. + ♓ თევზ.',
+    '#1a56a0,#3b82f6');
+}
+
+function renderSaturnSection(sec){
+  return renderPlanetInSignsSection(sec, SATURN_IN_SIGNS, '♄', 'სატურნი',
+    'სატურნი — კარმა, დისციპლინა, ჩარჩოები, საზღვრები, ძვლები, ხერხემალი. 29.5-წლიანი ციკლი. სატურნის „საჩუქრები" სამართლიანია — რასაც თესავ, იმას მოიმკი. ციკლის კარგად გავლა = საჩუქარი. ეგზალტ. ♎ 21°, ვარდ. ♈, მმართ. ♑ + ♒.',
+    '#6b5a7e,#a78bfa');
+}
 
 function renderSunInSignsSection(sec){
   const DC={'მმართველობა (სახლი)':'#7c3aed','ეგზალტაცია (19°)':'#1a5fb4','ეგზალტაცია (☉ ♑-ში — სატურნი ეგზ.)':'#1a5fb4','ვარდნა (☉ ♋-ში ♑-ის საპირისპირო)':'#dc2626','ვარდნა (☉ ♎-ში — ♈-ის საპირისპირო)':'#dc2626','ნეიტრალური':'#64748b'};
@@ -2771,7 +2984,7 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
@@ -2812,14 +3025,14 @@ function renderAll(){
     const menu=document.createElement('div');
     menu.className='dropdown-menu';
     menu.id='planets-menu';
-    const PLANET_ICONS={'s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙'};
+    const PLANET_ICONS={'s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙','s-jupiter':'♃','s-saturn':'♄'};
     planetSecs.forEach(sec=>{
       if(!firstPageId)firstPageId=sec.id;
       const item=document.createElement('button');
       item.className='dropdown-item';
       item.id='di-'+sec.id;
       const icon=PLANET_ICONS[sec.id]||'🪐';
-      const ICON_COLORS={'♀':'#db2777','♂':'#e85d04','☿':'#4895ef','☉':'#f59e0b'};
+      const ICON_COLORS={'♀':'#db2777','♂':'#e85d04','☿':'#4895ef','☉':'#f59e0b','♃':'#1a56a0','♄':'#6b5a7e'};
       const icolor=ICON_COLORS[icon];
       const iconSpan=icolor
         ?'<span style="margin-right:6px;font-size:14px;color:'+icolor+'">'+icon+'</span>'
@@ -4257,6 +4470,8 @@ function renderSection(sec){
   if(sec.type==='article')return renderArticleSection(sec);
   if(sec.type==='glossary')return renderGlossarySection(sec);
   if(sec.id==='s-moon'&&sec.type==='signs')return renderMoonSignsSection(sec);
+  if(sec.type==='jupiter')return renderJupiterSection(sec);
+  if(sec.type==='saturn')return renderSaturnSection(sec);
   if(sec.type==='sun-signs')return renderSunInSignsSection(sec);
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
   if(sec.type==='mercury')return renderMercurySection(sec);
