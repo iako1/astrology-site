@@ -5047,10 +5047,13 @@ function saveSite(){SITE.h1=document.getElementById('es-h1').value;SITE.sub=docu
 // CMS LIST
 function renderCmsList(){
   const c=document.getElementById('cms-list');c.innerHTML='';
-  const isPlanet=s=>s.type==='venus'||s.type==='mars'||(s.id==='s-moon');
+  const isPlanet=s=>s.type==='venus'||s.type==='mars'||s.type==='mercury'||s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='moon-signs'||(s.id==='s-moon'&&s.type==='signs');
   const typeLabel=s=>({signs:'ნიშნები',cards:'ბარათები',table:'ცხრილი',
     calc:'კალკ.',article:'სტატია',crosses:'ჯვრები',elements:'სტიქიები',
-    venus:'♀ ვენერა',mars:'♂ მარსი',glossary:'ლექსიკონი'}[s.type]||s.type);
+    venus:'♀ ვენერა',mars:'♂ მარსი',mercury:'☿ მერკური',
+    'sun-signs':'☉ მზე','moon-signs':'☽ მთვარე',
+    jupiter:'♃ იუპიტერი',saturn:'♄ სატურნი',
+    glossary:'ლექსიკონი'}[s.type]||s.type);
 
   // Separate sections into regular and planet
   const regularSecs=SECTIONS.filter(s=>!isPlanet(s));
@@ -5326,6 +5329,85 @@ function openEditor(i){
           <div class="fg"><label>⚠️ რისკის მიზეზი</label><textarea id="m-r${i}" rows="2">${s.risk||''}</textarea></div>
           <div class="fg"><label>♂ მამაკ./სექსუალობა</label><textarea id="m-m${i}" rows="2">${s.masc||''}</textarea></div>
         </div></details>`;
+    });
+  }
+  // ===== Mercury/Sun/Moon-signs/Jupiter/Saturn editors =====
+  const PLANET_FIELDS = {
+    'mercury': [
+      {id:'desc', label:'📝 აღწერა', type:'textarea'},
+      {id:'badge', label:'🏷 badge', type:'text'},
+      {id:'host', label:'🏠 სტუმარი პლანეტა', type:'text'},
+      {id:'dignity', label:'⭐ ღირსება', type:'text'},
+      {id:'strength', label:'✓ ძლიერი მხარე', type:'textarea'},
+      {id:'weakness', label:'△ გამოწვევა', type:'textarea'},
+    ],
+    'sun-signs': [
+      {id:'desc', label:'📝 აღწერა', type:'textarea'},
+      {id:'badge', label:'🏷 badge', type:'text'},
+      {id:'host', label:'🏠 სტუმარი პლანეტა', type:'text'},
+      {id:'dignity', label:'⭐ ღირსება', type:'text'},
+      {id:'strength', label:'✓ ძლიერი მხარე', type:'textarea'},
+      {id:'weakness', label:'△ გამოწვევა', type:'textarea'},
+    ],
+    'moon-signs': [
+      {id:'desc', label:'📝 აღწერა', type:'textarea'},
+      {id:'badge', label:'🏷 badge', type:'text'},
+      {id:'host', label:'🏠 სტუმარი პლანეტა', type:'text'},
+      {id:'dignity', label:'⭐ ღირსება', type:'text'},
+      {id:'strength', label:'✓ ძლიერი მხარე', type:'textarea'},
+      {id:'weakness', label:'△ გამოწვევა', type:'textarea'},
+    ],
+    'jupiter': [
+      {id:'desc', label:'📝 აღწერა', type:'textarea'},
+      {id:'badge', label:'🏷 badge', type:'text'},
+      {id:'host', label:'🏠 სტუმარი პლანეტა', type:'text'},
+      {id:'dignity', label:'⭐ ღირსება', type:'text'},
+      {id:'plus', label:'✓ პოზიტიური', type:'textarea'},
+      {id:'minus', label:'△ გამოწვევა', type:'textarea'},
+    ],
+    'saturn': [
+      {id:'desc', label:'📝 აღწერა', type:'textarea'},
+      {id:'badge', label:'🏷 badge', type:'text'},
+      {id:'host', label:'🏠 სტუმარი პლანეტა', type:'text'},
+      {id:'dignity', label:'⭐ ღირსება', type:'text'},
+      {id:'plus', label:'✓ პოზიტიური', type:'textarea'},
+      {id:'minus', label:'△ გამოწვევა', type:'textarea'},
+    ],
+  };
+  const PLANET_DATA = {
+    'mercury': MERCURY,
+    'sun-signs': SUN_IN_SIGNS,
+    'moon-signs': MOON_IN_SIGNS,
+    'jupiter': JUPITER_IN_SIGNS,
+    'saturn': SATURN_IN_SIGNS,
+  };
+  const PLANET_SAVE_KEY = {
+    'mercury': 'as_mercury_signs',
+    'sun-signs': 'as_sun_in_signs',
+    'moon-signs': 'as_moon_in_signs',
+    'jupiter': 'as_jupiter_signs',
+    'saturn': 'as_saturn_signs',
+  };
+  if(PLANET_FIELDS[sec.type]){
+    const signs = PLANET_DATA[sec.type];
+    const fields = PLANET_FIELDS[sec.type];
+    const saveKey = PLANET_SAVE_KEY[sec.type];
+    h += `<div style="font-size:12px;color:var(--text3);margin-bottom:10px">🔑 შენახვის გასაღები: <code>${saveKey}</code></div>`;
+    (signs||[]).forEach((s,i)=>{
+      h += `<details style="border:.5px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden">
+        <summary style="padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;list-style:none;display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">${s.sym||''}</span>${s.n||''}
+        </summary>
+        <div style="padding:10px 14px;border-top:.5px solid var(--border);display:grid;gap:8px">`;
+      fields.forEach(f=>{
+        const val = (s[f.id]||'').replace(/'/g,'&#39;');
+        if(f.type==='textarea'){
+          h += `<div class="fg"><label>${f.label}</label><textarea id="pe_${sec.type}_${i}_${f.id}" rows="3" oninput="(()=>{const d=PLANET_DATA['${sec.type}'];if(d[${i}])d[${i}]['${f.id}']=this.value;lss('${saveKey}',d);renderAll();})()">${val}</textarea></div>`;
+        } else {
+          h += `<div class="fg"><label>${f.label}</label><input type="text" id="pe_${sec.type}_${i}_${f.id}" value="${val}" oninput="(()=>{const d=PLANET_DATA['${sec.type}'];if(d[${i}])d[${i}]['${f.id}']=this.value;lss('${saveKey}',d);renderAll();})()"></div>`;
+        }
+      });
+      h += `</div></details>`;
     });
   }
   h+=`<button class="sbtn" onclick="saveEditor()" style="margin-top:8px">შენახვა <span class="svbadge" id="sv-ed">✓</span></button></div>`;
