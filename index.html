@@ -2168,12 +2168,17 @@ function initCyclesGame(secId){
     return Math.round(y)+' წელი';
   }
 
-  // Score: 100 if inside range, taper based on how far outside range
+  // Score: 100 if inside range, logarithmic distance outside range
+  // Uses log scale so "4 days" vs "15-90 days" is correctly penalized
   function calcScore(guess, min, max, avg){
     if(guess>=min && guess<=max) return 100;
-    var dist=guess<min ? min-guess : guess-max;
-    var range=max-min || avg*0.2; // range width
-    var pct=dist/Math.max(range, avg*0.5);
+    // Logarithmic distance from range boundary
+    var logGuess=Math.log10(Math.max(1,guess));
+    var logMin=Math.log10(min);
+    var logMax=Math.log10(max);
+    var logDist=guess<min ? logMin-logGuess : logGuess-logMax;
+    // 1 order of magnitude off = 0 points; 0.5 orders = ~0 points
+    var pct=logDist/0.7;
     return Math.max(0, Math.round(100*(1-Math.min(pct, 1))));
   }
 
@@ -2240,8 +2245,8 @@ function initCyclesGame(secId){
       var guess=sliderToDay(slEl ? slEl.value : initVal);
       var pts=calcScore(guess,p.min,p.max,p.avg);
       totalScore+=pts;
-      var color=pts>=80?'#16a34a':pts>=40?'#b45309':'#dc2626';
-      var emoji=pts>=80?'🎯':pts>=40?'👌':'❌';
+      var color=pts>=90?'#16a34a':pts>=60?'#b45309':'#dc2626';
+      var emoji=pts>=90?'🎯':pts>=60?'👌':'❌';
       var fb=document.getElementById('cyc-fb');
       if(fb) fb.innerHTML=
         '<div style="border:.5px solid '+color+';border-radius:14px;padding:16px;background:var(--bg)">'+
