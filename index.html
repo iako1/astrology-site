@@ -20,6 +20,17 @@
   --bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;
   --text:#f0efeb;--text2:#a8a79f;--text3:#6b6b67;
   --border:#3a3a36;--border2:#4a4a45;
+  --fill-accent:#7c3aed;
+  --bg-success:#052e16;--border-success:#16a34a;--text-success:#4ade80;
+  --bg-danger:#2d0a0a;--border-danger:#dc2626;--text-danger:#f87171;
+  --text-accent:#a78bfa;
+  --fire-bg:#2a1208;--fire-tc:#fb923c;--fire-bc:#c2410c;
+  --earth-bg:#0e1a0e;--earth-tc:#86efac;--earth-bc:#15803d;
+  --air-bg:#0d1726;--air-tc:#93c5fd;--air-bc:#1d4ed8;
+  --water-bg:#12103a;--water-tc:#a5b4fc;--water-bc:#4338ca;
+  --surface-1:#1c1c1a;--surface-2:#242422;
+  --text-primary:#f0efeb;--text-secondary:#a8a79f;--text-third:#6b6b67;
+  --border-strong:#4a4a45;
 }}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
 /* header */
@@ -2109,9 +2120,162 @@ function renderAIToolsHTML(){
   return h;
 }
 
+function renderCyclesSection(sec){
+  return '<div id="cycles-root"></div>';
+}
+
 function renderTetrisSection(sec){
   return '<div id="tetris-root" style="max-width:380px;margin:0 auto"></div>';
 }
+
+
+
+
+function initCyclesGame(secId){
+  const root=document.getElementById('cycles-root');
+  if(!root)return;
+
+  const PLANETS=[
+    {sym:'☽',name:'მთვარე',   min:27,  max:28,   avg:27.5, label:'~2.5 დღე',    fact:'მთვარე ყოველთვის სტაბილურია — 27.3 სიდ. დღე, 29.5 სინოდური. ნიშანში ~2.5 დღე.'},
+    {sym:'☉',name:'მზე',      min:28,  max:31,   avg:30.4, label:'28-31 დღე',   fact:'~30 დღე ყოველ ნიშანში. ვერძი 30დ, ქალწული 29დ. სრული ციკლი 365.25 დღე.'},
+    {sym:'☿',name:'მერკური',  min:15,  max:90,   avg:20,   label:'15-90 დღე',   fact:'Rx-ის გარეშე 15-20 დღე. Rx-ის დროს ერთ ნიშანში 60-90 დღე შეიძლება.'},
+    {sym:'♀',name:'ვენერა',   min:23,  max:150,  avg:28,   label:'23-150 დღე',  fact:'ჩვეულ. 23-60 დღე. Rx-ის დროს ერთ ნიშანში 4-5 თვე.'},
+    {sym:'♂',name:'მარსი',    min:45,  max:210,  avg:57,   label:'45-210 დღე',  fact:'ჩვეულ. 45-60 დღე. Rx-ის დროს 6-7 თვემდე ერთ ნიშანში.'},
+    {sym:'♃',name:'იუპიტერი', min:363, max:370,  avg:366,  label:'~12 თვე',     fact:'365-366 დღე — თითქმის ზუსტად 1 წელი ყოველ ნიშანში. სრული ციკლი 12 წელი.'},
+    {sym:'♄',name:'სატურნი',  min:820, max:900,  avg:867,  label:'~2.5 წელი',  fact:'28-29 თვე (850-900 დღე) ყოველ ნიშანში. სრული ციკლი 29.5 წელი.'},
+    {sym:'♅',name:'ურანი',    min:2400,max:2700, avg:2557, label:'~7 წელი',     fact:'~7 წელი (2520 დღე) ყოველ ნიშანში. სრული ციკლი 84 წელი.'},
+    {sym:'♆',name:'ნეპტუნი',  min:4800,max:5200, avg:5016, label:'~14 წელი',    fact:'~14 წელი (5040 დღე) ყოველ ნიშანში. სრული ციკლი 165 წელი.'},
+    {sym:'♇',name:'პლუტონი',  min:4400,max:11400,avg:7340, label:'12-31 წელი',  fact:'ელიფსური ორბიტა! ♐ მშვილდ. — 12წ, ♏ მორიელი — 32წ. სრული ციკლი 248 წელი.'},
+  ];
+
+  const LOG_MIN=Math.log10(1);
+  const LOG_MAX=Math.log10(12500);
+
+  function sliderToDay(v){ return Math.round(Math.pow(10, LOG_MIN+(LOG_MAX-LOG_MIN)*v/100)); }
+  function dayToSlider(d){ return Math.round((Math.log10(Math.max(1,d))-LOG_MIN)/(LOG_MAX-LOG_MIN)*100); }
+
+  function formatDays(d){
+    if(d<=1) return '1 დღე';
+    if(d<7)  return d+' დღე';
+    if(d<30) return Math.round(d/7)+' კვ.';
+    if(d<365)return Math.round(d/30.4)+' თვე';
+    var y=(d/365);
+    if(y<10) return y.toFixed(1)+' წელი';
+    return Math.round(y)+' წელი';
+  }
+
+  function calcScore(guess, min, max, avg){
+    if(guess>=min && guess<=max) return 100;
+    var dist=Math.min(Math.abs(guess-min), Math.abs(guess-max));
+    var pct=dist/avg;
+    return Math.max(0, Math.round(100*(1-Math.min(pct*2, 1))));
+  }
+
+  var order=[...PLANETS].sort(function(){return Math.random()-0.5;});
+  var idx=0, totalScore=0, answered=false;
+
+  function render(){
+    if(idx>=order.length){showResult();return;}
+    var p=order[idx];
+    var prog=Math.round(idx/order.length*100);
+    var initVal=Math.max(0, dayToSlider(p.avg)-30);
+
+    root.innerHTML=
+      '<div style="max-width:460px;margin:0 auto">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'
+      +'<button onclick="renderGameHub(document.getElementById(\'cycles-root\'))" style="padding:6px 12px;border:.5px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer">← Hub</button>'
+      +'<span style="font-size:13px;color:var(--text2)">'+(idx+1)+' / '+order.length+'</span>'
+      +'<span style="font-size:14px;font-weight:600;color:#7c3aed">'+totalScore+' ქ.</span>'
+      +'</div>'
+      +'<div style="height:4px;background:var(--border);border-radius:2px;margin-bottom:20px">'
+      +'<div style="height:4px;background:linear-gradient(90deg,#7c3aed,#db2777);border-radius:2px;width:'+prog+'%;transition:width .4s"></div>'
+      +'</div>'
+      +'<div style="text-align:center;padding:28px 20px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);margin-bottom:16px">'
+      +'<div style="font-size:64px;margin-bottom:10px">'+p.sym+'</div>'
+      +'<div style="font-size:22px;font-weight:500;color:var(--text);margin-bottom:6px">'+p.name+'</div>'
+      +'<div style="font-size:13px;color:var(--text3)">რამდენ ხანს რჩება <strong>ერთ ნიშანში</strong>?</div>'
+      +'</div>'
+      +'<div style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);padding:20px 22px;margin-bottom:14px">'
+      +'<div style="text-align:center;margin-bottom:14px">'
+      +'<div style="font-size:13px;color:var(--text3);margin-bottom:4px">შენი პასუხი</div>'
+      +'<div id="cyc-val" style="font-size:28px;font-weight:700;color:#7c3aed">'+formatDays(sliderToDay(initVal))+'</div>'
+      +'</div>'
+      +'<input id="cyc-sl" type="range" min="0" max="100" value="'+initVal+'" '
+      +'style="width:100%;accent-color:#7c3aed;cursor:pointer" '
+      +'oninput="if(window._cf)document.getElementById(\"cyc-val\").textContent=window._cf(this.value)">'
+      +'<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--text3)">'
+      +'<span>1დ</span><span>1კვ</span><span>1თვ</span><span>1წ</span><span>10წ</span><span>30წ</span>'
+      +'</div>'
+      +'</div>'
+      +'<button onclick="window._cycSub()" style="width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:15px;font-weight:600;cursor:pointer">✓ გამოცანა</button>'
+      +'<div id="cyc-fb" style="margin-top:12px"></div>'
+      +'</div>';
+
+    window._cf=function(v){return formatDays(sliderToDay(v));};
+
+    window._cycSub=function(){
+      if(answered)return;
+      answered=true;
+      var sl=document.getElementById('cyc-sl');
+      sl.disabled=true;
+      var guess=sliderToDay(sl.value);
+      var pts=calcScore(guess,p.min,p.max,p.avg);
+      totalScore+=pts;
+      var color=pts>=80?'#16a34a':pts>=40?'#b45309':'#dc2626';
+      var emoji=pts>=80?'🎯':pts>=40?'👌':'❌';
+      var fb=document.getElementById('cyc-fb');
+      fb.innerHTML=
+        '<div style="border:.5px solid '+color+';border-radius:14px;padding:16px;background:var(--bg)">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+        +'<div style="font-size:24px">'+emoji+'</div>'
+        +'<div style="font-size:26px;font-weight:700;color:'+color+'">+'+pts+' ქ.</div>'
+        +'</div>'
+        +'<div style="font-size:13px;color:var(--text2);margin-bottom:10px">'
+        +'შენი: <strong style="color:'+color+'">'+formatDays(guess)+'</strong>'
+        +' &nbsp;·&nbsp; სწორი: <strong style="color:#7c3aed">'+p.label+'</strong>'
+        +'</div>'
+        +'<div style="font-size:12px;color:var(--text3);line-height:1.65;border-top:.5px solid var(--border);padding-top:8px">'
+        +'💡 '+p.fact
+        +'</div>'
+        +'</div>'
+        +'<button onclick="window._cycNext()" style="width:100%;margin-top:10px;padding:12px;border:none;border-radius:11px;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:14px;font-weight:600;cursor:pointer">'
+        +(idx<order.length-1?'შემდეგი →':'შედეგი 🌟')+'</button>';
+    };
+
+    window._cycNext=function(){idx++;answered=false;render();};
+  }
+
+  function showResult(){
+    var pct=Math.round(totalScore/(order.length*100)*100);
+    var stars=pct>=90?'🌟🌟🌟':pct>=70?'🌟🌟':pct>=50?'🌟':'☆';
+    var msg=pct>=90?'ასტრო-ოსტატი!':pct>=70?'ძალიან კარგი!':pct>=50?'კარგი დასაწყისია!':'კიდევ ივარჯიშე!';
+    root.innerHTML=
+      '<div style="max-width:460px;margin:0 auto;text-align:center;padding:24px 16px">'
+      +'<div style="font-size:52px;margin-bottom:10px">'+stars+'</div>'
+      +'<div style="font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px">'+msg+'</div>'
+      +'<div style="font-size:42px;font-weight:700;color:#7c3aed;margin:12px 0">'
+      +totalScore+'<span style="font-size:16px;color:var(--text3)"> / '+(order.length*100)+'</span></div>'
+      +'<div style="font-size:13px;color:var(--text2);margin-bottom:20px">სიზუსტე: '+pct+'%</div>'
+      +'<div style="text-align:left;display:grid;gap:6px;margin-bottom:20px">'
+      +PLANETS.map(function(p){
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:.5px solid var(--border);border-radius:10px;background:var(--bg)">'
+          +'<span style="font-size:20px">'+p.sym+'</span>'
+          +'<span style="font-size:13px;color:var(--text);flex:1">'+p.name+'</span>'
+          +'<span style="font-size:12px;color:#7c3aed;font-weight:500">'+p.label+'</span>'
+          +'</div>';
+      }).join('')
+      +'</div>'
+      +'<button onclick="idx=0;totalScore=0;answered=false;order=[...PLANETS].sort(function(){return Math.random()-0.5;});render();" '
+      +'style="width:100%;padding:12px;border:none;border-radius:11px;background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px">ხელახლა ▶</button>'
+      +'<button onclick="renderGameHub(document.getElementById(\'cycles-root\'))" '
+      +'style="width:100%;padding:12px;border:.5px solid var(--border);border-radius:11px;background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">← Hub-ზე</button>'
+      +'</div>';
+  }
+
+  render();
+}
+
+
 
 function initTetris(secId){
   const root=document.getElementById('tetris-root');
@@ -3311,7 +3475,7 @@ const DEF_QUIZ_QUESTIONS=[
    a:['ლომი ♌','ვერძი ♈','თევზები ♓','ქალწული ♍'],c:1,
    ex:'სასწორი ♎-ს საპირისპიროა ვერძი ♈ — ორივე კარდინალური, ჰაერი vs ცეცხლი.'},
   {q:'მორიელი ♏ — რომელი სტიქიაა?',
-   a:['ცეცხლი','ჰაერი','წყალი','მიწა'],c:2,
+   a:['ცეცხლი 🔥','ჰაერი 💨','წყალი 💧','მიწა 🌿'],c:2,
    ex:'მორიელი წყლის სტიქიაა — ღრმა ემოციები, ტრანსფორმაცია, ინტენსიურობა.'},
   {q:'მშვილდოსანი ♐ — ვინ მართავს?',
    a:['სატურნი ♄','იუპიტერი ♃','მარსი ♂','ვენერა ♀'],c:1,
@@ -3355,17 +3519,17 @@ const DEF_QUIZ_QUESTIONS=[
   {q:'მზე ☉ + მთვარე ☽ — რამდენი ქულა?',
    a:['3 ქულა','2 ქულა','5 ქულა','1 ქულა'],c:2,
    ex:'მზე ☉ და მთვარე ☽ — ლუმინარები, თითო 5 ქ. ნატალური კარტის ქულების სისტემაში.'},
-  {q:'იუპიტერი ♃ + სატურნი ♄ — რამდენი ქულა?',
+  {q:'♃ იუპიტერს ნატალურ კარტში — რამდენი ქულა ენიჭება?',
    a:['5 ქულა','3 ქულა','2 ქულა','1 ქულა'],c:2,
    ex:'იუპიტერი ♃ და სატურნი ♄ — სოციალური პლანეტები, 2 ქულა. ურანი/ნეპტუნი/პლუტონი = 1 ქულა.'},
-  {q:'♅ ურანი, ♆ ნეპტუნი, ♇ პლუტონი — რამდენი ქულა?',
+  {q:'♅ ურანი, ♆ ნეპტუნი, ♇ პლუტონი — ნატ. კარტის ქულების სისტემაში რამდენი?',
    a:['5 ქულა','3 ქულა','2 ქულა','1 ქულა'],c:3,
-   ex:'ტრანსპ. პლანეტები ♅♆♇ — 1 ქ. ეს პლ. სუსტად გამოხ. ნატ. კ. ქ. სისტემაში.'},
+   ex:'ტრანსსატურნული პლანეტები ♅♆♇ — თითო 1 ქულა. ისინი ნატალური კარტის ქულების სისტემაში ყველაზე ნაკლებს ანიჭებენ.'},
   {q:'♀ ვენერა ♌ ლომში — badge?',
    a:['სენსუალური','გამომხატველი','ინტენსიური','პრაქტიკული'],c:1,
    ex:'ვენერა ♀ ლომში ♌ — გამომხატველი: დრამა, ვნება, სიყვარული სრული გამოხატვით.'},
   {q:'♀ ვენერა ♏ მორიელში — ფინანსები:',
-   a:['კატეგორიულად დამოუკიდებელი','სხვის რესურსები, კ-ბ.','ინვესტიციური ფინანსები','პირადი ხარჯები'],c:1,
+   a:['კატეგ. დამ.','სხვის რ. მემკვიდ.','ინვ. ფინ.','პირ. ხ.'],c:1,
    ex:'ვენერა ♀ მორიელში ♏ — სხვის რესურსები, მემკვიდრეობა. ღრმა ურთიერთობის ფინანსური მხარე.'},
   {q:'♂ მარსი ♈ ვერძში — ეს რა პოზიციაა?',
    a:['ვარდნა','მმართველობა','ეგზალტაცია','ნეიტრალური'],c:1,
@@ -3414,6 +3578,7 @@ function renderGameHub(root){
     {id:'whois', icon:'🌟', title:'ვინ ვარ?',            desc:'მინიშნებები → ნიშანი გამოიცანი',        color:'#d97706',bg:'#fffbeb',border:'#fcd34d'},
     {id:'moon',  icon:'🌙', title:'მთვარის ტიპაჟები',  desc:'პერსონაჟი ლაპარაკობს → მთვარე გამოიცანი', color:'#6b35bb',bg:'#ede9fc',border:'#a78bfa'},
   {id:'tetris',icon:'🌟', title:'ასტრო-ტეტრისი',       desc:'ნიშანი ჩამოდის → სტიქია გამოიცანი',        color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
+  {id:'cycles',icon:'⏱️', title:'პლანეტის ციკლი',      desc:'სლაიდერით მიუთითე — რამდენ ხანს რჩება ნიშანში?', color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
   ];
   let h=`<div style="max-width:500px;margin:0 auto">
     <div style="text-align:center;margin-bottom:24px">
@@ -3441,6 +3606,10 @@ function renderGameHub(root){
     else if(id==='wheel') startWheelGame(root);
     else if(id==='whois') startWhoAmI(root);
     else if(id==='moon') startMoonGame(document.getElementById('quiz-root'));
+    else if(id==='cycles'){
+      root.innerHTML='<div id="cycles-root"></div>';
+      setTimeout(()=>initCyclesGame('s-cycles'),50);
+    }
     else if(id==='tetris') {
       root.innerHTML='<div id="tetris-root"></div>';
       setTimeout(()=>initTetris('s-tetris'),50);
@@ -3458,9 +3627,12 @@ function startQuizGame(root){
     if(cur>=qs.length){showScore();return;}
     const q=qs[cur];
     const pct=Math.round(cur/qs.length*100);
-    root.innerHTML='<div style="margin-bottom:12px">'+
-        '<button onclick="renderGameHub(document.getElementById(\'quiz-root\'))" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">'+
-        '← hub-ზე დაბრუნება'+
+    root.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'+
+        '<button onclick="renderGameHub(document.getElementById(\'quiz-root\'))" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer">'+
+        '← Hub'+
+        '</button>'+
+        '<button onclick="if(confirm(\'ქვიზი შეწყდება. დარწმუნებული ხარ?\'))renderGameHub(document.getElementById(\'quiz-root\'))" style="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:.5px solid #f87171;background:#fff0f0;color:#dc2626;font-size:12px;cursor:pointer">'+
+        '✕ გასვლა'+
         '</button>'+
         '</div>'+'<div style="margin-bottom:24px">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
@@ -3571,7 +3743,7 @@ const DEF_MATCHING_DATA={
      ]},
     {id:'captive',label:'პლანეტა → ტყვეობა',icon:'🔗',type:'pairs',
      pairs:[
-       {id:1,left:'☉ მზე',   right:'♒/♑'},
+       {id:1,left:'☉ მზე',   right:'♒ მერწყული'},
        {id:2,left:'☽ მთვ.',  right:'♑ თხა'},
        {id:3,left:'☿ მერკური',right:'♓/♐'},
        {id:4,left:'♀ ვენერა',  right:'♏/♈'},
@@ -3689,9 +3861,12 @@ function runGroupGame(root,mode,data){
     }).join('');
 
     root.innerHTML=`<div style="max-width:500px;margin:0 auto">
-      <div style="margin-bottom:12px">
-        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;cursor:pointer">
-          ← Hub-ზე დაბრუნება
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <button onclick="renderGameHub(document.getElementById('quiz-root'))" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:12px;cursor:pointer">
+          ← Hub
+        </button>
+        <button onclick="if(confirm('თამაში შეწყდება. გასვლა?'))renderGameHub(document.getElementById('quiz-root'))" style="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:.5px solid #f87171;background:#fff0f0;color:#dc2626;font-size:12px;cursor:pointer">
+          ✕ გასვლა
         </button>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -4139,7 +4314,7 @@ function startWhoAmI(root){
 
     root.innerHTML=`<div style="max-width:500px;margin:0 auto">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:1px solid var(--border);border-radius:8px;padding:4px 10px;background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2)">← მენიუ</button>
+        <button onclick="renderGameHub(document.getElementById('moon-game-root'))" style="border:.5px solid var(--border);border-radius:8px;padding:5px 10px;background:var(--bg2);font-size:12px;cursor:pointer;color:var(--text3)">← Hub</button>
         <div style="font-size:13px;font-weight:600;color:var(--text)">🌟 ვინ ვარ?</div>
         <span style="font-size:12px;color:var(--text3)">✅ ${score}/${cardIdx+1} · ${cardIdx+1}/${cards.length}</span>
       </div>
@@ -4462,6 +4637,7 @@ function renderSection(sec){
   if(sec.type==='moon-game')return renderMoonGameSection(sec);
   if(sec.type==='books')return renderBooksSection(sec);
   if(sec.type==='resources')return renderResourcesSection(sec);
+  if(sec.type==='cycles')return renderCyclesSection(sec);
   if(sec.type==='tetris')return renderTetrisSection(sec);
   if(sec.type==='cards')return renderCardsSection(sec);
   if(sec.type==='crosses')return renderCrossesSection(sec);
@@ -5859,11 +6035,14 @@ function initTriadToggle(){
 // Version check — only removes sections if version changed, preserves all text/game data
 const SITE_VERSION='v3.2';
 if(ls('as_version')!==SITE_VERSION){
-  // Only clear sections structure, keep all user content
+  // Only clear sections structure and quiz questions (new versions may change these)
+  // NEVER clear user-edited content:
+  // as_ui_texts, as_glossary_terms, as_matching_data, as_wheel_signs,
+  // as_moon_signs, as_venus_signs, as_mars_signs, as_mercury_signs,
+  // as_sun_in_signs, as_moon_in_signs, as_jupiter_signs, as_saturn_signs,
+  // as_books_data, as_crosses_data, as_site
   localStorage.removeItem('as_sections');
   localStorage.removeItem('as_quiz_questions');
-  // Keep: as_ui_texts, as_matching_data, as_wheel_signs,
-  //        as_moon_signs, as_venus_signs, as_mars_signs, as_glossary_terms
   lss('as_version',SITE_VERSION);
 }
 renderAll();
