@@ -551,7 +551,7 @@ const DEF_MARS_SIGNS=[
 
 let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
 let DEF_GLOSSARY={
-  id:'s-glossary',type:'glossary',title:'📖 ლექსიკონი',visible:true,tab:'📖 ლექსიკონი',
+  id:'s-glossary',type:'glossary',title:'📖 ლექსიკონი',visible:false,tab:'📖 ლექსიკონი',
 };
 
 const GLOSSARY_TERMS=[
@@ -2767,7 +2767,6 @@ function initSections(){
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
-  if(!hasGlossary) saved.push(DEF_GLOSSARY);
   if(!hasQuiz) saved.push(DEF_QUIZ_SEC);
   if(!hasResources) saved.push(DEF_RESOURCES);
   if(!hasMercury) saved.push(DEF_MERCURY);
@@ -6137,7 +6136,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v3.3';
+const SITE_VERSION='v3.4';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
