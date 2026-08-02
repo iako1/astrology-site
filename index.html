@@ -2753,9 +2753,14 @@ function renderBooksSection(sec){
       </summary>
       <div style="padding:0 18px 18px;border-top:.5px solid var(--border)">
         <div style="height:12px"></div>
-        <a href="${b.link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;background:var(--accent,#7c3aed);color:#fff;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:16px">
-          📖 წიგნის წაკითხვა ↗
-        </a>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <a href="${b.link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;background:var(--accent,#7c3aed);color:#fff;font-size:13px;font-weight:600;text-decoration:none">
+            📖 ${b.link_label||'ორიგინალი'} ↗
+          </a>
+          ${b.link2?`<a href="${b.link2}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;background:var(--earth-bg);color:var(--earth-tc);border:1px solid var(--earth-bc);font-size:13px;font-weight:600;text-decoration:none">
+            📗 ${b.link_label2||'წაკითხვადი ვერსია'} ↗
+          </a>`:''}
+        </div>
         <div style="font-size:14px;color:var(--text);line-height:1.9;font-style:italic;margin-bottom:8px">"${b.excerpt_en}"</div>
         <div style="font-size:14px;color:var(--text);line-height:1.9;font-style:italic;margin-bottom:14px">"${b.excerpt_ge}"</div>
         <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:12px 14px">
