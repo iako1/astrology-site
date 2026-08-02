@@ -3769,9 +3769,11 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith'||s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isSensitiveSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith';
   const planetSecs=visible.filter(s=>isPlanetSec(s));
-  const otherSecs=visible.filter(s=>!isPlanetSec(s));
+  const sensitiveSecs=visible.filter(s=>isSensitiveSec(s));
+  const otherSecs=visible.filter(s=>!isPlanetSec(s)&&!isSensitiveSec(s));
   let firstPageId=null;
 
 
@@ -3830,6 +3832,43 @@ function renderAll(){
     wrapper.appendChild(dropBtn);
     wrapper.appendChild(menu);
     tabs.appendChild(wrapper);
+  }
+
+  // Second dropdown: სხვა (chiron, node, lilith)
+  if(sensitiveSecs.length>0){
+    const wrapper2=document.createElement('div');
+    wrapper2.className='dropdown-wrapper';
+    wrapper2.style.cssText='position:relative;display:inline-block';
+    const dropBtn2=document.createElement('button');
+    dropBtn2.className='tab dropdown-btn';
+    dropBtn2.innerHTML='✦ სხვა ▾';
+    dropBtn2.onclick=(e)=>{
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
+      menu2.classList.toggle('open');
+    };
+    const menu2=document.createElement('div');
+    menu2.className='dropdown-menu';
+    const SENSITIVE_ICONS={'s-chiron':'⚕','s-node':'☊','s-lilith':'⚫'};
+    const SENSITIVE_COLORS={'⚕':'#16a34a','☊':'#0891b2','⚫':'#7c3aed'};
+    sensitiveSecs.forEach(sec=>{
+      if(!firstPageId)firstPageId=sec.id;
+      const item2=document.createElement('button');
+      item2.className='dropdown-item';
+      item2.id='di-'+sec.id;
+      const icon2=SENSITIVE_ICONS[sec.id]||'✦';
+      const icolor2=SENSITIVE_COLORS[icon2];
+      const iconSpan2=icolor2
+        ?'<span style="margin-right:6px;font-size:14px;color:'+icolor2+'">'+icon2+'</span>'
+        :'<span style="margin-right:6px">'+icon2+'</span>';
+      const tabName2=(sec.tab||sec.title).replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}⚕☊⚫✦]\s*/gu,'').trim();
+      item2.innerHTML=iconSpan2+tabName2;
+      item2.onclick=(e)=>{e.stopPropagation();showPage(sec.id);};
+      menu2.appendChild(item2);
+    });
+    wrapper2.appendChild(dropBtn2);
+    wrapper2.appendChild(menu2);
+    tabs.appendChild(wrapper2);
   }
 
   // close dropdown on outside click
