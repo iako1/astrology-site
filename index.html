@@ -2801,8 +2801,8 @@ function renderPlanetInSignsSection(sec, signs, symbol, name, intro, iconColor){
   signs.forEach(s=>{
     const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
     const dc=DC[s.dignity]||'#64748b';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -2854,8 +2854,8 @@ function renderSunInSignsSection(sec){
   </div>`;
   SUN_IN_SIGNS.forEach(s=>{
     const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)', dc=DC[s.dignity]||'#64748b';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -2899,8 +2899,8 @@ function renderMoonInSignsSection(sec){
     const ec=EL_COLOR[s.el]||'#64748b';
     const eb=EL_BG[s.el]||'var(--bg2)';
     const dc=DIGNITY_COLOR[s.dignity]||'#64748b';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -2944,8 +2944,8 @@ function renderMercurySection(sec){
     const ec=EL_COLOR[s.el]||'#64748b';
     const eb=EL_BG[s.el]||'var(--bg2)';
     const dc=DIGNITY_COLOR[s.dignity]||'#64748b';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -2997,8 +2997,8 @@ function renderVenusSection(sec){
     const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
     const dkey=dignityMap[s.sym]||'ნეიტ.', dc=DC[dkey]||'#64748b';
     const host=hostMap[s.sym]||'';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -3104,8 +3104,8 @@ function renderMarsSection(sec){
     const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
     const dkey=dignityMap[s.sym]||'ნეიტ.', dc=DC[dkey]||'#64748b';
     const host=hostMap[s.sym]||'';
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -4775,8 +4775,8 @@ function renderMoonSignsSection(sec){
     const dkey=DIGNITY[s.sym]||'ნეიტ.', dc=DC[dkey]||'#64748b';
     const host=HOST[s.sym]||'';
     const kws=(s.keywords||[]).join(' · ');
-    h+=`<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
-      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none">
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
         <span style="font-size:26px">${s.sym}</span>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -4845,11 +4845,11 @@ function renderSignsSection(sec){
     items.forEach((s,i)=>{
       const idx=(sec.items||[]).indexOf(s);
       const e=EL[s.el]||EL.fire;
-      g+=`<div class="scard" id="sc-${sec.id}-${idx}" onclick="toggleSignCard('${sec.id}',${idx})" style="cursor:pointer;position:relative">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:3px">${s.num||''}</div>
+      g+=`<div class="scard" id="sc-${sec.id}-${idx}" onclick="toggleSignCard('${sec.id}',${idx})" style="cursor:pointer;position:relative;border-color:${e.bc};background:${e.bg}">
+        <div style="font-size:11px;color:${e.tc};margin-bottom:3px;opacity:0.7">${s.num||''}</div>
         <div style="font-size:26px;margin-bottom:4px">${s.sym}</div>
-        <div style="font-size:13px;font-weight:500;color:var(--text)">${s.n}</div>
-        <div style="font-size:11px;color:var(--text2);margin-top:4px;line-height:1.4">${s.ruler||''}</div>
+        <div style="font-size:13px;font-weight:500;color:${e.tc}">${s.n}</div>
+        <div style="font-size:11px;color:${e.tc};opacity:0.75;margin-top:4px;line-height:1.4">${s.ruler||''}</div>
         <span class="epill" style="background:${e.bg};color:${e.tc};border-color:${e.bc}">${e.label}·${CR[s.cr]||''}</span>
         <div style="position:absolute;top:8px;right:8px;font-size:11px;opacity:.45;color:var(--text3)">▼</div>
       </div>`;
