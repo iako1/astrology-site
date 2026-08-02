@@ -549,7 +549,7 @@ const DEF_MARS_SIGNS=[
    masc:'მოლოდინი, დიდარი ფანტაზია, მისტიური კავშირი პარტნიორთან.'},
 ];
 
-let SITE=ls('as_site')||{h1:'ასტროლოგია ✦ ზოდიაქო',sub:'სტიქიები · ჯვრები · მმართველები',footer:'ასტროლოგიური ცნობარი · Georgian Astrology Guide'};
+let SITE=ls('as_site')||{h1:'ასტროლოგია',sub:'შექმნილია სასწავლო მიზნით',footer:'ასტროლოგია · შექმნილია სასწავლო მიზნით'};
 let DEF_GLOSSARY={
   id:'s-glossary',type:'glossary',title:'📖 ლექსიკონი',visible:false,tab:'📖 ლექსიკონი',
 };
@@ -6146,6 +6146,7 @@ if(ls('as_version')!==SITE_VERSION){
   // as_books_data, as_crosses_data, as_site
   localStorage.removeItem('as_sections');
   localStorage.removeItem('as_quiz_questions');
+  localStorage.removeItem('as_site');
   lss('as_version',SITE_VERSION);
 }
 renderAll();
