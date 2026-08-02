@@ -3213,21 +3213,22 @@ function toggleTheme(){
   // Cycle: system → dark → light → system
   if(!stored){
     // Currently system, go to opposite
-    if(sysDark){ b.classList.add('light-forced'); b.classList.remove('dark-forced'); localStorage.setItem('as_theme','light'); if(btn)btn.textContent='☀️'; }
-    else { b.classList.add('dark-forced'); b.classList.remove('light-forced'); localStorage.setItem('as_theme','dark'); if(btn)btn.textContent='🌙'; }
+    if(sysDark){ b.classList.add('light-forced'); b.classList.remove('dark-forced'); localStorage.setItem('as_theme','light'); if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';} }
+    else { b.classList.add('dark-forced'); b.classList.remove('light-forced'); localStorage.setItem('as_theme','dark'); if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';} }
   } else if(stored==='dark'){
-    b.classList.remove('dark-forced'); b.classList.add('light-forced'); localStorage.setItem('as_theme','light'); if(btn)btn.textContent='☀️';
+    b.classList.remove('dark-forced'); b.classList.add('light-forced'); localStorage.setItem('as_theme','light'); if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}
   } else {
-    b.classList.remove('light-forced'); b.classList.remove('dark-forced'); localStorage.removeItem('as_theme'); if(btn)btn.textContent=sysDark?'☀️':'🌙';
+    b.classList.remove('light-forced'); b.classList.remove('dark-forced'); localStorage.removeItem('as_theme'); if(btn){btn.textContent=sysDark?'🌙':'☀️';btn.title=sysDark?'ლაიტ მოუდზე გადასვლა':'დარქ მოუდზე გადასვლა';}
   }
 }
 function applyStoredTheme(){
   const stored=localStorage.getItem('as_theme');
   const btn=document.getElementById('theme-toggle');
   const sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
-  if(stored==='dark'){document.body.classList.add('dark-forced');if(btn)btn.textContent='☀️';}
-  else if(stored==='light'){document.body.classList.add('light-forced');if(btn)btn.textContent='☀️';}
-  else{if(btn)btn.textContent=sysDark?'☀️':'🌙';}
+  if(stored==='dark'){document.body.classList.add('dark-forced');if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';}}
+  else if(stored==='light'){document.body.classList.add('light-forced');if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}}
+  else if(sysDark){if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';}}
+  else{if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}}
 }
 
 function renderAll(){
@@ -3327,7 +3328,7 @@ function renderCrossesSection(sec){
     {
       sym:'♈♋♎♑',title:'კარდინალური ჯვარი',
       sub:'ვერძი · კირჩხიბი · სასწორი · თხის რქა',
-      color:'#D85A30',bg:'#FAECE7',tc:'#712B13',
+      color:'var(--fire-bc)',bg:'var(--fire-bg)',tc:'var(--fire-tc)',
       keyword:'ვიწყებ',
       season:'სეზონის დასაწყისი',
       houses:'Angular სახლები — I, IV, VII, X',
@@ -3416,7 +3417,7 @@ function renderElementsSection(sec){
       id:'fire',sym:'🔥',signs:'♈♌♐',
       title:'ცეცხლის სტიქია',
       names:'ვერძი · ლომი · მშვილდოსანი',
-      color:'#D85A30',bg:'#FAECE7',tc:'#712B13',border:'#D85A30',
+      color:'var(--fire-bc)',bg:'var(--fire-bg)',tc:'var(--fire-tc)',border:'var(--fire-bc)',
       keyword:'ვმოქმედებ',
       ruler:'☉ მზე, ♂ მარსი, ♃ იუპიტერი',
       body:'თავი, გული, თეძო',
@@ -3432,7 +3433,7 @@ function renderElementsSection(sec){
       id:'earth',sym:'🌿',signs:'♉♍♑',
       title:'მიწის სტიქია',
       names:'კურო · ქალწული · თხის რქა',
-      color:'#639922',bg:'#EAF3DE',tc:'#27500A',border:'#639922',
+      color:'var(--earth-bc)',bg:'var(--earth-bg)',tc:'var(--earth-tc)',border:'var(--earth-bc)',
       keyword:'ვაშენებ',
       ruler:'♀ ვენერა, ☿ მერკური, ♄ სატურნი',
       body:'კისერი, მუცელი, მუხლი',
@@ -3448,7 +3449,7 @@ function renderElementsSection(sec){
       id:'air',sym:'💨',signs:'♊♎♒',
       title:'ჰაერის სტიქია',
       names:'ტყუპები · სასწორი · მერწყული',
-      color:'#378ADD',bg:'#E6F1FB',tc:'#0C447C',border:'#378ADD',
+      color:'var(--air-bc)',bg:'var(--air-bg)',tc:'var(--air-tc)',border:'var(--air-bc)',
       keyword:'ვფიქრობ',
       ruler:'☿ მერკური, ♀ ვენერა, ♅ ურანი',
       body:'ფილტვები, თირკმელი, კანჭი',
@@ -3464,7 +3465,7 @@ function renderElementsSection(sec){
       id:'water',sym:'💧',signs:'♋♏♓',
       title:'წყლის სტიქია',
       names:'კირჩხიბი · მორიელი · თევზები',
-      color:'#7F77DD',bg:'#EEEDFE',tc:'#3C3489',border:'#7F77DD',
+      color:'var(--water-bc)',bg:'var(--water-bg)',tc:'var(--water-tc)',border:'var(--water-bc)',
       keyword:'ვგრძნობ',
       ruler:'☽ მთვარე, ♇ პლუტო, ♆ ნეპტუნი',
       body:'მკერდი, სასქესო ორგ., ფეხები',
