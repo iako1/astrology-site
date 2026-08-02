@@ -217,7 +217,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
     <h1 id="site-h1">ასტროლოგია ✦ ზოდიაქო</h1>
     <p id="site-sub">სტიქიები · ჯვრები · მმართველები</p>
   </div>
-  <button class="admin-btn" onclick="openAdmin()">✎ რედაქტირება</button>
+  
 <button id="theme-toggle" onclick="toggleTheme()" style="border:none;background:none;cursor:pointer;font-size:18px;padding:4px 8px;border-radius:8px;color:var(--text2);transition:all .2s" title="დარქ/ლაიტ მოუდი">🌙</button>
 </header>
 
@@ -6168,5 +6168,6 @@ renderAll();
   });
 })();
 </script>
+<button onclick="openAdmin()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;border-radius:50%;border:.5px solid var(--border2);background:var(--bg2);color:var(--text3);font-size:16px;cursor:pointer;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.12);opacity:0.45;transition:opacity .2s" onmouseenter="this.style.opacity='0.9'" onmouseleave="this.style.opacity='0.45'" title="ადმინ">✎</button>
 </body>
 </html>
