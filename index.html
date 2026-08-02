@@ -7,22 +7,21 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* === D: Soft Lavender (light mode) === */
-  --bg:#f8f5ff;--bg2:#f0ebff;--bg3:#ede8f8;
-  --text:#1a0a30;--text2:#5a4a7a;--text3:#8a7aaa;
-  --border:#d8d0e8;--border2:#c8b8dc;
+  --bg:#fff;--bg2:#f7f7f5;--bg3:#f0efeb;
+  --text:#1a1a18;--text2:#6b6b67;--text3:#9a9994;
+  --border:#e5e4de;--border2:#d0cfc8;
   --r:10px;--rl:14px;
   --fire-bg:#FAECE7;--fire-tc:#712B13;--fire-bc:#D85A30;
   --earth-bg:#EAF3DE;--earth-tc:#27500A;--earth-bc:#639922;
   --air-bg:#E6F1FB;--air-tc:#0C447C;--air-bc:#378ADD;
-  --water-bg:#ede0ff;--water-tc:#5a1a9a;--water-bc:#9a6aed;
+  --water-bg:#EEEDFE;--water-tc:#3C3489;--water-bc:#7F77DD;
   --fill-accent:#7c3aed;
-  --bg-success:#f0fff4;--border-success:#22c55e;--text-success:#166534;
+  --bg-success:#f0fff4;--border-success:#22c55e;--text-success:#166634;
   --bg-danger:#fff0f0;--border-danger:#f87171;--text-danger:#dc2626;
   --text-accent:#7c3aed;
-  --surface-1:#f8f5ff;--surface-2:#f0ebff;
-  --text-primary:#1a0a30;--text-secondary:#5a4a7a;--text-third:#8a7aaa;
-  --border-strong:#c8b8dc;
+  --surface-1:#fff;--surface-2:#f7f7f5;
+  --text-primary:#1a1a18;--text-secondary:#6b6b67;--text-third:#9a9994;
+  --border-strong:#d0cfc8;
   --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 @media(prefers-color-scheme:dark){:root{
@@ -58,7 +57,7 @@
 body.light-forced{color-scheme:light}
 body.dark-forced{color-scheme:dark}
 /* force light override */
-body.light-forced{--bg:#f8f5ff;--bg2:#f0ebff;--bg3:#ede8f8;--text:#1a0a30;--text2:#5a4a7a;--text3:#8a7aaa;--border:#d8d0e8;--border2:#c8b8dc;--fire-bg:#FAECE7;--fire-tc:#712B13;--fire-bc:#D85A30;--earth-bg:#EAF3DE;--earth-tc:#27500A;--earth-bc:#639922;--air-bg:#E6F1FB;--air-tc:#0C447C;--air-bc:#378ADD;--water-bg:#ede0ff;--water-tc:#5a1a9a;--water-bc:#9a6aed;--fill-accent:#7c3aed;--bg-success:#f0fff4;--border-success:#22c55e;--text-success:#166534;--bg-danger:#fff0f0;--border-danger:#f87171;--text-danger:#dc2626;--text-accent:#7c3aed}
+body.light-forced{--bg:#fff;--bg2:#f7f7f5;--bg3:#f0efeb;--text:#1a1a18;--text2:#6b6b67;--text3:#9a9994;--border:#e5e4de;--border2:#d0cfc8;--fire-bg:#FAECE7;--fire-tc:#712B13;--fire-bc:#D85A30;--earth-bg:#EAF3DE;--earth-tc:#27500A;--earth-bc:#639922;--air-bg:#E6F1FB;--air-tc:#0C447C;--air-bc:#378ADD;--water-bg:#EEEDFE;--water-tc:#3C3489;--water-bc:#7F77DD;--fill-accent:#7c3aed;--bg-success:#f0fff4;--border-success:#22c55e;--text-success:#166634;--bg-danger:#fff0f0;--border-danger:#f87171;--text-danger:#dc2626;--text-accent:#7c3aed}
 /* force dark override */
 body.dark-forced{--bg:#0d0d20;--bg2:#12122a;--bg3:#080815;--text:#f0eeff;--text2:#a8a8d0;--text3:#7070a0;--border:#252545;--border2:#30305a;--fill-accent:#7c3aed;--bg-success:#052e16;--border-success:#16a34a;--text-success:#4ade80;--bg-danger:#2d0a0a;--border-danger:#dc2626;--text-danger:#f87171;--text-accent:#c4b5fd;--fire-bg:#1a0e05;--fire-tc:#fb923c;--fire-bc:#c2410c;--earth-bg:#0a1a0a;--earth-tc:#86efac;--earth-bc:#15803d;--air-bg:#0a1020;--air-tc:#93c5fd;--air-bc:#3b82f6;--water-bg:#0d0a2a;--water-tc:#c4b5fd;--water-bc:#7c3aed;--surface-1:#0d0d20;--surface-2:#12122a;--text-primary:#f0eeff;--text-secondary:#a8a8d0;--text-third:#7070a0;--border-strong:#2a2a55}
 body.dark-forced .site-header{background:linear-gradient(135deg,#0a0a1f,#130d2e)!important;border-bottom-color:#252545!important}
@@ -77,7 +76,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* tabs */
 .tabs{display:flex;gap:0;overflow-x:auto;overflow-y:visible;background:var(--bg);border-bottom:.5px solid var(--border)}
 .tab{padding:10px 16px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;flex-shrink:0}
-.tab.on{color:#7c3aed;border-bottom-color:#7c3aed;font-weight:500}
+.tab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
 .wrap{max-width:880px;margin:0 auto;padding:22px 14px}
 .page{display:none}.page.on{display:block}
 /* cards grid */
