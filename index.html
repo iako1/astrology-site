@@ -1772,6 +1772,94 @@ const DEF_LILITH_SIGNS=[
 let DEF_LILITH_SECTION={id:'s-lilith',type:'lilith',title:'⚫ ლილითი ნიშნებში',visible:true,tab:'⚫ ლილითი'};
 let LILITH_IN_SIGNS=(()=>{const s=ls('as_lilith_signs');return s||JSON.parse(JSON.stringify(DEF_LILITH_SIGNS));})();
 
+
+// ===== ქირონი ნიშნებში =====
+const DEF_CHIRON_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'სხეული, ვინაობა',
+   wound:'სხეულთან, ვინაობასთან, გაბედულობასთან — ჭრილობა. შეიძლება ადრეული ტრავმა სხეულთან დაკავშირებული.',
+   gift:'სხვებს ეხმარება სხეულის მიღებაში, ვინაობის პოვნაში, გამბედაობის გამოვლენაში.'},
+  {sym:'♉',n:'კურო',el:'earth',badge:'ფული, ღირებულება',
+   wound:'ფინანსებთან, თვითღირებულებასთან — ჭრილობა. შეიძლება ყოველთვის ისე გრძნობს, რომ ვერ ასრულებს ან ვერ ღირს.',
+   gift:'სხვებს ეხმარება ფინანსებში, თვითშეფასებაში, სენსუალობაში.'},
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'კომუნიკ., სწავლა',
+   wound:'კომუნიკაციასთან, სწავლასთან, ძმა-დასთან — ჭრილობა. ვერ გამოხატავს სწორად.',
+   gift:'მასწავლებელი, მწერალი, მოლაპარაკე — სხვებს ეხმარება გამოხატვაში.'},
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'ოჯახი, დედობა',
+   wound:'ოჯახთან, დედასთან, ბავშვობასთან — ღრმა ჭრილობა. ოჯახური ტრავმა.',
+   gift:'სხვებს ეხმარება ოჯახური ჭრილობის განკურნებაში, დედობის/მამობის სფეროში.'},
+  {sym:'♌',n:'ლომი',el:'fire',badge:'შემოქმ., სცენა',
+   wound:'შემოქმედებასთან, სიყვარულთან, ბავშვებთან — ჭრილობა. შეიძლება ვერ ბედავს სრული გამოვლენა.',
+   gift:'სხვებს ეხმარება შემოქმ. განვითარებაში, სცენაზე გასვლაში, სიყვარულის გახსნაში.'},
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'ჯანმრთ., სამ.',
+   wound:'ჯანმრთელობასთან, სრულყოფასთან — ჭრილობა. ყველაფერი გაასწოროს, მაგრამ საკუთარ თავზე ვერ.',
+   gift:'ექიმი, მკურნალი, დიეტოლოგი — სხვების ჯანმრთელობის სფეროში განსაკუთრებული ნიჭი.'},
+  {sym:'♎',n:'სასწორი',el:'air',badge:'ურთიერთ., სამ.',
+   wound:'ურთიერთობებთან, სამართლიანობასთან — ჭრილობა. წყვილში ყოველთვის ტრავმა.',
+   gift:'სხვებს ეხმარება ურთ-ბ-ის გამოსწორებაში, სამართლ. პოვნაში, ჰარმ. შექმნაში.'},
+  {sym:'♏',n:'მორიელი',el:'water',badge:'სიღრმე, ტრანსფ.',
+   wound:'სმ., ტრანსფ., სიღრმესთან — ჭრილობა. ფარული ტრავმა, ძალაუფლება, ღალატი.',
+   gift:'ფსიქოლოგი, ეზოთ., მკურნალი — სხვებს ეხმ. ღრმა ტ-ბ-ის განკ-ში.'},
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'ფილ., განათ.',
+   wound:'ფილ., რელ., უმ. განათ., მოგz-თან — ჭრილობა. სიმართლის ძიება ტრავმული.',
+   gift:'მასწ., გურუ, ფილ. — სხვებს ეხმ. სიმართლ. პოვნაში, განვ-ში.'},
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'კარიერა, სტ.',
+   wound:'კარ., სოც. სტ., ავტ-თან — ჭრილობა. მუდამ ცდილობს, მაგრამ საკმარისი ვერ.',
+   gift:'მენტ., ლიდ. — სხვებს ეხმ. კარ. სფ-ში, სტ-ში, სტ-ის მ-ში.'},
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ს-ო, ინოვ.',
+   wound:'სოც-თან, ჯ-ებთან, ინდ-თან — ჭრილობა. განსხვ., გარიყულობა.',
+   gift:'ინოვ., ჰუმ., ა-ი — სხვებს ეხმ. ს-ო ინ-ში, ჯ-ში, ინდ. მ-ში.'},
+  {sym:'♓',n:'თევზები',el:'water',badge:'სულ., ემp.',
+   wound:'სულ., ილ., ს-ბ-სთან — ჭრილობა. ზ-ი სენს., ენ. გ-ა.',
+   gift:'მ-ი, ხ., ა-ი — სხვებს ეხმ. სულ. ს-ში, ემp-ში, ი-ის გ-ში.'},
+];
+
+let DEF_CHIRON_SECTION={id:'s-chiron',type:'chiron',title:'⚕ ქირონი ნიშნებში',visible:true,tab:'⚕ ქირონი'};
+let CHIRON_IN_SIGNS=(()=>{const s=ls('as_chiron_signs');return s||JSON.parse(JSON.stringify(DEF_CHIRON_SIGNS));})();
+
+
+// ===== ☊ კვანძი ნიშნებში =====
+const DEF_NODE_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'ინიც., დამ.',
+   nn:'☊ ♈: სულის გზა — დამ., ი., ს. ♈ ☊ = ♎ ☋ (წ. ც-ბ-ი პ-ი, ყ-ბ. ს-ა).',
+   sn:'☋ ♎: წ. ც-ბ-ი ურ-ბ-ები, კომ-ი. ამ ც-ში ს-ი თ-ვ. ი-ა.'},
+  {sym:'♉',n:'კურო',el:'earth',badge:'სტ., ღ-ბ.',
+   nn:'☊ ♉: სულ. გ. — სტ., ფ., ს. ღ. ♉ ☊ = ♏ ☋ (წ. ც. ტ-ბ, ო-ი, ი-ა).',
+   sn:'☋ ♏: წ. ც. ი., ტ-ბ. ამ ც. სჭ-ება ს. ა. ა.'},
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'კ., სწ.',
+   nn:'☊ ♊: სულ. გ. — კ., სწ., ს-ი ჭ. ♊ ☊ = ♐ ☋ (წ. ც. ფ., გ-ი ო.).',
+   sn:'☋ ♐: წ. ც. ფ., ო. ამ ც. დ., ა.'},
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'ოჯ., ემ.',
+   nn:'☊ ♋: სულ. გ. — ოჯ., ემ., ი. ♋ ☊ = ♑ ☋ (წ. ც. კ., ს., ა.).',
+   sn:'☋ ♑: წ. ც. კ., ა-ბ. ამ ც. ემ., ი.'},
+  {sym:'♌',n:'ლომი',el:'fire',badge:'შ., ს.',
+   nn:'☊ ♌: სულ. გ. — შ., ს-ბ., ს. ♌ ☊ = ♒ ☋ (წ. ც. ჯ., ს-ო.).',
+   sn:'☋ ♒: წ. ც. ს-ო., ი. ამ ც. ს-ბ., ი.'},
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'სამ., ჯ.',
+   nn:'☊ ♍: სულ. გ. — სამ., ჯ., ს. ♍ ☊ = ♓ ☋ (წ. ც. ს., ი., ო.).',
+   sn:'☋ ♓: წ. ც. ს., ო. ამ ც. ა., ჯ.'},
+  {sym:'♎',n:'სასწორი',el:'air',badge:'ურ-ბ., ს.',
+   nn:'☊ ♎: სულ. გ. — ურ-ბ., ბ., ს. ♎ ☊ = ♈ ☋ (წ. ც. ი., ს.).',
+   sn:'☋ ♈: წ. ც. ი., ს-ბ. ამ ც. პ-ი, ბ.'},
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ტ., სიღ.',
+   nn:'☊ ♏: სულ. გ. — ტ-ბ, სიღ., ო. ♏ ☊ = ♉ ☋ (წ. ც. სტ., ს.).',
+   sn:'☋ ♉: წ. ც. სტ., კ-ბ. ამ ც. ი. ი.'},
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'ფ., მ.',
+   nn:'☊ ♐: სულ. გ. — ფ., მ., ს. ♐ ☊ = ♊ ☋ (წ. ც. კ., ა-ბ.).',
+   sn:'☋ ♊: წ. ც. კ., ი. ამ ც. ფ., ო.'},
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'კ., ა-ბ.',
+   nn:'☊ ♑: სულ. გ. — კ., ა-ბ., პ. ♑ ☊ = ♋ ☋ (წ. ც. ოჯ., ემ.).',
+   sn:'☋ ♋: წ. ც. ოჯ., ი. ამ ც. კ., ა.'},
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ს-ო., ი.',
+   nn:'☊ ♒: სულ. გ. — ს-ო., ი., ჰ. ♒ ☊ = ♌ ☋ (წ. ც. ს-ბ., ი.).',
+   sn:'☋ ♌: წ. ც. ს-ბ., ს. ამ ც. ჯ., ი.'},
+  {sym:'♓',n:'თევზები',el:'water',badge:'სულ., ემp.',
+   nn:'☊ ♓: სულ. გ. — სულ., ემp., ი. ♓ ☊ = ♍ ☋ (წ. ც. სამ., ა.).',
+   sn:'☋ ♍: წ. ც. სამ., ა. ამ ც. სულ., ი.'},
+];
+
+let DEF_NODE_SECTION={id:'s-node',type:'node',title:'☊ კვანძი ნიშნებში',visible:true,tab:'☊ კვანძი'};
+let NODE_IN_SIGNS=(()=>{const s=ls('as_node_signs');return s||JSON.parse(JSON.stringify(DEF_NODE_SIGNS));})();
+
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
 let DEF_MERCURY={id:'s-mercury',type:'mercury',title:'☿ მერკური ნიშნებში',visible:true,tab:'☿ მერკური'};
@@ -3072,7 +3160,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -3086,6 +3174,8 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasChiron=saved.some(s=>s.id==='s-chiron');
+  const hasNode=saved.some(s=>s.id==='s-node');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
@@ -3096,6 +3186,8 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasChiron) saved.push(DEF_CHIRON_SECTION);
+  if(!hasNode) saved.push(DEF_NODE_SECTION);
   return saved;
 }
 let SECTIONS=initSections();
@@ -3243,6 +3335,80 @@ function renderMoonInSignsSection(sec){
           <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
             <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">△ გამოწვევა</div>
             <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.weakness}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
+
+function renderChironSection(sec){
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:32px;margin-bottom:6px">⚕</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">ქირონი ასტროლოგიაში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">ასტეროიდი/ცენტავრი, 1977 წ. <strong>დაჭრილი მკურნალი</strong> — სადაც ქირონი გყავს, იქ ყველ. ღ-ა ჭ-ბა გაქვს. ამ სფეროში სხვებს ეხმარები, საკუთარ თავს კი — ძნელი. 51-წლ. ციკლი.</div>
+  </div>`;
+  CHIRON_IN_SIGNS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">⚕ ქირონი ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+        </div>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <div style="display:grid;gap:8px;margin-top:12px">
+          <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">🩹 ჭრილობა</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.wound}</div>
+          </div>
+          <div style="background:var(--bg-success);border:.5px solid var(--border-success);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-success);margin-bottom:4px">✨ ნიჭი სხვებისთვის</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.gift}</div>
+          </div>
+        </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
+
+function renderNodeSection(sec){
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:28px;margin-bottom:6px">☊ ☋</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">მთვარის კვანძები ნიშნებში</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7"><strong>☊ ჩრდ. კვანძი</strong> = სულის მიზანი ამ ცხოვრებაში. <strong>☋ სამხ. კვანძი</strong> = წინა ცხ-ის გამოცდ. ყოველ 18-19 წ. ბრუნდება. ყოველთვის Rx. ☊ + ☋ ყოველ. საპ. ნ-ებში.</div>
+  </div>`;
+  NODE_IN_SIGNS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    h+=`<details style="border:.5px solid ${ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">☊ კვანძი ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+          </div>
+        </div>
+      </summary>
+      <div style="padding:0 18px 16px;border-top:.5px solid var(--border)">
+        <div style="display:grid;gap:8px;margin-top:12px">
+          <div style="background:var(--bg-success);border:.5px solid var(--border-success);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-success);margin-bottom:4px">☊ ჩრდ. კვანძი — ამ ცხ. მიზანი</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.nn}</div>
+          </div>
+          <div style="background:var(--bg-danger);border:.5px solid var(--border-danger);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;color:var(--text-danger);margin-bottom:4px">☋ სამხ. კვანძი — წ. ც. გამოც.</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.65">${s.sn}</div>
           </div>
         </div>
       </div>
@@ -3603,7 +3769,7 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='lilith'||s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith'||s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
@@ -3644,7 +3810,7 @@ function renderAll(){
     const menu=document.createElement('div');
     menu.className='dropdown-menu';
     menu.id='planets-menu';
-    const PLANET_ICONS={'s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙','s-jupiter':'♃','s-saturn':'♄'};
+    const PLANET_ICONS={'s-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙','s-jupiter':'♃','s-saturn':'♄'};
     planetSecs.forEach(sec=>{
       if(!firstPageId)firstPageId=sec.id;
       const item=document.createElement('button');
@@ -5105,6 +5271,8 @@ function renderSection(sec){
   if(sec.type==='saturn')return renderSaturnSection(sec);
   if(sec.type==='sun-signs')return renderSunInSignsSection(sec);
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
+  if(sec.type==='chiron')return renderChironSection(sec);
+  if(sec.type==='node')return renderNodeSection(sec);
   if(sec.type==='lilith')return renderLilithSection(sec);
   if(sec.type==='mercury')return renderMercurySection(sec);
   if(sec.type==='venus')return renderVenusSection(sec);
@@ -6490,7 +6658,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v3.5';
+const SITE_VERSION='v3.6';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
