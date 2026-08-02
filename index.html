@@ -3207,28 +3207,33 @@ function showPage(secId){
 function toggleTheme(){
   const b=document.body;
   const btn=document.getElementById('theme-toggle');
-  const stored=localStorage.getItem('as_theme');
-  // Detect system preference
-  const sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
-  // Cycle: system → dark → light → system
-  if(!stored){
-    // Currently system, go to opposite
-    if(sysDark){ b.classList.add('light-forced'); b.classList.remove('dark-forced'); localStorage.setItem('as_theme','light'); if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';} }
-    else { b.classList.add('dark-forced'); b.classList.remove('light-forced'); localStorage.setItem('as_theme','dark'); if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';} }
-  } else if(stored==='dark'){
-    b.classList.remove('dark-forced'); b.classList.add('light-forced'); localStorage.setItem('as_theme','light'); if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}
+  const isDark=b.classList.contains('dark-forced');
+  if(isDark){
+    // dark → light
+    b.classList.remove('dark-forced');
+    b.classList.add('light-forced');
+    localStorage.setItem('as_theme','light');
+    if(btn){btn.textContent='🌙';btn.title='დარქ მოუდზე გადასვლა';}
   } else {
-    b.classList.remove('light-forced'); b.classList.remove('dark-forced'); localStorage.removeItem('as_theme'); if(btn){btn.textContent=sysDark?'🌙':'☀️';btn.title=sysDark?'ლაიტ მოუდზე გადასვლა':'დარქ მოუდზე გადასვლა';}
+    // light → dark
+    b.classList.remove('light-forced');
+    b.classList.add('dark-forced');
+    localStorage.setItem('as_theme','dark');
+    if(btn){btn.textContent='☀️';btn.title='ლაიტ მოუდზე გადასვლა';}
   }
 }
 function applyStoredTheme(){
   const stored=localStorage.getItem('as_theme');
   const btn=document.getElementById('theme-toggle');
   const sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
-  if(stored==='dark'){document.body.classList.add('dark-forced');if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';}}
-  else if(stored==='light'){document.body.classList.add('light-forced');if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}}
-  else if(sysDark){if(btn){btn.textContent='🌙';btn.title='ლაიტ მოუდზე გადასვლა';}}
-  else{if(btn){btn.textContent='☀️';btn.title='დარქ მოუდზე გადასვლა';}}
+  if(stored==='light'){
+    document.body.classList.add('light-forced');
+    if(btn){btn.textContent='🌙';btn.title='დარქ მოუდზე გადასვლა';}
+  } else {
+    document.body.classList.add('dark-forced');
+    if(btn){btn.textContent='☀️';btn.title='ლაიტ მოუდზე გადასვლა';}
+    if(!stored) localStorage.setItem('as_theme','dark');
+  }
 }
 
 function renderAll(){
