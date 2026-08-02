@@ -1062,7 +1062,7 @@ const GLOSSARY_TERMS=[
    def:'I სახ: სხეულ./ვინ. ჭ. — სხვ. ეხმ. სხეულ. II სახ: ფ. ჭ. — სხვ. ეხმ. ფ-ში. III სახ: კ. ჭ. — სხვ. ეხმ. კ-ში. IV სახ: ოჯ. ტ. — სხვ. ეხმ. ოჯ-ში. V სახ: შ. ჭ. — სხვ. ეხმ. შ-ში. VI სახ: ჯ. ჭ. — სხვ. ეხმ. ჯ-ში. VII სახ: ურ-ბ. ჭ. — სხვ. ეხმ. ურ-ში. VIII სახ: ტ. ჭ. — სხვ. ეხმ. ტ-ში. IX სახ: ფ. ჭ. — სხვ. ეხმ. ფ-ში. X სახ: კ. ჭ. — სხვ. ეხმ. კ-ში. XI სახ: ს-ო. ჭ. — სხვ. ეხმ. ს-ში. XII სახ: ს. ჭ. — სხვ. ეხმ. ს-ში.',
    url:'https://cafeastrology.com/chiron.html'},
   {ka:'ლილითი',en:'Black Moon Lilith',cat:'პლანეტები',
-   def:'მთვარის ორბიტის ყველაზე შორეული წერტილი (apogee). პირველი ქალის (ებრ. მითთ.) სიმბოლო — უარყოფილი ბუნება, ველური ინსტინქტი, ნიღბის გარეშე არარსებობა. კარტში: სად ვტოვებთ ველურ ბუნებას.',
+   def:'მთვარის ორბიტის ყველ. შ. წ. (apogee). პ. ქ-ის (ებრ. მ.) სიმბ. — უარყ., ველ. ინსტ. კ-ში: სად ვ-ბ. ველ. ბ-ს. წყ. ნ-ებში (♋♏♓) ლ-ი ყ-ზ. ა-ია — ინტ., ღ-ა ემ., ფ-ი ვ. ♏-ში ლ-ი ყ-ბ. ძლ-ი. ც. ნ-ებში (♈♌♐) ლ-ი ვ-ს — ღ-ა, პ-ი. ↔ Rx ♂ — ს-ბ. ❤.',
    url:'https://cafeastrology.com/lilith.html'},
   {ka:'ვესტა',en:'Vesta',cat:'პლანეტები',
    def:'ასტეროიდი — ფოკუსი, განსახიერება, საკრალური ცეცხლი, ერთგულება. ვესტა კარტში: სად ვდებთ ყველაზე სრულ ერთგულებასა და ფოკუსს. ასევე სექსუალობის საკრალური ასპექტი. ვესტა ♍ = სამუშაო.',
@@ -1739,6 +1739,38 @@ let DEF_JUPITER_SECTION={id:'s-jupiter',type:'jupiter',title:'♃ იუპი�
 let DEF_SATURN_SECTION={id:'s-saturn',type:'saturn',title:'♄ სატურნი ნიშნებში',visible:true,tab:'♄ სატურნი'};
 let JUPITER_IN_SIGNS=(()=>{const s=ls('as_jupiter_signs');return s||JSON.parse(JSON.stringify(DEF_JUPITER_SIGNS));})();
 let SATURN_IN_SIGNS=(()=>{const s=ls('as_saturn_signs');return s||JSON.parse(JSON.stringify(DEF_SATURN_SIGNS));})();
+
+
+// ===== ლილითი ნიშნებში =====
+const DEF_LILITH_SIGNS=[
+  {sym:'♈',n:'ვერძი',el:'fire',badge:'გაბედული, მეამბოხე',
+   desc:'ლილითი ვერძში — ველური ენერგია პირდაპირი და გაუფილტრავია. ბრაზი, სიმამაცე. სხვის ნება-სურვილს არ ანგარიშს უწევს. ბედნიერია სრული ავტონომიით. ფიზიკური განთავისუფლება — სასიცოცხლო მოთხოვნა. ქალი ლილითით ♈-ში — თამამი, დამოუკიდებელი, ხშირად ტაბუს მტეხავი.'},
+  {sym:'♉',n:'კურო',el:'earth',badge:'სენსუალური, ჯიუტი',
+   desc:'ლილითი კუროში — სენსუალობა, სხეულის სიამოვნება, ფულის ძალა. ვერ ათმობს. ფინანსური დამოუკიდებლობა — სულის მოთხოვნა. სხეული ტაძრივით ეპყრობა. ხშირად ძლიერი ეროტიული ენერგია.'},
+  {sym:'♊',n:'ტყუპები',el:'air',badge:'ბასრი, ორმაგი',
+   desc:'ლილითი ტყუპებში — სიტყვა ისეთ ადგილებში, სადაც ჩუმობა ჯობდა. ენა — ლილითის ინსტრუმენტი. სხვას სიმართლეს ეუბნება, ოდნავ გადამეტებულად. ორი სახე — ერთი კარგი, მეორე ცხარე.'},
+  {sym:'♋',n:'კირჩხიბი',el:'water',badge:'ღრმა, ინსტინქტური',
+   desc:'ლილითი კირჩხიბში — წყლის ნიშნებიდან ერთ-ერთი ყველაზე ძლიერი. ოჯახი, დედობა, ემოციები — ყველაზე ახლო ადგილი. ქალს შეიძლება ემოციების მართვა გაუჭირდეს. ინსტინქტური, სიღრმიანი, ოჯახური ტრავმაც შეიძლება.'},
+  {sym:'♌',n:'ლომი',el:'fire',badge:'სამეფო, გამომვლენი',
+   desc:'ლილითი ლომში — ქარიზმა, სცენა, სექსუალობა. ყველას ყურადღება სჭირდება. სიამოვნება უარყოფა — ვერ ასრულებს. ქალი ლილითით ♌-ში — ანათებს, ძლიერი შთაბეჭდილება. ბავშვებთან ლილითური ურთიერთობა.'},
+  {sym:'♍',n:'ქალწული',el:'earth',badge:'ანალიტური, კრიტიკული',
+   desc:'ლილითი ქალწულში — სხეული და სიწმინდე კონფლიქტი. ძლიერი სხეულის კრიტიკა. ყველაფერი უნდა სრულყოს — ლილითი ამ სტანდარტს ვერ ეგუება. ქალი ლილ. ♍-ში — სხვები კრიტიკული, ანალიტური.'},
+  {sym:'♎',n:'სასწორი',el:'air',badge:'სოციალური, ამბივ.',
+   desc:'ლილითი სასწორში — ურთიერთობებში ველური ბუნება. ბალანსს ვერ ნახულობს. ქალები ვერ ეჩვევიან. ლამაზად ამბობს სიმართლეს — სოციალური ლილითი. მოდა, ხელოვნება.'},
+  {sym:'♏',n:'მორიელი',el:'water',badge:'ყველ. ძლ., ტრანსფ.',
+   desc:'ლილითი მორიელში — ყველაზე ძლიერი მდებარეობა წყლის ნიშნებში. სექსუალობა, ოკულტიზმი, ძალაუფლება. ფარული ბუნება ინტენსიურია. ამ ლილითი განსაკუთრებით ძლიერი. ქალი ♏ ლ-ით — მაგნეტური, ინტუიციური, ღრმა.'},
+  {sym:'♐',n:'მშვილდოსანი',el:'fire',badge:'თავისუფალი, ფილ.',
+   desc:'ლილითი მშვილდოსანში — თავისუფლება ყველ. ახლო ადგილი. ავტორიტეტებს არ ეჩვევა. ფილოსოფია, სხვა კულტურები. ვერ ასრულებს სოციალური ნ. ა. ქ. ლ. ♐ — გ., ბ.'},
+  {sym:'♑',n:'თხის რქა',el:'earth',badge:'კარმ., სტრუქ.',
+   desc:'ლილითი თხის რქაში — კარიერა, ავტორიტეტი, სტრუქტურა. სოციალური ნ. ა. ქ. ლ. ♑ — კ. ა. კ.'},
+  {sym:'♒',n:'მერწყული',el:'air',badge:'ო-ი, კოლ.',
+   desc:'ლილითი მერწყულში — სოც. ნ., ინოვ. ა-ო. კ-ი ა. ი. ო.'},
+  {sym:'♓',n:'თევზები',el:'water',badge:'მ., ი., გ.',
+   desc:'ლილითი თევზებში — ყველ. ა-ი წ. ნ. ა-ბ-ი. სულ., ი-ა, ო-ო. ზ-ი ე-ი. ქ. ლ-ი ♓-ში — სენს., ი-ი, ხ. ა-ბ. ემp.'},
+];
+
+let DEF_LILITH_SECTION={id:'s-lilith',type:'lilith',title:'⚫ ლილითი ნიშნებში',visible:true,tab:'⚫ ლილითი'};
+let LILITH_IN_SIGNS=(()=>{const s=ls('as_lilith_signs');return s||JSON.parse(JSON.stringify(DEF_LILITH_SIGNS));})();
 
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
@@ -3040,7 +3072,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -3053,6 +3085,7 @@ function initSections(){
   const hasSun=saved.some(s=>s.id==='s-sun-signs');
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
+  const hasLilith=saved.some(s=>s.id==='s-lilith');
   if(!hasVenus) saved.push(DEF_VENUS);
   if(!hasMars) saved.push(DEF_MARS);
   if(!hasTimezone) saved.push(DEF_TIMEZONE);
@@ -3062,6 +3095,7 @@ function initSections(){
   if(!hasSun) saved.push(DEF_SUN_SECTION);
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
+  if(!hasLilith) saved.push(DEF_LILITH_SECTION);
   return saved;
 }
 let SECTIONS=initSections();
@@ -3211,6 +3245,36 @@ function renderMoonInSignsSection(sec){
             <div style="font-size:12px;color:var(--text2);line-height:1.6">${s.weakness}</div>
           </div>
         </div>
+      </div>
+    </details>`;
+  });
+  return h;
+}
+
+function renderLilithSection(sec){
+  const EC={fire:'#e85d04',earth:'#588157',air:'#4895ef',water:'#4cc9f0'};
+  const EB={fire:'#fff3e6',earth:'#f0f4ee',air:'#eef4ff',water:'#eaf8fd'};
+  let h=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:18px">
+    <div style="font-size:32px;margin-bottom:6px;background:linear-gradient(135deg,#1a1a2e,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent">⚫</div>
+    <div style="font-size:17px;font-weight:500;color:var(--text);margin-bottom:8px">ლილითი (Black Moon Lilith)</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">მთვარის ორბიტის ყველ. შ. წ. (apogee). პ. ქ-ის სიმბ. — უარყ. ბ-ა, ველ. ი. კ-ში: სად ვ-ბ. ველ. ბ. <strong>წყლის ნ-ებში (♋♏♓) ყ-ბ. ა-ია</strong> — ი., ღ-ა ემ., ფ-ი ვ. ♏-ში — ყ-ბ. ძლ-ი.</div>
+  </div>`;
+  LILITH_IN_SIGNS.forEach(s=>{
+    const ec=EC[s.el]||'#64748b', eb=EB[s.el]||'var(--bg2)';
+    const isWater=s.el==='water';
+    h+=`<details style="border:.5px solid ${isWater?'#4cc9f0':ec};border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:10px${isWater?';box-shadow:0 0 8px rgba(76,201,240,0.15)':''}">
+      <summary style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;user-select:none;border-left:3px solid ${ec}">
+        <span style="font-size:26px">${s.sym}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:500;color:var(--text)">⚫ ლილითი ${s.n}ში</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${eb};color:${ec};font-weight:500">${s.badge}</span>
+            ${isWater?'<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:#0891b2;color:#fff">💧 განსაკ. ძლ.</span>':''}
+          </div>
+        </div>
+      </summary>
+      <div style="padding:12px 18px 16px;border-top:.5px solid var(--border)">
+        <p style="font-size:13px;color:var(--text2);line-height:1.75">${s.desc}</p>
       </div>
     </details>`;
   });
@@ -3539,7 +3603,7 @@ function renderAll(){
   tabs.innerHTML='';pages.innerHTML='';
   const visible=SECTIONS.filter(s=>s.visible!==false);
   // sections that go into dropdown - determined by type
-  const isPlanetSec=s=>s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
+  const isPlanetSec=s=>s.type==='lilith'||s.type==='jupiter'||s.type==='saturn'||s.type==='sun-signs'||s.type==='venus'||s.type==='mars'||s.type==='mercury'||(s.id==='s-moon'&&s.type==='signs'&&s.title.includes('მთვარე'));
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s));
   let firstPageId=null;
@@ -3580,7 +3644,7 @@ function renderAll(){
     const menu=document.createElement('div');
     menu.className='dropdown-menu';
     menu.id='planets-menu';
-    const PLANET_ICONS={'s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙','s-jupiter':'♃','s-saturn':'♄'};
+    const PLANET_ICONS={'s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀','s-mars':'♂','s-mercury':'☿','s-moon-signs':'🌙','s-jupiter':'♃','s-saturn':'♄'};
     planetSecs.forEach(sec=>{
       if(!firstPageId)firstPageId=sec.id;
       const item=document.createElement('button');
@@ -5041,6 +5105,7 @@ function renderSection(sec){
   if(sec.type==='saturn')return renderSaturnSection(sec);
   if(sec.type==='sun-signs')return renderSunInSignsSection(sec);
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
+  if(sec.type==='lilith')return renderLilithSection(sec);
   if(sec.type==='mercury')return renderMercurySection(sec);
   if(sec.type==='venus')return renderVenusSection(sec);
   if(sec.type==='mars')return renderMarsSection(sec);
@@ -6425,7 +6490,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v3.4';
+const SITE_VERSION='v3.5';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
