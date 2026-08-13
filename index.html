@@ -2143,7 +2143,7 @@ function renderAspectsSection(sec){
   h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">ასპექტი არის კუთხე, რომელსაც ორი პლანეტა ქმნის ზოდიაქოს წრეზე. ის აკავშირებს ამ ორი პლანეტის ენერგიას და გვიჩვენებს, როგორ თანამშრომლობს ან ედავება ერთმანეთს ადამიანის ორი შინაგანი ნაწილი. <strong>ორბი</strong> დაშვებული ცდომილებაა — რაც უფრო ზუსტია კუთხე, მით ძლიერია ასპექტი.</div>';
   h+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">';
   h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(22,163,74,.10);color:#16a34a">⚹ △ ჰარმონიული</span>';
-  h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(220,38,38,.10);color:#dc2626">□ ☍ დამჭინველი</span>';
+  h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(220,38,38,.10);color:#dc2626">□ ☍ დაძაბული</span>';
   h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(124,58,237,.10);color:#7c3aed">☌ ნეიტრალური</span>';
   h+='</div></div>';
 
@@ -2179,7 +2179,7 @@ function showAspectPair(pair){
   var filtered=DEF_ASPECTS_DATA.filter(function(a){return a.p1===p1&&a.p2===p2});
   var AN={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია'};
   var NC={'easy':'#16a34a','hard':'#dc2626','neutral':'#7c3aed'};
-  var NL={'easy':'ჰარმონიული','hard':'დამჭინველი','neutral':'ნეიტრალური'};
+  var NL={'easy':'ჰარმონიული','hard':'დაძაბული','neutral':'ნეიტრალური'};
   var PF={'☉':'მზე','☽':'მთვარე','☿':'მერკური','♀':'ვენერა','♂':'მარსი','♃':'იუპიტერი','♄':'სატურნი'};
   var PC={'☉':'#e8a33d','☽':'#7b8fa8','☿':'#4895ef','♀':'#db2777','♂':'#e85d04','♃':'#2563a8','♄':'#7a6a8e'};
 
@@ -7062,7 +7062,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v3.9';
+const SITE_VERSION='v3.91';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
