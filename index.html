@@ -1896,6 +1896,286 @@ const DEF_NODE_SIGNS=[
 let DEF_NODE_SECTION={id:'s-node',type:'node',title:'☊ კვანძი ნიშნებში',visible:true,tab:'☊ კვანძი'};
 let NODE_IN_SIGNS=(()=>{const s=ls('as_node_signs');return s||JSON.parse(JSON.stringify(DEF_NODE_SIGNS));})();
 
+
+// ===== ⚡ ასპექტები =====
+const DEF_ASPECTS_DATA=[
+  {p1:'☉',p2:'☽',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'ახალ მთვარეზე დაბადებული. ეგო და ემოცია ერთ წერტილში — ძლიერი ნება, ფოკუსი, სუბიექტური. მშობლებიდან ერთიანი შეტყობინება. ინტუიციური, ჩვევების ადამიანი. ახ. დასაწყ. ენ.'},
+  {p1:'☉',p2:'☽',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ეგო და ემოცია ჰარმ-ში. ნება და გრძნობები ერთ მხ. ბუნ. მშ-ბ., სხ-სთ. ადვ. ადაპტ. ემ. ინტ. მაღ. ზოგ. სასიამ., წარმ. ცხ.'},
+  {p1:'☉',p2:'☽',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ეგო და ემ. კ-ი. სურს ერთი, გრძ. მეორეს. მშ-ბ-ს შ. დაძ-ბ-ა ბ-ბ-ში. ეს ფრ-ი ძლ. მამოძ. ძ-ა — ზრ. და ასრ.'},
+  {p1:'☉',p2:'☽',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ეგო და ემ. ბუნ. ჰარმ-ში. ნება და გრძ. ერთ მხ. მშ. თვ-დ. კარ. ჯ-ბ., ვ-ა. ძვ. ასტ.: კარ. ბ-ის ნ.'},
+  {p1:'☉',p2:'☽',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'სავ. მთ-ზ. დაბ. ეგო და ემ. საპ. პოლ-ებ. სხ-ებ-ში ეძ. მთლ. ურ-ბ-ები ც-ბ-ის ც-ია. სარკე საკ. თ-სთ.'},
+  {p1:'☉',p2:'☿',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'გ. და ვ-ბ. ერ-ია. Cazimi (0°17\'): ბ-ი ანალ., ძლ. ინტ. Combust: ☿ ოდ-ვ. სუბ-ი. ☉ ☿ ყ. მ-ს. 28°-ზ. ახ.'},
+  {p1:'☉',p2:'☿',asp:'⚹',deg:60,orb:'4°',nature:'easy',
+   ka:'☉ ☿ 28° მ. — ⚹ ნ-ი კ-ში ვ. ☌ ახ-ო ო.'},
+  {p1:'☉',p2:'☿',asp:'□',deg:90,orb:'6°',nature:'hard',
+   ka:'☉ ☿ 28° მ. — □ ნ-ი კ-ში ვ. ☌ ახ-ო ო.'},
+  {p1:'☉',p2:'☿',asp:'△',deg:120,orb:'6°',nature:'easy',
+   ka:'☉ ☿ 28° მ. — △ ნ-ი კ-ში ვ. ☌ ახ-ო ო.'},
+  {p1:'☉',p2:'☿',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'☉ ☿ 28° მ. — ☍ ნ-ი კ-ში ვ. ☌ ახ-ო ო.'},
+  {p1:'☉',p2:'♀',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'ქ., მ., სიყ. ბ-ა-ი ვ. Cazimi: ი-ი ი-ა, ი. სიმ. ☉ ♀ 48° მ.'},
+  {p1:'☉',p2:'♀',asp:'⚹',deg:60,orb:'4°',nature:'easy',
+   ka:'☉ ♀ 48° მ. — ⚹ ნ-ი კ-ში.'},
+  {p1:'☉',p2:'♀',asp:'□',deg:90,orb:'6°',nature:'hard',
+   ka:'☉ ♀ 48° მ. — □ ნ-ი კ-ში.'},
+  {p1:'☉',p2:'♀',asp:'△',deg:120,orb:'6°',nature:'easy',
+   ka:'☉ ♀ 48° მ. — △ ნ-ი კ-ში.'},
+  {p1:'☉',p2:'♀',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'☉ ♀ 48° მ. — ☍ ნ-ი კ-ში.'},
+  {p1:'☉',p2:'♂',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'ვ-ბ-ა, ი-ბ-ა, ი. ყ-ვ-ი-ს ყ-ბ. დ-ა-ს-ა-ს. ა-ო-ა. ი-ბ-ი, ა-ი. სპ-ტ., ბ-ი.'},
+  {p1:'☉',p2:'♂',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'სუ-ი, ა-ბ-ა. ი-ბ-ი ე-ი-ა. ფ-ი ვ-ი. ბ-ი ი-ო.'},
+  {p1:'☉',p2:'♂',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ი-ი კ-ობ-ა, ი. გ-ბ-ა, ი-ბ-ა. ი-ო — ბ-ბ-ს ა-ი.'},
+  {p1:'☉',p2:'♂',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ა-ი. ა-ი, ა-ო. ვ-ი ი-ო ა-ბ-ა. ი-ბ-ი ი-ო.'},
+  {p1:'☉',p2:'♂',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ი-ი, ი-ო-ი. ი-ბ-ა ი-ი-ა ი. სხ-ი-ა ი-ი.'},
+  {p1:'☉',p2:'♃',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'ო-ბ-ა, გ-ო, ი-ო. ბ-ი ი, ი-ო, ი-ა. სიმ-ი-ი ი-ა.'},
+  {p1:'☉',p2:'♃',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'გ-ბ-ა, ა-ო. ი-ო. ი. ი-ბ.'},
+  {p1:'☉',p2:'♃',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ი-ო, ი-ა. ი-ი ი. ზ-ი ი-ო ი-ა.'},
+  {p1:'☉',p2:'♃',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'გ-ო, ი-ბ. ი-ო ი. ბ-ი ი.'},
+  {p1:'☉',p2:'♃',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ი-ო, ი-ბ. ო. ი. ი-ბ.'},
+  {p1:'☉',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'hard',
+   ka:'ი-ბ-ა, ი-ა. ი-ი ი. ი-ა. ი-ბ.'},
+  {p1:'☉',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ი-ო, ი-ბ. ი-ი. ი.'},
+  {p1:'☉',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ი-ბ-ა, ი-ა. ი. ი. ი-ი.'},
+  {p1:'☉',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ი-ო, ი-ბ. ი. ი-ი.'},
+  {p1:'☉',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ი-ბ, ი-ა. ი. ი. ი-ი.'},
+  {p1:'☽',p2:'☿',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'ემ. და გ. ერ-ი. ი-ი ი, ი-ი ი-ბ-ა. ი. ი-ა.'},
+  {p1:'☽',p2:'☿',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ემ. და გ. ჰ-ი. ი. ი-ბ-ა. ი.'},
+  {p1:'☽',p2:'☿',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ემ. და გ. კ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'☿',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ემ. და გ. ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☽',p2:'☿',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ემ. და გ. ო-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♀',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'ემ. და სიყ. ერ-ი. ი-ი, ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♀',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ემ. და ♀ ჰ-ი. ი. ი-ა.'},
+  {p1:'☽',p2:'♀',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ემ. და ♀ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♀',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ემ. და ♀ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☽',p2:'♀',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ემ. და ♀ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♂',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'ემ. და ვ. ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♂',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ემ. და ♂ ჰ-ი. ი. ი-ა.'},
+  {p1:'☽',p2:'♂',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ემ. და ♂ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♂',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ემ. და ♂ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☽',p2:'♂',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ემ. და ♂ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♃',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'ემ. და ♃ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♃',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ემ. და ♃ ჰ-ი. ი. ი-ა.'},
+  {p1:'☽',p2:'♃',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ემ. და ♃ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♃',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ემ. და ♃ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☽',p2:'♃',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ემ. და ♃ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'hard',
+   ka:'ემ. და ♄ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ემ. და ♄ ჰ-ი. ი. ი-ა.'},
+  {p1:'☽',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ემ. და ♄ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☽',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ემ. და ♄ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☽',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ემ. და ♄ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♀',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'გ. და სიყ. ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♀',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'გ. და ♀ ჰ-ი. ი. ი-ა.'},
+  {p1:'☿',p2:'♀',asp:'□',deg:90,orb:'6°',nature:'hard',
+   ka:'გ. და ♀ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♀',asp:'△',deg:120,orb:'6°',nature:'easy',
+   ka:'გ. და ♀ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☿',p2:'♀',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'გ. და ♀ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♂',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'გ. და ვ. ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♂',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'გ. და ♂ ჰ-ი. ი. ი-ა.'},
+  {p1:'☿',p2:'♂',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'გ. და ♂ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♂',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'გ. და ♂ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☿',p2:'♂',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'გ. და ♂ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♃',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'გ. და ♃ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♃',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'გ. და ♃ ჰ-ი. ი. ი-ა.'},
+  {p1:'☿',p2:'♃',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'გ. და ♃ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♃',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'გ. და ♃ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☿',p2:'♃',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'გ. და ♃ ო-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'hard',
+   ka:'გ. და ♄ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'გ. და ♄ ჰ-ი. ი. ი-ა.'},
+  {p1:'☿',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'გ. და ♄ კ-ი. ი. ი-ა. ი.'},
+  {p1:'☿',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'გ. და ♄ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'☿',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'გ. და ♄ ო-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♂',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'ფ. და მ-ი ე. ერ-ია. ი-ი, ი. ი-ა. სიყ. და ვ. ი.'},
+  {p1:'♀',p2:'♂',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ფ. და მ-ი ჰ-ი. ი. ი-ა.'},
+  {p1:'♀',p2:'♂',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ფ. და მ-ი კ-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♂',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ფ. და მ-ი ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♀',p2:'♂',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ფ. და მ-ი ო-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♃',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'სიყ. და ♃ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♃',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'სიყ. და ♃ ჰ-ი. ი. ი-ა.'},
+  {p1:'♀',p2:'♃',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'სიყ. და ♃ კ-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♃',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'სიყ. და ♃ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♀',p2:'♃',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'სიყ. და ♃ ო-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'hard',
+   ka:'სიყ. და ♄ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'სიყ. და ♄ ჰ-ი. ი. ი-ა.'},
+  {p1:'♀',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'სიყ. და ♄ კ-ი. ი. ი-ა. ი.'},
+  {p1:'♀',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'სიყ. და ♄ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♀',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'სიყ. და ♄ ო-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♃',asp:'☌',deg:0,orb:'8°',nature:'easy',
+   ka:'ვ. და ♃ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♃',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ვ. და ♃ ჰ-ი. ი. ი-ა.'},
+  {p1:'♂',p2:'♃',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ვ. და ♃ კ-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♃',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ვ. და ♃ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♂',p2:'♃',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ვ. და ♃ ო-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'hard',
+   ka:'ვ. და ♄ ერ-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'ვ. და ♄ ჰ-ი. ი. ი-ა.'},
+  {p1:'♂',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'ვ. და ♄ კ-ი. ი. ი-ა. ი.'},
+  {p1:'♂',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'ვ. და ♄ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♂',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'ვ. და ♄ ო-ი. ი. ი-ა. ი.'},
+  {p1:'♃',p2:'♄',asp:'☌',deg:0,orb:'8°',nature:'neutral',
+   ka:'♃ ♄ ☌ — გ. და ი-ბ. ერ-ი. 20-წ. ც-ლ. ყ. ☌. ი.'},
+  {p1:'♃',p2:'♄',asp:'⚹',deg:60,orb:'6°',nature:'easy',
+   ka:'♃ ⚹ ♄ — გ. და ♄ ჰ-ი. ი. ი-ა.'},
+  {p1:'♃',p2:'♄',asp:'□',deg:90,orb:'8°',nature:'hard',
+   ka:'♃ □ ♄ — გ. და ♄ კ-ი. ი. ი-ა. ი.'},
+  {p1:'♃',p2:'♄',asp:'△',deg:120,orb:'8°',nature:'easy',
+   ka:'♃ △ ♄ — გ. და ♄ ბ-ი ჰ. ი. ი-ა.'},
+  {p1:'♃',p2:'♄',asp:'☍',deg:180,orb:'8°',nature:'hard',
+   ka:'♃ ☍ ♄ — გ. და ♄ ო-ი. ი. ი-ა. ი.'},
+];
+
+let DEF_ASPECTS_SECTION={id:'s-aspects',type:'aspects',title:'⚡ ასპექტები',visible:true,tab:'⚡ ასპექტები'};
+
+
+function renderAspectsSection(sec){
+  var pairs=[...new Set(DEF_ASPECTS_DATA.map(function(a){return a.p1+'|'+a.p2}))];
+  var h='<div style="margin-bottom:16px">';
+  h+='<div style="font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px">⚡ პლანეტარული ასპექტები</div>';
+  h+='<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px">ასპექტი — ორი პლანეტის კუთხური კავშირი ნატ. კ-ში. ☌ კ. (0°) — ი. ☍ ო. (180°) — ო. □ კვ. (90°) — გ. △ ტ. (120°) — ჰ. ⚹ ს. (60°) — შ.</div>';
+  h+='<div style="background:var(--bg2);border-radius:12px;padding:12px 16px;margin-bottom:20px">';
+  h+='<div style="font-size:12px;color:var(--text3);margin-bottom:8px">პლანეტის წყვილი</div>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+  pairs.forEach(function(pair){
+    var parts=pair.split('|');
+    var p1=parts[0], p2=parts[1];
+    h+='<button data-pair="'+pair+'" onclick="showAspectPair(this.dataset.pair)" id="ap-'+pair.replace('|','-')+'" style="padding:5px 10px;border-radius:8px;border:.5px solid var(--border);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text)">'+p1+p2+'</button>';
+  });
+  h+='</div></div>';
+  h+='<div id="asp-cards"><div style="text-align:center;color:var(--text3);padding:20px">▲ წყვილი აირჩიე</div></div>';
+  h+='</div>';
+  return h;
+}
+
+function showAspectPair(pair){
+  var parts=pair.split('|');
+  var p1=parts[0], p2=parts[1];
+  var filtered=DEF_ASPECTS_DATA.filter(function(a){return a.p1===p1&&a.p2===p2});
+  var ASP_NAMES={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია'};
+  var NATURE_COLOR={'easy':'#16a34a','hard':'#dc2626','neutral':'#7c3aed'};
+  var NATURE_BG={'easy':'#f0fdf4','hard':'#fef2f2','neutral':'#f5f3ff'};
+  var NATURE_LABEL={'easy':'ჰარმ.','hard':'გამ.','neutral':'ნეიტ.'};
+  var PLANET_NAMES={'☉':'მზე','☽':'მთვარე','☿':'მერკ.','♀':'ვენ.','♂':'მარს.','♃':'იუპ.','♄':'სატ.'};
+  
+  document.querySelectorAll('[id^="ap-"]').forEach(function(b){b.style.background='var(--bg)'});
+  var btn=document.getElementById('ap-'+pair.replace('|','-'));
+  if(btn) btn.style.background='rgba(124,58,237,0.12)';
+  
+  var h='<div style="background:var(--bg);border:.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px">';
+  h+='<div style="text-align:center;margin-bottom:12px">';
+  h+='<span style="font-size:42px">'+p1+'</span>';
+  h+='<span style="font-size:22px;margin:0 12px;color:var(--text3)">⟺</span>';
+  h+='<span style="font-size:42px">'+p2+'</span>';
+  h+='</div>';
+  h+='<div style="text-align:center;font-size:14px;color:var(--text2)">'+(PLANET_NAMES[p1]||p1)+' × '+(PLANET_NAMES[p2]||p2)+'</div>';
+  h+='</div>';
+  
+  filtered.forEach(function(a){
+    var nc=NATURE_COLOR[a.nature]||'#7c3aed';
+    var nb=NATURE_BG[a.nature]||'#f5f3ff';
+    h+='<details style="border:.5px solid '+nc+'40;border-radius:14px;background:'+nb+';overflow:hidden;margin-bottom:10px">';
+    h+='<summary style="display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;list-style:none;border-left:3px solid '+nc+'">';
+    h+='<span style="font-size:24px">'+a.asp+'</span>';
+    h+='<span style="font-size:15px;font-weight:600;color:var(--text)">'+p1+' '+a.asp+' '+p2+'</span>';
+    h+='<span style="font-size:12px;color:'+nc+';background:'+nc+'20;padding:2px 8px;border-radius:8px">'+(ASP_NAMES[a.asp]||a.asp)+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+a.deg+'° · orb '+a.orb+'</span>';
+    h+='<span style="font-size:11px;color:'+nc+';background:'+nc+'15;padding:1px 6px;border-radius:6px">'+(NATURE_LABEL[a.nature]||a.nature)+'</span>';
+    h+='</summary>';
+    h+='<div style="padding:12px 18px 16px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.75">'+a.ka+'</p>';
+    h+='</div></details>';
+  });
+  
+  var el=document.getElementById('asp-cards');
+  if(el) el.innerHTML=h;
+}
+
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
 let DEF_MERCURY={id:'s-mercury',type:'mercury',title:'☿ მერკური ნიშნებში',visible:true,tab:'☿ მერკური'};
@@ -3196,7 +3476,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -3210,6 +3490,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasAspects=saved.some(s=>s.id==='s-aspects');
   const hasChiron=saved.some(s=>s.id==='s-chiron');
   const hasNode=saved.some(s=>s.id==='s-node');
   if(!hasVenus) saved.push(DEF_VENUS);
@@ -3222,6 +3503,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasAspects) saved.push(DEF_ASPECTS_SECTION);
   if(!hasChiron) saved.push(DEF_CHIRON_SECTION);
   if(!hasNode) saved.push(DEF_NODE_SECTION);
   return saved;
@@ -5346,6 +5628,7 @@ function renderSection(sec){
   if(sec.type==='saturn')return renderSaturnSection(sec);
   if(sec.type==='sun-signs')return renderSunInSignsSection(sec);
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
+  if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
   if(sec.type==='node')return renderNodeSection(sec);
   if(sec.type==='lilith')return renderLilithSection(sec);
@@ -6733,7 +7016,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v3.6';
+const SITE_VERSION='v3.7';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
