@@ -4994,13 +4994,26 @@ function renderAll(){
   const isSensitiveSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith';
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const sensitiveSecs=visible.filter(s=>isSensitiveSec(s));
-  const otherSecs=visible.filter(s=>!isPlanetSec(s)&&!isSensitiveSec(s));
+  const isAspectSec=s=>s.type==='aspects';
+  const aspectSecs=visible.filter(s=>isAspectSec(s));
+  const otherSecs=visible.filter(s=>!isPlanetSec(s)&&!isSensitiveSec(s)&&!isAspectSec(s));
   let firstPageId=null;
 
 
 
   // render normal tabs
   otherSecs.forEach((sec,i)=>{
+    if(!firstPageId)firstPageId=sec.id;
+    const btn=document.createElement('button');
+    btn.className='tab';
+    btn.id='tab-'+sec.id;
+    btn.textContent=sec.tab||sec.title;
+    btn.onclick=()=>showPage(sec.id);
+    tabs.appendChild(btn);
+  });
+
+  // aspects tab sits next to the planets dropdown
+  aspectSecs.forEach(sec=>{
     if(!firstPageId)firstPageId=sec.id;
     const btn=document.createElement('button');
     btn.className='tab';
@@ -7923,7 +7936,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v4.6';
+const SITE_VERSION='v4.7';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
