@@ -3077,52 +3077,7 @@ function renderMinorAspectsInfo(){
   return h;
 }
 
-function showAspectPair(pair){
-  var parts=pair.split('|'), p1=parts[0], p2=parts[1];
-  var filtered=DEF_ASPECTS_DATA.filter(function(a){return a.p1===p1&&a.p2===p2});
-  var AN={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია'};
-  var NC={'easy':'#16a34a','hard':'#dc2626','neutral':'#7c3aed'};
-  var NL={'easy':'ჰარმონიული','hard':'დაძაბული','neutral':'ნეიტრალური'};
-  var PF={'☉':'მზე','☽':'მთვარე','☿':'მერკური','♀':'ვენერა','♂':'მარსი','♃':'იუპიტერი','♄':'სატურნი','♅':'ურანი','♆':'ნეპტუნი','♇':'პლუტონი','Asc':'ასცენდენტი','MC':'შუა ცა','⚕':'ქირონი','⚫':'ლილითი','☊':'ჩრდ. კვანძი'};
-  var PC={'☉':'#e8a33d','☽':'#7b8fa8','☿':'#4895ef','♀':'#db2777','♂':'#e85d04','♃':'#2563a8','♄':'#7a6a8e','♅':'#0ea5a4','♆':'#5b7cd8','♇':'#8b5a5a','Asc':'#8b5cf6','MC':'#0d9488','⚕':'#16a34a','⚫':'#6d28d9','☊':'#0891b2'};
 
-  document.querySelectorAll('[id^="ap-"]').forEach(function(b){
-    b.style.background='var(--bg)'; b.style.borderColor='var(--border)'; b.style.transform='none';
-  });
-  var btn=document.getElementById('ap-'+p1+'-'+p2);
-  if(btn){ btn.style.background='rgba(124,58,237,.09)'; btn.style.borderColor='#7c3aed'; }
-
-  var h='<div style="border:.5px solid var(--border);border-radius:18px;padding:20px;margin-bottom:16px;background:var(--bg);display:flex;align-items:center;gap:18px;flex-wrap:wrap">';
-  h+='<div style="display:flex;align-items:center;gap:14px">';
-  h+='<div style="text-align:center"><div style="font-size:34px;color:'+(PC[p1]||'')+'">'+p1+'</div><div style="font-size:11px;color:var(--text3);margin-top:2px">'+(PF[p1]||p1)+'</div></div>';
-  h+='<span style="font-size:16px;color:var(--text3)">⟺</span>';
-  h+='<div style="text-align:center"><div style="font-size:34px;color:'+(PC[p2]||'')+'">'+p2+'</div><div style="font-size:11px;color:var(--text3);margin-top:2px">'+(PF[p2]||p2)+'</div></div>';
-  h+='</div>';
-  h+='<div style="flex:1;min-width:120px;font-size:12.5px;color:var(--text3);line-height:1.7">ხუთი ძირითადი ასპექტი ამ წყვილს შორის. თითოეულზე დააჭირეთ სრული აღწერისთვის.</div>';
-  h+='</div>';
-
-  filtered.forEach(function(a){
-    var nc=NC[a.nature]||'#7c3aed';
-    h+='<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:9px">';
-    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
-    h+='<div style="flex-shrink:0;opacity:.9">'+aspAngleSVG(a.deg,nc,52)+'</div>';
-    h+='<div style="flex:1;min-width:0">';
-    h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">';
-    h+='<span style="font-size:18px;color:'+nc+'">'+a.asp+'</span>';
-    h+='<span style="font-size:14.5px;font-weight:500;color:var(--text)">'+(AN[a.asp]||'')+'</span>';
-    h+='<span style="font-size:10.5px;padding:2px 8px;border-radius:12px;background:'+nc+'16;color:'+nc+'">'+(NL[a.nature]||'')+'</span>';
-    h+='</div>';
-    h+='<div style="font-size:11.5px;color:var(--text3)">'+a.keys+'</div>';
-    h+='</div>';
-    h+='<div style="flex-shrink:0;text-align:right"><div style="font-size:15px;font-weight:500;color:var(--text2)">'+a.deg+'°</div><div style="font-size:10px;color:var(--text3)">ორბი '+a.orb+'</div></div>';
-    h+='</summary>';
-    h+='<div style="padding:0 16px 16px 82px;border-top:.5px solid var(--border)">';
-    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 0">'+a.ka+'</p>';
-    h+='</div></details>';
-  });
-  var el=document.getElementById('asp-cards');
-  if(el){ el.innerHTML=h; }
-}
 
 let DEF_VENUS={id:'s-venus',type:'venus',title:'♀ ვენერა ნიშნებში',visible:true,tab:'♀ ვენერა'};
 let DEF_MARS={id:'s-mars',type:'mars',title:'♂ მარსი ნიშნებში',visible:true,tab:'♂ მარსი'};
@@ -7968,7 +7923,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v4.5';
+const SITE_VERSION='v4.6';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
