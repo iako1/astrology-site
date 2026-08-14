@@ -1247,6 +1247,11 @@ const GLOSSARY_TERMS=[
   {ka:'თ-ბ. ♓',en:'Pisces',cat:'ნიშნები',
    def:'წ. ს., მ-ბ. ჯ., ♆/♃ მმ. XII ნ. ს., ემp., ი. სფ: ტ. საკვ: მე ვ-ბ. ♀ ეგz. 27°.',
    url:'https://cafeastrology.com/pisces.html'}
+,
+  // === ასპექტების ტერმინები ===
+  {ka:'მაჟორული ასპექტები',en:'Major aspects',cat:'ასპექტები',
+   def:'ხუთი ძირითადი ასპექტი: კონიუნქცია (0°), სექსტილი (60°), კვადრატი (90°), ტრინი (120°) და ოპოზიცია (180°). ისინი პტოლემეოსის სისტემიდან მოდის და ნატალური კარტის ანალიზის საფუძველია. ორბი 4-დან 8 გრადუსამდე მერყეობს ობიექტის მიხედვით.',
+   url:'https://cafeastrology.com/natal/aspects.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -2939,7 +2944,7 @@ function renderAspectsSection(sec){
   h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
   h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(124,58,237,.10);display:flex;align-items:center;justify-content:center;font-size:22px">⚡</div>';
   h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">პლანეტარული ასპექტები</div>';
-  h+='<div style="font-size:12px;color:var(--text3)">505 ასპექტი · 101 წყვილი · პლანეტები, კუთხოვანი და სენსიტიური წერტილები</div></div></div>';
+  h+='<div style="font-size:12px;color:var(--text3)">505 მაჟორული ასპექტი · 101 წყვილი · პლანეტები, კუთხოვანი და სენსიტიური წერტილები</div></div></div>';
   h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">ასპექტი არის კუთხე, რომელსაც ორი პლანეტა ქმნის ზოდიაქოს წრეზე. ის აკავშირებს ამ ორი პლანეტის ენერგიას და გვიჩვენებს, როგორ თანამშრომლობს ან ედავება ერთმანეთს ადამიანის ორი შინაგანი ნაწილი. <strong>ორბი</strong> დაშვებული ცდომილებაა — რაც უფრო ზუსტია კუთხე, მით ძლიერია ასპექტი.</div>';
   h+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">';
   h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(22,163,74,.10);color:#16a34a">⚹ △ ჰარმონიული</span>';
@@ -2971,6 +2976,43 @@ function renderAspectsSection(sec){
     h+='</div></div>';
   });
   h+='<div id="asp-cards" style="margin-top:26px"><div style="text-align:center;padding:34px 20px;border:.5px dashed var(--border);border-radius:16px"><div style="font-size:26px;opacity:.35;margin-bottom:8px">⚹ △ □ ☍</div><div style="font-size:13px;color:var(--text3)">აირჩიეთ პლანეტების წყვილი ზემოთ</div></div></div>';
+  h+=renderMinorAspectsInfo();
+  return h;
+}
+
+function renderMinorAspectsInfo(){
+  var MIN=[
+    {s:'⚺',d:30,o:'2°',n:'რბილი',ka:'ნახევარსექსტილი',en:'Semi-sextile',c:'#16a34a',t:'მეზობელი ნიშნების ასპექტი. კავშირი სუსტია, მაგრამ მუდმივი — ორი სფერო ერთმანეთს შეუმჩნევლად და ნელა ეხმარება. დრამას არ ქმნის და სწორედ ამიტომ ხშირად შეუმჩნეველი რჩება, თუმცა ხანგრძლივ პერსპექტივაში მისი გავლენა შესამჩნევია.'},
+    {s:'∠',d:45,o:'2°',n:'დაძაბული',ka:'ნახევარკვადრატი',en:'Semi-square',c:'#dc2626',t:'კვადრატის ჩუმი ვერსია. ორი სფერო ერთმანეთს მუდმივად ეხახუნება, ოღონდ ღია კონფლიქტის გარეშე — ეს უფრო გაღიზიანებაა, ვიდრე ბრძოლა. დაძაბულობა თანდათან გროვდება და ხშირად უმნიშვნელო მიზეზით იფრქვევა. იოჰანეს კეპლერმა შემოიღო.'},
+    {s:'Q',d:72,o:'2°',n:'შემოქმედებითი',ka:'კვინტილი',en:'Quintile',c:'#7c3aed',t:'წრის მეხუთედი. შემოქმედებითი ნიჭის ასპექტია — ორი სფერო ისე ერწყმის, რომ რაღაც უნიკალური იქმნება. კვინტილი ჩუმია და ხშირად მხოლოდ მოწიფულ ასაკში ვლინდება, როცა ადამიანი საკუთარ ხელწერას პოულობს. კეპლერის აღმოჩენაა.'},
+    {s:'⚼',d:135,o:'2°',n:'დაძაბული',ka:'სესკვიკვადრატი',en:'Sesquiquadrate',c:'#dc2626',t:'კვადრატი პლუს ნახევარკვადრატი. დაგროვილი დაძაბულობის ასპექტია: ორი სფერო დიდხანს თანაარსებობს ჩუმად, სანამ წნეხი კრიტიკულ ზღვარს არ მიაღწევს — შემდეგ ცვლილება უეცრად და მკვეთრად ხდება.'},
+    {s:'⚻',d:150,o:'3°',n:'დაძაბული',ka:'კვინკუნქსი',en:'Quincunx / Inconjunct',c:'#dc2626',t:'ყველაზე ხშირად გამოყენებული მინორული ასპექტი. აკავშირებს ორ სფეროს, რომელთაც არც სტიქია აქვთ საერთო, არც ჯვარი — ისინი ერთმანეთს ვერ ხედავენ. ერთის დაკმაყოფილება მეორეს აზარალებს და ადამიანი მუდმივ კორექტირებას ახდენს. ტრადიციულად ჯანმრთელობასთანაც არის დაკავშირებული.'},
+  ];
+  var h='<details style="margin-top:30px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:18px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:38px;height:38px;border-radius:50%;background:rgba(100,116,139,.12);display:flex;align-items:center;justify-content:center;font-size:17px">⚻</div>';
+  h+='<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:500;color:var(--text)">მინორული ასპექტები</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">5 ტიპი · საცნობარო ინფორმაცია</div></div>';
+  h+='<span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 20px;border-top:.5px solid var(--border)">';
+  h+='<p style="font-size:13px;color:var(--text2);line-height:1.8;margin:16px 0 18px">ხუთი მაჟორული ასპექტის გარდა (☌ ⚹ □ △ ☍) არსებობს მინორული ასპექტებიც. ისინი უფრო სუსტია, ვიწრო ორბი აქვთ და ნატალურ ანალიზში დამხმარე როლს ასრულებენ — მთავარ სურათს არ ცვლიან, მაგრამ ნიუანსს ამატებენ. დამწყებისთვის რეკომენდებულია ჯერ მაჟორული ასპექტების ათვისება.</p>';
+  MIN.forEach(function(m){
+    h+='<div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;opacity:.85">'+aspAngleSVG(m.d,m.c,46)+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px">';
+    h+='<span style="font-size:17px;color:'+m.c+'">'+m.s+'</span>';
+    h+='<span style="font-size:14px;font-weight:500;color:var(--text)">'+m.ka+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+m.en+'</span>';
+    h+='<span style="font-size:10.5px;padding:2px 8px;border-radius:12px;background:'+m.c+'16;color:'+m.c+'">'+m.n+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3);margin-left:auto">'+m.d+'° · ორბი '+m.o+'</span>';
+    h+='</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.75">'+m.t+'</div>';
+    h+='</div></div>';
+  });
+  h+='<div style="margin-top:16px;padding:12px 14px;border-radius:10px;background:var(--bg2)">';
+  h+='<div style="font-size:11.5px;color:var(--text3);line-height:1.7">უფრო იშვიათი ასპექტებია ბიკვინტილი (144°), სეპტილი (51°26′) და ნოვილი (40°). ისინი სპეციალიზებულ ანალიზში გამოიყენება და სტანდარტულ ნატალურ კარტში იშვიათად აღინიშნება.</div>';
+  h+='</div></div></details>';
   return h;
 }
 
@@ -7865,7 +7907,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v4.3';
+const SITE_VERSION='v4.4';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
