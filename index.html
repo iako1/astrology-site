@@ -2952,7 +2952,7 @@ function renderAspectsSection(sec){
   h+='<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(124,58,237,.10);color:#7c3aed">☌ ნეიტრალური</span>';
   h+='</div></div>';
 
-  ORDER.forEach(function(P1){
+  ORDER.forEach(function(P1,gi){
     var mine=DEF_ASPECTS_DATA.filter(function(a){return a.p1===P1});
     if(!mine.length) return;
     var pairs=[];
@@ -2960,24 +2960,85 @@ function renderAspectsSection(sec){
     var col=PC[P1]||'#64748b';
     h+='<div style="margin-bottom:22px">';
     h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">';
-    var fs=(P1==='Asc'||P1==='MC')?'12px':'19px';h+='<div style="width:34px;height:34px;border-radius:50%;background:'+col+'18;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:'+fs+';color:'+col+'">'+P1+'</div>';
+    var fs=(P1==='Asc'||P1==='MC')?'12px':'19px';
+    h+='<div style="width:34px;height:34px;border-radius:50%;background:'+col+'18;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:'+fs+';color:'+col+'">'+P1+'</div>';
     h+='<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:500;color:var(--text)">'+(PN[P1]||P1)+' ასპექტები</div>';
-    var gen=(['♅','♆','♇'].indexOf(P1)>=0);var ang=(P1==='Asc'||P1==='MC');h+='<div style="font-size:11px;color:var(--text3)">'+(pairs.length*5)+' ასპექტი · '+pairs.length+' წყვილი'+(gen?' · თაობრივი':'')+(ang?' · კუთხოვანი წერტილი':'')+'</div></div>';
+    var gen=(['♅','♆','♇'].indexOf(P1)>=0), ang=(P1==='Asc'||P1==='MC');
+    h+='<div style="font-size:11px;color:var(--text3)">'+(pairs.length*5)+' ასპექტი · '+pairs.length+' წყვილი'+(gen?' · თაობრივი':'')+(ang?' · კუთხოვანი წერტილი':'')+'</div></div>';
     h+='<div style="flex:1;height:1px;background:linear-gradient(to right,'+col+'30,transparent)"></div></div>';
     h+='<div style="display:flex;flex-wrap:wrap;gap:7px">';
-    pairs.forEach(function(p2){
-      h+='<button data-pair="'+P1+'|'+p2+'" onclick="showAspectPair(this.dataset.pair)" id="ap-'+P1+'-'+p2+'" '
+    pairs.forEach(function(p2,pi){
+      h+='<button data-pair="'+P1+'|'+p2+'" data-slot="'+gi+'" onclick="showAspectPair(this.dataset.pair,this.dataset.slot)" id="ap-'+P1+'-'+p2+'" '
        + 'style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:22px;border:.5px solid var(--border);background:var(--bg);cursor:pointer;transition:all .15s">'
        + '<span style="font-size:16px;color:'+col+'">'+P1+'</span>'
        + '<span style="font-size:11px;color:var(--text3)">×</span>'
        + '<span style="font-size:16px;color:'+(PC[p2]||'#64748b')+'">'+p2+'</span>'
        + '<span style="font-size:11.5px;color:var(--text3);margin-left:2px">'+(PF[p2]||'')+'</span></button>';
     });
-    h+='</div></div>';
+    h+='</div>';
+    h+='<div class="asp-slot" id="asp-slot-'+gi+'"></div>';
+    h+='</div>';
   });
-  h+='<div id="asp-cards" style="margin-top:26px"><div style="text-align:center;padding:34px 20px;border:.5px dashed var(--border);border-radius:16px"><div style="font-size:26px;opacity:.35;margin-bottom:8px">⚹ △ □ ☍</div><div style="font-size:13px;color:var(--text3)">აირჩიეთ პლანეტების წყვილი ზემოთ</div></div></div>';
   h+=renderMinorAspectsInfo();
   return h;
+}
+
+var ASP_OPEN_PAIR=null;
+
+function showAspectPair(pair,slot){
+  var parts=pair.split('|'), p1=parts[0], p2=parts[1];
+  var AN={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია'};
+  var NC={'easy':'#16a34a','hard':'#dc2626','neutral':'#7c3aed'};
+  var NL={'easy':'ჰარმონიული','hard':'დაძაბული','neutral':'ნეიტრალური'};
+  var PF={'☉':'მზე','☽':'მთვარე','☿':'მერკური','♀':'ვენერა','♂':'მარსი','♃':'იუპიტერი','♄':'სატურნი','♅':'ურანი','♆':'ნეპტუნი','♇':'პლუტონი','Asc':'ასცენდენტი','MC':'შუა ცა','⚕':'ქირონი','⚫':'ლილითი','☊':'ჩრდ. კვანძი'};
+  var PC={'☉':'#e8a33d','☽':'#7b8fa8','☿':'#4895ef','♀':'#db2777','♂':'#e85d04','♃':'#2563a8','♄':'#7a6a8e','♅':'#0ea5a4','♆':'#5b7cd8','♇':'#8b5a5a','Asc':'#8b5cf6','MC':'#0d9488','⚕':'#16a34a','⚫':'#6d28d9','☊':'#0891b2'};
+
+  document.querySelectorAll('.asp-slot').forEach(function(s){ s.innerHTML=''; });
+  document.querySelectorAll('[id^="ap-"]').forEach(function(b){
+    b.style.background='var(--bg)'; b.style.borderColor='var(--border)';
+  });
+
+  if(ASP_OPEN_PAIR===pair){ ASP_OPEN_PAIR=null; return; }
+  ASP_OPEN_PAIR=pair;
+
+  var btn=document.getElementById('ap-'+p1+'-'+p2);
+  if(btn){ btn.style.background='rgba(124,58,237,.09)'; btn.style.borderColor='#7c3aed'; }
+
+  var filtered=DEF_ASPECTS_DATA.filter(function(a){return a.p1===p1&&a.p2===p2});
+  var h='<div style="margin-top:14px;padding-top:2px">';
+  h+='<div style="border:.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;background:var(--bg2);display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
+  h+='<div style="display:flex;align-items:center;gap:12px">';
+  h+='<div style="text-align:center"><div style="font-size:30px;color:'+(PC[p1]||'')+'">'+p1+'</div><div style="font-size:10.5px;color:var(--text3)">'+(PF[p1]||p1)+'</div></div>';
+  h+='<span style="font-size:15px;color:var(--text3)">⟺</span>';
+  h+='<div style="text-align:center"><div style="font-size:30px;color:'+(PC[p2]||'')+'">'+p2+'</div><div style="font-size:10.5px;color:var(--text3)">'+(PF[p2]||p2)+'</div></div>';
+  h+='</div>';
+  h+='<div style="flex:1;min-width:110px;font-size:12px;color:var(--text3);line-height:1.6">ხუთი ასპექტი. დააჭირეთ სრული აღწერისთვის.</div>';
+  h+='<button onclick="showAspectPair(\''+pair+'\','+slot+')" style="border:none;background:transparent;cursor:pointer;color:var(--text3);font-size:18px;padding:4px 8px;line-height:1">✕</button>';
+  h+='</div>';
+
+  filtered.forEach(function(a){
+    var nc=NC[a.nature]||'#7c3aed';
+    h+='<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;opacity:.9">'+aspAngleSVG(a.deg,nc,52)+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">';
+    h+='<span style="font-size:18px;color:'+nc+'">'+a.asp+'</span>';
+    h+='<span style="font-size:14.5px;font-weight:500;color:var(--text)">'+(AN[a.asp]||'')+'</span>';
+    h+='<span style="font-size:10.5px;padding:2px 8px;border-radius:12px;background:'+nc+'16;color:'+nc+'">'+(NL[a.nature]||'')+'</span>';
+    h+='</div>';
+    h+='<div style="font-size:11.5px;color:var(--text3)">'+a.keys+'</div>';
+    h+='</div>';
+    h+='<div style="flex-shrink:0;text-align:right"><div style="font-size:15px;font-weight:500;color:var(--text2)">'+a.deg+'°</div><div style="font-size:10px;color:var(--text3)">ორბი '+a.orb+'</div></div>';
+    h+='</summary>';
+    h+='<div style="padding:0 16px 16px 82px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 0">'+a.ka+'</p>';
+    h+='</div></details>';
+  });
+  h+='</div>';
+
+  var el=document.getElementById('asp-slot-'+slot);
+  if(el) el.innerHTML=h;
 }
 
 function renderMinorAspectsInfo(){
@@ -7907,7 +7968,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v4.4';
+const SITE_VERSION='v4.5';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
