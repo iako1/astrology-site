@@ -1332,6 +1332,11 @@ const GLOSSARY_TERMS=[
   {ka:'ეფემერიდი',en:'Ephemeris',cat:'პროგნოზი',
    def:'ცხრილი, რომელიც აჩვენებს პლანეტების პოზიციას ყოველი დღისთვის. ტრანზიტების გამოსათვლელად აუცილებელია: ნატალურ კარტს ადარებ მიმდინარე დღის ეფემერიდს და ხედავ, რომელი პლანეტა რომელ წერტილს ეხება.',
    url:'https://www.astro.com/swisseph/swepha_e.htm'}
+,
+  // === დიგნიტეტები ===
+  {ka:'არსებითი დიგნიტეტი',en:'Essential Dignity',cat:'დიგნიტეტები',
+   def:'პლანეტის ძალა ნიშნის მიხედვით. ხუთი დონე: სახლი (საკუთარი ნიშანი), ეგზალტაცია, ტრიპლიციტეტი, ტერმინი და დეკანატი. თანამედროვე პრაქტიკაში ძირითადად პირველი ორი და მათი საპირისპიროები გამოიყენება. ტრადიციულ ასტროლოგიაში კარტის შეფასების ერთ-ერთი პირველი ნაბიჯია.',
+   url:'https://www.skyscript.co.uk/dignities.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -3685,6 +3690,122 @@ function renderTransitTips(){
 }
 
 
+const DEF_DIGN=[
+  {s:'☉',n:'მზე',dom:'♌ ლომი',ex:'♈ ვერძი 19°',det:'♒ მერწყული',fall:'♎ სასწორი 19°',mod:0,t:'მზე ლომში სრული ძალით ბრწყინავს — ეს მისი საკუთარი სახლია. ვერძში ეგზალტაციაშია: ახალი დასაწყისის ენერგია მზის ბუნებას აძლიერებს. მერწყულში ის კოლექტივს ემორჩილება და პირადი ბრწყინვა ბუნდოვნდება, სასწორში კი სხვაზე დამოკიდებული ხდება.'},
+  {s:'☽',n:'მთვარე',dom:'♋ კირჩხიბი',ex:'♉ კურო 3°',det:'♑ თხის რქა',fall:'♏ მორიელი 3°',mod:0,t:'მთვარე კირჩხიბში საკუთარ სახლშია — ემოცია თავისუფლად მიედინება. კუროში ეგზალტაციაშია: მიწის სტაბილურობა გრძნობებს საყრდენს აძლევს. თხის რქაში ის ცივდება და თავს იკავებს, მორიელში კი ისეთ სიღრმეში ვარდება, საიდანაც ამოსვლა უჭირს.'},
+  {s:'☿',n:'მერკური',dom:'♊ ტყუპები · ♍ ქალწული',ex:'♍ ქალწული 15°',det:'♐ მშვილდოსანი · ♓ თევზები',fall:'♓ თევზები 15°',mod:0,t:'მერკური ერთადერთი პლანეტაა, რომელიც ერთსა და იმავე ნიშანში მართავს და ეგზალტაციაშიცაა — ქალწულში მისი ანალიტიკური ბუნება სრულყოფილად მუშაობს. თევზებში პირიქით: ლოგიკა ინტუიციაში იშლება, ზუსტი ფორმულირება უჭირს.'},
+  {s:'♀',n:'ვენერა',dom:'♉ კურო · ♎ სასწორი',ex:'♓ თევზები 27°',det:'♏ მორიელი · ♈ ვერძი',fall:'♍ ქალწული 27°',mod:0,t:'ვენერა კუროში სენსუალურია, სასწორში კი სოციალური — ორივე მისი სახლია. თევზებში ეგზალტაციაშია: უპირობო სიყვარული მისი უმაღლესი გამოვლინებაა. მორიელში ის ეჭვიანობასა და ვნებაში ვარდება, ქალწულში კი კრიტიკა სიყვარულს ჩრდილავს.'},
+  {s:'♂',n:'მარსი',dom:'♈ ვერძი · ♏ მორიელი',ex:'♑ თხის რქა 28°',det:'♎ სასწორი · ♉ კურო',fall:'♋ კირჩხიბი 28°',mod:0,t:'მარსი ვერძში პირდაპირია, მორიელში კი სტრატეგიული. თხის რქაში ეგზალტაციაშია: დისციპლინა მის ენერგიას მიმართულებას აძლევს — ეს მარსის ყველაზე ეფექტური მდგომარეობაა. სასწორში ის კომპრომისში იკარგება, კირჩხიბში კი ბრაზი ჩაიხშობა და ირიბად ვლინდება.'},
+  {s:'♃',n:'იუპიტერი',dom:'♐ მშვილდოსანი · ♓ თევზები',ex:'♋ კირჩხიბი 15°',det:'♊ ტყუპები · ♍ ქალწული',fall:'♑ თხის რქა 15°',mod:0,t:'იუპიტერი მშვილდოსანში ფილოსოფიურია, თევზებში კი თანამგრძნობი. კირჩხიბში ეგზალტაციაშია: გულუხვობა ემოციურ სითბოს ხვდება. ტყუპებსა და ქალწულში დეტალები მის ფართო ხედვას აქუცმაცებს, თხის რქაში კი შეზღუდვა მის ბუნებას ეწინააღმდეგება.'},
+  {s:'♄',n:'სატურნი',dom:'♑ თხის რქა · ♒ მერწყული',ex:'♎ სასწორი 21°',det:'♋ კირჩხიბი · ♌ ლომი',fall:'♈ ვერძი 21°',mod:0,t:'სატურნი თხის რქაში სტრუქტურას ქმნის, მერწყულში კი სოციალურ წესრიგს. სასწორში ეგზალტაციაშია: სამართლიანობა და ბალანსი მისი უმაღლესი გამოვლინებაა. კირჩხიბსა და ლომში სითბო და სპონტანურობა მას უცხოა, ვერძში კი მოუთმენლობა მის ბუნებას ეწინააღმდეგება.'},
+  {s:'♅',n:'ურანი',dom:'♒ მერწყული',ex:'♏ მორიელი',det:'♌ ლომი',fall:'♉ კურო',mod:1,t:'თანამედროვე ატრიბუცია. ურანი მერწყულში ტრადიციულ სატურნს ცვლის — ინოვაცია და კოლექტიური იდეა მისი ბუნებაა. ლომში პირადი ბრწყინვა მის უპიროვნო ხასიათს ეწინააღმდეგება.'},
+  {s:'♆',n:'ნეპტუნი',dom:'♓ თევზები',ex:'♋ კირჩხიბი',det:'♍ ქალწული',fall:'♑ თხის რქა',mod:1,t:'თანამედროვე ატრიბუცია. ნეპტუნი თევზებში ტრადიციულ იუპიტერს ცვლის — უსაზღვრობა და თანაგრძნობა მისი ბუნებაა. ქალწულში ზუსტი ანალიზი მის ბუნდოვან ხასიათს ეწინააღმდეგება.'},
+  {s:'♇',n:'პლუტონი',dom:'♏ მორიელი',ex:'♌ ლომი',det:'♉ კურო',fall:'♒ მერწყული',mod:1,t:'თანამედროვე ატრიბუცია. პლუტონი მორიელში ტრადიციულ მარსს ცვლის — გარდაქმნა და ღრმა ძალა მისი ბუნებაა. კუროში სტაბილურობა მის მუდმივი ცვლილების ხასიათს ეწინააღმდეგება.'},
+];
+const DEF_DIGN_SIGNS=[
+  {sym:'♈',n:'ვერძი',r:'♂',e:'☉',d:'♀',f:'♄'},
+  {sym:'♉',n:'კურო',r:'♀',e:'☽',d:'♂',f:'—'},
+  {sym:'♊',n:'ტყუპები',r:'☿',e:'—',d:'♃',f:'—'},
+  {sym:'♋',n:'კირჩხიბი',r:'☽',e:'♃',d:'♄',f:'♂'},
+  {sym:'♌',n:'ლომი',r:'☉',e:'—',d:'♄',f:'—'},
+  {sym:'♍',n:'ქალწული',r:'☿',e:'☿',d:'♃',f:'♀'},
+  {sym:'♎',n:'სასწორი',r:'♀',e:'♄',d:'♂',f:'☉'},
+  {sym:'♏',n:'მორიელი',r:'♂',e:'—',d:'♀',f:'☽'},
+  {sym:'♐',n:'მშვილდოსანი',r:'♃',e:'—',d:'☿',f:'—'},
+  {sym:'♑',n:'თხის რქა',r:'♄',e:'♂',d:'☽',f:'♃'},
+  {sym:'♒',n:'მერწყული',r:'♄',e:'—',d:'☉',f:'—'},
+  {sym:'♓',n:'თევზები',r:'♃',e:'♀',d:'☿',f:'☿'},
+];
+const DEF_DIGN_TERMS=[
+  {ka:'სახლი',en:'Domicile · Rulership',c:'#16a34a',t:'პლანეტა საკუთარ ნიშანშია და სრული ძალით მოქმედებს. ეს მისი ბუნებრივი გარემოა — აქ მას არაფერი უშლის. ყველაზე ძლიერი დიგნიტეტი.'},
+  {ka:'ეგზალტაცია',en:'Exaltation',c:'#2563a8',t:'პლანეტა სტუმრადაა ნიშანში, რომელიც მას განსაკუთრებით უწყობს ხელს. ძალა მაღალია, ოღონდ ოდნავ გადაჭარბებულიც — ეგზალტირებული პლანეტა ხშირად საკუთარ ზომას ვერ ხედავს. ტრადიციულად თითოეულს ზუსტი გრადუსი აქვს.'},
+  {ka:'დაცემა',en:'Detriment',c:'#dc2626',t:'პლანეტა საკუთარი სახლის საპირისპირო ნიშანშია. აქ მას გარემო ეწინააღმდეგება და ენერგიის გამოხატვა ძალისხმევას მოითხოვს. ეს არ ნიშნავს ცუდს — ნიშნავს, რომ ადამიანმა ეს ფუნქცია ცნობიერად უნდა ისწავლოს.'},
+  {ka:'ვარდნა',en:'Fall',c:'#dc2626',t:'პლანეტა ეგზალტაციის საპირისპირო ნიშანშია — ყველაზე სუსტი პოზიცია. ის აქ თავს არაკომფორტულად გრძნობს და ხშირად თავს არიდებს გამოვლენას. სამაგიეროდ სწორედ ასეთი პლანეტა ხდება ცხოვრებისეული მუშაობის მთავარი წერტილი.'},
+  {ka:'პერეგრინი',en:'Peregrine',c:'#7c3aed',t:'პლანეტა, რომელსაც არც ერთი დიგნიტეტი არ აქვს — არც სახლი, არც ეგზალტაცია, არც დაცემა, არც ვარდნა. ის ნეიტრალურია და მოქმედებს ისე, როგორც გარემო კარნახობს. ტრადიციულ ასტროლოგიაში პერეგრინი პლანეტა არასტაბილურად ითვლებოდა.'},
+  {ka:'აქციდენტური დიგნიტეტი',en:'Accidental Dignity',c:'#0d9488',t:'ნიშნის გარდა პლანეტის ძალაზე მოქმედებს სახლიც: კუთხოვან სახლში მდგარი პლანეტა გაცილებით ძლიერია, ვიდრე დაცემად სახლში. ასევე მნიშვნელოვანია რეტროგრადულობა, მზესთან სიახლოვე და ასპექტები. ესენია აქციდენტური, ანუ გარემოებითი დიგნიტეტები.'},
+];
+
+let DEF_DIGN_SECTION={id:'s-dign',type:'dign',title:'⚖ დიგნიტეტები',visible:true,tab:'⚖ დიგნიტეტები'};
+
+function renderDignSection(sec){
+  var PC={'☉':'#e8a33d','☽':'#7b8fa8','☿':'#4895ef','♀':'#db2777','♂':'#e85d04','♃':'#2563a8','♄':'#7a6a8e','♅':'#0ea5a4','♆':'#5b7cd8','♇':'#8b5a5a'};
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:22px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(122,106,142,.14);display:flex;align-items:center;justify-content:center;font-size:20px">⚖</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">არსებითი დიგნიტეტები</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">პლანეტის ძალა ნიშნის მიხედვით</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">ერთი და იგივე პლანეტა სხვადასხვა ნიშანში სხვადასხვა ძალით მოქმედებს. მარსი ვერძში სრული ძალითაა, სასწორში კი ძლივს — ეს არ არის შეფასება „კარგი“ და „ცუდი“, არამედ იმის მაჩვენებელი, რამდენად უწყობს ნიშანი პლანეტის ბუნებას ხელს. ტრადიციულ ასტროლოგიაში დიგნიტეტები კარტის შეფასების ერთ-ერთი პირველი ნაბიჯია.</div></div>';
+
+  // ტერმინები
+  h+='<details style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden;margin-bottom:16px">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px">◈</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">ექვსი ტერმინი</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">რას ნიშნავს თითოეული დიგნიტეტი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+  DEF_DIGN_TERMS.forEach(function(x){
+    h+='<div style="padding:13px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">';
+    h+='<span style="width:9px;height:9px;border-radius:50%;background:'+x.c+'"></span>';
+    h+='<span style="font-size:13.5px;font-weight:500;color:var(--text)">'+x.ka+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+x.en+'</span></div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div>';
+  });
+  h+='</div></details>';
+
+  // ნიშნების ცხრილი
+  h+='<div style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);padding:18px 20px;margin-bottom:16px">';
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:4px">ცხრილი ნიშნების მიხედვით</div>';
+  h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:14px">რომელი პლანეტა როგორ გრძნობს თავს თითოეულ ნიშანში</div>';
+  h+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;min-width:340px">';
+  h+='<tr style="border-bottom:.5px solid var(--border)">';
+  ['ნიშანი','სახლი','ეგზალტ.','დაცემა','ვარდნა'].forEach(function(t,i){
+    var col=['var(--text3)','#16a34a','#2563a8','#dc2626','#dc2626'][i];
+    h+='<th style="text-align:'+(i===0?'left':'center')+';padding:8px 6px;font-weight:500;font-size:11px;color:'+col+'">'+t+'</th>';
+  });
+  h+='</tr>';
+  DEF_DIGN_SIGNS.forEach(function(x){
+    h+='<tr style="border-bottom:.5px solid var(--border)">';
+    h+='<td style="padding:9px 6px;white-space:nowrap"><span style="font-size:16px">'+x.sym+'</span> <span style="font-size:12px;color:var(--text2)">'+x.n+'</span></td>';
+    [[x.r,'#16a34a'],[x.e,'#2563a8'],[x.d,'#dc2626'],[x.f,'#dc2626']].forEach(function(p){
+      var v=p[0];
+      h+='<td style="text-align:center;padding:9px 6px;font-size:16px;color:'+(v==='—'?'var(--text3)':p[1])+'">'+v+'</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</table></div>';
+  h+='<div style="margin-top:12px;padding:11px 13px;border-radius:10px;background:var(--bg2);font-size:11.5px;color:var(--text3);line-height:1.7">ცხრილი ტრადიციულ, შვიდპლანეტიან სისტემას ეყრდნობა. ტირე ნიშნავს, რომ ამ ნიშანში ეგზალტაცია ან ვარდნა არ არის განსაზღვრული.</div>';
+  h+='</div>';
+
+  // პლანეტების ჭრილი
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:20px 0 10px">პლანეტების მიხედვით</div>';
+  DEF_DIGN.forEach(function(x){
+    var col=PC[x.s]||'#64748b';
+    h+='<details style="border:.5px solid var(--border);border-left:3px solid '+col+';border-radius:0 14px 14px 0;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:'+col+'16;display:flex;align-items:center;justify-content:center;font-size:20px;color:'+col+'">'+x.s+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">';
+    h+='<span style="font-size:14.5px;font-weight:500;color:var(--text)">'+x.n+'</span>';
+    if(x.mod) h+='<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg2);color:var(--text3)">თანამედროვე</span>';
+    h+='</div>';
+    h+='<div style="font-size:11.5px;color:#16a34a">'+x.dom+'</div></div></summary>';
+    h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 12px">'+x.t+'</p>';
+    h+='<div style="display:grid;gap:7px">';
+    [['სახლი',x.dom,'#16a34a'],['ეგზალტაცია',x.ex,'#2563a8'],['დაცემა',x.det,'#dc2626'],['ვარდნა',x.fall,'#dc2626']].forEach(function(r){
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;background:var(--bg2)">';
+      h+='<span style="width:8px;height:8px;border-radius:50%;background:'+r[2]+';flex-shrink:0"></span>';
+      h+='<span style="font-size:11.5px;color:var(--text3);min-width:76px">'+r[0]+'</span>';
+      h+='<span style="font-size:13px;color:var(--text2)">'+r[1]+'</span></div>';
+    });
+    h+='</div></div></details>';
+  });
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5061,7 +5182,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_ASC_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_ASC_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5075,6 +5196,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasDg=saved.some(s=>s.id==='s-dign');
   const hasTr=saved.some(s=>s.id==='s-transits');
   const hasAsc=saved.some(s=>s.id==='s-asc');
   const hasHouses=saved.some(s=>s.id==='s-houses');
@@ -5091,6 +5213,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasDg) saved.push(DEF_DIGN_SECTION);
   if(!hasTr) saved.push(DEF_TRANSIT_SECTION);
   if(!hasAsc) saved.push(DEF_ASC_SECTION);
   if(!hasHouses) saved.push(DEF_HOUSES_SECTION);
@@ -5682,7 +5805,7 @@ function renderAll(){
   const isSensitiveSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith';
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const sensitiveSecs=visible.filter(s=>isSensitiveSec(s));
-  const isAspectSec=s=>s.type==='aspects'||s.type==='houses'||s.type==='transits';
+  const isAspectSec=s=>s.type==='aspects'||s.type==='houses'||s.type==='transits'||s.type==='dign';
   const aspectSecs=visible.filter(s=>isAspectSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s)&&!isSensitiveSec(s)&&!isAspectSec(s));
   let firstPageId=null;
@@ -7234,6 +7357,7 @@ function renderSection(sec){
   if(sec.type==='moon-signs')return renderMoonInSignsSection(sec);
   if(sec.type==='asc')return renderAscSection(sec);
   if(sec.type==='transits')return renderTransitsSection(sec);
+  if(sec.type==='dign')return renderDignSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -8627,7 +8751,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v5.3';
+const SITE_VERSION='v5.4';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
