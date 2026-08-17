@@ -1337,6 +1337,14 @@ const GLOSSARY_TERMS=[
   {ka:'არსებითი დიგნიტეტი',en:'Essential Dignity',cat:'დიგნიტეტები',
    def:'პლანეტის ძალა ნიშნის მიხედვით. ხუთი დონე: სახლი (საკუთარი ნიშანი), ეგზალტაცია, ტრიპლიციტეტი, ტერმინი და დეკანატი. თანამედროვე პრაქტიკაში ძირითადად პირველი ორი და მათი საპირისპიროები გამოიყენება. ტრადიციულ ასტროლოგიაში კარტის შეფასების ერთ-ერთი პირველი ნაბიჯია.',
    url:'https://www.skyscript.co.uk/dignities.html'}
+,
+  // === სინასტრია ===
+  {ka:'სახლების გადაფარვა',en:'House Overlay',cat:'ურთიერთობები',
+   def:'სინასტრიის მეთოდი: ვუყურებთ, პარტნიორის პლანეტა შენს რომელ სახლში ხვდება. ეს აჩვენებს, ცხოვრების რომელ სფეროს ააქტიურებს ეს ადამიანი. გადაფარვა ორმხრივი არ არის — შენი პლანეტა შეიძლება მისი მეშვიდე სახლში იყოს, მისი კი შენს მეთორმეტეში, და კავშირი ორივესთვის სხვადასხვანაირად განიცდებოდეს.',
+   url:'https://cafeastrology.com/synastry.html'},
+  {ka:'კომპოზიტური კარტი',en:'Composite Chart',cat:'ურთიერთობები',
+   def:'ორი კარტიდან აგებული მესამე კარტი, რომელიც ორივე პლანეტის შუა წერტილებზეა დაფუძნებული. აღწერს თავად ურთიერთობას როგორც ცალკე არსებას და არა თითოეულ ადამიანს. კომპოზიტი რეალურ მომენტს არ შეესაბამება — ის მათემატიკური კონსტრუქციაა.',
+   url:'https://cafeastrology.com/synastry.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -3806,6 +3814,99 @@ function renderDignSection(sec){
 }
 
 
+const DEF_SYN=[
+  {g:'☉ ↔ ☽',n:'მზე და მთვარე',c:'#e8a33d',tag:'კლასიკური',t:'სინასტრიის ყველაზე მნიშვნელოვანი კონტაქტი და ტრადიციულად ქორწინების მთავარი მაჩვენებელი. ერთის ვინაობა მეორის ემოციურ ბუნებას ხვდება: მზის მფლობელი ბუნებრივად ანათებს, მთვარისა კი კვებავს და ამშვიდებს. კონიუნქცია და ტრინი ღრმა ურთიერთგაგებას იძლევა, ოპოზიცია კი მიზიდულობასთან ერთად მუდმივ დაძაბულობასაც. თუ ეს კონტაქტი არსებობს, კავშირს გამძლეობა აქვს.'},
+  {g:'♀ ↔ ♂',n:'ვენერა და მარსი',c:'#db2777',tag:'მიზიდულობა',t:'ფიზიკური და რომანტიკული მიზიდულობის მთავარი მაჩვენებელი. ვენერას მფლობელი იზიდავს, მარსისა მოქმედებს. კონიუნქცია მყისიერ ქიმიას იძლევა, კვადრატი კი დაძაბულ, ვნებიან მიზიდულობას, რომელიც ხშირად ჩხუბსა და შერიგებას შორის მერყეობს. ეს კონტაქტი მარტო კავშირს ვერ ინარჩუნებს — მას სხვა საყრდენი სჭირდება.'},
+  {g:'☉ ↔ ☉ · ☽ ↔ ☽',n:'ერთნაირი ნათურები',c:'#7b8fa8',tag:'სიმსუბუქე',t:'როცა ორივეს მზე ან მთვარე ერთმანეთს ეხება ჰარმონიულად, ადამიანები ერთნაირად ხედავენ სამყაროს ან ერთნაირად გრძნობენ. ეს კომფორტს იძლევა, ოღონდ ვნებას არა — ასეთი წყვილი ხშირად კარგი მეგობარია. თუ ეს ერთადერთი კონტაქტია, ურთიერთობას შეიძლება ბიძგი დააკლდეს.'},
+  {g:'♄ ↔ პირადი პლანეტა',n:'სატურნის კონტაქტი',c:'#7a6a8e',tag:'ხანგრძლივობა',t:'სატურნის კონტაქტის გარეშე ურთიერთობა იშვიათად გრძელდება — ეს არის ის წებო, რომელიც კავშირს ინარჩუნებს. ჰარმონიული ასპექტი პასუხისმგებლობასა და საიმედოობას იძლევა. დაძაბული კი ტვირთს: სატურნის მფლობელი მეორეს ზღუდავს ან აკრიტიკებს, ხოლო მეორე თავს არასაკმარისად გრძნობს. ორივე შემთხვევაში კავშირი გამძლეა — კითხვაა, სასიამოვნოცაა თუ არა.'},
+  {g:'♇ ↔ პირადი პლანეტა',n:'პლუტონის კონტაქტი',c:'#8b5a5a',tag:'ინტენსივობა',t:'ერთ-ერთი ყველაზე ძლიერი მიზიდულობის მაჩვენებელი და იმავდროულად ყველაზე სახიფათო. პლუტონის მფლობელი მეორეს ღრმად ცვლის — ხშირად ისე, რომ თავადაც ვერ ხვდება. კავშირი ტოტალურია: ან გარდაქმნის, ან ანგრევს. ეჭვიანობა, კონტროლი და ობსესია ამ კონტაქტის ტიპური თანამგზავრებია.'},
+  {g:'☊ ↔ პირადი პლანეტა',n:'კვანძების კონტაქტი',c:'#0891b2',tag:'ბედისწერული',t:'ტრადიციულად ბედისწერული შეხვედრის მაჩვენებელი. ჩრდილოეთის კვანძთან კონტაქტი ზრდისკენ უბიძგებს — ეს ადამიანი შენს განვითარებას ემსახურება. სამხრეთის კვანძთან კონტაქტი ნაცნობობის განცდას იძლევა, თითქოს უკვე იცნობდი, ოღონდ ხშირად ძველ ჩვევაშიც აბრუნებს.'},
+  {g:'♅ ↔ პირადი პლანეტა',n:'ურანის კონტაქტი',c:'#0ea5a4',tag:'არასტაბილური',t:'მყისიერი, ელვისებური მიზიდულობა. ურთიერთობა უეცრად იწყება და ხშირად ისევე უეცრად სრულდება. ურანის მფლობელი მეორეს თავისუფლებას ასწავლის, ოღონდ სტაბილურობას არ სთავაზობს. ეს კონტაქტი აღგზნებას იძლევა, უსაფრთხოებას კი არა.'},
+  {g:'♆ ↔ პირადი პლანეტა',n:'ნეპტუნის კონტაქტი',c:'#5b7cd8',tag:'იდეალიზაცია',t:'თავიდან სრულყოფილი სიყვარულის განცდა. ნეპტუნის მფლობელი მეორეს იდეალად ხედავს — და სწორედ ეს არის პრობლემა, რადგან რეალური ადამიანი იდეალს ვერ უძლებს. იმედგაცრუება თითქმის გარდაუვალია. ჰარმონიულ ასპექტში ეს ღრმა თანაგრძნობად იქცევა, დაძაბულში კი მოტყუებად ან თანადამოკიდებულებად.'},
+  {g:'♃ ↔ პირადი პლანეტა',n:'იუპიტერის კონტაქტი',c:'#2563a8',tag:'ზრდა',t:'ერთ-ერთი ყველაზე კეთილი კონტაქტი. იუპიტერის მფლობელი მეორეს ჰორიზონტს უფართოებს — ასწავლის, აიმედებს, შესაძლებლობებს უჩენს. კავშირი ორივესთვის სასარგებლოა. მინუსი ისაა, რომ იუპიტერი მარტო ვნებას ვერ ქმნის — საჭიროა სხვა კონტაქტიც.'},
+  {g:'Asc ↔ პლანეტა',n:'ასცენდენტთან კონტაქტი',c:'#8b5cf6',tag:'მყისიერი ცნობა',t:'როცა ერთის პლანეტა მეორის ასცენდენტს ეხება, პირველივე შეხვედრაზე ჩნდება ცნობის განცდა. ვენერა ასცენდენტზე მყისიერ მოწონებას იძლევა, მარსი — ფიზიკურ მიზიდულობას, სატურნი — სერიოზულობასა და დისტანციას, პლუტონი კი დაუძლეველ, თითქმის შემაშფოთებელ მიზიდულობას.'},
+];
+const DEF_SYN_OVER=[
+  {h:'I',t:'პარტნიორის პლანეტა შენს პირველ სახლში პირდაპირ შენს პიროვნებას ეხება. ის გავლენას ახდენს იმაზე, როგორ ხედავ საკუთარ თავს და როგორ წარმოგაჩენს სხვებთან. ძლიერი ურთიერთცნობის განცდა.'},
+  {h:'II',t:'პარტნიორი შენს ღირებულებებსა და ფინანსებს ეხება. ხშირად ის მატერიალურ სტაბილურობას გაძლევს ან პირიქით — ხარჯვის სტილს გიცვლის. თვითღირებულების განცდა ამ კავშირში ჩნდება.'},
+  {h:'III',t:'კომუნიკაციის ბუნებრივი კავშირი. ერთმანეთთან ლაპარაკი ადვილია, საერთო თემა ბევრი. ეს კარგი მეგობრობის საფუძველია, ოღონდ ღრმა ვნებას ცალკე არ იძლევა.'},
+  {h:'IV',t:'პარტნიორი შენს ფესვებსა და ემოციურ საყრდენს ეხება. მასთან შინაურულად გრძნობ თავს. ხშირად ეს კავშირი ოჯახად იქცევა ან ბავშვობის თემებს ააქტიურებს.'},
+  {h:'V',t:'რომანტიკისა და შემოქმედების სახლი — ერთ-ერთი საუკეთესო გადაფარვა შეყვარებისთვის. ერთად ყოფნა სახალისოა. ხშირად ბავშვების თემა ან საერთო შემოქმედებითი პროექტი.'},
+  {h:'VI',t:'პარტნიორი შენს ყოველდღიურობასა და ჯანმრთელობას ეხება. ეს პრაქტიკული კავშირია: ერთად ცხოვრება და საქმის კეთება კარგად გამოგდით. რომანტიკა ცალკე უნდა ეძებო.'},
+  {h:'VII',t:'კლასიკური პარტნიორული გადაფარვა. პარტნიორი ზუსტად იმად აღიქმება, ვისაც ეძებდი. ერთ-ერთი ყველაზე ძლიერი მაჩვენებელი სერიოზული ურთიერთობისა და ქორწინებისა.'},
+  {h:'VIII',t:'ღრმა, ინტენსიური და გარდამქმნელი კავშირი. ინტიმური მიზიდულობა ძლიერია, ისევე როგორც ფსიქოლოგიური სიღრმე. აქვე — საერთო ფინანსები, ეჭვიანობა და ძალაუფლების დინამიკა.'},
+  {h:'IX',t:'პარტნიორი შენს ჰორიზონტს უფართოებს: სწავლა, უცხოეთი, ფილოსოფია. ხშირად სხვა კულტურის ან განსხვავებული მსოფლმხედველობის ადამიანი. ერთად ზრდის განცდა.'},
+  {h:'X',t:'პარტნიორი შენს კარიერასა და საჯარო როლს ეხება. ის ან გეხმარება პროფესიულად, ან თავად ხდება შენი სტატუსის ნაწილი. ხშირად საქმიანი პარტნიორობა ან საჯარო წყვილი.'},
+  {h:'XI',t:'მეგობრობის საფუძველზე აშენებული კავშირი. საერთო ჯგუფი, საერთო მიზნები, თანასწორობა. ურთიერთობა მსუბუქია და თავისუფალი, ოღონდ ვნება ხშირად ნაკლები.'},
+  {h:'XII',t:'ყველაზე ბუნდოვანი გადაფარვა. კავშირი ღრმა და თითქმის ტელეპათიურია, მაგრამ ბევრი რამ გაუცნობიერებელი რჩება. ხშირად საიდუმლო ურთიერთობა, თავგანწირვა ან ისეთი კავშირი, რომლის ახსნაც ძნელია.'},
+];
+const DEF_SYN_RULES=[
+  {i:'∑',n:'დათვალე ბალანსი',t:'ერთი ძლიერი ასპექტი კავშირს არ განსაზღვრავს. დათვალე, რამდენი ჰარმონიული და რამდენი დაძაბული კონტაქტია. თუ მხოლოდ დაძაბულია — მიზიდულობა იქნება, სიმშვიდე კი არა. თუ მხოლოდ ჰარმონიული — კომფორტი იქნება, ბიძგი კი არა.'},
+  {i:'♄',n:'სატურნის გარეშე არ გრძელდება',t:'ვნება ვენერასა და მარსს მოაქვს, გამძლეობა კი სატურნს. ურთიერთობა, სადაც სატურნის კონტაქტი არ არის, ხშირად კაშკაშა და ხანმოკლეა. სატურნი მძიმეა, მაგრამ სწორედ ის ინარჩუნებს კავშირს.'},
+  {i:'⌂',n:'სახლების გადაფარვა ასპექტებზე ნაკლებ არ არის',t:'ხშირად სახლის გადაფარვა უფრო ზუსტად ხსნის ურთიერთობის ხასიათს, ვიდრე ასპექტები. თუ პარტნიორის პლანეტები შენს მეშვიდე ან მეხუთე სახლში ხვდება, ეს ძლიერი მაჩვენებელია, თუნდაც ასპექტები სუსტი იყოს.'},
+  {i:'↔',n:'გადაფარვა ორმხრივი არ არის',t:'შენი პლანეტა მისი მეშვიდე სახლში შეიძლება იყოს, მისი კი შენს მეთორმეტეში. კავშირი ორივესთვის სხვადასხვანაირად განიცდება და სწორედ ეს ხსნის, რატომ ხედავს ერთი მას სერიოზულად და მეორე — ბუნდოვნად.'},
+  {i:'⚖',n:'სინასტრია არ არის განაჩენი',t:'რთული სინასტრია არ ნიშნავს, რომ ურთიერთობა ვერ იმუშავებს — ის ნიშნავს, რომ სამუშაო მეტია. ადვილი სინასტრია არ იძლევა გარანტიას. კარტი აჩვენებს დინამიკას და არა შედეგს.'},
+];
+
+let DEF_SYN_SECTION={id:'s-syn',type:'syn',title:'♥ სინასტრია',visible:true,tab:'♥ სინასტრია'};
+
+function renderSynSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:22px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(219,39,119,.12);display:flex;align-items:center;justify-content:center;font-size:19px">♥</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">სინასტრია</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">ორი კარტის შედარება · ურთიერთობის ასტროლოგია</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">სინასტრია ორი ნატალური კარტის ერთმანეთზე დადებაა. ვუყურებთ ორ რამეს: <strong>ასპექტებს</strong> ერთის პლანეტებსა და მეორისას შორის, და <strong>სახლების გადაფარვას</strong> — რომელ სახლში ხვდება პარტნიორის პლანეტა შენს კარტში. პირველი გვეუბნება, როგორ რეაგირებთ ერთმანეთზე; მეორე კი — ცხოვრების რომელ სფეროს ეხება ეს კავშირი.</div></div>';
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:0 0 4px">საკვანძო კონტაქტები</div>';
+  h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:12px">10 შეხება, რომელსაც ასტროლოგი პირველად ეძებს</div>';
+  DEF_SYN.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-left:3px solid '+x.c+';border-radius:0 14px 14px 0;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;min-width:64px;text-align:center;font-size:17px;color:'+x.c+'">'+x.g+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+    h+='<span style="font-size:14px;font-weight:500;color:var(--text)">'+x.n+'</span>';
+    h+='<span style="font-size:10.5px;padding:2px 8px;border-radius:12px;background:'+x.c+'16;color:'+x.c+'">'+x.tag+'</span>';
+    h+='</div></div></summary>';
+    h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 0">'+x.t+'</p></div></details>';
+  });
+
+  h+='<details style="margin-top:20px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(37,99,168,.12);display:flex;align-items:center;justify-content:center;font-size:14px">⌂</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">სახლების გადაფარვა</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">პარტნიორის პლანეტა შენს სახლში</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+  h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:14px 0 6px">როცა პარტნიორის პლანეტა შენს სახლში ხვდება, ის ამ სფეროს ააქტიურებს. გადაფარვა <strong>ორმხრივი არ არის</strong> — შენი პლანეტა შეიძლება მისი მეშვიდე სახლში იყოს, მისი კი შენს მეთორმეტეში, და კავშირი ორივესთვის სხვადასხვანაირად განიცდებოდეს.</p>';
+  DEF_SYN_OVER.forEach(function(x){
+    h+='<div style="display:flex;gap:12px;padding:12px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:var(--text2)">'+x.h+'</div>';
+    h+='<div style="flex:1;min-width:0;font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div>';
+  });
+  h+='</div></details>';
+
+  h+='<details style="margin-top:12px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:14px">◐</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">როგორ წავიკითხოთ სინასტრია</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">5 პრაქტიკული წესი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 18px;border-top:.5px solid var(--border)">';
+  DEF_SYN_RULES.forEach(function(x){
+    h+='<div style="display:flex;gap:13px;padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)">'+x.i+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:4px">'+x.n+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
+  });
+  h+='<div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--bg2);font-size:12px;color:var(--text2);line-height:1.75">';
+  h+='<strong>კომპოზიტი და Davison.</strong> სინასტრიის გარდა არსებობს ორი მეთოდი, სადაც ორი კარტიდან ერთი მესამე იქმნება. <strong>კომპოზიტი</strong> ორი კარტის შუა წერტილებზეა აგებული და აღწერს თავად ურთიერთობას როგორც ცალკე არსებას. <strong>Davison</strong> ორი დაბადების თარიღისა და ადგილის შუალედს იყენებს და რეალურ, არსებულ მომენტს ეყრდნობა.</div>';
+  h+='</div></details>';
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5182,7 +5283,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_ASC_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5196,6 +5297,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasSy=saved.some(s=>s.id==='s-syn');
   const hasDg=saved.some(s=>s.id==='s-dign');
   const hasTr=saved.some(s=>s.id==='s-transits');
   const hasAsc=saved.some(s=>s.id==='s-asc');
@@ -5213,6 +5315,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasSy) saved.push(DEF_SYN_SECTION);
   if(!hasDg) saved.push(DEF_DIGN_SECTION);
   if(!hasTr) saved.push(DEF_TRANSIT_SECTION);
   if(!hasAsc) saved.push(DEF_ASC_SECTION);
@@ -5805,7 +5908,7 @@ function renderAll(){
   const isSensitiveSec=s=>s.type==='chiron'||s.type==='node'||s.type==='lilith';
   const planetSecs=visible.filter(s=>isPlanetSec(s));
   const sensitiveSecs=visible.filter(s=>isSensitiveSec(s));
-  const isAspectSec=s=>s.type==='aspects'||s.type==='houses'||s.type==='transits'||s.type==='dign';
+  const isAspectSec=s=>s.type==='aspects'||s.type==='houses'||s.type==='transits'||s.type==='dign'||s.type==='syn';
   const aspectSecs=visible.filter(s=>isAspectSec(s));
   const otherSecs=visible.filter(s=>!isPlanetSec(s)&&!isSensitiveSec(s)&&!isAspectSec(s));
   let firstPageId=null;
@@ -7358,6 +7461,7 @@ function renderSection(sec){
   if(sec.type==='asc')return renderAscSection(sec);
   if(sec.type==='transits')return renderTransitsSection(sec);
   if(sec.type==='dign')return renderDignSection(sec);
+  if(sec.type==='syn')return renderSynSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -8751,7 +8855,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v5.4';
+const SITE_VERSION='v5.5';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
