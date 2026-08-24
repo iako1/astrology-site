@@ -3993,6 +3993,96 @@ function renderMethodSection(sec){
 }
 
 
+const DEF_RETRO=[
+  {s:'☿',n:'მერკური',c:'#4895ef',pct:'დაახლოებით 19%',dur:'წელიწადში 3-ჯერ, ~3 კვირა',
+   nat:'ყველაზე ხშირად რეტროგრადული პლანეტა. აზროვნება შიგნით მიმართულია: ადამიანი ინფორმაციას ერთი გავლით არ იღებს — მას ხშირად რამდენჯერმე უწევს წაკითხვა, სანამ გაიგებს. სამაგიეროდ როცა გაიგებს, ეს გაგება გაცილებით ღრმაა, ვიდრე პირდაპირი მერკურის შემთხვევაში. გონება მუდმივად მუშაობს და აანალიზებს, ხშირად ღამითაც. სასწავლო გარემოში ასეთ ბავშვს ნელს უწოდებენ, სინამდვილეში კი ის სხვა სიღრმეზე მუშაობს. ზეპირი გამოხატვა ხშირად უჭირს, წერილობითი კი უკეთესად გამოსდის.',
+   tr:'ნაყიდი ტექნიკა ან ნივთი ხშირად ფუჭდება. ხელშეკრულებას, საბუთსა და მოლაპარაკებას სიფრთხილე სჭირდება. კარგი დროა იმის გადახედვისთვის, რაც უკვე დაწყებულია — ახლის დაწყებისთვის ნაკლებად.'},
+  {s:'♀',n:'ვენერა',c:'#db2777',pct:'დაახლოებით 7%',dur:'18 თვეში ერთხელ, ~40 დღე',
+   nat:'იშვიათი პოზიცია — მოსახლეობის მხოლოდ მცირე ნაწილს აქვს. სიყვარულის გამოხატვა შიგნით მიმართულია: ადამიანს გრძნობის ჩვენება უჭირს, თუნდაც ის ღრმა იყოს. ურთიერთობებში ხშირად კარმული პარტნიორები ხვდება — ისეთები, ვისთანაც კავშირი ბედისწერულად აღიქმება და ადვილად არ სრულდება. საკუთარი ღირებულების განცდა შინაგან სამუშაოს მოითხოვს და გარედან მოწონებით არ ივსება. ესთეტიკური გემოვნება ხშირად არასტანდარტულია.',
+   tr:'ურთიერთობებში ძველი პარტნიორები ბრუნდებიან. ცუდი დროა ქორწინებისთვის, გარეგნობის რადიკალური ცვლილებისა და ძვირფასი ნივთის შეძენისთვის. კარგი — ურთიერთობის გადახედვისთვის.'},
+  {s:'♂',n:'მარსი',c:'#e85d04',pct:'დაახლოებით 9%',dur:'26 თვეში ერთხელ, ~72 დღე',
+   nat:'ენერგია და ბრაზი შიგნით მიმართულია. როცა სიტუაცია გასაბრაზებელია, ასეთი ადამიანი ხშირად სწორედ მაშინ არ ბრაზდება — რეაქცია მოგვიანებით მოდის, ხანდახან დღეების შემდეგ. ეს არ ნიშნავს, რომ ბრაზი არ არსებობს: ის გროვდება. მოქმედება ნელია, სამაგიეროდ გააზრებული. კონფლიქტში პირდაპირი დაპირისპირება უჭირს, ირიბი გზა უფრო ეხერხება. ფიზიკური ენერგია ტალღებით მოდის.',
+   tr:'ოპერაციისთვის ცუდი დროა — ჭრილობა შესაძლოა ცუდად შეხორცდეს. ახალი წამოწყება ჩერდება. საინტერესო დეტალი: სწორედ რეტროგრადულობის დროს არის მარსი დედამიწასთან ყველაზე ახლოს და ცაზე ყველაზე კარგად ჩანს.'},
+  {s:'♃',n:'იუპიტერი',c:'#2563a8',pct:'დაახლოებით 33%',dur:'წელიწადში ერთხელ, ~4 თვე',
+   nat:'რწმენა და ზრდა შინაგანია. ადამიანი გარეგან ავტორიტეტს არ ენდობა — საკუთარ ფილოსოფიას თავად აშენებს და ხშირად ტრადიციული რელიგიის ან სისტემის გარეთ. შესაძლებლობები ნაკლებად მოდის გარედან, სამაგიეროდ შინაგანი რესურსი ღრმაა. თავდაჯერება არა ბუნებრივი მოცემულობა, არამედ ნაშენებია.',
+   tr:'გარეგანი გაფართოება ჩერდება, შინაგანი კი გრძელდება. კარგი დროა სწავლისა და გადააზრებისთვის, ცუდი — დიდი რისკისა და გაფართოებისთვის.'},
+  {s:'♄',n:'სატურნი',c:'#7a6a8e',pct:'დაახლოებით 38%',dur:'წელიწადში ერთხელ, ~4.5 თვე',
+   nat:'დისციპლინა და ავტორიტეტი შინაგანია. ადამიანი გარეგან წესს არ ემორჩილება ავტომატურად — მას საკუთარი შინაგანი მკაცრი მსაჯული ჰყავს, რომელიც ხშირად ნებისმიერ გარეგან ავტორიტეტზე მომთხოვნია. მამის ან ავტორიტეტის ფიგურა ხშირად სუსტი, არმყოფი ან წინააღმდეგობრივი იყო, ამიტომ სტრუქტურის აშენება ადამიანს თავად მოუწია.',
+   tr:'ძველი ვალდებულებები ბრუნდება. კარგი დროა იმის გადახედვისთვის, რაც აშენდა, ცუდი — ახალი გრძელვადიანი ვალდებულების აღებისთვის.'},
+  {s:'♅',n:'ურანი',c:'#0ea5a4',pct:'დაახლოებით 41%',dur:'ყოველწლიურად, ~5 თვე',
+   nat:'მოსახლეობის თითქმის ნახევარს აქვს, ამიტომ ინდივიდუალური მნიშვნელობა შეზღუდულია. აჯანყება უფრო შინაგანია, ვიდრე გარეგანი: ადამიანი წესს ჩუმად არღვევს და არა დემონსტრაციულად. მნიშვნელობა მაშინ იზრდება, როცა ურანი პირად პლანეტას ან კუთხოვან წერტილს ეხება.',
+   tr:'მოულოდნელი ცვლილება შიგნით მწიფდება, სანამ გარეთ გამოვა. ტექნიკური გაუმართაობა ხშირდება.'},
+  {s:'♆',n:'ნეპტუნი',c:'#5b7cd8',pct:'დაახლოებით 43%',dur:'ყოველწლიურად, ~5 თვე',
+   nat:'თაობრივი პოზიცია. ილუზია და იდეალიზაცია შინაგანია — ადამიანი უფრო საკუთარ თავს იტყუებს, ვიდრე სხვას. ინტუიცია ღრმაა, მაგრამ ძნელად გამოხატვადი. ინდივიდუალურად მაშინ იმუშავებს, როცა პირად პლანეტას ეხება.',
+   tr:'ილუზიები იშლება. კარგი დროა სულიერი პრაქტიკისა და შინაგანი ძიებისთვის.'},
+  {s:'♇',n:'პლუტონი',c:'#8b5a5a',pct:'დაახლოებით 44%',dur:'ყოველწლიურად, ~5-6 თვე',
+   nat:'ყველაზე ხშირი რეტროგრადულობა — თითქმის ნახევარ მოსახლეობას აქვს. ძალაუფლებასთან ურთიერთობა შინაგანია: ადამიანი გარეგან კონტროლს არ ცდილობს, სამაგიეროდ საკუთარ თავს ღრმად აკონტროლებს. გარდაქმნა შიგნიდან მოდის და არა გარეგანი კრიზისით. ინდივიდუალური წაკითხვა მხოლოდ პირად პლანეტასთან კავშირისას.',
+   tr:'ღრმა ფსიქოლოგიური მუშაობის დრო. ის, რაც ჩახშობილია, ზედაპირზე ამოდის.'},
+  {s:'⚕',n:'ქირონი',c:'#16a34a',pct:'დაახლოებით 40%',dur:'ყოველწლიურად, ~5 თვე',
+   nat:'ჭრილობა შინაგანია და გარედან არ ჩანს. ადამიანი ტკივილს არავის უზიარებს და ხშირად თავად ვერ ხედავს მის წყაროს. სწორედ ამიტომ შეიძლება ქირონის რეტროგრადულობა გაორებას დაუკავშირდეს: გარეთ ერთი სახეა, შიგნით — სულ სხვა. განკურნება მარტოობაში ხდება და არა სხვასთან საუბრით.',
+   tr:'ძველი ჭრილობა ხელახლა იხსნება, რომ დამუშავდეს.'},
+  {s:'☊',n:'კვანძები',c:'#0891b2',pct:'100%',dur:'ყოველთვის',
+   nat:'მთვარის კვანძები ყოველთვის რეტროგრადულად მოძრაობს — ეს მათი ბუნებრივი მდგომარეობაა და არა განსაკუთრებული მაჩვენებელი. სწორედ ამიტომ არასდროს ითვლება Rx-ად ინტერპრეტაციისას. იშვიათად ისინი პირდაპირი ხდებიან ხანმოკლედ, რასაც ტრადიციულად განსაკუთრებულ მნიშვნელობას ანიჭებდნენ.',
+   tr:''},
+];
+const DEF_RETRO_RULES=[
+  {i:'☉ ☽',ti:'მზე და მთვარე არასდროს რეტროგრადობს',t:'ეს ფიზიკურად შეუძლებელია: მზე დედამიწის მოძრაობის ანარეკლია, მთვარე კი დედამიწის თანამგზავრი. თუ პროგრამა ასეთს გაჩვენებს, შეცდომაა.'},
+  {i:'⏸',ti:'სტაციონალურობა',t:'პლანეტა მიმართულების შეცვლამდე რამდენიმე დღით ჩერდება. თუ ის მალე რეტროგრადული ხდება, ინტერპრეტაციისას რეტროგრადულად ითვლება; თუ მალე პირდაპირი — პირდაპირად. სტაციონალური პლანეტა ნატალურ რუკაში განსაკუთრებით ძლიერია: მისი ენერგია ერთ წერტილში კონცენტრირდება.'},
+  {i:'◐',ti:'პირადი პლანეტები უფრო მნიშვნელოვანია',t:'☿ ♀ ♂ რეტროგრადულობა ინდივიდუალურ ხასიათს ცვლის, რადგან იშვიათია. ♅ ♆ ♇ თითქმის ნახევარ მოსახლეობას აქვს — ისინი თაობის მახასიათებელია და პიროვნულ დონეზე მხოლოდ მაშინ მუშაობს, როცა პირად პლანეტას ან კუთხოვან წერტილს ეხება.'},
+  {i:'♥',ti:'რეტროგრადულობა სინასტრიაში',t:'თუ ერთ პარტნიორს მარსი რეტროგრადული ჰყავს, უკეთესია, მეორესაც ჰქონდეს. ორივეს მსგავსი ენერგეტიკული რიტმი აქვს და ერთმანეთს უკეთ ესმით. თუ ერთს Rx აქვს და მეორეს არა, ერთი ჩქარობს, მეორე კი აჭიანურებს — ეს დაძაბულობის ხშირი წყაროა.'},
+  {i:'✦',ti:'რეტროგრადულობა არ არის დეფექტი',t:'Rx პლანეტა არ ნიშნავს, რომ რაღაც არ მუშაობს. ის ნიშნავს, რომ ენერგია შიგნით არის მიმართული და არა გარეთ. ხშირად ეს სიღრმეს იძლევა იქ, სადაც პირდაპირი პლანეტა ზედაპირზე რჩება.'},
+];
+
+let DEF_RETRO_SECTION={id:'s-retro',type:'retro',title:'℞ რეტროგრადულობა',visible:true,tab:'℞ რეტროგრადულობა'};
+
+function renderRetroSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(122,106,142,.14);display:flex;align-items:center;justify-content:center;font-size:20px">℞</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">რეტროგრადულობა</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">ნატალურ რუკაში და ტრანზიტში</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">რეტროგრადულობა პლანეტის ხილული უკუმოძრაობაა. სინამდვილეში პლანეტა უკან არ ბრუნდება — ეს ოპტიკური ილუზიაა, რომელიც დედამიწისა და პლანეტის სხვადასხვა ორბიტალური სიჩქარით წარმოიქმნება. ასტროლოგიაში ეს იმას ნიშნავს, რომ პლანეტის ენერგია <strong>შიგნით</strong> არის მიმართული და არა გარეთ. ეს არ არის დეფექტი — ხშირად ეს სიღრმეს იძლევა იქ, სადაც პირდაპირი პლანეტა ზედაპირზე რჩება.</div></div>';
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:0 0 4px">პლანეტები</div>';
+  h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:12px">პროცენტი აჩვენებს, მოსახლეობის რა ნაწილს აქვს ეს პოზიცია</div>';
+  DEF_RETRO.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-left:3px solid '+x.c+';border-radius:0 14px 14px 0;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:42px;height:42px;border-radius:50%;background:'+x.c+'16;display:flex;align-items:center;justify-content:center;font-size:19px;color:'+x.c+'">'+x.s+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:3px">'+x.n+' ℞</div>';
+    h+='<div style="font-size:11.5px;color:var(--text3)">'+x.dur+'</div></div>';
+    h+='<div style="flex-shrink:0;text-align:right"><div style="font-size:12.5px;font-weight:500;color:'+x.c+'">'+x.pct+'</div></div>';
+    h+='</summary>';
+    h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
+    h+='<div style="font-size:10.5px;color:var(--text3);margin:14px 0 5px">ნატალურ რუკაში</div>';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:0 0 12px">'+x.nat+'</p>';
+    if(x.tr){
+      h+='<div style="padding:11px 13px;border-radius:10px;background:var(--bg2)">';
+      h+='<div style="font-size:10.5px;color:var(--text3);margin-bottom:4px">ტრანზიტში</div>';
+      h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.75">'+x.tr+'</div></div>';
+    }
+    h+='</div></details>';
+  });
+
+  h+='<details style="margin-top:20px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:14px">◐</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">5 რამ, რაც უნდა იცოდე</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">სტაციონალურობა, სინასტრია, პრიორიტეტები</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 18px;border-top:.5px solid var(--border)">';
+  DEF_RETRO_RULES.forEach(function(x){
+    h+='<div style="display:flex;gap:13px;padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;min-width:30px;height:28px;padding:0 5px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)">'+x.i+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:4px">'+x.ti+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5369,7 +5459,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5383,6 +5473,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasRx=saved.some(s=>s.id==='s-retro');
   const hasMt=saved.some(s=>s.id==='s-method');
   const hasSy=saved.some(s=>s.id==='s-syn');
   const hasDg=saved.some(s=>s.id==='s-dign');
@@ -5402,6 +5493,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasRx) saved.push(DEF_RETRO_SECTION);
   if(!hasMt) saved.unshift(DEF_METHOD_SECTION);
   if(!hasSy) saved.push(DEF_SYN_SECTION);
   if(!hasDg) saved.push(DEF_DIGN_SECTION);
@@ -6003,14 +6095,14 @@ function renderAll(){
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
     {k:'chart',label:'🗺 რუკა',       types:['asc','houses','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
-    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn'], ids:[]},
+    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn','retro'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
   ];
-  const ICONS={'s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
   const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია',
-    's-transits':'რა ხდება ახლა','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
+    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
   const groupOf=s=>{
@@ -7510,6 +7602,7 @@ function renderSection(sec){
   if(sec.type==='dign')return renderDignSection(sec);
   if(sec.type==='syn')return renderSynSection(sec);
   if(sec.type==='method')return renderMethodSection(sec);
+  if(sec.type==='retro')return renderRetroSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -8903,7 +8996,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.1';
+const SITE_VERSION='v6.2';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
