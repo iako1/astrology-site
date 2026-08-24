@@ -3907,6 +3907,92 @@ function renderSynSection(sec){
 }
 
 
+const DEF_METHOD=[
+  {n:1,ti:'ასცენდენტი',goto:'s-asc',q:'რა კარიდან შემოდის ეს ადამიანი სამყაროში?',
+   b:'დაიწყე ასცენდენტით და არა მზით. ასცენდენტი განსაზღვრავს, როგორ ხვდება ადამიანი ცხოვრებას, როგორ გამოიყურება და — რაც მთავარია — სად დგება მისი 12 სახლი. სანამ ასცენდენტს არ იცი, სახლები არ არსებობს და რუკის ნახევარი დახურულია. ამიტომაა დაბადების ზუსტი დრო აუცილებელი: ორ საათში ასცენდენტი იცვლება და მთელი სურათი გადაიწერება.',
+   tip:'თუ დაბადების დრო არ იცი, ასცენდენტისა და სახლების გარეშე იმუშავე. ნიშნები და ასპექტები მაინც მოქმედებს, ოღონდ სახლებზე დასკვნა ვერ გამოიტანება.'},
+  {n:2,ti:'რუკის მმართველი',goto:'s-asc',q:'რომელი პლანეტა უძღვება მთელ რუკას?',
+   b:'ასცენდენტის ნიშნის მმართველი პლანეტა მთელი რუკის მმართველია. იპოვე ის: რომელ ნიშანშია და რომელ სახლში. ეს ერთი პლანეტა ცხოვრების მთავარ ხაზს გიჩვენებს. ასცენდენტი ვერძში — მმართველი მარსია; თუ მარსი მეათე სახლშია, ცხოვრება კარიერისა და მიღწევის ირგვლივ აეწყობა.',
+   tip:'შეამოწმე მმართველის დიგნიტეტიც: ძლიერია თუ დაცემაშია. ეს გეტყვის, რამდენად თავისუფლად მუშაობს ეს მთავარი ხაზი.'},
+  {n:3,ti:'მზე, მთვარე, ასცენდენტი',goto:'s-sun-signs',q:'ვინ არის, რა სჭირდება და როგორ ჩანს?',
+   b:'ეს სამეული რუკის ბირთვია. მზე — ვინაობა და ის, რისკენაც ადამიანი მიისწრაფის. მთვარე — ემოციური მოთხოვნილება, ის, რაც უსაფრთხოებას აძლევს. ასცენდენტი — გარეგანი სახე. ჯერ თითოეული ცალკე ნახე ნიშნითა და სახლით, მერე კი ის, თანხმდებიან თუ ეწინააღმდეგებიან ერთმანეთს.',
+   tip:'თუ სამივე ერთი სტიქიისაა, პიროვნება ერთგვაროვანია. თუ სამი სხვადასხვა — შინაგანი მრავალფეროვნება და ხშირად შინაგანი კონფლიქტიც.'},
+  {n:4,ti:'სტიქიებისა და ჯვრების ბალანსი',goto:'s-elements',q:'რა ჭარბობს და რა აკლია?',
+   b:'დათვალე, რამდენი პლანეტაა თითოეულ სტიქიაში და თითოეულ ჯვარში. ჭარბი სტიქია პიროვნების ტონს განსაზღვრავს. აკლია რომელიმე — ეს ჩვეულებრივ უფრო მნიშვნელოვანია, ვიდრე ჭარბი: ცარიელი სტიქია ცხოვრებისეულ დეფიციტს ქმნის, რომელსაც ადამიანი ან თავს არიდებს, ან პირიქით — გადაჭარბებით ანაზღაურებს.',
+   tip:'ცეცხლი აკლია — ინიციატივა უჭირს. მიწა — პრაქტიკულობა. ჰაერი — ობიექტურობა. წყალი — ემოციური კონტაქტი.'},
+  {n:5,ti:'კუთხოვანი პლანეტები',goto:'s-houses',q:'რომელი პლანეტა ყვირის ყველაზე ხმამაღლა?',
+   b:'პლანეტა I, IV, VII ან X სახლში ბევრად უფრო ძლიერად ვლინდება, ვიდრე სხვაგან — განსაკუთრებით ასცენდენტთან ან MC-სთან ახლოს. ეს პლანეტები პიროვნების ხმაა. თუ სატურნი ასცენდენტზეა, ადამიანი სერიოზულად აღიქმება, სულერთია, რა ნიშნის მზე აქვს.',
+   tip:'დაცემად სახლებში (III, VI, IX, XII) მდგარი პლანეტა უფრო ჩუმია — ის მუშაობს, ოღონდ შეუმჩნევლად.'},
+  {n:6,ti:'სტელიუმი და კონცენტრაცია',goto:'s-houses',q:'სად არის ცხოვრების სიმძიმის ცენტრი?',
+   b:'ეძებე, სად გროვდება პლანეტები. სამი ან მეტი ერთ ნიშანში ან სახლში სტელიუმია — ცხოვრების უზარმაზარი ნაწილი ამ სფეროზეა ფოკუსირებული. აქვე ნახე, რუკის რომელი ნახევარია სავსე: აღმოსავლეთი დამოუკიდებლობაზე მიუთითებს, დასავლეთი ურთიერთობებზე, ქვედა ნახევარი პირად სფეროზე, ზედა — საჯაროზე.',
+   tip:'ცარიელი სახლი არაფერს ცუდს არ ნიშნავს. ის უბრალოდ იმას ამბობს, რომ ეს სფერო ცხოვრების მთავარი თემა არაა — მისი მმართველი მაინც უნდა ნახო.'},
+  {n:7,ti:'დიგნიტეტები',goto:'s-dign',q:'რომელი პლანეტა მუშაობს თავისუფლად და რომელი ჭიდაობს?',
+   b:'ერთი და იგივე პლანეტა სხვადასხვა ნიშანში სხვადასხვა ძალით მოქმედებს. საკუთარ სახლში ან ეგზალტაციაში მდგარი პლანეტა ბუნებრივად მუშაობს. დაცემასა და ვარდნაში — ცნობიერ ძალისხმევას მოითხოვს. ეს არ არის შეფასება: დაცემაში მდგარი პლანეტა ხშირად ცხოვრებისეული მუშაობის მთავარი წერტილია.',
+   tip:'განსაკუთრებით მნიშვნელოვანია რუკის მმართველისა და მზის დიგნიტეტი.'},
+  {n:8,ti:'მთავარი ასპექტები',goto:'s-aspects',q:'რომელი შინაგანი ნაწილები ეხმარებიან და რომლები ედავებიან ერთმანეთს?',
+   b:'აქ ბევრი დამწყები იხრჩობა, ამიტომ არ დაიწყო ყველა ასპექტის კითხვით. ჯერ მხოლოდ ის ასპექტები ნახე, რომლებიც მზეს, მთვარეს, ასცენდენტსა და რუკის მმართველს ეხება — და მხოლოდ ვიწრო ორბით, 3 გრადუსამდე. ეს ხუთი-ექვსი ასპექტი რუკის სამოცდაათ პროცენტს ხსნის.',
+   tip:'დანარჩენი ასპექტები დეტალებია. მათზე მაშინ გადადი, როცა ძირითადი სურათი უკვე გაქვს.'},
+  {n:9,ti:'კონფიგურაციები',goto:'s-aspects',q:'არის თუ არა რუკაში დახურული სისტემა?',
+   b:'შეამოწმე, ქმნიან თუ არა ასპექტები ფიგურას: T-კვადრატს, დიდ ტრინს, იოდს, დიდ ჯვარს. კონფიგურაცია ცალკეული ასპექტების ჯამი არ არის — მას საკუთარი დინამიკა აქვს და თუ რუკაში არსებობს, ხშირად სწორედ ის არის მთავარი. T-კვადრატის აპექსი ცხოვრებისეული წნეხის ფოკუსია.',
+   tip:'კონფიგურაცია ყველა რუკაში არ არის. თუ არ არის, არაფერი უჭირს — უბრალოდ ენერგია უფრო თანაბრად ნაწილდება.'},
+  {n:10,ti:'სატურნი, ქირონი, კვანძები',goto:'s-transits',q:'სად არის სამუშაო, სად ტკივილი და საით მიდის გზა?',
+   b:'სამი წერტილი, რომელიც რუკის სიღრმეს ხსნის. სატურნი — სად მოითხოვს ცხოვრება დისციპლინასა და მოთმინებას. ქირონი — სად არის ის ჭრილობა, რომელიც სხვისთვის დახმარების უნარად იქცევა. ჩრდილოეთის კვანძი — რომელი მიმართულებით მიდის ზრდა და რას უნდა გაშორდე.',
+   tip:'ეს სამი ერთად ცხოვრებისეულ ამოცანას აღწერს. ისინი ბოლოს იკითხება, რადგან მათი გაგება მთელი რუკის კონტექსტს მოითხოვს.'},
+  {n:11,ti:'სინთეზი',goto:'s-resources',q:'რა მეორდება?',
+   b:'ბოლო და ყველაზე მნიშვნელოვანი ნაბიჯი. არ დატოვო რუკა ცალკეული ჩანაწერების სიად. ეძებე თემები, რომლებიც რამდენჯერმე მეორდება სხვადასხვა გზით. თუ სატურნი ასცენდენტზეა, თხის რქის სტელიუმია და მეათე სახლი სავსეა — სამი სხვადასხვა ინდიკატორი ერთსა და იმავეს ამბობს. სწორედ ეს არის ნამდვილი დასკვნა.',
+   tip:'სამის წესი: თუ თემა სამჯერ არ მეორდება, ის მთავარი არაა. ერთი ჩანაწერი მხოლოდ შესაძლებლობაა.'},
+];
+const DEF_MISTAKES=[
+  {ti:'ასპექტებით დაწყება',t:'520 ინტერპრეტაცია ერთდროულად უაზრობაა. ასპექტები დეტალებია და არა საფუძველი. ჯერ ასცენდენტი, მმართველი და სამეული.'},
+  {ti:'ცალკეული ჩანაწერის აბსოლუტიზება',t:'„მარსი კვადრატში სატურნთან — ესე იგი ცხოვრება რთული მაქვს“ არასწორი დასკვნაა. ერთი ასპექტი კონტექსტის გარეშე არაფერს ნიშნავს.'},
+  {ti:'დაძაბული ასპექტების შიში',t:'კვადრატი და ოპოზიცია ცხოვრების ძრავია. ბიოგრაფიულად დიდი მიღწევები უფრო ხშირად დაძაბულ ასპექტებს უკავშირდება, ვიდრე ჰარმონიულს.'},
+  {ti:'ზუსტი დროის უგულებელყოფა',t:'„დაახლოებით შუადღისას“ საკმარისი არაა. ოთხი წუთი ასცენდენტს ერთი გრადუსით ცვლის, ორი საათი კი მთელ ნიშანს.'},
+  {ti:'პროგნოზის აღრევა აღწერასთან',t:'ნატალური რუკა აღწერს პოტენციალს და არა მოვლენებს. ის, რაც მოხდება, ტრანზიტების საკითხია და მაშინაც — შესაძლებლობის და არა განაჩენის დონეზე.'},
+];
+
+let DEF_METHOD_SECTION={id:'s-method',type:'method',title:'🧭 რუკის კითხვა',visible:true,tab:'🧭 რუკის კითხვა'};
+
+function renderMethodSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:20px">🧭</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">როგორ წავიკითხოთ ნატალური რუკა</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">11 ნაბიჯი · თანმიმდევრობა, რომელიც მნიშვნელოვანია</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">რუკის კითხვა თანმიმდევრობით იწყება და არა შემთხვევითი ჩანაწერით. თუ ასპექტებით დაიწყებ, ხუთასზე მეტ ინტერპრეტაციაში დაიკარგები. ქვემოთ მოცემული რიგი იმისთვისაა, რომ ჯერ სტრუქტურა დაინახო და მხოლოდ მერე დეტალები. თითოეული ნაბიჯიდან შესაბამის სექციაზე გადახვალ.</div></div>';
+
+  DEF_METHOD.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:34px;height:34px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#0d9488">'+x.n+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:3px">'+x.ti+'</div>';
+    h+='<div style="font-size:11.5px;color:var(--text3)">'+x.q+'</div></div></summary>';
+    h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 12px">'+x.b+'</p>';
+    h+='<div style="padding:11px 13px;border-radius:10px;background:var(--bg2);margin-bottom:12px">';
+    h+='<div style="font-size:10.5px;color:var(--text3);margin-bottom:4px">გაითვალისწინე</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.75">'+x.tip+'</div></div>';
+    h+='<button onclick="showPage(\''+x.goto+'\')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:.5px solid #0d9488;background:rgba(13,148,136,.08);color:#0d9488;font-size:12.5px;cursor:pointer">გადასვლა →</button>';
+    h+='</div></details>';
+  });
+
+  h+='<details style="margin-top:20px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(220,38,38,.12);display:flex;align-items:center;justify-content:center;font-size:14px">!</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">ხშირი შეცდომები</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">5 რამ, რასაც დამწყები აკეთებს</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 18px;border-top:.5px solid var(--border)">';
+  DEF_MISTAKES.forEach(function(x){
+    h+='<div style="padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="font-size:13.5px;font-weight:500;color:#dc2626;margin-bottom:4px">'+x.ti+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5283,7 +5369,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5297,6 +5383,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasMt=saved.some(s=>s.id==='s-method');
   const hasSy=saved.some(s=>s.id==='s-syn');
   const hasDg=saved.some(s=>s.id==='s-dign');
   const hasTr=saved.some(s=>s.id==='s-transits');
@@ -5315,6 +5402,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasMt) saved.unshift(DEF_METHOD_SECTION);
   if(!hasSy) saved.push(DEF_SYN_SECTION);
   if(!hasDg) saved.push(DEF_DIGN_SECTION);
   if(!hasTr) saved.push(DEF_TRANSIT_SECTION);
@@ -5913,17 +6001,17 @@ function renderAll(){
   const visible=SECTIONS.filter(s=>s.visible!==false);
 
   const GROUPS=[
-    {k:'base', label:'📐 საფუძვლები', types:['signs','elements','crosses','dign'], ids:[]},
+    {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
     {k:'chart',label:'🗺 რუკა',       types:['asc','houses','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
     {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
   ];
-  const ICONS={'s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
   const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია',
     's-transits':'რა ხდება ახლა','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
-    's-asc':'12 ნიშანი · რუკის მმართველი','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
+    's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
   const groupOf=s=>{
     for(const g of GROUPS){ if(g.ids.indexOf(s.id)>=0) return g.k; }
@@ -7421,6 +7509,7 @@ function renderSection(sec){
   if(sec.type==='transits')return renderTransitsSection(sec);
   if(sec.type==='dign')return renderDignSection(sec);
   if(sec.type==='syn')return renderSynSection(sec);
+  if(sec.type==='method')return renderMethodSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -8814,7 +8903,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.0';
+const SITE_VERSION='v6.1';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
