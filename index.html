@@ -4237,6 +4237,110 @@ function renderGenerSection(sec){
 }
 
 
+const DEF_PHASES=[
+  {ka:'ახალმთვარე',en:'New Moon',deg:'0°-45°',c:'#1a1a2e',g:'🌑',t:'მზესა და მთვარეს შორის 45 გრადუსზე ნაკლებია. ინსტინქტური, სპონტანური ტიპი: ადამიანი ცხოვრებაში წინ იწევს ისე, რომ უკან არ იხედება. ხედვა სუბიექტურია — ის ვერ ხედავს, როგორ აღიქვამენ სხვები. ახალი ციკლის დასაწყისია, ამიტომ წარსული ნაკლებად აწონებს. ხშირად თავად იწყებს იმას, რასაც სხვები აგრძელებენ.'},
+  {ka:'მზარდი ნამგალი',en:'Crescent',deg:'45°-90°',c:'#2d3561',g:'🌒',t:'ბრძოლა წარსულთან. ადამიანი გრძნობს, რომ რაღაც ახალს ქმნის, მაგრამ ძველი მუდმივად უკან ექაჩება — ოჯახური მოლოდინი, ჩვევა, ტრადიცია. სწორედ ეს დაძაბულობა აძლევს ძალას. ცხოვრებაში ხშირად უწევს გარემოს წინააღმდეგ წასვლა.'},
+  {ka:'პირველი მეოთხედი',en:'First Quarter',deg:'90°-135°',c:'#3d5a80',g:'🌓',t:'მოქმედების კრიზისი. ეს ტიპი აშენებს — და ხშირად ჯერ ანგრევს იმას, რაც ხელს უშლის. გადამწყვეტი, ენერგიული და კონფლიქტისადმი მზადმყოფი. ცხოვრება სტრუქტურის შექმნის ირგვლივ ტრიალებს. მოთმინება მთავარი გამოწვევაა.'},
+  {ka:'მზარდი გიბუსი',en:'Gibbous',deg:'135°-180°',c:'#5c8aa8',g:'🌔',t:'დახვეწისა და ანალიზის ფაზა. ადამიანი მუდმივად აუმჯობესებს იმას, რაც უკვე არსებობს. კითხვები, დეტალები, სრულყოფის ძიება. ხშირად თავს არასაკმარისად მომზადებულად გრძნობს, თუნდაც ყველაფერი იცოდეს.'},
+  {ka:'სავსე მთვარე',en:'Full Moon',deg:'180°-225°',c:'#e8e6d9',g:'🌕',t:'ცნობიერების ფაზა. მზე და მთვარე პირისპირ დგანან — ადამიანი ყველაფერს ორი მხრიდან ხედავს. ურთიერთობები ცხოვრების ცენტრშია, რადგან სხვისი გავლით საკუთარ თავს ცნობს. ობიექტურობა ძლიერია, გადაწყვეტილება კი ხშირად ძნელი.'},
+  {ka:'კლებადი გიბუსი',en:'Disseminating',deg:'225°-270°',c:'#c9a86a',g:'🌖',t:'გაზიარების ფაზა. ის, რაც ადამიანმა გაიგო, სხვას უნდა გადასცეს — ბუნებრივი მასწავლებელი, მთხრობელი ან მისიონერი. მას აქვს რაღაც სათქმელი და მისი გაჩუმება უჭირს. რისკი დოგმატიზმია.'},
+  {ka:'ბოლო მეოთხედი',en:'Last Quarter',deg:'270°-315°',c:'#8b6f47',g:'🌗',t:'ცნობიერების კრიზისი. ადამიანი ხედავს, რომ ძველი სისტემა აღარ მუშაობს, ახალი კი ჯერ არ არსებობს. შინაგანი გადახალისების ფაზაა: ხშირად ცხოვრების შუაში ხდება რადიკალური მიმართულების ცვლილება. სხვებისთვის გაუგებარი, საკუთარი თავისთვის კი აუცილებელი.'},
+  {ka:'კლებადი ნამგალი',en:'Balsamic',deg:'315°-360°',c:'#4a3f5c',g:'🌘',t:'დასრულებისა და თესვის ფაზა. ციკლის ბოლო: ადამიანი ძველ ეპოქას ხურავს და მომავალს ამზადებს ისე, რომ თავად შედეგს ვერ ხედავს. ხშირად განმარტოებული, წინასწარმეტყველური განცდით. ტრადიციულად ამ ფაზაში დაბადებულებს ძველი სულები უწოდეს.'},
+];
+const DEF_FORT_S=[
+  {sym:'♈',n:'ვერძი',t:'ბედნიერება მოქმედებაშია. ადამიანი მაშინ გრძნობს თავს ცოცხლად, როცა იწყებს, ბრძოლობს და პირველია. მოლოდინი და დათმობა მას აცლის ძალას.'},
+  {sym:'♉',n:'კურო',t:'ბედნიერება სიმშვიდესა და სენსუალობაშია. სტაბილურობა, კარგი საკვები, ბუნება და ფიზიკური კომფორტი ნამდვილი რესურსია და არა ფუფუნება.'},
+  {sym:'♊',n:'ტყუპები',t:'ბედნიერება ცნობისმოყვარეობაშია. საუბარი, სწავლა, ახალი ინფორმაცია და მრავალფეროვნება ავსებს. ერთფეროვნება აცლის.'},
+  {sym:'♋',n:'კირჩხიბი',t:'ბედნიერება სახლსა და ემოციურ სიახლოვეშია. ოჯახი, ახლობლები და ის ადგილი, სადაც თავს დაცულად გრძნობს, მთავარი წყაროა.'},
+  {sym:'♌',n:'ლომი',t:'ბედნიერება შემოქმედებასა და გამოვლენაშია. ადამიანი მაშინ ცოცხლობს, როცა ქმნის, თამაშობს და აღიარებას იღებს გულწრფელად.'},
+  {sym:'♍',n:'ქალწული',t:'ბედნიერება კონკრეტულ საქმესა და წესრიგშია. ის, რომ რაღაც სასარგებლო გააკეთა და კარგად გააკეთა, ნამდვილ კმაყოფილებას აძლევს.'},
+  {sym:'♎',n:'სასწორი',t:'ბედნიერება ურთიერთობასა და ჰარმონიაშია. სილამაზე, თანასწორი პარტნიორობა და კონფლიქტის მოგვარება ავსებს.'},
+  {sym:'♏',n:'მორიელი',t:'ბედნიერება სიღრმესა და ჭეშმარიტებაშია. ზედაპირული ურთიერთობა და ზრდილობიანი სიცრუე აცლის ძალას. ინტენსივობა მისი ბუნებრივი გარემოა.'},
+  {sym:'♐',n:'მშვილდოსანი',t:'ბედნიერება თავისუფლებასა და ძიებაშია. მოგზაურობა, სწავლა და ღია ჰორიზონტი ავსებს. ჩარჩო ახრჩობს.'},
+  {sym:'♑',n:'თხის რქა',t:'ბედნიერება მიღწევასა და პასუხისმგებლობაშია. ის, რომ რაღაც მყარი ააშენა, ნამდვილი კმაყოფილების წყაროა. უსაქმობა აწუხებს.'},
+  {sym:'♒',n:'მერწყული',t:'ბედნიერება თავისუფლებასა და თანამოაზრეებშია. ჯგუფი, იდეა, მომავალზე ორიენტირებული საქმე ავსებს. კონვენცია აცლის.'},
+  {sym:'♓',n:'თევზები',t:'ბედნიერება სულიერებასა და თანაგრძნობაშია. ხელოვნება, მედიტაცია, სხვისთვის დახმარება და წყალთან სიახლოვე ნამდვილი რესურსია.'},
+];
+const DEF_FORT_H=[
+  {h:'I',t:'ბედნიერება საკუთარი თავის გამოვლენაშია. ადამიანი მაშინ აყვავდება, როცა თავად არის ინიციატორი და არავის ელოდება.'},
+  {h:'II',t:'ბედნიერება მატერიალურ სტაბილურობაშია. საკუთარი შემოსავალი და რესურსი არა ხარბობა, არამედ შინაგანი სიმშვიდის საფუძველია.'},
+  {h:'III',t:'ბედნიერება კომუნიკაციასა და სწავლაშია. საუბარი, წერა, ახლო გარემო და მუდმივი მოძრაობა ავსებს.'},
+  {h:'IV',t:'ბედნიერება სახლსა და ფესვებშია. საკუთარი სივრცე და ოჯახური სიმყუდროვე ცხოვრების ნამდვილი ცენტრია.'},
+  {h:'V',t:'ბედნიერება შემოქმედებასა და სიხარულშია. ბავშვები, ხელოვნება, რომანტიკა და თამაში ავსებს.'},
+  {h:'VI',t:'ბედნიერება ყოველდღიურ საქმესა და ჯანსაღ რუტინაშია. სასარგებლო შრომა და მოწესრიგებული ცხოვრება კმაყოფილების წყაროა.'},
+  {h:'VII',t:'ბედნიერება პარტნიორობაშია. ადამიანი მაშინ აყვავდება, როცა ვინმესთან ერთადაა — მარტო მისი პოტენციალი ნაკლებად ვლინდება.'},
+  {h:'VIII',t:'ბედნიერება სიღრმესა და გარდაქმნაშია. კრიზისის გავლა, ფსიქოლოგიური მუშაობა და ინტიმური სიახლოვე ავსებს.'},
+  {h:'IX',t:'ბედნიერება ძიებასა და ჰორიზონტში. სწავლა, უცხოეთი, ფილოსოფია და რწმენა ნამდვილი რესურსია.'},
+  {h:'X',t:'ბედნიერება მიღწევასა და საჯარო როლშია. აღიარება და პროფესიული რეალიზაცია ცხოვრების ცენტრია.'},
+  {h:'XI',t:'ბედნიერება ჯგუფსა და მეგობრობაშია. საერთო მიზნები და თანამოაზრეები ავსებს ისე, როგორც სხვა არაფერი.'},
+  {h:'XII',t:'ბედნიერება განმარტოებასა და სულიერებაშია. მედიტაცია, ხელოვნება და კულისებში მუშაობა ნამდვილი რესურსია — საჯარო ბრწყინვა კი ნაკლებად.'},
+];
+
+let DEF_PHASE_SECTION={id:'s-phase',type:'phase',title:'☾ მთვარის ფაზა',visible:true,tab:'☾ მთვარის ფაზა'};
+let DEF_FORT_SECTION={id:'s-fort',type:'fort',title:'⊗ ბედის წილი',visible:true,tab:'⊗ ბედის წილი'};
+
+function renderPhaseSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(123,143,168,.16);display:flex;align-items:center;justify-content:center;font-size:19px">☾</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">მთვარის ფაზა დაბადებისას</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">8 ფაზა · ციკლის რომელ წერტილში დაიბადე</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">მთვარის ფაზა მზისა და მთვარის კუთხური მანძილით განისაზღვრება: მთვარის გრადუსს გამოაკლებ მზისას და მიღებული რიცხვი გეუბნება, ციკლის რომელ მონაკვეთშია. ფაზა აღწერს არა იმას, <em>რა</em> გაქვს რუკაში, არამედ <em>რა ეტაპზე</em> ხარ — იწყებ, აშენებ, აცნობიერებ თუ ასრულებ. ეს მიდგომა დეინ რუდჰიარმა შემოიღო.</div>';
+  h+='<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg2);font-size:12.5px;color:var(--text2);line-height:1.75">';
+  h+='<strong>გამოთვლა.</strong> მთვარის გრადუსი მინუს მზის გრადუსი, ზოდიაქოს 360 გრადუსის ფარგლებში. თუ შედეგი უარყოფითია, დაუმატე 360.</div></div>';
+
+  DEF_PHASES.forEach(function(x,i){
+    h+='<details style="border:.5px solid var(--border);border-radius:14px;background:var(--bg);overflow:hidden;margin-bottom:9px">';
+    h+='<summary style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:20px">'+x.g+'</div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:2px">'+(i+1)+'. '+x.ka+'</div>';
+    h+='<div style="font-size:11px;color:var(--text3)">'+x.en+'</div></div>';
+    h+='<div style="flex-shrink:0;font-size:12px;color:var(--text2);white-space:nowrap">'+x.deg+'</div>';
+    h+='</summary>';
+    h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 0">'+x.t+'</p></div></details>';
+  });
+  return h;
+}
+
+function renderFortSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(232,163,61,.14);display:flex;align-items:center;justify-content:center;font-size:19px">⊗</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">ბედის წილი</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">Pars Fortunae · ჰელენური ლოტების სისტემა</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">ბედის წილი ლოტების სისტემიდან ყველაზე მნიშვნელოვანია. ის არ არის პლანეტა — ეს გამოთვლილი წერტილია, რომელიც აჩვენებს, <strong>სად პოულობს ადამიანი ბუნებრივ კმაყოფილებას</strong> და საიდან მოდის მისი ნაკადი. ტრადიციულ ასტროლოგიაში ის ფიზიკურ კეთილდღეობასა და სხეულს უკავშირდებოდა.</div>';
+  h+='<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg2)">';
+  h+='<div style="font-size:11px;color:var(--text3);margin-bottom:6px">გამოთვლა</div>';
+  h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8"><strong>დღის რუკა</strong> (მზე ჰორიზონტს ზემოთ): ასცენდენტი + მთვარე − მზე<br><strong>ღამის რუკა</strong> (მზე ჰორიზონტს ქვემოთ): ასცენდენტი + მზე − მთვარე</div>';
+  h+='<div style="font-size:11.5px;color:var(--text3);margin-top:8px;line-height:1.7">დღისა და ღამის ფორმულის გარჩევა ტრადიციული მიდგომაა. ბევრი თანამედროვე პროგრამა მხოლოდ დღის ფორმულას იყენებს — შეამოწმე, რომელს იძლევა შენი კალკულატორი.</div></div></div>';
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:0 0 10px">ნიშნებში</div>';
+  DEF_FORT_S.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:12px;background:var(--bg);overflow:hidden;margin-bottom:7px">';
+    h+='<summary style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none">';
+    h+='<span style="font-size:19px;color:#e8a33d;width:26px;text-align:center">'+x.sym+'</span>';
+    h+='<span style="flex:1;font-size:13.5px;font-weight:500;color:var(--text)">⊗ '+x.n+'ში</span></summary>';
+    h+='<div style="padding:0 14px 14px 52px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+  });
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:22px 0 10px">სახლებში</div>';
+  DEF_FORT_H.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:12px;background:var(--bg);overflow:hidden;margin-bottom:7px">';
+    h+='<summary style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(232,163,61,.14);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#e8a33d">'+x.h+'</div>';
+    h+='<span style="flex:1;font-size:13.5px;font-weight:500;color:var(--text)">⊗ '+x.h+' სახლში</span></summary>';
+    h+='<div style="padding:0 14px 14px 56px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+  });
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5613,7 +5717,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5627,6 +5731,8 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasPh=saved.some(s=>s.id==='s-phase');
+  const hasFt=saved.some(s=>s.id==='s-fort');
   const hasGn=saved.some(s=>s.id==='s-gener');
   const hasRl=saved.some(s=>s.id==='s-rulers');
   const hasRx=saved.some(s=>s.id==='s-retro');
@@ -5649,6 +5755,8 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasPh) saved.push(DEF_PHASE_SECTION);
+  if(!hasFt) saved.push(DEF_FORT_SECTION);
   if(!hasGn) saved.push(DEF_GEN_SECTION);
   if(!hasRl) saved.push(DEF_RULERS_SECTION);
   if(!hasRx) saved.push(DEF_RETRO_SECTION);
@@ -6252,14 +6360,14 @@ function renderAll(){
 
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
-    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
+    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
     {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn','retro'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
   ];
-  const ICONS={'s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
-  const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა',
+  const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა','s-phase':'8 ფაზა · რუდჰიარის სისტემა','s-fort':'ჰელენური ლოტი · ნიშნები და სახლები',
     's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
@@ -6301,7 +6409,7 @@ function renderAll(){
       it.className='dropdown-item';
       it.id='di-'+sec.id;
       const ic=ICONS[sec.id]||'';
-      const nm=(sec.tab||sec.title).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}⚕☊⚫✦⌂⚡⟳♥⚖↑]\s*/gu,'').trim();
+      const nm=(sec.tab||sec.title).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}⚕☊⚫✦⌂⚡⟳♥⚖↑℞⚿⧗☾⊗🧭]\s*/gu,'').trim();
       const sub=SUBS[sec.id];
       it.innerHTML='<span style="display:flex;align-items:baseline;gap:7px">'
         +(ic?'<span style="width:16px;flex-shrink:0">'+ic+'</span>':'')
@@ -7763,6 +7871,8 @@ function renderSection(sec){
   if(sec.type==='retro')return renderRetroSection(sec);
   if(sec.type==='rulers')return renderRulersSection(sec);
   if(sec.type==='gener')return renderGenerSection(sec);
+  if(sec.type==='phase')return renderPhaseSection(sec);
+  if(sec.type==='fort')return renderFortSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -9156,7 +9266,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.4';
+const SITE_VERSION='v6.5';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
