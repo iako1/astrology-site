@@ -225,6 +225,12 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
     <h1 id="site-h1">ასტროლოგია</h1>
     <p id="site-sub">შექმნილია სასწავლო მიზნით</p>
   </div>
+  <div style="flex:1;max-width:340px;min-width:120px;position:relative;margin:0 10px">
+    <input id="gsearch" type="text" placeholder="ძებნა საიტზე…" autocomplete="off"
+      oninput="doSearch(this.value)" onfocus="doSearch(this.value)"
+      style="width:100%;padding:8px 12px;border-radius:20px;border:.5px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;outline:none">
+    <div id="gsres" style="display:none;position:absolute;top:38px;left:0;right:0;max-height:60vh;overflow-y:auto;background:var(--bg);border:.5px solid var(--border);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:9999"></div>
+  </div>
   
 <button id="theme-toggle" onclick="toggleTheme()" style="border:none;background:none;cursor:pointer;font-size:18px;padding:4px 8px;border-radius:8px;color:var(--text2);transition:all .2s" title="დარქ/ლაიტ მოუდი">🌙</button>
 </header>
@@ -4339,6 +4345,130 @@ function renderFortSection(sec){
   });
   return h;
 }
+
+
+
+// ═══════════ გლობალური ძებნა ═══════════
+var GS_INDEX=null;
+try{['DEF_ASC_SIGNS','DEF_CHIRON_SIGNS','DEF_NODE_SIGNS','DEF_LILITH_SIGNS','DEF_GEN_U','DEF_GEN_N','DEF_GEN_P'].forEach(function(k){ try{ window[k]=eval(k); }catch(e){} });}catch(e){}
+
+
+function buildSearchIndex(){
+  if(GS_INDEX) return GS_INDEX;
+  var ix=[];
+  var add=function(t,s,sec,body){ ix.push({t:t,s:s||'',sec:sec,b:(body||'').slice(0,400)}); };
+  var RN=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  var PN={'☉':'მზე','☽':'მთვარე','☿':'მერკური','♀':'ვენერა','♂':'მარსი','♃':'იუპიტერი','♄':'სატურნი','♅':'ურანი','♆':'ნეპტუნი','♇':'პლუტონი','Asc':'ასცენდენტი','MC':'შუა ცა','⚕':'ქირონი','⚫':'ლილითი','☊':'კვანძი'};
+  var AN={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია'};
+  var T=function(v){return typeof v!=='undefined'?v:null;};
+
+  var g=T(typeof GLOSSARY_TERMS!=='undefined'?GLOSSARY_TERMS:null);
+  if(g) g.forEach(function(x){ add(x.ka,(x.en||'')+' · ლექსიკონი','s-resources',x.def); });
+
+  var a=T(typeof DEF_ASPECTS_DATA!=='undefined'?DEF_ASPECTS_DATA:null);
+  if(a) a.forEach(function(x){
+    add((PN[x.p1]||x.p1)+' '+x.asp+' '+(PN[x.p2]||x.p2),(AN[x.asp]||'')+' · ასპექტი','s-aspects',x.ka+' '+(x.keys||''));
+  });
+
+  var hs=T(typeof DEF_HOUSES_DATA!=='undefined'?DEF_HOUSES_DATA:null);
+  if(hs) hs.forEach(function(x){ add(x.n+' სახლი',x.keys+' · სახლი','s-houses',x.d+' '+x.t); });
+
+  var pih=T(typeof DEF_PIH_DATA!=='undefined'?DEF_PIH_DATA:null);
+  if(pih&&hs) Object.keys(pih).forEach(function(p){
+    pih[p].forEach(function(t,i){ add((PN[p]||p)+' '+hs[i].n+' სახლში','პლანეტა სახლში','s-houses',t); });
+  });
+
+  var ru=T(typeof DEF_RULERS!=='undefined'?DEF_RULERS:null);
+  if(ru) Object.keys(ru).forEach(function(x){
+    ru[x].forEach(function(t,i){ add(RN[x]+' სახლის მმართველი '+RN[i+1]+' სახლში','მმართველი','s-rulers',t); });
+  });
+
+  var tih=T(typeof DEF_TIH!=='undefined'?DEF_TIH:null);
+  if(tih&&hs) Object.keys(tih).forEach(function(p){
+    tih[p].forEach(function(t,i){ add('ტრანზიტი '+(PN[p]||p)+' '+hs[i].n+' სახლში','ტრანზიტი','s-transits',t); });
+  });
+
+  var life=T(typeof DEF_LIFE!=='undefined'?DEF_LIFE:null);
+  if(life) life.forEach(function(x){ add(x.n,x.a+' წელი · ციკლი','s-transits',x.t); });
+
+  var pairs=[['DEF_ASC_SIGNS','ასცენდენტი','s-asc'],['DEF_CHIRON_SIGNS','ქირონი','s-chiron'],
+             ['DEF_NODE_SIGNS','კვანძი','s-node'],['DEF_LILITH_SIGNS','ლილითი','s-lilith']];
+  pairs.forEach(function(pr){
+    var arr=T(typeof window[pr[0]]!=='undefined'?window[pr[0]]:null);
+    if(!arr) return;
+    arr.forEach(function(x){ add(pr[1]+' '+x.n+'ში',pr[1],pr[2],(x.d||'')+' '+(x.desc||'')+' '+(x.wound||'')+' '+(x.gift||'')+' '+(x.nn||'')+' '+(x.sn||'')); });
+  });
+
+  [['DEF_GEN_U','ურანი'],['DEF_GEN_N','ნეპტუნი'],['DEF_GEN_P','პლუტონი']].forEach(function(pr){
+    var arr=T(typeof window[pr[0]]!=='undefined'?window[pr[0]]:null);
+    if(arr) arr.forEach(function(x){ add(pr[1]+' '+x.n+'ში',x.yr+' · თაობა','s-gener',x.t); });
+  });
+
+  var ph=T(typeof DEF_PHASES!=='undefined'?DEF_PHASES:null);
+  if(ph) ph.forEach(function(x){ add(x.ka,x.deg+' · მთვარის ფაზა','s-phase',x.t); });
+
+  var fs=T(typeof DEF_FORT_S!=='undefined'?DEF_FORT_S:null);
+  if(fs) fs.forEach(function(x){ add('ბედის წილი '+x.n+'ში','ბედის წილი','s-fort',x.t); });
+  var fh=T(typeof DEF_FORT_H!=='undefined'?DEF_FORT_H:null);
+  if(fh) fh.forEach(function(x){ add('ბედის წილი '+x.h+' სახლში','ბედის წილი','s-fort',x.t); });
+
+  var dg=T(typeof DEF_DIGN!=='undefined'?DEF_DIGN:null);
+  if(dg) dg.forEach(function(x){ add(x.n+' — დიგნიტეტები','სახლი '+x.dom+' · ეგზალტ. '+x.ex,'s-dign',x.t); });
+
+  var sy=T(typeof DEF_SYN!=='undefined'?DEF_SYN:null);
+  if(sy) sy.forEach(function(x){ add(x.n,x.g+' · სინასტრია','s-syn',x.t); });
+
+  var rx=T(typeof DEF_RETRO!=='undefined'?DEF_RETRO:null);
+  if(rx) rx.forEach(function(x){ add(x.n+' ℞','რეტროგრადულობა','s-retro',x.nat+' '+x.tr); });
+
+  var mt=T(typeof DEF_METHOD!=='undefined'?DEF_METHOD:null);
+  if(mt) mt.forEach(function(x){ add(x.n+'. '+x.ti,'რუკის კითხვა','s-method',x.q+' '+x.b); });
+
+  GS_INDEX=ix;
+  return ix;
+}
+
+function doSearch(q){
+  var box=document.getElementById('gsres');
+  if(!box) return;
+  q=(q||'').trim().toLowerCase();
+  if(q.length<2){ box.style.display='none'; box.innerHTML=''; return; }
+  var ix=buildSearchIndex();
+  var res=[];
+  for(var i=0;i<ix.length&&res.length<60;i++){
+    var e=ix[i];
+    var hay=(e.t+' '+e.s+' '+e.b).toLowerCase();
+    var p=hay.indexOf(q);
+    if(p>=0) res.push({e:e,score:(e.t.toLowerCase().indexOf(q)>=0?0:1)+(p/1000)});
+  }
+  res.sort(function(a,b){return a.score-b.score;});
+  if(!res.length){
+    box.innerHTML='<div style="padding:16px;text-align:center;font-size:13px;color:var(--text3)">ვერაფერი მოიძებნა</div>';
+    box.style.display='block'; return;
+  }
+  var h='<div style="padding:8px 12px;font-size:11px;color:var(--text3);border-bottom:.5px solid var(--border)">ნაპოვნია '+res.length+(res.length>=60?'+':'')+'</div>';
+  res.slice(0,40).forEach(function(r){
+    var e=r.e;
+    h+='<button onclick="gsGo(\''+e.sec+'\')" style="display:block;width:100%;text-align:right;padding:10px 12px;border:none;border-bottom:.5px solid var(--border);background:transparent;cursor:pointer">'
+      +'<div style="font-size:13px;color:var(--text);margin-bottom:2px">'+e.t+'</div>'
+      +'<div style="font-size:11px;color:var(--text3)">'+e.s+'</div></button>';
+  });
+  box.innerHTML=h;
+  box.style.display='block';
+}
+
+function gsGo(sec){
+  var box=document.getElementById('gsres');
+  if(box){ box.style.display='none'; }
+  var inp=document.getElementById('gsearch');
+  if(inp) inp.value='';
+  showPage(sec);
+}
+
+document.addEventListener('click',function(e){
+  var box=document.getElementById('gsres'), inp=document.getElementById('gsearch');
+  if(box&&inp&&e.target!==inp&&!box.contains(e.target)) box.style.display='none';
+});
 
 
 function renderHousesSection(sec){
@@ -9266,7 +9396,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.5';
+const SITE_VERSION='v6.6';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
