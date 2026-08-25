@@ -4154,6 +4154,89 @@ function showHouseRuler(x){
 }
 
 
+const DEF_GEN_U=[
+  {sym:'♈',n:'ვერძი',yr:'1927-1935 · 2010-2018',tag:'პიონერული აჯანყება',t:'თაობა, რომელიც ცვლილებას პირდაპირ და აგრესიულად ითხოვს. ინდივიდუალური თავისუფლება უმაღლესი ღირებულებაა. 1927-35 წლების თაობამ მსოფლიო ომისა და ეკონომიკური კრიზისის პირობებში ჩამოაყალიბა ხასიათი; 2010-18 წლებში დაბადებულები ციფრული სამყაროს პირველი მკვიდრნი არიან.'},
+  {sym:'♉',n:'კურო',yr:'1934-1942 · 2018-2026',tag:'ეკონომიკური გარდაქმნა',t:'თაობა, რომელიც ფულის, საკუთრებისა და რესურსების ცნებას ცვლის. ურანი კუროში ისტორიულად ფინანსური სისტემების რღვევასა და ახლის აშენებას ემთხვევა — 1930-იანების რეფორმებიდან ციფრულ ვალუტამდე. მატერიალური უსაფრთხოების ძველი მოდელი ამ თაობისთვის აღარ მუშაობს.'},
+  {sym:'♊',n:'ტყუპები',yr:'1941-1949 · 2025-2033',tag:'კომუნიკაციის რევოლუცია',t:'თაობა, რომელიც ინფორმაციის გავრცელების წესს ცვლის. 1940-იანების თაობამ მასობრივი მედია და გამოთვლითი ტექნიკა შექმნა. აზროვნება სწრაფი, არაწრფივი და ექსპერიმენტულია.'},
+  {sym:'♋',n:'კირჩხიბი',yr:'1948-1956',tag:'ოჯახის ხელახლა განსაზღვრა',t:'თაობა, რომელმაც ტრადიციული ოჯახის მოდელი ეჭვქვეშ დააყენა. 1950-იანების ბავშვები გახდნენ ისინი, ვინც 1960-70-იანებში ოჯახური და საცხოვრებელი ნორმები შეცვალა. ემოციური თავისუფლების მოთხოვნა ამ თაობის ხელწერაა.'},
+  {sym:'♌',n:'ლომი',yr:'1955-1962',tag:'ინდივიდუალობის აფეთქება',t:'თაობა, რომელმაც პირადი თვითგამოხატვა უმაღლეს ღირებულებად აქცია. როკკულტურა, ინდივიდუალიზმი, სცენა და პროტესტი ერთმანეთს შეერწყა. შემოქმედებითი თავისუფლება ამ თაობისთვის პოლიტიკური საკითხიცაა.'},
+  {sym:'♍',n:'ქალწული',yr:'1961-1969',tag:'სისტემების ეჭვქვეშ დაყენება',t:'თაობა, რომელმაც შრომის, ჯანმრთელობისა და ეკოლოგიის მიმართ დამოკიდებულება შეცვალა. ალტერნატიული მედიცინა, ჯანსაღი კვება და გარემოს დაცვა სწორედ აქედან იწყება. ანალიტიკური და კრიტიკული თაობაა.'},
+  {sym:'♎',n:'სასწორი',yr:'1968-1975',tag:'ურთიერთობების ახალი წესი',t:'თაობა, რომელმაც ქორწინების, თანასწორობისა და პარტნიორობის ცნება გადაწერა. განქორწინების ნორმალიზება, გენდერული თანასწორობა და ურთიერთობის ალტერნატიული ფორმები ამ თაობის სამუშაოა.'},
+  {sym:'♏',n:'მორიელი',yr:'1974-1981',tag:'ტაბუს რღვევა',t:'თაობა, რომელმაც სექსუალობის, სიკვდილისა და ფსიქიკის თემები ჩრდილიდან გამოიყვანა. ღრმა, ინტენსიური და ტრანსფორმაციაზე ორიენტირებული. ფსიქოთერაპიისა და ეზოთერიკის მასობრივი გავრცელება სწორედ აქ იწყება.'},
+  {sym:'♐',n:'მშვილდოსანი',yr:'1981-1988',tag:'გლობალიზაციის თაობა',t:'თაობა, რომლისთვისაც საზღვრები პირობითია. მოგზაურობა, უცხო კულტურა და გლობალური აზროვნება ბუნებრივია. რელიგიური დოგმისადმი სკეპსისი და საკუთარი სულიერი გზის ძიება ამ თაობის ხასიათია.'},
+  {sym:'♑',n:'თხის რქა',yr:'1988-1996',tag:'სტრუქტურების რღვევა',t:'თაობა, რომელიც ინსტიტუციებს ეჭვქვეშ აყენებს. საბჭოთა კავშირის დაშლა, პოლიტიკური რუკის გადაწერა და ავტორიტეტისადმი უნდობლობა ამ პერიოდის ნიშანია. ტრადიციული კარიერული გზა ამ თაობისთვის აღარ არის თავისთავადი.'},
+  {sym:'♒',n:'მერწყული',yr:'1995-2003',tag:'ციფრული მკვიდრნი',t:'ურანი საკუთარ სახლშია — ერთ-ერთი ყველაზე ძლიერი თაობრივი პოზიცია. ინტერნეტის მასობრივი გავრცელების თაობა. ტექნოლოგია, ქსელური აზროვნება და კოლექტიური იდენტობა ბუნებრივი გარემოა. ინდივიდუალიზმი და გლობალური ჩართულობა ერთდროულად.'},
+  {sym:'♓',n:'თევზები',yr:'2003-2011',tag:'საზღვრების დაშლა',t:'თაობა, რომლისთვისაც რეალობა და ვირტუალობა ერთმანეთს ერევა. სულიერი ძიება, ემპათია და ფსიქიკური ჯანმრთელობის თემა ამ თაობის ცენტრშია. საზღვრების არქონა ერთდროულად ძალაცაა და მოწყვლადობაც.'},
+];
+const DEF_GEN_N=[
+  {sym:'♈',n:'ვერძი',yr:'2025-2039',tag:'ახალი მითი',t:'ნეპტუნი ვერძში 165 წლის შემდეგ ბრუნდება. თაობა, რომელიც ახალ სულიერ იდენტობას ეძებს — ინდივიდუალურს და არა კოლექტიურს. წინა ჯერზე, 1861-1875 წლებში, ეს პერიოდი ეროვნული მითების აღმოცენებას ემთხვეოდა.'},
+  {sym:'♉',n:'კურო',yr:'2039-2052',tag:'მატერიის სულიერება',t:'თაობა, რომლისთვისაც მატერიალური და სულიერი ერთმანეთს ერწყმის. ბუნებასთან, საკვებთან და სხეულთან ურთიერთობა სულიერ განზომილებას იძენს.'},
+  {sym:'♊',n:'ტყუპები',yr:'1888-1902',tag:'სიტყვის მაგია',t:'თაობა, რომლისთვისაც სიტყვა და იდეა ჯადოსნური ხდება. სიმბოლიზმის ეპოქა ლიტერატურასა და ხელოვნებაში.'},
+  {sym:'♋',n:'კირჩხიბი',yr:'1901-1915',tag:'ოჯახის იდეალიზაცია',t:'თაობა, რომელმაც სახლისა და სამშობლოს იდეალი ააშენა — და შემდეგ ომში დაკარგა. ნოსტალგია ამ თაობის ხასიათია.'},
+  {sym:'♌',n:'ლომი',yr:'1914-1929',tag:'ბრწყინვის ილუზია',t:'თაობა, რომელმაც კინოვარსკვლავისა და გმირის კულტი შექმნა. ჰოლივუდი და მასობრივი კერპთაყვანისმცემლობა სწორედ აქ იბადება.'},
+  {sym:'♍',n:'ქალწული',yr:'1928-1943',tag:'მსახურების იდეალი',t:'თაობა, რომლისთვისაც შრომა და მსახურება სულიერი ღირებულებაა. თავგანწირვის მზაობა და ჯანმრთელობის თემა ცენტრშია.'},
+  {sym:'♎',n:'სასწორი',yr:'1942-1957',tag:'სიყვარულის იდეალიზაცია',t:'თაობა, რომელმაც რომანტიკული სიყვარულის იდეალი უმაღლეს ღირებულებად აქცია. სამართლიანობის ძიება და მშვიდობის მოძრაობა ამ თაობის სამუშაოა.'},
+  {sym:'♏',n:'მორიელი',yr:'1955-1970',tag:'ტრანსცენდენტული ძიება',t:'თაობა, რომელმაც ცნობიერების შეცვლილი მდგომარეობები ცენტრში დააყენა. ფსიქოდელიკა, აღმოსავლური სულიერება და ღრმა ფსიქოლოგია სწორედ აქედან მოდის.'},
+  {sym:'♐',n:'მშვილდოსანი',yr:'1970-1984',tag:'რწმენის ძიება',t:'თაობა, რომელიც სულიერ ჭეშმარიტებას ეძებს ტრადიციული რელიგიის გარეთ. ახალი სულიერი მოძრაობები, გურუები და ალტერნატიული ფილოსოფიები.'},
+  {sym:'♑',n:'თხის რქა',yr:'1984-1998',tag:'სტრუქტურის დაშლა',t:'თაობა, რომლის დროსაც ძველი ინსტიტუციები და იდეოლოგიები დაიშალა. ავტორიტეტისადმი უნდობლობა და ცინიზმი ამ თაობის ჩრდილია, რეალისტური სულიერება კი მისი ძალა.'},
+  {sym:'♒',n:'მერწყული',yr:'1998-2012',tag:'კოლექტიური ოცნება',t:'თაობა, რომლისთვისაც ინტერნეტი კოლექტიური ცნობიერების ფორმაა. ონლაინ იდენტობა, ვირტუალური თემები და გლობალური თანაგრძნობა ბუნებრივია.'},
+  {sym:'♓',n:'თევზები',yr:'2011-2026',tag:'ნეპტუნი საკუთარ სახლში',t:'ნეპტუნი თევზებშია — უმაღლესი გამოვლინება. თაობა, რომლისთვისაც ემპათია, ფსიქიკური ჯანმრთელობა და საზღვრების საკითხი ცენტრალურია. იმავდროულად დეზინფორმაციისა და ილუზიის ეპოქა.'},
+];
+const DEF_GEN_P=[
+  {sym:'♈',n:'ვერძი',yr:'1822-1853',tag:'ინდივიდის ძალა',t:'ეპოქა, როცა პიროვნული ინიციატივა ისტორიის მამოძრავებელი გახდა. რევოლუციები და ინდუსტრიული გარღვევა.'},
+  {sym:'♉',n:'კურო',yr:'1853-1884',tag:'კაპიტალის ძალა',t:'ეპოქა, როცა კაპიტალმა და საკუთრებამ ძალაუფლების ახალი ფორმა შექმნა. ინდუსტრიული სიმდიდრის დაბადება.'},
+  {sym:'♊',n:'ტყუპები',yr:'1884-1914',tag:'ინფორმაციის ძალა',t:'ეპოქა, როცა კომუნიკაცია გლობალური გახდა — ტელეგრაფი, პრესა, ტრანსპორტი. სიტყვამ ძალაუფლება შეიძინა.'},
+  {sym:'♋',n:'კირჩხიბი',yr:'1914-1939',tag:'ერისა და ოჯახის ძალა',t:'ეპოქა, როცა ეროვნული და ოჯახური იდენტობა ძალაუფლების იარაღად იქცა. ორი მსოფლიო ომის თაობა.'},
+  {sym:'♌',n:'ლომი',yr:'1937-1958',tag:'პიროვნების კულტი',t:'თაობა, რომელიც ძალაუფლების პიროვნულ ფორმას შეესწრო — დიქტატორებიდან ვარსკვლავებამდე. ინდივიდუალობის უფლების მოთხოვნა ამ თაობის სამუშაო გახდა.'},
+  {sym:'♍',n:'ქალწული',yr:'1956-1972',tag:'სისტემის გარდაქმნა',t:'თაობა, რომელმაც შრომის, ჯანმრთელობისა და ეკოლოგიის სისტემები ძირფესვიანად შეცვალა. კრიტიკული და მოთხოვნადი თაობა.'},
+  {sym:'♎',n:'სასწორი',yr:'1971-1984',tag:'ურთიერთობების გარდაქმნა',t:'თაობა, რომელმაც ქორწინების, თანასწორობისა და პარტნიორობის ცნება ხელახლა განსაზღვრა. განქორწინების ნორმალიზება და გენდერული ბალანსის ბრძოლა.'},
+  {sym:'♏',n:'მორიელი',yr:'1983-1995',tag:'პლუტონი საკუთარ სახლში',t:'პლუტონი მორიელშია — უმაღლესი გამოვლინება. თაობა, რომლისთვისაც ტაბუ არ არსებობს. სექსუალობა, სიკვდილი, ფსიქიკა და ძალაუფლება ღიად განიხილება. ინტენსიური, ღრმა და კრიზისისადმი მედეგი თაობა.'},
+  {sym:'♐',n:'მშვილდოსანი',yr:'1995-2008',tag:'რწმენის გარდაქმნა',t:'თაობა, რომლისთვისაც გლობალიზაცია და რელიგიური კონფლიქტი ერთდროულად რეალობაა. ჭეშმარიტების ძიება და დოგმის რღვევა ამ თაობის თემაა.'},
+  {sym:'♑',n:'თხის რქა',yr:'2008-2024',tag:'სტრუქტურის გარდაქმნა',t:'თაობა, რომელიც ინსტიტუციების ღრმა კრიზისს დაემთხვა — ფინანსური კრახიდან პანდემიამდე. ავტორიტეტისა და სისტემის ხელახლა აშენება ამ თაობის ამოცანაა.'},
+  {sym:'♒',n:'მერწყული',yr:'2023-2044',tag:'ტექნოლოგიის ძალა',t:'მიმდინარე ეპოქა. ძალაუფლება ტექნოლოგიაში, ქსელებსა და კოლექტიურ სისტემებში გადადის. ხელოვნური ინტელექტი, ბიოტექნოლოგია და საზოგადოებრივი სტრუქტურის გარდაქმნა ამ თაობის სამუშაოა.'},
+  {sym:'♓',n:'თევზები',yr:'2044-2068',tag:'საზღვრების გარდაქმნა',t:'მომავალი ეპოქა. ძალაუფლების საკითხი სულიერ, ფსიქიკურ და უსაზღვრო სფეროში გადადის.'},
+];
+
+let DEF_GEN_SECTION={id:'s-gener',type:'gener',title:'⧗ თაობრივი პლანეტები',visible:true,tab:'⧗ თაობები'};
+
+function renderGenerSection(sec){
+  var P={'♅':{d:DEF_GEN_U,n:'ურანი',c:'#0ea5a4',cyc:'84 წელი · ნიშანში ~7 წელი',w:'ცვლილება, თავისუფლება, ტექნოლოგია'},
+         '♆':{d:DEF_GEN_N,n:'ნეპტუნი',c:'#5b7cd8',cyc:'165 წელი · ნიშანში ~14 წელი',w:'იდეალი, სულიერება, ილუზია'},
+         '♇':{d:DEF_GEN_P,n:'პლუტონი',c:'#8b5a5a',cyc:'248 წელი · ნიშანში 12-30 წელი',w:'ძალაუფლება, ღრმა გარდაქმნა'}};
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(91,124,216,.12);display:flex;align-items:center;justify-content:center;font-size:19px">⧗</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">თაობრივი პლანეტები ნიშნებში</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">♅ ♆ ♇ · 36 თაობა · წლების მითითებით</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">ურანი, ნეპტუნი და პლუტონი ერთ ნიშანში წლებს ან ათწლეულებს რჩებიან, ამიტომ მათი პოზიცია პიროვნულ მახასიათებელს კი არა, <strong>თაობის ხასიათს</strong> აღწერს. ერთსა და იმავე პერიოდში დაბადებულ ყველა ადამიანს ერთი და იგივე აქვს. პიროვნულ დონეზე ისინი მაშინ მუშაობს, როცა პირად პლანეტას ან კუთხოვან წერტილს ეხება — სახლი კი ყოველთვის ინდივიდუალურია.</div></div>';
+
+  ['♅','♆','♇'].forEach(function(k){
+    var p=P[k];
+    h+='<div style="margin-bottom:22px">';
+    h+='<div style="display:flex;align-items:center;gap:11px;margin-bottom:12px">';
+    h+='<div style="width:36px;height:36px;border-radius:50%;background:'+p.c+'18;display:flex;align-items:center;justify-content:center;font-size:19px;color:'+p.c+'">'+k+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:500;color:var(--text)">'+p.n+'</div>';
+    h+='<div style="font-size:11px;color:var(--text3)">'+p.cyc+' · '+p.w+'</div></div>';
+    h+='<div style="flex:1;height:1px;background:linear-gradient(to right,'+p.c+'30,transparent)"></div></div>';
+    p.d.forEach(function(x){
+      h+='<details style="border:.5px solid var(--border);border-radius:12px;background:var(--bg);overflow:hidden;margin-bottom:7px">';
+      h+='<summary style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none;flex-wrap:wrap">';
+      h+='<span style="font-size:19px;color:'+p.c+';width:24px;text-align:center">'+x.sym+'</span>';
+      h+='<div style="flex:1;min-width:100px"><div style="font-size:13.5px;font-weight:500;color:var(--text)">'+k+' '+x.n+'ში</div>';
+      h+='<div style="font-size:11px;color:var(--text3)">'+x.tag+'</div></div>';
+      h+='<span style="font-size:11.5px;color:'+p.c+';white-space:nowrap">'+x.yr+'</span>';
+      h+='</summary>';
+      h+='<div style="padding:0 14px 14px 50px;border-top:.5px solid var(--border)">';
+      h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+    });
+    h+='</div>';
+  });
+  h+='<div style="padding:13px 15px;border-radius:12px;background:var(--bg2);font-size:12px;color:var(--text3);line-height:1.75">წლები მიახლოებითია: პლანეტა ნიშანს რეტროგრადულობის გამო რამდენჯერმე კვეთს, ამიტომ საზღვარზე დაბადებულებმა ზუსტი პოზიცია რუკაში უნდა შეამოწმონ.</div>';
+  return h;
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -5530,7 +5613,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5544,6 +5627,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasGn=saved.some(s=>s.id==='s-gener');
   const hasRl=saved.some(s=>s.id==='s-rulers');
   const hasRx=saved.some(s=>s.id==='s-retro');
   const hasMt=saved.some(s=>s.id==='s-method');
@@ -5565,6 +5649,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasGn) saved.push(DEF_GEN_SECTION);
   if(!hasRl) saved.push(DEF_RULERS_SECTION);
   if(!hasRx) saved.push(DEF_RETRO_SECTION);
   if(!hasMt) saved.unshift(DEF_METHOD_SECTION);
@@ -6167,14 +6252,14 @@ function renderAll(){
 
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
-    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
+    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
     {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn','retro'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
   ];
-  const ICONS={'s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
-  const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია','s-rulers':'144 კომბინაცია',
+  const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 120 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა',
     's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
@@ -7677,6 +7762,7 @@ function renderSection(sec){
   if(sec.type==='method')return renderMethodSection(sec);
   if(sec.type==='retro')return renderRetroSection(sec);
   if(sec.type==='rulers')return renderRulersSection(sec);
+  if(sec.type==='gener')return renderGenerSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -9070,7 +9156,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.3';
+const SITE_VERSION='v6.4';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
