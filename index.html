@@ -4520,6 +4520,13 @@ function buildSearchIndex(){
     tih[p].forEach(function(t,i){ add('ტრანზიტი '+(PN[p]||p)+' '+hs[i].n+' სახლში','ტრანზიტი','s-transits',t); });
   });
 
+  var ps=T(typeof DEF_PSUN!=='undefined'?DEF_PSUN:null);
+  if(ps) ps.forEach(function(x){ add('პროგრ. მზე '+x.n+'ში','პროგრესია','s-prog',x.t); });
+  var pms=T(typeof DEF_PMOON_S!=='undefined'?DEF_PMOON_S:null);
+  if(pms) pms.forEach(function(x){ add('პროგრ. მთვარე '+x.n+'ში','პროგრესია','s-prog',x.t); });
+  var pmh=T(typeof DEF_PMOON_H!=='undefined'?DEF_PMOON_H:null);
+  if(pmh) pmh.forEach(function(x){ add('პროგრ. მთვარე '+x.h+' სახლში','პროგრესია','s-prog',x.t); });
+
   var life=T(typeof DEF_LIFE!=='undefined'?DEF_LIFE:null);
   if(life) life.forEach(function(x){ add(x.n,x.a+' წელი · ციკლი','s-transits',x.t); });
 
@@ -4601,6 +4608,129 @@ document.addEventListener('click',function(e){
   var box=document.getElementById('gsres'), inp=document.getElementById('gsearch');
   if(box&&inp&&e.target!==inp&&!box.contains(e.target)) box.style.display='none';
 });
+
+
+
+const DEF_PSUN=[
+  {sym:'♈',n:'ვერძი',t:'ახალი დასაწყისის ეტაპი. ადამიანი უფრო გაბედული, პირდაპირი და ინიციატივიანი ხდება. ხშირად ეს პერიოდი დამოუკიდებელი საქმის დაწყებას, გადასვლას ან ისეთი გადაწყვეტილების მიღებას ემთხვევა, რომელსაც წლების განმავლობაში აჭიანურებდა.'},
+  {sym:'♉',n:'კურო',t:'სტაბილიზაციის ეტაპი. ჩქარობა ცხრება, ადამიანი აშენებს იმას, რაც დიდხანს გასტანს. ფინანსური საკითხები და ფიზიკური კომფორტი უფრო მნიშვნელოვანი ხდება. ღირებულებები მყარდება.'},
+  {sym:'♊',n:'ტყუპები',t:'ცნობისმოყვარეობის ეტაპი. ინტერესები მრავლდება, ჩნდება სწავლის, წერის ან ახალი კონტაქტების სურვილი. ხშირად სწორედ ამ პერიოდში იწყებს ადამიანი იმას, რაზეც ადრე დრო არ ჰქონდა.'},
+  {sym:'♋',n:'კირჩხიბი',t:'შინაგანი და ოჯახური ეტაპი. ფოკუსი გარედან შიგნით გადადის: სახლი, ოჯახი, ფესვები. ხშირად ბავშვის დაბადება, გადასვლა ან მშობლებთან ურთიერთობის გადააზრება. ემოციური მოთხოვნილება მკაფიოვდება.'},
+  {sym:'♌',n:'ლომი',t:'თვითგამოხატვის ეტაპი. ადამიანი უფრო თამამი და ხილვადი ხდება. ჩნდება შემოქმედების, სცენის ან აღიარების სურვილი. ხშირად სწორედ ახლა ბედავს იმას, რაც ადრე ეშინოდა.'},
+  {sym:'♍',n:'ქალწული',t:'დახვეწისა და მოწესრიგების ეტაპი. ფოკუსი დეტალზე, ჯანმრთელობასა და ყოველდღიურ სისტემაზე გადადის. ხშირად ცხოვრების წესის შეცვლა, დიეტა, ვარჯიში ან სამუშაო პროცესის გადაწყობა.'},
+  {sym:'♎',n:'სასწორი',t:'ურთიერთობების ეტაპი. სხვისკენ მიბრუნება: ქორწინება, პარტნიორობა, თანამშრომლობა. ესთეტიკური ინტერესი იზრდება. ხშირად სწორედ ამ პერიოდში ხდება მნიშვნელოვანი კავშირი ან, პირიქით, მისი გადააზრება.'},
+  {sym:'♏',n:'მორიელი',t:'გარდაქმნის ეტაპი. ზედაპირული აღარ აკმაყოფილებს. ხშირად ღრმა კრიზისი, ფსიქოლოგიური მუშაობა ან ისეთი დასასრული, რომლის შემდეგაც ადამიანი სხვა ხდება. ფინანსური და ინტიმური საკითხები ცენტრში დგება.'},
+  {sym:'♐',n:'მშვილდოსანი',t:'გაფართოების ეტაპი. ჰორიზონტი იხსნება: სწავლა, უცხოეთი, ახალი მსოფლმხედველობა. ოპტიმიზმი იზრდება. ხშირად გადასახლება, ხანგრძლივი მოგზაურობა ან სრულიად ახალი სფეროს დაწყება.'},
+  {sym:'♑',n:'თხის რქა',t:'სტრუქტურისა და მიღწევის ეტაპი. ამბიცია მკაფიოვდება, პასუხისმგებლობა იზრდება. ხშირად კარიერული აღმასვლა ან ისეთი ვალდებულების აღება, რომელიც წლებს გასტანს. სერიოზულობა ჩნდება იქაც, სადაც ადრე სიმსუბუქე იყო.'},
+  {sym:'♒',n:'მერწყული',t:'განთავისუფლების ეტაპი. ადამიანი წყვეტს იმას, რაც აღარ ესადაგება. ჩნდება ჯგუფის, საზოგადოებრივი მიზნის ან სრულიად ახალი მიმართულების ინტერესი. ხშირად მოულოდნელი ცვლილება ცხოვრების წესში.'},
+  {sym:'♓',n:'თევზები',t:'დასრულებისა და დათმობის ეტაპი. კონტროლი სუსტდება, ინტუიცია ძლიერდება. ხშირად სულიერი ძიება, შემოქმედება ან განმარტოების საჭიროება. ციკლის ბოლოა — ის, რაც აღარ სჭირდება, თავად იშლება.'},
+];
+const DEF_PMOON_S=[
+  {sym:'♈',n:'ვერძი',t:'ორნახევარი წელი, როცა ემოციური მოთხოვნილება მოქმედებას ითხოვს. მოუთმენლობა იზრდება, ჩნდება სურვილი, რაღაც ახალი დაიწყოს. კარგი პერიოდია ინიციატივისთვის.'},
+  {sym:'♉',n:'კურო',t:'პერიოდი, როცა სიმშვიდე და მატერიალური უსაფრთხოება მთავარი ხდება. ცხოვრების ტემპი ნელდება. ხშირად ფინანსური სტაბილიზაცია ან სახლის მოწესრიგება.'},
+  {sym:'♊',n:'ტყუპები',t:'პერიოდი, როცა ცნობისმოყვარეობა იზრდება. ჩნდება სწავლის, საუბრისა და ახალი კონტაქტების სურვილი. ხშირად ბევრი მოკლე მოგზაურობა ან პარალელური საქმეები.'},
+  {sym:'♋',n:'კირჩხიბი',t:'პერიოდი, როცა ემოციური და ოჯახური სფერო ცენტრში დგება. სახლთან, დედასთან ან ბავშვებთან დაკავშირებული მოვლენები. მგრძნობელობა იზრდება.'},
+  {sym:'♌',n:'ლომი',t:'პერიოდი, როცა ჩნდება თვითგამოხატვისა და ყურადღების საჭიროება. შემოქმედება, რომანტიკა ან სცენა. ემოციურად უფრო თბილი და ღია ეტაპი.'},
+  {sym:'♍',n:'ქალწული',t:'პერიოდი, როცა წესრიგი და ჯანმრთელობა მთავარი ხდება. ჩნდება სურვილი, ყოველდღიურობა მოწესრიგდეს. ხშირად სამუშაო რეჟიმის ან ჩვევების გადაწყობა.'},
+  {sym:'♎',n:'სასწორი',t:'პერიოდი, როცა ურთიერთობები ცენტრში დგება. ჩნდება პარტნიორობის, ჰარმონიისა და სოციალური კონტაქტის საჭიროება. ხშირად მნიშვნელოვანი კავშირი ან მისი გადამოწმება.'},
+  {sym:'♏',n:'მორიელი',t:'პერიოდი, როცა ზედაპირული აღარ აკმაყოფილებს. ემოციები ღრმავდება, ჩნდება ფსიქოლოგიური მუშაობის ან რადიკალური ცვლილების საჭიროება. ხშირად ერთ-ერთი ყველაზე მძიმე ორნახევარი წელი.'},
+  {sym:'♐',n:'მშვილდოსანი',t:'პერიოდი, როცა ჩნდება თავისუფლებისა და ჰორიზონტის საჭიროება. მოგზაურობა, სწავლა, ახალი მსოფლმხედველობა. ემოციურად უფრო მსუბუქი ეტაპი.'},
+  {sym:'♑',n:'თხის რქა',t:'პერიოდი, როცა პასუხისმგებლობა და მიზანი მთავარი ხდება. ემოციები თავშეკავებულია, ფოკუსი კი შედეგზე. ხშირად კარიერული ძალისხმევის ეტაპი.'},
+  {sym:'♒',n:'მერწყული',t:'პერიოდი, როცა ჩნდება განთავისუფლებისა და ახალი გარემოს საჭიროება. მეგობრები და ჯგუფი უფრო მნიშვნელოვანი ხდება, ვიდრე პირადი კავშირი.'},
+  {sym:'♓',n:'თევზები',t:'ციკლის ბოლო ორნახევარი წელი. ენერგია დაბალია, ჩნდება განმარტოებისა და დასვენების საჭიროება. ის, რაც აღარ სჭირდება, თავად სრულდება. მომდევნო ციკლი ვერძში იწყება.'},
+];
+const DEF_PMOON_H=[
+  {h:'I',t:'პიროვნული განახლების პერიოდი. გარეგნობა, სტილი და თვითწარმოჩენა იცვლება. ადამიანი უფრო ხილვადი ხდება. ხშირად ახალი ეტაპის დასაწყისი.'},
+  {h:'II',t:'ფინანსური ფოკუსის პერიოდი. შემოსავალი, ქონება და თვითღირებულება ცენტრში დგება. ხშირად შემოსავლის წყაროს ცვლილება.'},
+  {h:'III',t:'კომუნიკაციისა და სწავლის პერიოდი. ბევრი კონტაქტი, მოკლე მოგზაურობა, კურსი ან ახალი უნარი. ძმა-დასთან ურთიერთობა აქტიურდება.'},
+  {h:'IV',t:'სახლისა და ოჯახის პერიოდი. გადასვლა, რემონტი, ოჯახური მოვლენა ან მშობლებთან ურთიერთობის გადააზრება. შინაგანი ფესვების ეტაპი.'},
+  {h:'V',t:'შემოქმედებისა და რომანტიკის პერიოდი. ხშირად ახალი კავშირი, ბავშვის დაბადება ან შემოქმედებითი პროექტი. ემოციურად ერთ-ერთი ყველაზე სასიამოვნო ეტაპი.'},
+  {h:'VI',t:'სამუშაოსა და ჯანმრთელობის პერიოდი. ყოველდღიური რეჟიმი გადაიწყობა. ხშირად სამსახურის ცვლილება ან ჯანმრთელობაზე ყურადღების მიქცევის აუცილებლობა.'},
+  {h:'VII',t:'პარტნიორობის პერიოდი. ურთიერთობები ცენტრში დგება — ხშირად ქორწინება, საქმიანი კავშირი ან, პირიქით, არსებულის დასრულება.'},
+  {h:'VIII',t:'ღრმა გარდაქმნის პერიოდი. ხშირად კრიზისი, დანაკარგი ან ისეთი დასასრული, რომელიც აუცილებელია. საერთო ფინანსები და ფსიქოლოგიური მუშაობა აქტუალურდება.'},
+  {h:'IX',t:'გაფართოების პერიოდი. სწავლა, უცხოეთი, ახალი მსოფლმხედველობა. ხშირად ხანგრძლივი მოგზაურობა ან უმაღლესი განათლების დაწყება.'},
+  {h:'X',t:'კარიერული პერიოდი. საჯარო როლი და პროფესიული მიღწევა ცენტრში დგება. ხშირად დაწინაურება, ახალი თანამდებობა ან საკუთარი საქმის დაწყება.'},
+  {h:'XI',t:'სოციალური პერიოდი. ახალი მეგობრები, ჯგუფი, საზოგადოებრივი ჩართულობა. მომავლის გეგმები კონკრეტდება.'},
+  {h:'XII',t:'შინაგანი მუშაობისა და დასრულების პერიოდი. ენერგია დაბალია, საჭიროა განმარტოება და დასვენება. მომდევნო ციკლის მომზადება — შედეგი პირველ სახლში გამოჩნდება.'},
+];
+const DEF_PROG_RULES=[
+  {i:'◷',ti:'გამოთვლა: დღე წელიწადს უდრის',t:'მეორადი პროგრესია დაბადებიდან ყოველ დღეს ერთი წლის ტოლად თვლის. თუ 30 წლის ხარ, აიღე დაბადებიდან 30-ე დღის ცის რუკა — ეს არის შენი პროგრესირებული რუკა. astro.com-ზე ეს ავტომატურად კეთდება.'},
+  {i:'☉',ti:'პროგრესირებული მზე — 30 წელი ერთ ნიშანში',t:'პროგრესირებული მზე დღეში დაახლოებით ერთ გრადუსს გადის, ანუ ნიშანს დაახლოებით 30 წელიწადში ცვლის. ნიშნის შეცვლა ცხოვრების მთავარი ეტაპების ზღვარია — ადამიანი მართლაც სხვანაირი ხდება. თითოეულს ცხოვრებაში ორი ან სამი ასეთი გადასვლა აქვს.'},
+  {i:'☽',ti:'პროგრესირებული მთვარე — 27-28 წლიანი ციკლი',t:'პროგრესირებული მთვარე ნიშანს ორნახევარ წელიწადში ცვლის და სრულ წრეს 27-28 წელიწადში ასრულებს. ეს ყველაზე პრაქტიკული პროგრესიული ინსტრუმენტია: ის აჩვენებს, რა სჭირდება ადამიანს ემოციურად ამ კონკრეტულ პერიოდში.'},
+  {i:'⟳',ti:'პროგრესია და ტრანზიტი ერთად',t:'ტრანზიტი გარეგან მოვლენას აჩვენებს, პროგრესია — შინაგან მომწიფებას. დიდი ცვლილება მაშინ ხდება, როცა ორივე ერთსა და იმავე სფეროზე მიუთითებს. მხოლოდ ერთი მათგანი ხშირად საკმარისი არაა.'},
+  {i:'✦',ti:'პროგრესია ნელია და შეუმჩნეველი',t:'პროგრესიული ცვლილება არ ხდება ერთ დღეს — ის თვეების განმავლობაში მწიფდება. ხშირად ადამიანი მას მხოლოდ უკან მიხედვისას ამჩნევს. სწორედ ამიტომ პროგრესია ცუდი ინსტრუმენტია ზუსტი თარიღის პროგნოზისთვის და შესანიშნავი — ეტაპის გასაგებად.'},
+];
+
+let DEF_PROG_SECTION={id:'s-prog',type:'prog',title:'⇢ პროგრესიები',visible:true,tab:'⇢ პროგრესიები'};
+
+function renderProgSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(219,39,119,.10);display:flex;align-items:center;justify-content:center;font-size:20px">⇢</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">მეორადი პროგრესიები</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">შინაგანი მომწიფება · პროგნოზის მეორე ნახევარი</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">თუ ტრანზიტი გვეუბნება, <strong>რა ხდება გარეთ</strong>, პროგრესია აჩვენებს, <strong>რა მწიფდება შიგნით</strong>. მეთოდი მარტივია: დაბადებიდან ყოველი დღე ერთ წელს უდრის. თუ 30 წლის ხარ, დაბადებიდან 30-ე დღის ცა შენს ამჟამინდელ შინაგან მდგომარეობას აღწერს. ეს ორი ინსტრუმენტი ერთად მუშაობს — მხოლოდ ერთი მათგანი იშვიათად საკმარისია.</div></div>';
+
+  h+='<details open style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden;margin-bottom:14px">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(232,163,61,.14);display:flex;align-items:center;justify-content:center;font-size:16px;color:#e8a33d">☉</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">პროგრესირებული მზე</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">ნიშანში ~30 წელი · ცხოვრების დიდი ეტაპები</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+  h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:14px 0 8px">პროგრესირებული მზე ნიშანს დაახლოებით 30 წელიწადში ცვლის. ეს გადასვლა ცხოვრების მთავარი ეტაპის ზღვარია — ადამიანი მართლაც სხვანაირი ხდება. თითოეულს ორი ან სამი ასეთი გადასვლა აქვს.</p>';
+  DEF_PSUN.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:11px;background:var(--bg);margin-bottom:6px;overflow:hidden">';
+    h+='<summary style="display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer;list-style:none">';
+    h+='<span style="font-size:17px;color:#e8a33d;width:22px;text-align:center">'+x.sym+'</span>';
+    h+='<span style="flex:1;font-size:13px;color:var(--text)">პროგრ. მზე '+x.n+'ში</span></summary>';
+    h+='<div style="padding:0 13px 12px 46px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:11px 0 0">'+x.t+'</p></div></details>';
+  });
+  h+='</div></details>';
+
+  h+='<details style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden;margin-bottom:14px">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(123,143,168,.16);display:flex;align-items:center;justify-content:center;font-size:16px;color:#7b8fa8">☽</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">პროგრესირებული მთვარე</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">ნიშანში ~2.5 წელი · სრული ციკლი 27-28 წელი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+  h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:14px 0 10px">ყველაზე პრაქტიკული პროგრესიული ინსტრუმენტი. აჩვენებს, რა სჭირდება ადამიანს ემოციურად ამ კონკრეტულ პერიოდში. სრული ციკლი 27-28 წელიწადში სრულდება — ეს ერთ-ერთი მთავარი ცხოვრებისეული ზღვარია.</p>';
+  h+='<div style="font-size:12.5px;font-weight:500;color:var(--text);margin:12px 0 8px">ნიშნებში</div>';
+  DEF_PMOON_S.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:11px;background:var(--bg);margin-bottom:6px;overflow:hidden">';
+    h+='<summary style="display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer;list-style:none">';
+    h+='<span style="font-size:17px;color:#7b8fa8;width:22px;text-align:center">'+x.sym+'</span>';
+    h+='<span style="flex:1;font-size:13px;color:var(--text)">პროგრ. მთვარე '+x.n+'ში</span></summary>';
+    h+='<div style="padding:0 13px 12px 46px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:11px 0 0">'+x.t+'</p></div></details>';
+  });
+  h+='<div style="font-size:12.5px;font-weight:500;color:var(--text);margin:16px 0 8px">სახლებში</div>';
+  DEF_PMOON_H.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:11px;background:var(--bg);margin-bottom:6px;overflow:hidden">';
+    h+='<summary style="display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(123,143,168,.16);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#7b8fa8">'+x.h+'</div>';
+    h+='<span style="flex:1;font-size:13px;color:var(--text)">პროგრ. მთვარე '+x.h+' სახლში</span></summary>';
+    h+='<div style="padding:0 13px 12px 50px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:11px 0 0">'+x.t+'</p></div></details>';
+  });
+  h+='</div></details>';
+
+  h+='<details style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:14px">◐</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">როგორ ვიმუშაოთ პროგრესიებით</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">5 პრაქტიკული წესი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 18px;border-top:.5px solid var(--border)">';
+  DEF_PROG_RULES.forEach(function(x){
+    h+='<div style="display:flex;gap:13px;padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)">'+x.i+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:4px">'+x.ti+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
 
 
 function renderHousesSection(sec){
@@ -5979,7 +6109,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -5993,6 +6123,7 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const hasPg=saved.some(s=>s.id==='s-prog');
   const hasPh=saved.some(s=>s.id==='s-phase');
   const hasFt=saved.some(s=>s.id==='s-fort');
   const hasGn=saved.some(s=>s.id==='s-gener');
@@ -6017,6 +6148,7 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasPg) saved.push(DEF_PROG_SECTION);
   if(!hasPh) saved.push(DEF_PHASE_SECTION);
   if(!hasFt) saved.push(DEF_FORT_SECTION);
   if(!hasGn) saved.push(DEF_GEN_SECTION);
@@ -6623,14 +6755,14 @@ function renderAll(){
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
     {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
-    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','syn','retro'], ids:[]},
+    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','prog','syn','retro'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
   ];
-  const ICONS={'s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
   const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 156 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა','s-phase':'8 ფაზა · რუდჰიარის სისტემა','s-fort':'ჰელენური ლოტი · ნიშნები და სახლები',
-    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
+    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-prog':'შინაგანი მომწიფება · 36 პოზიცია','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
   const groupOf=s=>{
@@ -8135,6 +8267,7 @@ function renderSection(sec){
   if(sec.type==='gener')return renderGenerSection(sec);
   if(sec.type==='phase')return renderPhaseSection(sec);
   if(sec.type==='fort')return renderFortSection(sec);
+  if(sec.type==='prog')return renderProgSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -9528,7 +9661,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.7';
+const SITE_VERSION='v6.8';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
