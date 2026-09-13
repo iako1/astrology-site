@@ -1361,6 +1361,16 @@ const GLOSSARY_TERMS=[
   {ka:'დეკანატი',en:'Decan · Face',cat:'დიგნიტეტები',
    def:'მეხუთე არსებითი დიგნიტეტი და ყველაზე სუსტი. ყოველი ნიშანი სამ ათგრადუსიან მონაკვეთად იყოფა, სულ 36 დეკანატი. ტრადიციული მმართველობა ქალდეური რიგით მიდის: ♄ ♃ ♂ ☉ ♀ ☿ ☽, ვერძის პირველი დეკანატიდან. დეკანატი აზუსტებს ნიშნის კითხვას — ვერძის 5° და 25° განსხვავებულად მუშაობს.',
    url:'https://www.skyscript.co.uk/dignities.html'}
+,
+  {ka:'საროსი',en:'Saros cycle',cat:'პროგნოზი',
+   def:'დაბნელებების 18 წელი და 11 დღიანი ციკლი. ერთი საროსის სერიის დაბნელებები მსგავს თემას ატარებს და დაახლოებით 18 წელიწადში მეორდება. ბიოგრაფიაში ეს ხშირად ერთი და იმავე თემის დაბრუნებას ნიშნავს.',
+   url:'https://en.wikipedia.org/wiki/Saros_(astronomy)'},
+  {ka:'ფიქსირებული ვარსკვლავი',en:'Fixed star',cat:'ტექნიკა',
+   def:'ვარსკვლავი, რომელიც ზოდიაქოზე თითქმის უძრავად დგას — პრეცესიის გამო საუკუნეში დაახლოებით ერთ გრადუსს გადაადგილდება. მუშაობს მაშინ, როცა პლანეტას ან კუთხოვან წერტილს ერთ გრადუსში ეხება. ყველაზე ცნობილია ალგოლი, რეგულუსი, სპიკა და ანტარესი.',
+   url:'https://www.skyscript.co.uk/fixedstars.html'},
+  {ka:'სამეფო ვარსკვლავები',en:'Royal Stars',cat:'ტექნიკა',
+   def:'ოთხი ვარსკვლავი, რომლებიც ძველ სპარსეთში ცის ოთხ მცველად ითვლებოდა: ალდებარანი ♊ 10° აღმოსავლეთისა, რეგულუსი ♍ 0° ჩრდილოეთის, ანტარესი ♐ 10° დასავლეთის და ფომალჰაუტი ♓ 4° სამხრეთის. თითოეული დიდებას ჰპირდება, ოღონდ პირობით — ეთიკური ნორმის დაცვის შემთხვევაში.',
+   url:'https://www.skyscript.co.uk/fixedstars.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -3894,6 +3904,7 @@ function renderDignSection(sec){
   h+='</div></details>';
 
   h+=renderDignExtra();
+  h+=renderSectBlock();
 
   // ნიშნების ცხრილი
   h+='<div style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);padding:18px 20px;margin-bottom:16px">';
@@ -4566,6 +4577,19 @@ function buildSearchIndex(){
     if(arr) arr.forEach(function(x){ add(x.ti||x.ka||x.n||'',pr[1],pr[2],x.t||''); });
   });
 
+  var st=T(typeof DEF_STARS!=='undefined'?DEF_STARS:null);
+  if(st) st.forEach(function(x){ add(x.ka+' '+x.pos,x.en+' · ფიქს. ვარსკვლავი','s-stars',x.t); });
+  var et=T(typeof DEF_ECL_T!=='undefined'?DEF_ECL_T:null);
+  if(et) et.forEach(function(x){ add(x.n,'დაბნელება','s-ecl',x.t); });
+  var eh=T(typeof DEF_ECL_H!=='undefined'?DEF_ECL_H:null);
+  if(eh) eh.forEach(function(x){ add('დაბნელება '+x.h+' სახლში','დაბნელება','s-ecl',x.t); });
+  var er=T(typeof DEF_ECL_R!=='undefined'?DEF_ECL_R:null);
+  if(er) er.forEach(function(x){ add(x.ti,'დაბნელება','s-ecl',x.t); });
+  var sc2=T(typeof DEF_SECT!=='undefined'?DEF_SECT:null);
+  if(sc2) sc2.forEach(function(x){ add(x.n,'სექტი','s-dign',x.t); });
+  var sr=T(typeof DEF_SECT_RULES!=='undefined'?DEF_SECT_RULES:null);
+  if(sr) sr.forEach(function(x){ add(x.ti,'სექტი','s-dign',x.t); });
+
   var mt=T(typeof DEF_METHOD!=='undefined'?DEF_METHOD:null);
   if(mt) mt.forEach(function(x){ add(x.n+'. '+x.ti,'რუკის კითხვა','s-method',x.q+' '+x.b); });
 
@@ -4735,6 +4759,174 @@ function renderProgSection(sec){
     h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
   });
   h+='</div></details>';
+  return h;
+}
+
+
+
+const DEF_SECT=[
+  {n:'დღის რუკა',cond:'☉ ჰორიზონტს ზემოთ',c:'#e8a33d',m:'☉ ♃ ♄',ben:'♃',mal:'♄',out:'♂',t:'მზე დაბადებისას ჰორიზონტს ზემოთ იყო — ანუ VII-დან XII სახლამდე. დღის სექტს ეკუთვნის მზე, იუპიტერი და სატურნი. იუპიტერი აქ სექტის კეთილია და ყველაზე მეტად ეხმარება. სატურნი სექტის მავნეა — მკაცრი, მაგრამ კონსტრუქციული. მარსი კი სექტის გარეთაა და ყველაზე რთულად მოქმედებს.'},
+  {n:'ღამის რუკა',cond:'☉ ჰორიზონტს ქვემოთ',c:'#5b7cd8',m:'☽ ♀ ♂',ben:'♀',mal:'♂',out:'♄',t:'მზე დაბადებისას ჰორიზონტს ქვემოთ იყო — ანუ I-დან VI სახლამდე. ღამის სექტს ეკუთვნის მთვარე, ვენერა და მარსი. ვენერა აქ სექტის კეთილია. მარსი სექტის მავნეა და უფრო მართვადი. სატურნი კი სექტის გარეთაა და ყველაზე მძიმედ მოქმედებს.'},
+];
+const DEF_SECT_RULES=[
+  {i:'◑',ti:'როგორ განვსაზღვროთ',t:'ნახე, სად დგას მზე რუკაში. თუ VII-დან XII სახლამდეა, ჰორიზონტს ზემოთაა — დღის რუკაა. თუ I-დან VI-მდე, ღამისაა. მარტივი შემოწმება: დღისით დაიბადე თუ ღამით.'},
+  {i:'♃',ti:'სექტის კეთილი',t:'დღის რუკაში იუპიტერი, ღამისაში ვენერა. ეს პლანეტა ყველაზე მეტად ეხმარება ადამიანს და მისი ასპექტები ყველაზე სასარგებლოა. მეორე კეთილიც კარგია, ოღონდ ნაკლებად.'},
+  {i:'♄',ti:'სექტის მავნე და სექტის გარეთ',t:'დღის რუკაში სატურნი სექტისაა და მარსი სექტის გარეთ; ღამისაში პირიქით. სექტის გარეთ მყოფი მავნე გაცილებით რთულად მოქმედებს — ის სწორედ ის პლანეტაა, რომელიც ცხოვრებაში ყველაზე მეტ სამუშაოს მოითხოვს.'},
+  {i:'☿',ti:'მერკურის სექტი',t:'მერკური ცალკე დგას: თუ ის მზეზე ადრე ამოდის — დილის ვარსკვლავია და დღის სექტს ეკუთვნის. თუ მზის შემდეგ — საღამოს ვარსკვლავია და ღამისას.'},
+  {i:'✦',ti:'რატომ არის მნიშვნელოვანი',t:'სექტი მთელი ინტერპრეტაციის ტონს ცვლის. ერთი და იგივე სატურნის კვადრატი დღის რუკაში გაცილებით მართვადია, ვიდრე ღამისაში. ტრადიციულ ასტროლოგიაში ეს ერთ-ერთი პირველი რამეა, რასაც რუკაში ამოწმებენ.'},
+];
+const DEF_ECL_T=[
+  {n:'მზის დაბნელება',en:'Solar Eclipse',c:'#e8a33d',t:'ახალმთვარე კვანძთან ახლოს. მთვარე მზეს ფარავს — ეს ახალი ციკლის მძლავრი დასაწყისია. მზის დაბნელება იმ სფეროში, სადაც ის ხდება, ახალ თავს ხსნის. ეფექტი ხშირად ექვს თვეს გრძელდება, ზოგჯერ წლებსაც.'},
+  {n:'მთვარის დაბნელება',en:'Lunar Eclipse',c:'#7b8fa8',t:'სავსემთვარე კვანძთან ახლოს. დედამიწა მთვარეს ჩრდილს აყენებს — ეს დასრულებისა და გამოაშკარავების მომენტია. მთვარის დაბნელება იმას ავლენს, რაც ფარული იყო, და ხშირად ურთიერთობის ან სიტუაციის დასასრულს ემთხვევა.'},
+  {n:'ჩრდილოეთის კვანძთან',en:'North Node Eclipse',c:'#16a34a',t:'დაბნელება ჩრდილოეთის კვანძთან ზრდისა და გაფართოებისკენ უბიძგებს. ის ახალს შემოიტანს ცხოვრებაში, თუნდაც ეს არაკომფორტული იყოს.'},
+  {n:'სამხრეთის კვანძთან',en:'South Node Eclipse',c:'#dc2626',t:'დაბნელება სამხრეთის კვანძთან დასრულებასა და გაშვებას უკავშირდება. ის, რაც აღარ სჭირდება, ხშირად სწორედ ამ პერიოდში სრულდება.'},
+];
+const DEF_ECL_H=[
+  {h:'I',t:'დაბნელება პირველ სახლში პიროვნულ განახლებას ეხება: გარეგნობა, სტილი, ვინაობა. ხშირად ადამიანი საკუთარ თავს ხელახლა განსაზღვრავს.'},
+  {h:'II',t:'ფინანსური ცვლილება — შემოსავლის ახალი წყარო ან ძველის დასრულება. ღირებულებების გადააზრება.'},
+  {h:'III',t:'კომუნიკაციისა და სწავლის სფერო აქტიურდება. ხშირად ახალი კურსი, პროექტი ან ძმა-დასთან მნიშვნელოვანი მოვლენა.'},
+  {h:'IV',t:'სახლი და ოჯახი ცენტრში დგება. გადასვლა, ოჯახური მოვლენა ან ფესვებთან დაკავშირებული გადაწყვეტილება.'},
+  {h:'V',t:'შემოქმედება, რომანტიკა ან ბავშვები. ხშირად ახალი კავშირი, ორსულობა ან შემოქმედებითი პროექტის დაწყება და დასრულება.'},
+  {h:'VI',t:'სამუშაო და ჯანმრთელობა. სამსახურის ცვლილება, რეჟიმის გადაწყობა ან ჯანმრთელობაზე ყურადღების მიქცევა.'},
+  {h:'VII',t:'პარტნიორობა. ერთ-ერთი ყველაზე მკაფიო პოზიცია: ხშირად ქორწინება, სერიოზული კავშირის დაწყება ან, პირიქით, დასრულება.'},
+  {h:'VIII',t:'ღრმა გარდაქმნა, საერთო ფინანსები, კრიზისი. ხშირად მემკვიდრეობა, სესხი ან ფსიქოლოგიური გარღვევა.'},
+  {h:'IX',t:'სწავლა, უცხოეთი, მსოფლმხედველობა. ხშირად გადასახლება, უმაღლესი განათლების დაწყება ან რწმენის ცვლილება.'},
+  {h:'X',t:'კარიერა და საჯარო როლი. დაწინაურება, სამსახურის შეცვლა ან პროფესიული მიმართულების გადააზრება.'},
+  {h:'XI',t:'მეგობრები, ჯგუფი, მიზნები. სოციალური წრე იცვლება — ხშირად ძველი კავშირები სრულდება, ახლები ჩნდება.'},
+  {h:'XII',t:'ფარული სფერო. ის, რაც ქვეცნობიერშია, ზედაპირზე ამოდის. ხშირად განმარტოების საჭიროება ან ფარული სიტუაციის გამოაშკარავება.'},
+];
+const DEF_ECL_R=[
+  {i:'◷',ti:'როდის ხდება',t:'დაბნელებები წელიწადში ოთხიდან ექვსჯერ ხდება, ორ პერიოდად — ე.წ. დაბნელების სეზონებად, დაახლოებით ექვსთვიანი ინტერვალით. სეზონი დაახლოებით ერთ თვეს გრძელდება.'},
+  {i:'↔',ti:'საროსის ციკლი',t:'დაბნელებები 18 წელი და 11 დღის ციკლს მისდევს — ესაა საროსი. თუ დაბნელება შენს ნატალურ წერტილს ეხება, იგივე დაახლოებით 18 წლის შემდეგ მეორდება. ბიოგრაფიაში ეს ხშირად თემის დაბრუნებას ნიშნავს.'},
+  {i:'◐',ti:'ორბი ვიწროა',t:'დაბნელება მნიშვნელოვანია მაშინ, როცა ის ნატალურ პლანეტას ან კუთხოვან წერტილს 1-2 გრადუსში ეხება. სხვა შემთხვევაში მისი გავლენა მხოლოდ იმ სახლზეა, სადაც ხდება.'},
+  {i:'⏸',ti:'ნუ დაიწყებ ახალს',t:'ტრადიციული რჩევა: დაბნელების დღეს მნიშვნელოვანი გადაწყვეტილება არ მიიღო. ინფორმაცია ხშირად არასრულია და ერთ-ორ კვირაში სურათი იცვლება. დაბნელება ავლენს, არ ქმნის.'},
+  {i:'✦',ti:'ეფექტი გრძელდება',t:'დაბნელების გავლენა ხდომილების დღით არ სრულდება — ის ხშირად ექვს თვეს გრძელდება, შემდეგ დაბნელებამდე. ზოგჯერ მოვლენა კვირებით ადრე ან გვიან ხდება.'},
+];
+const DEF_STARS=[
+  {en:'Algol',ka:'ალგოლი',pos:'♉ 26°',nat:'♄ ♂',k:'hard',t:'ყველაზე ცნობილი და ყველაზე საშიში ფიქსირებული ვარსკვლავი. მედუზა გორგონას თავი პერსევსის თანავარსკვლავედში. ტრადიციულად ძალადობას, თავის დაკარგვასა და უკიდურეს ვნებას უკავშირდებოდა. თანამედროვე წაკითხვით — უზარმაზარი, დაუმორჩილებელი ენერგია, რომელიც ცნობიერ მართვას მოითხოვს.'},
+  {en:'Aldebaran',ka:'ალდებარანი',pos:'♊ 10°',nat:'♂',k:'mixed',t:'ოთხი სამეფო ვარსკვლავიდან ერთ-ერთი, აღმოსავლეთის მცველი. წარმატებას, ღირსებასა და სიმამაცეს ნიშნავს — ოღონდ პირობით: წარმატება რჩება მანამ, სანამ ადამიანი პატიოსნებას ინარჩუნებს. მისი საპირისპიროა ანტარესი.'},
+  {en:'Regulus',ka:'რეგულუსი',pos:'♍ 0°',nat:'♂ ♃',k:'mixed',t:'სამეფო ვარსკვლავი, ჩრდილოეთის მცველი, ლომის გული. ძალაუფლებას, აღიარებასა და ლიდერობას ნიშნავს. ტრადიციული გაფრთხილება: დიდება მოდის, მაგრამ შურისძიების შემთხვევაში ისევე სწრაფად ქრება. 2012 წელს პრეცესიის გამო ლომიდან ქალწულში გადავიდა.'},
+  {en:'Spica',ka:'სპიკა',pos:'♎ 24°',nat:'♀ ♃',k:'easy',t:'ცის ერთ-ერთი ყველაზე კეთილი ვარსკვლავი. ნიჭს, მეცნიერულ და მხატვრულ უნარს, დაცულობასა და დაუმსახურებელ სიკეთეს ნიშნავს. ტრადიციულად ითვლებოდა, რომ სპიკასთან მდგარი პლანეტა უბედურებისგან იცავს.'},
+  {en:'Antares',ka:'ანტარესი',pos:'♐ 10°',nat:'♂ ♃',k:'hard',t:'სამეფო ვარსკვლავი, დასავლეთის მცველი, მორიელის გული. სიმამაცეს, უკომპრომისობასა და ბრძოლას ნიშნავს. ალდებარანის საპირისპიროა — ორივე ერთად ცხოვრებისეულ არჩევანს აღწერს პრინციპსა და კომპრომისს შორის.'},
+  {en:'Fomalhaut',ka:'ფომალჰაუტი',pos:'♓ 4°',nat:'♀ ☿',k:'mixed',t:'სამეფო ვარსკვლავი, სამხრეთის მცველი. სულიერებას, იდეალიზმსა და მხატვრულ ნიჭს ნიშნავს. ტრადიციული გაფრთხილება: მისი დიდება მხოლოდ მაშინ რჩება, თუ ადამიანი სულიერ სიწმინდეს ინარჩუნებს.'},
+  {en:'Sirius',ka:'სირიუსი',pos:'♋ 14°',nat:'♃ ♂',k:'easy',t:'ცის ყველაზე კაშკაშა ვარსკვლავი. დიდებას, აღიარებასა და მაღალ მიზანს ნიშნავს. ძველ ეგვიპტეში ნილოსის ადიდების მაუწყებელი იყო და წლის დასაწყისს აღნიშნავდა.'},
+  {en:'Alcyone',ka:'ალკიონე',pos:'♊ 0°',nat:'☽ ♂',k:'mixed',t:'პლეადების უმთავრესი ვარსკვლავი, მტირალა დები. ტრადიციულად თვალის პრობლემებსა და მწუხარებას უკავშირდებოდა, თანამედროვე წაკითხვით კი ღრმა ხედვასა და მისტიკურ მგრძნობელობას.'},
+  {en:'Vega',ka:'ვეგა',pos:'♑ 15°',nat:'♀ ☿',k:'easy',t:'ლირის ვარსკვლავი. მუსიკალურ და მხატვრულ ნიჭს, ხიბლსა და იდეალიზმს ნიშნავს. ტრადიციულად პოეტებისა და მუსიკოსების ვარსკვლავად ითვლებოდა.'},
+  {en:'Arcturus',ka:'არქტურუსი',pos:'♎ 24°',nat:'♂ ♃',k:'easy',t:'ერთ-ერთი ყველაზე კეთილი ვარსკვლავი. წარმატებას შრომით, ახალი გზის გაკვალვასა და მდგრად კეთილდღეობას ნიშნავს. სპიკასთან ახლოს დგას და მას აძლიერებს.'},
+  {en:'Betelgeuse',ka:'ბეთელგეიზე',pos:'♊ 29°',nat:'♂ ☿',k:'easy',t:'ორიონის მხარი. წარმატებას, სიმამაცესა და მდგრად აღიარებას ნიშნავს — ერთ-ერთი ყველაზე ხელსაყრელი ვარსკვლავი მიღწევისთვის.'},
+  {en:'Rigel',ka:'რიგელი',pos:'♊ 17°',nat:'♃ ♂',k:'easy',t:'ორიონის ფეხი. განათლებას, ტექნიკურ ნიჭსა და ხანგრძლივ დიდებას ნიშნავს. ხშირად მასწავლებლებისა და გამომგონებლების რუკებში გვხვდება.'},
+  {en:'Capella',ka:'კაპელა',pos:'♊ 22°',nat:'♂ ☿',k:'mixed',t:'ეტლმართველის ვარსკვლავი. ცნობისმოყვარეობას, სწავლისმოყვარეობასა და მოუსვენრობას ნიშნავს. ხშირად კვლევით საქმიანობასთანაა დაკავშირებული.'},
+  {en:'Procyon',ka:'პროციონი',pos:'♋ 26°',nat:'☿ ♂',k:'mixed',t:'მცირე ძაღლის ვარსკვლავი. სწრაფ აღმასვლას ნიშნავს — ოღონდ ისეთივე სწრაფ დაცემასაც, თუ ადამიანი მიღწეულს არ გაუფრთხილდება.'},
+  {en:'Zosma',ka:'ზოსმა',pos:'♍ 11°',nat:'♄ ♀',k:'hard',t:'ლომის ზურგი. ტრადიციულად მსხვერპლის როლს, უსამართლო ტვირთსა და ჯანმრთელობის სისუსტეს უკავშირდებოდა. თანამედროვე წაკითხვით — ღრმა თანაგრძნობა და სხვისთვის ტვირთის აღება.'},
+  {en:'Altair',ka:'ალტაირი',pos:'♒ 2°',nat:'♂ ♃',k:'mixed',t:'მფრინავი არწივის ვარსკვლავი. გაბედულ, უეცარ ნაბიჯებსა და ამბიციას ნიშნავს. ტრადიციულად სამხედროებთან და მფრინავებთანაა დაკავშირებული.'},
+  {en:'Scheat',ka:'შეატი',pos:'♓ 29°',nat:'♂ ☿',k:'hard',t:'პეგასის ვარსკვლავი. ტრადიციულად წყალთან დაკავშირებულ საფრთხესა და უბედურებას უკავშირდებოდა. თანამედროვე წაკითხვით — ორიგინალური, არაკონვენციური გონება და მისი ფასი.'},
+  {en:'Achernar',ka:'აქერნარი',pos:'♓ 15°',nat:'♃',k:'easy',t:'მდინარე ერიდანის დასასრული. წარმატებას საჯარო თანამდებობაზე, რელიგიურ ან ფილოსოფიურ სფეროში ნიშნავს.'},
+];
+
+let DEF_ECL_SECTION={id:'s-ecl',type:'ecl',title:'◐ დაბნელებები',visible:true,tab:'◐ დაბნელებები'};
+let DEF_STAR_SECTION={id:'s-stars',type:'stars',title:'✧ ფიქსირებული ვარსკვლავები',visible:true,tab:'✧ ვარსკვლავები'};
+
+function renderSectBlock(){
+  var h='<details style="margin-top:12px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px">◑</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">სექტი — დღის და ღამის რუკა</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">ტრადიციული ასტროლოგიის საფუძველი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+  h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:14px 0 10px">სექტი ყოფს რუკებს დღისა და ღამისად და განსაზღვრავს, რომელი პლანეტა მოქმედებს უფრო კეთილად და რომელი უფრო მძიმედ. ერთი და იგივე სატურნის კვადრატი დღის რუკაში გაცილებით მართვადია, ვიდრე ღამისაში.</p>';
+  DEF_SECT.forEach(function(x){
+    h+='<div style="border:.5px solid '+x.c+'40;border-left:3px solid '+x.c+';border-radius:0 12px 12px 0;padding:13px 15px;margin-bottom:9px">';
+    h+='<div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap">';
+    h+='<span style="font-size:14px;font-weight:500;color:var(--text)">'+x.n+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+x.cond+'</span></div>';
+    h+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">';
+    h+='<span style="font-size:11px;padding:4px 10px;border-radius:10px;background:var(--bg2);color:var(--text2)">სექტი: '+x.m+'</span>';
+    h+='<span style="font-size:11px;padding:4px 10px;border-radius:10px;background:rgba(22,163,74,.12);color:#16a34a">კეთილი: '+x.ben+'</span>';
+    h+='<span style="font-size:11px;padding:4px 10px;border-radius:10px;background:rgba(220,38,38,.10);color:#dc2626">მავნე: '+x.mal+'</span>';
+    h+='<span style="font-size:11px;padding:4px 10px;border-radius:10px;background:rgba(220,38,38,.18);color:#dc2626">სექტის გარეთ: '+x.out+'</span>';
+    h+='</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div>';
+  });
+  DEF_SECT_RULES.forEach(function(x){
+    h+='<div style="display:flex;gap:12px;padding:12px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text2)">'+x.i+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">'+x.ti+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
+
+function renderEclSection(sec){
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(26,26,46,.14);display:flex;align-items:center;justify-content:center;font-size:19px">◐</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">დაბნელებები</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">გაძლიერებული ახალმთვარე და სავსემთვარე</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">დაბნელება ხდება მაშინ, როცა ახალმთვარე ან სავსემთვარე მთვარის კვანძთან ახლოს მოხვდება. ეს ჩვეულებრივი ლუნაციის გაძლიერებული ვერსიაა: მისი ეფექტი დღეებით კი არა, თვეებით იზომება. დაბნელება <strong>ავლენს და ასრულებს</strong>, არ ქმნის — ის, რაც უკვე მწიფდებოდა, ზედაპირზე ამოდის.</div></div>';
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:0 0 10px">ტიპები</div>';
+  DEF_ECL_T.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-left:3px solid '+x.c+';border-radius:0 13px 13px 0;background:var(--bg);overflow:hidden;margin-bottom:8px">';
+    h+='<summary style="display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;list-style:none;flex-wrap:wrap">';
+    h+='<span style="font-size:14px;font-weight:500;color:var(--text)">'+x.n+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+x.en+'</span></summary>';
+    h+='<div style="padding:0 15px 14px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+  });
+
+  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin:22px 0 10px">დაბნელება სახლებში</div>';
+  DEF_ECL_H.forEach(function(x){
+    h+='<details style="border:.5px solid var(--border);border-radius:12px;background:var(--bg);overflow:hidden;margin-bottom:7px">';
+    h+='<summary style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none">';
+    h+='<div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text2)">'+x.h+'</div>';
+    h+='<span style="flex:1;font-size:13.5px;color:var(--text)">დაბნელება '+x.h+' სახლში</span></summary>';
+    h+='<div style="padding:0 14px 14px 56px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+  });
+
+  h+='<details style="margin-top:20px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(14,165,164,.12);display:flex;align-items:center;justify-content:center;font-size:14px">◐</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">როგორ ვიმუშაოთ დაბნელებებთან</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">5 პრაქტიკული წესი</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 18px;border-top:.5px solid var(--border)">';
+  DEF_ECL_R.forEach(function(x){
+    h+='<div style="display:flex;gap:13px;padding:14px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)">'+x.i+'</div>';
+    h+='<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:4px">'+x.ti+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8">'+x.t+'</div></div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
+
+function renderStarsSection(sec){
+  var KC={'easy':'#16a34a','hard':'#dc2626','mixed':'#7c3aed'};
+  var KL={'easy':'კეთილი','hard':'რთული','mixed':'ორმაგი'};
+  var h='';
+  h+='<div style="border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg);margin-bottom:20px">';
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  h+='<div style="width:44px;height:44px;border-radius:50%;background:rgba(232,163,61,.12);display:flex;align-items:center;justify-content:center;font-size:19px">✧</div>';
+  h+='<div><div style="font-size:18px;font-weight:500;color:var(--text)">ფიქსირებული ვარსკვლავები</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">18 ვარსკვლავი · ტრადიციული ასტროლოგია</div></div></div>';
+  h+='<div style="font-size:13.5px;color:var(--text2);line-height:1.8">პლანეტებისგან განსხვავებით ვარსკვლავები ზოდიაქოზე თითქმის უძრავად დგანან — პრეცესიის გამო საუკუნეში დაახლოებით ერთ გრადუსს გადაადგილდებიან. ვარსკვლავი მუშაობს მაშინ, როცა პლანეტას ან კუთხოვან წერტილს <strong>ერთ გრადუსში</strong> ეხება. უფრო ფართო ორბი ტრადიციულად არ გამოიყენება.</div>';
+  h+='<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg2);font-size:11.5px;color:var(--text3);line-height:1.7">პოზიციები დაახლოებით 2020 წლის ეპოქისთვისაა. ვარსკვლავები წელიწადში დაახლოებით 50 რკალურ წამს მოძრაობენ.</div></div>';
+
+  DEF_STARS.forEach(function(x){
+    var col=KC[x.k]||'#7c3aed';
+    h+='<details style="border:.5px solid var(--border);border-left:3px solid '+col+';border-radius:0 13px 13px 0;background:var(--bg);overflow:hidden;margin-bottom:8px">';
+    h+='<summary style="display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;list-style:none;flex-wrap:wrap">';
+    h+='<span style="font-size:15px;color:'+col+'">✧</span>';
+    h+='<div style="flex:1;min-width:110px"><div style="font-size:14px;font-weight:500;color:var(--text)">'+x.ka+'</div>';
+    h+='<div style="font-size:11px;color:var(--text3)">'+x.en+' · ბუნება '+x.nat+'</div></div>';
+    h+='<span style="font-size:13px;color:var(--text2);white-space:nowrap">'+x.pos+'</span>';
+    h+='<span style="font-size:10.5px;padding:2px 8px;border-radius:12px;background:'+col+'16;color:'+col+'">'+(KL[x.k]||'')+'</span>';
+    h+='</summary>';
+    h+='<div style="padding:0 15px 14px;border-top:.5px solid var(--border)">';
+    h+='<p style="font-size:13px;color:var(--text2);line-height:1.85;margin:12px 0 0">'+x.t+'</p></div></details>';
+  });
   return h;
 }
 
@@ -6115,7 +6307,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_MOON_SECTION,DEF_BOOKS,DEF_WHEEL,DEF_MATCHING,DEF_MOON_GAME,DEF_TETRIS,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_ECL_SECTION,DEF_STAR_SECTION,DEF_MOON_SECTION,DEF_BOOKS,DEF_WHEEL,DEF_MATCHING,DEF_MOON_GAME,DEF_TETRIS,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -6132,6 +6324,8 @@ function initSections(){
   const ORPHANS=[['s-moon-signs',()=>DEF_MOON_SECTION],['s-books',()=>DEF_BOOKS],['s-wheel',()=>DEF_WHEEL],
     ['s-matching',()=>DEF_MATCHING],['s-moon-game',()=>DEF_MOON_GAME],['s-tetris',()=>DEF_TETRIS]];
   ORPHANS.forEach(function(o){ if(!saved.some(s=>s.id===o[0])){ try{ saved.push(o[1]()); }catch(e){} } });
+  const hasEc=saved.some(s=>s.id==='s-ecl');
+  const hasSt=saved.some(s=>s.id==='s-stars');
   const hasPg=saved.some(s=>s.id==='s-prog');
   const hasPh=saved.some(s=>s.id==='s-phase');
   const hasFt=saved.some(s=>s.id==='s-fort');
@@ -6157,6 +6351,8 @@ function initSections(){
   if(!hasJupiter) saved.push(DEF_JUPITER_SECTION);
   if(!hasSaturn) saved.push(DEF_SATURN_SECTION);
   if(!hasLilith) saved.push(DEF_LILITH_SECTION);
+  if(!hasEc) saved.push(DEF_ECL_SECTION);
+  if(!hasSt) saved.push(DEF_STAR_SECTION);
   if(!hasPg) saved.push(DEF_PROG_SECTION);
   if(!hasPh) saved.push(DEF_PHASE_SECTION);
   if(!hasFt) saved.push(DEF_FORT_SECTION);
@@ -6763,15 +6959,15 @@ function renderAll(){
 
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
-    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','moon-signs','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
-    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','prog','syn','retro'], ids:[]},
+    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','stars','moon-signs','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
+    {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','prog','syn','retro','ecl'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games','wheel','matching','moon-game','tetris','books','calc'], ids:[]}
   ];
-  const ICONS={'s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-ecl':'◐','s-stars':'✧','s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
   const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 156 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა','s-phase':'8 ფაზა · რუდჰიარის სისტემა','s-fort':'ჰელენური ლოტი · ნიშნები და სახლები',
-    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-prog':'შინაგანი მომწიფება · 36 პოზიცია','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
+    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-prog':'შინაგანი მომწიფება · 36 პოზიცია','s-ecl':'4 ტიპი · 12 სახლი · საროსი','s-stars':'18 ვარსკვლავი · პოზიციებით','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
   const groupOf=s=>{
@@ -8275,6 +8471,8 @@ function renderSection(sec){
   if(sec.type==='phase')return renderPhaseSection(sec);
   if(sec.type==='fort')return renderFortSection(sec);
   if(sec.type==='prog')return renderProgSection(sec);
+  if(sec.type==='ecl')return renderEclSection(sec);
+  if(sec.type==='stars')return renderStarsSection(sec);
   if(sec.type==='houses')return renderHousesSection(sec);
   if(sec.type==='aspects')return renderAspectsSection(sec);
   if(sec.type==='chiron')return renderChironSection(sec);
@@ -9669,7 +9867,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.0';
+const SITE_VERSION='v7.1';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
