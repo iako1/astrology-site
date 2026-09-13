@@ -405,7 +405,7 @@ const DEF_SECTIONS=[
     {sym:'♅',name:'ურანი',pts:1},{sym:'♆',name:'ნეპტუნი',pts:1},{sym:'♇',name:'პლუტო',pts:1},
    ]
   },
-  {id:'s-moon',type:'signs',title:'🌙 მთვარე ნიშნებში',visible:true,tab:'🌙 მთვარე',
+  {id:'s-moon',type:'signs',title:'🌙 მთვარე ნიშნებში (ძველი)',visible:false,tab:'🌙 მთვარე',
    items:[
     {n:'ვერძი',sym:'♈',num:'01',el:'fire',cr:'cardinal',hier:'lower',ruler:'ცეცხლოვანი მთვარე',impulse:'მებრძოლი',keywords:['იმპულსური','გულწრფელი','შეჯიბრი','დემონსტრ.'],opp:'კაცებს მოსწონთ ძლიერი ქალები',triad:'',desc:'ცეცხლოვანი მთვარე. მებრძოლი ქალები. იმპულსური — აფეთქება და დამშვიდდება. სინაზე ნაკლები. გულწრფელი, მოურიდებელი.'},
     {n:'კურო',sym:'♉',num:'02',el:'earth',cr:'fixed',hier:'lower',ruler:'ეგზალტაცია ✦',impulse:'კომფორტი',keywords:['ქალური','სექსუალური','სანდომიანი','პრაქტიკული'],opp:'კაცებს მოსწონთ სახლური ქალები',triad:'',desc:'ეგზალტირებული. კომფორტული, ქალური. ხასიათი ფინანსებზე. ლამაზი ყველაფერი. გვიან ბრაზდება, გვიან წყნარდება.'},
@@ -4560,6 +4560,12 @@ function buildSearchIndex(){
   var rx=T(typeof DEF_RETRO!=='undefined'?DEF_RETRO:null);
   if(rx) rx.forEach(function(x){ add(x.n+' ℞','რეტროგრადულობა','s-retro',x.nat+' '+x.tr); });
 
+  [['DEF_PROG_RULES','პროგრესიები','s-prog'],['DEF_RETRO_RULES','რეტროგრადულობა','s-retro'],
+    ['DEF_SYN_RULES','სინასტრია','s-syn'],['DEF_DIGN_TERMS','დიგნიტეტები','s-dign']].forEach(function(pr){
+    var arr=null; try{ arr=eval(pr[0]); }catch(e){}
+    if(arr) arr.forEach(function(x){ add(x.ti||x.ka||x.n||'',pr[1],pr[2],x.t||''); });
+  });
+
   var mt=T(typeof DEF_METHOD!=='undefined'?DEF_METHOD:null);
   if(mt) mt.forEach(function(x){ add(x.n+'. '+x.ti,'რუკის კითხვა','s-method',x.q+' '+x.b); });
 
@@ -6109,7 +6115,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_MOON_SECTION,DEF_BOOKS,DEF_WHEEL,DEF_MATCHING,DEF_MOON_GAME,DEF_TETRIS,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -6123,6 +6129,9 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
+  const ORPHANS=[['s-moon-signs',()=>DEF_MOON_SECTION],['s-books',()=>DEF_BOOKS],['s-wheel',()=>DEF_WHEEL],
+    ['s-matching',()=>DEF_MATCHING],['s-moon-game',()=>DEF_MOON_GAME],['s-tetris',()=>DEF_TETRIS]];
+  ORPHANS.forEach(function(o){ if(!saved.some(s=>s.id===o[0])){ try{ saved.push(o[1]()); }catch(e){} } });
   const hasPg=saved.some(s=>s.id==='s-prog');
   const hasPh=saved.some(s=>s.id==='s-phase');
   const hasFt=saved.some(s=>s.id==='s-fort');
@@ -6754,9 +6763,9 @@ function renderAll(){
 
   const GROUPS=[
     {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
-    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
+    {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','moon-signs','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
     {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','prog','syn','retro'], ids:[]},
-    {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games'], ids:[]}
+    {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games','wheel','matching','moon-game','tetris','books','calc'], ids:[]}
   ];
   const ICONS={'s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
@@ -7373,9 +7382,7 @@ const DEF_MATCHING_DATA={
 
 function getMatchingData(){return ls('as_matching_data')||DEF_MATCHING_DATA;}
 
-function renderMatchingSection(sec){
-  return '<div id="matching-root"></div>';
-}
+
 
 function initMatching(secId){
   const root=document.getElementById('matching-root');
@@ -8723,6 +8730,7 @@ function aTab(id,btn){
 function clearSiteCache(){
   // kept for compatibility
   localStorage.removeItem('as_sections');
+    localStorage.removeItem('as_moon_in_signs');
     localStorage.removeItem('as_aspects_data');
     localStorage.removeItem('as_lilith_signs');
     localStorage.removeItem('as_node_signs');
@@ -9661,7 +9669,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v6.8';
+const SITE_VERSION='v7.0';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
