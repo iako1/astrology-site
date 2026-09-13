@@ -265,6 +265,7 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
       <button class="atab" onclick="aTab('site',this)">⚙️ საიტი</button>
       <button class="atab" onclick="aTab('glossary',this)">📖 ლექსიკონი</button>
       <button class="atab" onclick="aTab('texts',this)">📝 ტექსტები</button>
+        <button class="atab" onclick="aTab('data',this)">🗂 მონაცემები</button>
     </div>
 
     <!-- PAGES TAB -->
@@ -332,6 +333,12 @@ footer{text-align:center;padding:26px 14px;font-size:12px;color:var(--text3)}
           </label>
         </div>
       </div>
+    </div>
+
+    <!-- DATA TAB -->
+    <div id="at-data" style="display:none">
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px">ყველა ინტერპრეტაცია — ასპექტები, სახლები, ტრანზიტები, პროგრესიები და დანარჩენი. მწვანე წერტილი ნიშნავს, რომ ნაკრები შეცვლილია.</p>
+      <div id="data-editor"></div>
     </div>
 
     <!-- TEXTS TAB -->
@@ -4931,6 +4938,207 @@ function renderStarsSection(sec){
 }
 
 
+
+// ═══════════ უნივერსალური მონაცემთა რედაქტორი ═══════════
+const DATASETS=[
+ {k:'DEF_ASPECTS_DATA', n:'ასპექტები', g:'ანალიზი'},
+ {k:'DEF_HOUSES_DATA',  n:'12 სახლი', g:'რუკა'},
+ {k:'DEF_PIH_DATA',     n:'პლანეტები სახლებში', g:'რუკა'},
+ {k:'DEF_PTH',          n:'სენსიტიური წერტილები სახლებში', g:'რუკა'},
+ {k:'DEF_RULERS',       n:'სახლების მმართველები', g:'რუკა'},
+ {k:'DEF_ASC_SIGNS',    n:'ასცენდენტი ნიშნებში', g:'რუკა'},
+ {k:'DEF_GEN_U',        n:'ურანი ნიშნებში', g:'რუკა'},
+ {k:'DEF_GEN_N',        n:'ნეპტუნი ნიშნებში', g:'რუკა'},
+ {k:'DEF_GEN_P',        n:'პლუტონი ნიშნებში', g:'რუკა'},
+ {k:'DEF_PHASES',       n:'მთვარის ფაზები', g:'რუკა'},
+ {k:'DEF_FORT_S',       n:'ბედის წილი ნიშნებში', g:'რუკა'},
+ {k:'DEF_FORT_H',       n:'ბედის წილი სახლებში', g:'რუკა'},
+ {k:'DEF_TIH',          n:'ტრანზიტი სახლებში', g:'ანალიზი'},
+ {k:'DEF_CYCLES',       n:'პლანეტების ციკლები', g:'ანალიზი'},
+ {k:'DEF_LIFE',         n:'ცხოვრების ციკლები', g:'ანალიზი'},
+ {k:'DEF_PSUN',         n:'პროგრ. მზე ნიშნებში', g:'ანალიზი'},
+ {k:'DEF_PMOON_S',      n:'პროგრ. მთვარე ნიშნებში', g:'ანალიზი'},
+ {k:'DEF_PMOON_H',      n:'პროგრ. მთვარე სახლებში', g:'ანალიზი'},
+ {k:'DEF_PROG_RULES',   n:'პროგრესიების წესები', g:'ანალიზი'},
+ {k:'DEF_RETRO',        n:'რეტროგრადულობა', g:'ანალიზი'},
+ {k:'DEF_RETRO_RULES',  n:'რეტროგრადულობის წესები', g:'ანალიზი'},
+ {k:'DEF_SYN',          n:'სინასტრიის კონტაქტები', g:'ანალიზი'},
+ {k:'DEF_SYN_OVER',     n:'სახლების გადაფარვა', g:'ანალიზი'},
+ {k:'DEF_SYN_RULES',    n:'სინასტრიის წესები', g:'ანალიზი'},
+ {k:'DEF_ECL_T',        n:'დაბნელების ტიპები', g:'ანალიზი'},
+ {k:'DEF_ECL_H',        n:'დაბნელება სახლებში', g:'ანალიზი'},
+ {k:'DEF_ECL_R',        n:'დაბნელების წესები', g:'ანალიზი'},
+ {k:'DEF_DIGN',         n:'დიგნიტეტები პლანეტებით', g:'საფუძვლები'},
+ {k:'DEF_DIGN_SIGNS',   n:'დიგნიტეტების ცხრილი', g:'საფუძვლები'},
+ {k:'DEF_DIGN_TERMS',   n:'დიგნიტეტების ტერმინები', g:'საფუძვლები'},
+ {k:'DEF_TRIPL',        n:'ტრიპლიციტეტი', g:'საფუძვლები'},
+ {k:'DEF_TERMS',        n:'ტერმინები (bounds)', g:'საფუძვლები'},
+ {k:'DEF_DEC',          n:'დეკანატები', g:'საფუძვლები'},
+ {k:'DEF_SECT',         n:'სექტი', g:'საფუძვლები'},
+ {k:'DEF_SECT_RULES',   n:'სექტის წესები', g:'საფუძვლები'},
+ {k:'DEF_STARS',        n:'ფიქსირებული ვარსკვლავები', g:'რუკა'},
+ {k:'DEF_METHOD',       n:'რუკის კითხვის ნაბიჯები', g:'საფუძვლები'},
+ {k:'DEF_MISTAKES',     n:'ხშირი შეცდომები', g:'საფუძვლები'},
+ {k:'DEF_SUN_SIGNS',    n:'მზე ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_MOON_IN_SIGNS',n:'მთვარე ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_MERCURY_SIGNS',n:'მერკური ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_VENUS_SIGNS',  n:'ვენერა ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_MARS_SIGNS',   n:'მარსი ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_JUPITER_SIGNS',n:'იუპიტერი ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_SATURN_SIGNS', n:'სატურნი ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_CHIRON_SIGNS', n:'ქირონი ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_NODE_SIGNS',   n:'კვანძები ნიშნებში', g:'პლანეტები'},
+ {k:'DEF_LILITH_SIGNS', n:'ლილითი ნიშნებში', g:'პლანეტები'},
+];
+const DS_KEY=k=>'as_ed_'+k;
+function dsRef(k){ try{ return eval(k); }catch(e){ return null; } }
+
+function applyDataOverrides(){
+  DATASETS.forEach(function(d){
+    var saved=ls(DS_KEY(d.k)); if(!saved) return;
+    var ref=dsRef(d.k); if(!ref) return;
+    try{
+      if(Array.isArray(ref)&&Array.isArray(saved)){ ref.length=0; saved.forEach(function(x){ref.push(x);}); }
+      else if(ref&&typeof ref==='object'&&!Array.isArray(ref)){ Object.keys(ref).forEach(function(x){delete ref[x];}); Object.assign(ref,saved); }
+    }catch(e){}
+  });
+  GS_INDEX=null;
+}
+
+var DS_CUR=null;
+function renderDataEditor(){
+  var box=document.getElementById('data-editor'); if(!box) return;
+  var groups={};
+  DATASETS.forEach(function(d){ (groups[d.g]=groups[d.g]||[]).push(d); });
+  var h='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">';
+  h+='<button class="sbtn sec" style="width:auto;padding:6px 12px;font-size:12px" onclick="dsExport()">⬇ ექსპორტი</button>';
+  h+='<button class="sbtn sec" style="width:auto;padding:6px 12px;font-size:12px" onclick="document.getElementById(\'ds-imp\').click()">⬆ იმპორტი</button>';
+  h+='<input type="file" id="ds-imp" accept=".json" style="display:none" onchange="dsImport(this)">';
+  h+='</div>';
+  Object.keys(groups).forEach(function(g){
+    h+='<div style="font-size:11px;color:var(--text3);margin:10px 0 5px">'+g+'</div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
+    groups[g].forEach(function(d){
+      var ref=dsRef(d.k), cnt=ref?(Array.isArray(ref)?ref.length:Object.keys(ref).length):0;
+      var mod=!!ls(DS_KEY(d.k));
+      h+='<button onclick="dsOpen(\''+d.k+'\')" style="padding:6px 11px;border-radius:12px;border:.5px solid '+(mod?'#16a34a':'var(--border)')+';background:'+(DS_CUR===d.k?'var(--text)':'var(--bg2)')+';color:'+(DS_CUR===d.k?'var(--bg)':'var(--text2)')+';font-size:12px;cursor:pointer">'+d.n+' <span style="opacity:.6">'+cnt+'</span>'+(mod?' <span style="color:#16a34a">●</span>':'')+'</button>';
+    });
+    h+='</div>';
+  });
+  h+='<div id="ds-body" style="margin-top:14px"></div>';
+  box.innerHTML=h;
+  if(DS_CUR) dsBody(DS_CUR,'');
+}
+
+function dsOpen(k){ DS_CUR=(DS_CUR===k?null:k); renderDataEditor(); }
+
+function dsBody(k,filter){
+  var el=document.getElementById('ds-body'); if(!el) return;
+  var ref=dsRef(k); if(!ref){ el.innerHTML=''; return; }
+  var d=DATASETS.filter(function(x){return x.k===k;})[0]||{n:k};
+  var rows=[];
+  if(Array.isArray(ref)){
+    ref.forEach(function(r,i){ rows.push({path:[i], label:dsLabel(r,i), obj:r}); });
+  } else {
+    Object.keys(ref).forEach(function(key){
+      var v=ref[key];
+      if(Array.isArray(v)) v.forEach(function(r,i){ rows.push({path:[key,i], label:key+' · '+(i+1), obj:r}); });
+    });
+  }
+  var f=(filter||'').toLowerCase();
+  if(f) rows=rows.filter(function(r){ return (r.label+' '+JSON.stringify(r.obj)).toLowerCase().indexOf(f)>=0; });
+  var total=rows.length, shown=rows.slice(0,40);
+  var h='<div style="border:.5px solid var(--border);border-radius:12px;padding:12px;background:var(--bg2)">';
+  h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">';
+  h+='<strong style="font-size:13px;color:var(--text)">'+d.n+'</strong>';
+  h+='<input id="ds-f" value="'+(filter||'').replace(/"/g,'&quot;')+'" oninput="dsBody(\''+k+'\',this.value)" placeholder="ფილტრი…" style="flex:1;min-width:110px;padding:6px 10px;border-radius:10px;border:.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px">';
+  h+='<span style="font-size:11px;color:var(--text3)">'+shown.length+'/'+total+'</span>';
+  h+='</div>';
+  shown.forEach(function(r){
+    var id=k+'|'+r.path.join('|');
+    h+='<div style="border-top:.5px solid var(--border);padding:9px 0">';
+    h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:5px">'+r.label+'</div>';
+    if(typeof r.obj==='string'){
+      h+='<textarea data-f="'+id+'||" style="width:100%;min-height:56px;padding:7px;border-radius:8px;border:.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;line-height:1.6">'+dsEsc(r.obj)+'</textarea>';
+    } else {
+      Object.keys(r.obj).forEach(function(fk){
+        var v=r.obj[fk]; if(typeof v!=='string'&&typeof v!=='number') return;
+        var long=String(v).length>60;
+        h+='<div style="margin-bottom:5px"><div style="font-size:10.5px;color:var(--text3)">'+fk+'</div>';
+        h+='<textarea data-f="'+id+'|'+fk+'" style="width:100%;min-height:'+(long?'56':'30')+'px;padding:6px;border-radius:8px;border:.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;line-height:1.6">'+dsEsc(String(v))+'</textarea></div>';
+      });
+    }
+    h+='</div>';
+  });
+  if(total>40) h+='<div style="font-size:11px;color:var(--text3);padding-top:8px">ნაჩვენებია პირველი 40. ფილტრით დააზუსტე.</div>';
+  h+='<div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">';
+  h+='<button class="sbtn" style="width:auto;padding:8px 16px" onclick="dsSave(\''+k+'\')">შენახვა</button>';
+  h+='<button class="sbtn sec" style="width:auto;padding:8px 16px" onclick="dsReset(\''+k+'\')">ნაგულისხმევზე დაბრუნება</button>';
+  h+='<span id="ds-ok" class="svbadge">შენახულია</span></div></div>';
+  el.innerHTML=h;
+}
+
+function dsEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function dsLabel(r,i){
+  if(typeof r==='string') return '#'+(i+1);
+  var c=['n','ka','ti','name','sym','en','h','p1'];
+  for(var j=0;j<c.length;j++) if(r[c[j]]) return String(r[c[j]])+(r.p2?' '+(r.asp||'')+' '+r.p2:'');
+  return '#'+(i+1);
+}
+
+function dsSave(k){
+  var ref=dsRef(k); if(!ref) return;
+  document.querySelectorAll('[data-f^="'+k+'|"]').forEach(function(ta){
+    var parts=ta.getAttribute('data-f').split('|');
+    var field=parts[parts.length-1];
+    var path=parts.slice(1,parts.length-1);
+    var tgt=ref;
+    for(var i=0;i<path.length;i++){ var seg=path[i]; tgt=tgt[/^\d+$/.test(seg)?parseInt(seg,10):seg]; if(!tgt) return; }
+    if(field===''){
+      var pk=path[path.length-1], par=ref;
+      for(var j=0;j<path.length-1;j++){ var s2=path[j]; par=par[/^\d+$/.test(s2)?parseInt(s2,10):s2]; }
+      par[/^\d+$/.test(pk)?parseInt(pk,10):pk]=ta.value;
+    } else if(tgt&&typeof tgt==='object'){
+      tgt[field]=(typeof tgt[field]==='number')?(parseFloat(ta.value)||0):ta.value;
+    }
+  });
+  lss(DS_KEY(k), ref);
+  GS_INDEX=null;
+  var b=document.getElementById('ds-ok'); if(b){b.style.display='inline';setTimeout(function(){b.style.display='none';},1600);}
+  renderAll();
+}
+
+function dsReset(k){
+  localStorage.removeItem(DS_KEY(k));
+  GS_INDEX=null;
+  alert('ნაგულისხმევი ტექსტები დაბრუნდება გვერდის განახლების შემდეგ.');
+}
+
+function dsExport(){
+  var out={_v:SITE_VERSION,_d:new Date().toISOString()};
+  DATASETS.forEach(function(d){ var s=ls(DS_KEY(d.k)); if(s) out[d.k]=s; });
+  var blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='astro-texts-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+
+function dsImport(inp){
+  var f=inp.files&&inp.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var o=JSON.parse(rd.result), n=0;
+      DATASETS.forEach(function(d){ if(o[d.k]){ lss(DS_KEY(d.k),o[d.k]); n++; } });
+      alert(n+' ნაკრები ჩაიტვირთა. გვერდი განახლდება.');
+      location.reload();
+    }catch(e){ alert('ფაილი ვერ წაიკითხა: '+e.message); }
+  };
+  rd.readAsText(f);
+}
+
+
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
   var EC={'♈':'#e85d04','♉':'#588157','♊':'#4895ef','♋':'#4cc9f0','♌':'#e85d04','♍':'#588157',
@@ -8919,11 +9127,12 @@ function checkPw(){
   }else{document.getElementById('pw-err').style.display='block';}
 }
 function aTab(id,btn){
-  ['pages','site','glossary','texts'].forEach(t=>{const el=document.getElementById('at-'+t);if(el)el.style.display='none';});
+  ['pages','site','glossary','texts','data'].forEach(t=>{const el=document.getElementById('at-'+t);if(el)el.style.display='none';});
   document.getElementById('at-'+id).style.display='';
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   if(id==='glossary')renderAdminGloss();
   if(id==='texts')renderTextsEditor();
+  if(id==='data')renderDataEditor();
 }
 function clearSiteCache(){
   // kept for compatibility
@@ -9867,7 +10076,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.1';
+const SITE_VERSION='v7.2';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
@@ -9880,6 +10089,7 @@ if(ls('as_version')!==SITE_VERSION){
   localStorage.removeItem('as_site');
   lss('as_version',SITE_VERSION);
 }
+try{ applyDataOverrides(); }catch(e){}
 renderAll();
 
 // Global planet tooltip
