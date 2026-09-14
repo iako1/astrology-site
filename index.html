@@ -1378,6 +1378,16 @@ const GLOSSARY_TERMS=[
   {ka:'სამეფო ვარსკვლავები',en:'Royal Stars',cat:'ტექნიკა',
    def:'ოთხი ვარსკვლავი, რომლებიც ძველ სპარსეთში ცის ოთხ მცველად ითვლებოდა: ალდებარანი ♊ 10° აღმოსავლეთისა, რეგულუსი ♍ 0° ჩრდილოეთის, ანტარესი ♐ 10° დასავლეთის და ფომალჰაუტი ♓ 4° სამხრეთის. თითოეული დიდებას ჰპირდება, ოღონდ პირობით — ეთიკური ნორმის დაცვის შემთხვევაში.',
    url:'https://www.skyscript.co.uk/fixedstars.html'}
+,
+  {ka:'იან',en:'Yang · Positive · Masculine',cat:'საფუძვლები',
+   def:'ზოდიაქოს ექვსი ნიშანი, რომლებიც ცეცხლისა და ჰაერის სტიქიას ეკუთვნის: ♈ ვერძი, ♊ ტყუპები, ♌ ლომი, ♎ სასწორი, ♐ მშვილდოსანი, ♒ მერწყული. ენერგია გარეთაა მიმართული — ინიციატივა, გამოხატვა, კონტაქტი. ტრადიციულ ტექსტებში მათ დადებით ან მამაკაცურ ნიშნებს უწოდებენ; ეს ძველი ტერმინებია და სქესს ან შეფასებას არ უკავშირდება.',
+   url:'https://www.astro.com/astrology/in_elements_e.htm'},
+  {ka:'ინი',en:'Yin · Negative · Feminine',cat:'საფუძვლები',
+   def:'ზოდიაქოს ექვსი ნიშანი, რომლებიც მიწისა და წყლის სტიქიას ეკუთვნის: ♉ კურო, ♋ კირჩხიბი, ♍ ქალწული, ♏ მორიელი, ♑ თხის რქა, ♓ თევზები. ენერგია შიგნითაა მიმართული — მიღება, შენახვა, დამუშავება, პასუხი. ტრადიციულად უარყოფით ან ქალურ ნიშნებს უწოდებენ.',
+   url:'https://www.astro.com/astrology/in_elements_e.htm'},
+  {ka:'პოლარობა',en:'Polarity',cat:'საფუძვლები',
+   def:'ზოდიაქოს დაყოფა ორ ჯგუფად: იან (ცეცხლი და ჰაერი) და ინი (მიწა და წყალი). ნიშნები მკაცრად მონაცვლეობენ ვერძიდან დაწყებული, ამიტომ ყოველი მეორე ნიშანი ერთსა და იმავე პოლუსს ეკუთვნის. რუკაში პლანეტების განაწილება ორ პოლუსს შორის აჩვენებს, ენერგია უფრო გარეთაა მიმართული თუ შიგნით.',
+   url:'https://www.astro.com/astrology/in_elements_e.htm'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -7341,6 +7351,45 @@ function renderCrossesSection(sec){
   return `<div class="sec-signs-wrap"><h2>${sec.title}</h2>${intro}${crossHint}${cards}</div>`;
 }
 
+
+function renderPolarityBlock(){
+  var POL=[
+   {n:'იან',en:'Yang',alt:'დადებითი · აქტიური · მამაკაცური',c:'#e85d04',
+    els:'🔥 ცეცხლი · 💨 ჰაერი', signs:'♈ ♊ ♌ ♎ ♐ ♒',
+    t:'ენერგია გარეთაა მიმართული. იან ნიშნები იწყებენ, გამოხატავენ, მოქმედებენ და უკავშირდებიან გარესამყაროს. ისინი ჯერ იმოქმედებენ და მერე დაფიქრდებიან. ცეცხლი ამას ინიციატივითა და ვნებით აკეთებს, ჰაერი კი იდეითა და კომუნიკაციით.'},
+   {n:'ინი',en:'Yin',alt:'უარყოფითი · მიმღები · ქალური',c:'#4cc9f0',
+    els:'🌱 მიწა · 💧 წყალი', signs:'♉ ♋ ♍ ♏ ♑ ♓',
+    t:'ენერგია შიგნითაა მიმართული. ინი ნიშნები იღებენ, ინახავენ, ამუშავებენ და პასუხობენ. ისინი ჯერ იგრძნობენ ან შეაფასებენ და მერე იმოქმედებენ. მიწა ამას პრაქტიკულობითა და მდგრადობით აკეთებს, წყალი კი ემოციითა და ინტუიციით.'}
+  ];
+  var h='<div style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);padding:18px 20px;margin-bottom:18px">';
+  h+='<div style="display:flex;align-items:center;gap:11px;margin-bottom:10px">';
+  h+='<div style="width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:17px">☯</div>';
+  h+='<div><div style="font-size:15px;font-weight:500;color:var(--text)">იან და ინი — პოლარობა</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">ოთხი სტიქიის ორი ჯგუფი</div></div></div>';
+  h+='<div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px">ოთხი სტიქია ორ პოლუსად იყოფა. <strong>ცეცხლი და ჰაერი იან-ია</strong>, <strong>მიწა და წყალი ინი</strong>. ზოდიაქოზე ისინი მკაცრად მონაცვლეობენ: ვერძი იან, კურო ინი, ტყუპები იან და ასე ბოლომდე — ამიტომ ყოველი მეორე ნიშანი ერთსა და იმავე პოლუსს ეკუთვნის.</div>';
+  h+='<div style="display:grid;gap:10px">';
+  POL.forEach(function(p){
+    h+='<div style="border:.5px solid '+p.c+'40;border-left:3px solid '+p.c+';border-radius:0 12px 12px 0;padding:13px 15px">';
+    h+='<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px">';
+    h+='<span style="font-size:15px;font-weight:500;color:var(--text)">'+p.n+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+p.en+'</span>';
+    h+='<span style="font-size:11px;padding:3px 9px;border-radius:10px;background:'+p.c+'16;color:'+p.c+'">'+p.els+'</span>';
+    h+='</div>';
+    h+='<div style="font-size:16px;color:'+p.c+';letter-spacing:3px;margin-bottom:8px">'+p.signs+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.8;margin-bottom:7px">'+p.t+'</div>';
+    h+='<div style="font-size:11px;color:var(--text3)">სხვა სახელები: '+p.alt+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  h+='<div style="margin-top:13px;padding:12px 14px;border-radius:10px;background:var(--bg2);font-size:12px;color:var(--text2);line-height:1.75">';
+  h+='<strong>ტერმინოლოგიაზე.</strong> ტრადიციულ ტექსტებში იან ნიშნებს „მამაკაცურს“ ან „დადებითს“ უწოდებენ, ინის კი „ქალურს“ ან „უარყოფითს“. ეს ძველი ტერმინებია და არც სქესს უკავშირდება, არც შეფასებას — საუბარია მხოლოდ ენერგიის მიმართულებაზე: გარეთ თუ შიგნით.</div>';
+  h+='<div style="margin-top:10px;padding:12px 14px;border-radius:10px;background:var(--bg2);font-size:12px;color:var(--text2);line-height:1.75">';
+  h+='<strong>რუკის კითხვისას.</strong> დათვალე, რამდენი პლანეტა გაქვს იან ნიშნებში და რამდენი ინში. ჭარბი იანი ინიციატივასა და გარეთ მიმართულობას იძლევა, ჭარბი ინი კი სიღრმესა და მიმღებლობას. მკვეთრი დისბალანსი აჩვენებს, რომელი მიმართულება უნდა განვითარდეს ცნობიერად.</div>';
+  h+='</div>';
+  return h;
+}
+
+
 function renderElementsSection(sec){
   const ELS=[
     {
@@ -7409,7 +7458,7 @@ function renderElementsSection(sec){
     },
   ];
 
-  let h=`<div class="sec-signs-wrap">`;
+  let h=`<div class="sec-signs-wrap">`+renderPolarityBlock();
 
   // intro
   h+=`<div style="border:.5px solid var(--border);border-radius:14px;padding:18px 20px;background:var(--bg);margin-bottom:20px">
@@ -10076,7 +10125,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.2';
+const SITE_VERSION='v7.3';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
