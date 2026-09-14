@@ -6539,8 +6539,11 @@ function initSections(){
   const hasJupiter=saved.some(s=>s.id==='s-jupiter');
   const hasSaturn=saved.some(s=>s.id==='s-saturn');
   const hasLilith=saved.some(s=>s.id==='s-lilith');
-  const ORPHANS=[['s-moon-signs',()=>DEF_MOON_SECTION],['s-books',()=>DEF_BOOKS],['s-wheel',()=>DEF_WHEEL],
-    ['s-matching',()=>DEF_MATCHING],['s-moon-game',()=>DEF_MOON_GAME],['s-tetris',()=>DEF_TETRIS]];
+  const ORPHANS=[['s-moon-signs',()=>DEF_MOON_SECTION],['s-books',()=>DEF_BOOKS],
+    ['s-wheel',()=>Object.assign({},DEF_WHEEL,{visible:false})],
+    ['s-matching',()=>Object.assign({},DEF_MATCHING,{visible:false})],
+    ['s-moon-game',()=>Object.assign({},DEF_MOON_GAME,{visible:false})],
+    ['s-tetris',()=>Object.assign({},DEF_TETRIS,{visible:false})]];
   ORPHANS.forEach(function(o){ if(!saved.some(s=>s.id===o[0])){ try{ saved.push(o[1]()); }catch(e){} } });
   const hasEc=saved.some(s=>s.id==='s-ecl');
   const hasSt=saved.some(s=>s.id==='s-stars');
@@ -10125,7 +10128,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.3';
+const SITE_VERSION='v7.4';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
@@ -10138,6 +10141,15 @@ if(ls('as_version')!==SITE_VERSION){
   localStorage.removeItem('as_site');
   lss('as_version',SITE_VERSION);
 }
+try{
+  if(!ls('as_gamefix_v73')){
+    ['s-wheel','s-matching','s-moon-game','s-tetris'].forEach(function(id){
+      var s=SECTIONS.filter(function(x){return x.id===id;})[0];
+      if(s) s.visible=false;
+    });
+    lss('as_sections',SECTIONS); lss('as_gamefix_v73',true);
+  }
+}catch(e){}
 try{ applyDataOverrides(); }catch(e){}
 renderAll();
 
