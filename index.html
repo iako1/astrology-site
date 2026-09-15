@@ -7647,6 +7647,7 @@ function renderGameHub(root){
     {id:'quiz',  icon:'🎯', title:'ქვიზი',              desc:'30 კითხვა — ასტროლოგიის ყველა თემა',    color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
     {id:'match', icon:'🃏', title:'შეუსაბამე ბარათები', desc:'სტიქია, ჯვარი, ეგზალტ., ვარდ., მმართ.',color:'#db2777',bg:'#fdf2f8',border:'#f9a8d4'},
     {id:'wheel', icon:'🔮', title:'ზოდიაქოს წრე',       desc:'12 ნიშანი სწორ ადგილს დაუყარე',         color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
+    {id:'symbol',icon:'✦', title:'რისი სიმბოლოა?',   desc:'სიმბოლო ჩანს → დაასახელე',              color:'#7c3aed',bg:'#f5f3ff',border:'#a78bfa'},
     {id:'whois', icon:'🌟', title:'ვინ ვარ?',            desc:'მინიშნებები → ნიშანი გამოიცანი',        color:'#d97706',bg:'#fffbeb',border:'#fcd34d'},
     {id:'moon',  icon:'🌙', title:'მთვარის ტიპაჟები',  desc:'პერსონაჟი ლაპარაკობს → მთვარე გამოიცანი', color:'#6b35bb',bg:'#ede9fc',border:'#a78bfa'},
   {id:'tetris',icon:'🌟', title:'ასტრო-ტეტრისი',       desc:'ნიშანი ჩამოდის → სტიქია გამოიცანი',        color:'#0891b2',bg:'#ecfeff',border:'#67e8f9'},
@@ -7676,6 +7677,7 @@ function renderGameHub(root){
     if(id==='quiz') startQuizGame(root);
     else if(id==='match') {renderMatchingMenu(root,getMatchingData());}
     else if(id==='wheel') startWheelGame(root);
+    else if(id==='symbol') startSymbolGame(root);
     else if(id==='whois') startWhoAmI(root);
     else if(id==='moon') startMoonGame(document.getElementById('quiz-root'));
     else if(id==='cycles'){
@@ -8363,6 +8365,138 @@ const WHOIS_DATA=[
     'ვარ თორმეტე ნიშანი — ციკლს ვასრულებ',
   ]},
 ];
+
+const SYMBOL_DATA=[
+  {g:'♈',n:'ვერძი',c:'ნიშანი'},
+  {g:'♉',n:'კურო',c:'ნიშანი'},
+  {g:'♊',n:'ტყუპები',c:'ნიშანი'},
+  {g:'♋',n:'კირჩხიბი',c:'ნიშანი'},
+  {g:'♌',n:'ლომი',c:'ნიშანი'},
+  {g:'♍',n:'ქალწული',c:'ნიშანი'},
+  {g:'♎',n:'სასწორი',c:'ნიშანი'},
+  {g:'♏',n:'მორიელი',c:'ნიშანი'},
+  {g:'♐',n:'მშვილდოსანი',c:'ნიშანი'},
+  {g:'♑',n:'თხის რქა',c:'ნიშანი'},
+  {g:'♒',n:'მერწყული',c:'ნიშანი'},
+  {g:'♓',n:'თევზები',c:'ნიშანი'},
+  {g:'☉',n:'მზე',c:'პლანეტა'},
+  {g:'☽',n:'მთვარე',c:'პლანეტა'},
+  {g:'☿',n:'მერკური',c:'პლანეტა'},
+  {g:'♀',n:'ვენერა',c:'პლანეტა'},
+  {g:'♂',n:'მარსი',c:'პლანეტა'},
+  {g:'♃',n:'იუპიტერი',c:'პლანეტა'},
+  {g:'♄',n:'სატურნი',c:'პლანეტა'},
+  {g:'♅',n:'ურანი',c:'პლანეტა'},
+  {g:'♆',n:'ნეპტუნი',c:'პლანეტა'},
+  {g:'♇',n:'პლუტონი',c:'პლანეტა'},
+  {g:'⚕',n:'ქირონი',c:'წერტილი'},
+  {g:'☊',n:'ჩრდილოეთის კვანძი',c:'წერტილი'},
+  {g:'☋',n:'სამხრეთის კვანძი',c:'წერტილი'},
+  {g:'⚫',n:'ლილითი',c:'წერტილი'},
+  {g:'⊗',n:'ბედის წილი',c:'წერტილი'},
+  {g:'☌',n:'კონიუნქცია',c:'ასპექტი'},
+  {g:'⚹',n:'სექსტილი',c:'ასპექტი'},
+  {g:'□',n:'კვადრატი',c:'ასპექტი'},
+  {g:'△',n:'ტრინი',c:'ასპექტი'},
+  {g:'☍',n:'ოპოზიცია',c:'ასპექტი'},
+  {g:'⚻',n:'კვინკუნქსი',c:'ასპექტი'},
+  {g:'⚺',n:'ნახევარსექსტილი',c:'ასპექტი'},
+  {g:'∠',n:'ნახევარკვადრატი',c:'ასპექტი'},
+  {g:'⚼',n:'სესკვიკვადრატი',c:'ასპექტი'},
+  {g:'℞',n:'რეტროგრადული',c:'სხვა'},
+];
+
+function startSymbolGame(root){
+  var CATS=['ყველა','ნიშანი','პლანეტა','ასპექტი','წერტილი'];
+  var CC={'ნიშანი':'#0891b2','პლანეტა':'#e8a33d','ასპექტი':'#7c3aed','წერტილი':'#16a34a','სხვა':'#64748b'};
+  var cat='ყველა', cards=[], idx=0, score=0, answered=false, picked=null;
+
+  function build(){
+    var pool=SYMBOL_DATA.filter(function(s){ return cat==='ყველა'||s.c===cat; });
+    cards=shuffleArr(pool.slice()); idx=0; score=0; answered=false; picked=null;
+  }
+
+  function opts(card){
+    var same=SYMBOL_DATA.filter(function(s){ return s.c===card.c && s.n!==card.n; });
+    var pool=same.length>=3?same:SYMBOL_DATA.filter(function(s){ return s.n!==card.n; });
+    return shuffleArr([card].concat(shuffleArr(pool.slice()).slice(0,3)));
+  }
+  var curOpts=null;
+
+  function render(){
+    if(idx>=cards.length){ return done(); }
+    var card=cards[idx];
+    if(!curOpts) curOpts=opts(card);
+    var col=CC[card.c]||'#64748b';
+    var h='<div style="max-width:500px;margin:0 auto">';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px">';
+    h+='<button onclick="renderGameHub(document.getElementById(\'quiz-root\'))" style="border:.5px solid var(--border);border-radius:8px;padding:5px 10px;background:var(--bg2);font-size:12px;cursor:pointer;color:var(--text3)">← Hub</button>';
+    h+='<div style="font-size:13px;font-weight:600;color:var(--text)">✦ რისი სიმბოლოა?</div>';
+    h+='<span style="font-size:12px;color:var(--text3)">✅ '+score+' · '+(idx+1)+'/'+cards.length+'</span></div>';
+    h+='<div style="background:var(--bg2);border-radius:99px;height:5px;margin-bottom:14px;overflow:hidden">';
+    h+='<div style="height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);border-radius:99px;width:'+((idx/cards.length)*100)+'%;transition:width .4s"></div></div>';
+
+    h+='<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px">';
+    CATS.forEach(function(x){
+      h+='<button onclick="__symCat(\''+x+'\')" style="padding:5px 11px;border-radius:12px;border:.5px solid '+(cat===x?'#7c3aed':'var(--border)')+';background:'+(cat===x?'rgba(124,58,237,.10)':'var(--bg)')+';color:'+(cat===x?'#7c3aed':'var(--text3)')+';font-size:11.5px;cursor:pointer">'+x+'</button>';
+    });
+    h+='</div>';
+
+    h+='<div style="border:1.5px solid '+col+'55;border-radius:18px;padding:30px 20px;background:var(--bg);text-align:center;margin-bottom:14px">';
+    h+='<div style="font-size:76px;line-height:1;color:'+col+';margin-bottom:10px">'+card.g+'</div>';
+    h+='<div style="font-size:12px;color:var(--text3)">რისი სიმბოლოა?</div></div>';
+
+    h+='<div style="display:grid;gap:8px">';
+    curOpts.forEach(function(o,i){
+      var st='border:.5px solid var(--border);background:var(--bg);color:var(--text)';
+      if(answered){
+        if(o.n===card.n) st='border:1.5px solid #16a34a;background:rgba(22,163,74,.10);color:#16a34a';
+        else if(picked===o.n) st='border:1.5px solid #dc2626;background:rgba(220,38,38,.08);color:#dc2626';
+        else st='border:.5px solid var(--border);background:var(--bg);color:var(--text3);opacity:.6';
+      }
+      h+='<button onclick="__symPick('+i+')" '+(answered?'disabled':'')+' style="padding:13px 16px;border-radius:12px;'+st+';font-size:14px;cursor:'+(answered?'default':'pointer')+';text-align:right">'+o.n+'</button>';
+    });
+    h+='</div>';
+
+    if(answered){
+      var ok=picked===card.n;
+      h+='<div style="margin-top:14px;padding:13px 15px;border-radius:12px;background:'+(ok?'rgba(22,163,74,.08)':'rgba(220,38,38,.06)')+'">';
+      h+='<div style="font-size:13.5px;font-weight:500;color:'+(ok?'#16a34a':'#dc2626')+';margin-bottom:4px">'+(ok?'სწორია':'არასწორი')+'</div>';
+      h+='<div style="font-size:13px;color:var(--text2);line-height:1.7">'+card.g+' — <strong>'+card.n+'</strong> ('+card.c+')</div></div>';
+      h+='<button onclick="__symNext()" class="sbtn" style="margin-top:12px">'+(idx+1>=cards.length?'შედეგი':'შემდეგი →')+'</button>';
+    }
+    h+='</div>';
+    root.innerHTML=h;
+  }
+
+  function done(){
+    var pct=Math.round((score/cards.length)*100), em,ti,ms;
+    if(pct===100){em='🌟';ti='სრულყოფილი!';ms='ყველა სიმბოლო იცი. ასტროლოგიური ანბანი აითვისე.';}
+    else if(pct>=75){em='✦';ti='შესანიშნავი!';ms='სიმბოლოების უმეტესობა მყარად იცი. დარჩენილი რამდენიმე კი გამეორებას საჭიროებს.';}
+    else if(pct>=50){em='☽';ti='კარგი შედეგი!';ms='ნახევარზე მეტი სწორია. სცადე კატეგორიებად — ჯერ ნიშნები, მერე პლანეტები.';}
+    else {em='⭐';ti='კარგი დასაწყისი!';ms='სიმბოლოები ბევრია. დაიწყე ერთი კატეგორიით და თანდათან გააფართოვე.';}
+    root.innerHTML='<div style="text-align:center;padding:28px 16px;max-width:380px;margin:0 auto">'
+      +'<div style="font-size:56px;margin-bottom:8px">'+em+'</div>'
+      +'<div style="font-size:20px;font-weight:600;color:var(--text);margin-bottom:6px">'+ti+'</div>'
+      +'<div style="font-size:26px;font-weight:600;color:#7c3aed;margin-bottom:10px">'+score+'/'+cards.length+'</div>'
+      +'<div style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:18px">'+ms+'</div>'
+      +'<button onclick="__symAgain()" class="sbtn" style="margin-bottom:8px">🔄 თავიდან</button>'
+      +'<button onclick="renderGameHub(document.getElementById(\'quiz-root\'))" class="sbtn sec">← Hub</button></div>';
+  }
+
+  window.__symPick=function(i){
+    if(answered) return;
+    answered=true; picked=curOpts[i].n;
+    if(picked===cards[idx].n) score++;
+    render();
+  };
+  window.__symNext=function(){ idx++; answered=false; picked=null; curOpts=null; render(); };
+  window.__symCat=function(x){ cat=x; build(); curOpts=null; render(); };
+  window.__symAgain=function(){ build(); curOpts=null; render(); };
+
+  build(); render();
+}
+
 
 function startWhoAmI(root){
   const cards=shuffleArr([...WHOIS_DATA]);
@@ -10128,7 +10262,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.4';
+const SITE_VERSION='v7.5';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
