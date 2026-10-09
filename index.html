@@ -1398,6 +1398,25 @@ const GLOSSARY_TERMS=[
   {ka:'პროზერპინა',en:'Proserpina',cat:'სკოლები',
    def:'ჰიპოთეტური პლანეტა, რომელიც ავესტურ და ზოგიერთ სხვა ეზოთერიკულ სკოლაში ქალწულის უმაღლეს მმართველად ითვლება. ასტრონომიულად არ არსებობს და კლასიკურ ასტროლოგიაში არ გამოიყენება. ცხრილებში ხშირად Prs-ით ან სპეციალური ნიშნით აღინიშნება.',
    url:'https://www.skyscript.co.uk/dignities.html'}
+,
+  {ka:'კვინკუნქსი',en:'Quincunx · Inconjunct',cat:'ასპექტები',
+   def:'მინორული ასპექტი 150 გრადუსზე, ორბი 3°. ყველაზე ხშირად გამოყენებული მინორული ასპექტი. აკავშირებს ორ ნიშანს, რომელთაც არც სტიქია აქვთ საერთო, არც ჯვარი — ამიტომ ისინი ერთმანეთს ვერ ხედავენ. ერთის დაკმაყოფილება მეორეს აზარალებს და ადამიანი მუდმივ კორექტირებას ახდენს. ტრადიციულად ჯანმრთელობასთანაც არის დაკავშირებული.',
+   url:'https://www.astro.com/astrology/in_aspect_e.htm'},
+  {ka:'ნახევარსექსტილი',en:'Semi-sextile',cat:'ასპექტები',
+   def:'მინორული ასპექტი 30 გრადუსზე, ორბი 2°. მეზობელი ნიშნების კავშირი — სუსტი, მაგრამ მუდმივი. ორი სფერო ერთმანეთს შეუმჩნევლად და თანდათან ეხმარება. დრამას არ ქმნის, ამიტომ ხშირად შეუმჩნეველი რჩება.',
+   url:'https://www.astro.com/astrology/in_aspect_e.htm'},
+  {ka:'ნახევარკვადრატი',en:'Semi-square',cat:'ასპექტები',
+   def:'მინორული ასპექტი 45 გრადუსზე, ორბი 2°. კვადრატის ჩუმი ვერსია: მუდმივი ხახუნი ღია კონფლიქტის გარეშე. დაძაბულობა თანდათან გროვდება და უმნიშვნელო მიზეზით იფრქვევა. იოჰანეს კეპლერმა შემოიღო XVII საუკუნეში.',
+   url:'https://www.astro.com/astrology/in_aspect_e.htm'},
+  {ka:'სესკვიკვადრატი',en:'Sesquiquadrate',cat:'ასპექტები',
+   def:'მინორული ასპექტი 135 გრადუსზე, ორბი 2°. კვადრატი პლუს ნახევარკვადრატი. დაგროვილი დაძაბულობის ასპექტია: სფეროები დიდხანს თანაარსებობს ჩუმად, სანამ წნეხი კრიტიკულ ზღვარს არ მიაღწევს, შემდეგ ცვლილება უეცრად ხდება.',
+   url:'https://www.astro.com/astrology/in_aspect_e.htm'},
+  {ka:'კვინტილი',en:'Quintile',cat:'ასპექტები',
+   def:'მინორული ასპექტი 72 გრადუსზე, ორბი 2° — წრის მეხუთედი. შემოქმედებითი ნიჭისა და უნიკალურობის ასპექტი: ორი სფერო ისე ერწყმის, რომ რაღაც განუმეორებელი იქმნება. ხშირად მხოლოდ მოწიფულ ასაკში ვლინდება. კეპლერის აღმოჩენაა.',
+   url:'https://www.astro.com/astrology/in_aspect_e.htm'},
+  {ka:'ალგოლი',en:'Algol',cat:'ტექნიკა',
+   def:'ყველაზე ცნობილი და ტრადიციულად ყველაზე საშიში ფიქსირებული ვარსკვლავი, ♉ 26°. მედუზა გორგონას თავი პერსევსის თანავარსკვლავედში. ტრადიციულად ძალადობასა და უკიდურეს ვნებას უკავშირდებოდა; თანამედროვე წაკითხვით — უზარმაზარი, დაუმორჩილებელი ენერგია, რომელიც ცნობიერ მართვას მოითხოვს.',
+   url:'https://www.skyscript.co.uk/fixedstars.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -5229,6 +5248,265 @@ function dsImport(inp){
   rd.readAsText(f);
 }
 
+
+
+// ═══════════════ ასტრო-კითხვები · ლოკალური ძრავი ═══════════════
+var AQ_P={'☉':['მზე','მზი'],'☽':['მთვარ'],'☿':['მერკურ'],'♀':['ვენერ'],'♂':['მარს'],
+  '♃':['იუპიტერ'],'♄':['სატურნ'],'♅':['ურან'],'♆':['ნეპტუნ'],'♇':['პლუტონ'],
+  '⚕':['ქირონ'],'⚫':['ლილით'],'☊':['კვანძ','რაჰუ'],'Asc':['ასცენდენტ','ასკენდენტ']};
+var AQ_S={'♈':['ვერძ'],'♉':['კურო'],'♊':['ტყუპ'],'♋':['კირჩხიბ'],'♌':['ლომ'],'♍':['ქალწულ'],
+  '♎':['სასწორ'],'♏':['მორიელ'],'♐':['მშვილდოსან'],'♑':['თხის რქ','თხა'],'♒':['მერწყულ'],'♓':['თევზ']};
+var AQ_A={'⚻':['კვინკუნქს'],'⚺':['ნახევარსექსტილ'],'∠':['ნახევარკვადრატ'],'⚼':['სესკვიკვადრატ'],
+  '☌':['კონიუნქცი','შეერთებ'],'⚹':['სექსტილ'],'□':['კვადრატ'],'△':['ტრინ'],'☍':['ოპოზიცი','დაპირისპირებ']};
+var AQ_HO=['','პირველ','მეორ','მესამ','მეოთხ','მეხუთ','მეექვს','მეშვიდ','მერვ','მეცხრ','მეათ','მეთერთმეტ','მეთორმეტ'];
+var AQ_RN=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+var AQ_PN={'☉':'მზე','☽':'მთვარე','☿':'მერკური','♀':'ვენერა','♂':'მარსი','♃':'იუპიტერი','♄':'სატურნი',
+  '♅':'ურანი','♆':'ნეპტუნი','♇':'პლუტონი','⚕':'ქირონი','⚫':'ლილითი','☊':'კვანძი','Asc':'ასცენდენტი'};
+var AQ_SN={'♈':'ვერძი','♉':'კურო','♊':'ტყუპები','♋':'კირჩხიბი','♌':'ლომი','♍':'ქალწული',
+  '♎':'სასწორი','♏':'მორიელი','♐':'მშვილდოსანი','♑':'თხის რქა','♒':'მერწყული','♓':'თევზები'};
+var AQ_AN={'☌':'კონიუნქცია','⚹':'სექსტილი','□':'კვადრატი','△':'ტრინი','☍':'ოპოზიცია',
+  '⚻':'კვინკუნქსი','⚺':'ნახევარსექსტილი','∠':'ნახევარკვადრატი','⚼':'სესკვიკვადრატი'};
+
+function aqSign(n){ return n.replace(/ი$/,''); }
+function aqVar(n){ try{ var v=eval(n); return v||null; }catch(e){ return null; } }
+function aqWords(q){ return (q||'').toLowerCase().replace(/[^Ⴀ-ჿ0-9a-zXVI\s°]/g,' ').split(/\s+/).filter(Boolean); }
+function aqHas(ws,stems){ for(var i=0;i<ws.length;i++) for(var j=0;j<stems.length;j++) if(ws[i].indexOf(stems[j])===0) return true; return false; }
+
+function aqFind(q,dict){
+  var ws=aqWords(q), out=[];
+  Object.keys(dict).forEach(function(k){ if(aqHas(ws,dict[k])) out.push(k); });
+  if(!out.length) Object.keys(dict).forEach(function(k){
+    if(q.indexOf(k)>=0) out.push(k);
+  });
+  return out;
+}
+function aqHouse(q){
+  var ws=aqWords(q);
+  if(!aqHas(ws,['სახლ'])) {
+    if(!/\b(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)\b/.test(q)) return 0;
+  }
+  for(var i=1;i<=12;i++) if(aqHas(ws,[AQ_HO[i]])) return i;
+  var m=q.match(/\b(1[0-2]|[1-9])\b/); if(m) return parseInt(m[1],10);
+  for(var i=12;i>=1;i--) if(new RegExp('\\b'+AQ_RN[i]+'\\b').test(q)) return i;
+  return 0;
+}
+function aqHouses(q){
+  var ws=aqWords(q), out=[];
+  for(var i=1;i<=12;i++) if(aqHas(ws,[AQ_HO[i]])) out.push(i);
+  var dg=q.match(/\b(1[0-2]|[1-9])\b/g); if(dg) dg.forEach(function(d){ var n=parseInt(d,10); if(out.indexOf(n)<0) out.push(n); });
+  return out;
+}
+function aqTxt(r,keys){
+  if(typeof r==='string') return r;
+  var pref=keys||['d','desc','t','nat','rel','style','wound','gift','nn','sn','host','def','b'];
+  var out=[];
+  pref.forEach(function(k){ if(r[k]&&String(r[k]).length>40) out.push(String(r[k])); });
+  return out.join('<br><br>');
+}
+
+function astroAsk(q){
+  var res=[], ws=aqWords(q);
+  var P=aqFind(q,AQ_P), S=aqFind(q,AQ_S), A=aqFind(q,AQ_A);
+  var h=aqHouse(q), hs=aqHouses(q);
+  var isTr=aqHas(ws,['ტრანზიტ']), isPr=aqHas(ws,['პროგრეს']), isRx=aqHas(ws,['რეტროგრად'])||q.indexOf('℞')>=0;
+  var isRul=aqHas(ws,['მმართველ']), isEcl=aqHas(ws,['დაბნელებ']), isFort=aqHas(ws,['ბედის','წილ']);
+  var add=function(t,s,x,sec){ if(x) res.push({t:t,s:s,x:x,sec:sec}); };
+
+  // ── ფიქსირებული ვარსკვლავი
+  var ST=aqVar('DEF_STARS');
+  if(ST) ST.forEach(function(v){
+    if(aqHas(ws,[v.ka.toLowerCase().slice(0,Math.max(4,v.ka.length-2))])||q.toLowerCase().indexOf(v.en.toLowerCase())>=0)
+      add('✧ '+v.ka+' '+v.pos, v.en+' · ფიქსირებული ვარსკვლავი', v.t, 's-stars');
+  });
+  if(res.length) return res;
+
+  // ── სახლების მმართველები
+  if(isRul&&hs.length>=2){
+    var RU=aqVar('DEF_RULERS');
+    if(RU&&RU[hs[0]]) add(AQ_RN[hs[0]]+' სახლის მმართველი '+AQ_RN[hs[1]]+' სახლში','სახლების მმართველები',RU[hs[0]][hs[1]-1],'s-rulers');
+    if(res.length) return res;
+  }
+
+  // ── დაბნელება სახლში
+  if(isEcl&&h){
+    var EH=aqVar('DEF_ECL_H');
+    if(EH&&EH[h-1]) add('დაბნელება '+AQ_RN[h]+' სახლში','დაბნელებები',EH[h-1].t,'s-ecl');
+    if(res.length) return res;
+  }
+
+  // ── ბედის წილი
+  if(isFort){
+    if(h){ var FH=aqVar('DEF_FORT_H'); if(FH&&FH[h-1]) add('⊗ ბედის წილი '+AQ_RN[h]+' სახლში','ჰელენური ლოტი',FH[h-1].t,'s-fort'); }
+    if(S.length){ var FS=aqVar('DEF_FORT_S'); if(FS) FS.forEach(function(v){ if(v.sym===S[0]) add('⊗ ბედის წილი '+aqSign(v.n)+'ში','ჰელენური ლოტი',v.t,'s-fort'); }); }
+    if(res.length) return res;
+  }
+
+  // ── რეტროგრადულობა
+  if(isRx&&P.length){
+    var RX=aqVar('DEF_RETRO');
+    if(RX) RX.forEach(function(v){ if(v.s===P[0]) add(v.n+' ℞','რეტროგრადულობა · '+v.pct,
+      '<strong>ნატალურ რუკაში.</strong> '+v.nat+(v.tr?'<br><br><strong>ტრანზიტში.</strong> '+v.tr:''),'s-retro'); });
+    if(res.length) return res;
+  }
+
+  // ── პროგრესიები
+  if(isPr){
+    if(P.indexOf('☉')>=0&&S.length){ var PS=aqVar('DEF_PSUN'); if(PS) PS.forEach(function(v){ if(v.sym===S[0]) add('პროგრ. მზე '+aqSign(v.n)+'ში','პროგრესიები',v.t,'s-prog'); }); }
+    if(P.indexOf('☽')>=0&&S.length){ var PM=aqVar('DEF_PMOON_S'); if(PM) PM.forEach(function(v){ if(v.sym===S[0]) add('პროგრ. მთვარე '+aqSign(v.n)+'ში','პროგრესიები',v.t,'s-prog'); }); }
+    if(P.indexOf('☽')>=0&&h){ var PH=aqVar('DEF_PMOON_H'); if(PH&&PH[h-1]) add('პროგრ. მთვარე '+AQ_RN[h]+' სახლში','პროგრესიები',PH[h-1].t,'s-prog'); }
+    if(res.length) return res;
+  }
+
+  // ── ტრანზიტი სახლში
+  if(isTr&&P.length&&h){
+    var TH=aqVar('DEF_TIH');
+    if(TH&&TH[P[0]]) add('ტრანზიტი '+AQ_PN[P[0]]+' '+AQ_RN[h]+' სახლში','ტრანზიტები',TH[P[0]][h-1],'s-transits');
+    if(res.length) return res;
+  }
+
+  // ── ასპექტი: ორი პლანეტა + ასპექტი
+  if(P.length>=2&&A.length){
+    var AD=aqVar('DEF_ASPECTS_DATA');
+    if(AD) AD.forEach(function(v){
+      var m=(v.p1===P[0]&&v.p2===P[1])||(v.p1===P[1]&&v.p2===P[0]);
+      if(m&&v.asp===A[0]) add(AQ_PN[v.p1]+' '+v.asp+' '+AQ_PN[v.p2],(AQ_AN[v.asp]||'')+' · '+v.deg+'° · ორბი '+v.orb,
+        v.ka+'<br><br><span style="opacity:.7">საკვანძო სიტყვები: '+v.keys+'</span>','s-aspects');
+    });
+    if(res.length) return res;
+  }
+  // ორი პლანეტა ასპექტის დაზუსტების გარეშე — ყველა 5
+  if(P.length>=2&&!A.length&&!h&&!S.length){
+    var AD2=aqVar('DEF_ASPECTS_DATA');
+    if(AD2) AD2.forEach(function(v){
+      if((v.p1===P[0]&&v.p2===P[1])||(v.p1===P[1]&&v.p2===P[0]))
+        add(AQ_PN[v.p1]+' '+v.asp+' '+AQ_PN[v.p2],(AQ_AN[v.asp]||'')+' · '+v.deg+'°',v.ka,'s-aspects');
+    });
+    if(res.length) return res;
+  }
+
+  // ── პლანეტა სახლში
+  if(P.length&&h){
+    var PIH=aqVar('DEF_PIH_DATA'), PTH=aqVar('DEF_PTH');
+    var arr=(PIH&&PIH[P[0]])||(PTH&&PTH[P[0]]);
+    if(arr&&arr[h-1]) add(AQ_PN[P[0]]+' '+AQ_RN[h]+' სახლში','პლანეტა სახლში',arr[h-1],'s-houses');
+    if(res.length) return res;
+  }
+
+  // ── პლანეტა ნიშანში
+  if(P.length&&S.length){
+    var MAP={'☉':['SUN_IN_SIGNS','DEF_SUN_SIGNS','s-sun-signs'],'☽':['MOON_IN_SIGNS','DEF_MOON_IN_SIGNS','s-moon-signs'],
+      '☿':['MERCURY','DEF_MERCURY_SIGNS','s-mercury'],'♀':['VENUS','DEF_VENUS_SIGNS','s-venus'],
+      '♂':['MARS','DEF_MARS_SIGNS','s-mars'],'♃':['JUPITER_IN_SIGNS','DEF_JUPITER_SIGNS','s-jupiter'],
+      '♄':['SATURN_IN_SIGNS','DEF_SATURN_SIGNS','s-saturn'],'⚕':['CHIRON_IN_SIGNS','DEF_CHIRON_SIGNS','s-chiron'],
+      '⚫':['LILITH_IN_SIGNS','DEF_LILITH_SIGNS','s-lilith'],'☊':['NODE_IN_SIGNS','DEF_NODE_SIGNS','s-node'],
+      'Asc':['DEF_ASC_SIGNS','DEF_ASC_SIGNS','s-asc'],'♅':['DEF_GEN_U','DEF_GEN_U','s-gener'],
+      '♆':['DEF_GEN_N','DEF_GEN_N','s-gener'],'♇':['DEF_GEN_P','DEF_GEN_P','s-gener']};
+    var mp=MAP[P[0]];
+    if(mp){ var a=aqVar(mp[0])||aqVar(mp[1]);
+      if(a) a.forEach(function(v){ if(v.sym===S[0]) add(AQ_PN[P[0]]+' '+aqSign(AQ_SN[S[0]])+'ში',(v.badge||v.tag||''),aqTxt(v),mp[2]); }); }
+    if(res.length) return res;
+  }
+
+  // ── სახლი ცალკე
+  if(h&&!P.length){
+    var HD=aqVar('DEF_HOUSES_DATA');
+    if(HD&&HD[h-1]){ var x=HD[h-1];
+      add(x.n+' სახლი',x.keys+' · '+x.mode,x.d+'<br><br><strong>ტრადიციული შენიშვნა.</strong> '+x.t,'s-houses'); }
+    if(res.length) return res;
+  }
+
+  // ── ასპექტი ცალკე / ტერმინი — ლექსიკონი
+  var G=aqVar('GLOSSARY_TERMS');
+  if(G){ var ql=q.toLowerCase().trim(), exact=[], part=[];
+    G.forEach(function(v){
+      var k=v.ka.toLowerCase();
+      if(k===ql) exact.push(v);
+      else if(k.length>3&&(ql.indexOf(k)>=0||aqHas(ws,[k.slice(0,k.length-1)]))) part.push(v);
+    });
+    exact.concat(part).slice(0,4).forEach(function(v){
+      add(v.ka,(v.en||'')+' · ლექსიკონი',v.def,'s-resources'); });
+    if(res.length) return res;
+  }
+
+  // ── საერთო ძებნა
+  try{
+    var ix=buildSearchIndex(), ql2=q.toLowerCase();
+    for(var i=0;i<ix.length&&res.length<5;i++){
+      var e=ix[i];
+      if((e.t+' '+e.s+' '+e.b).toLowerCase().indexOf(ql2)>=0) add(e.t,e.s,e.b,e.sec);
+    }
+  }catch(e){}
+  return res;
+}
+
+// ═══════════ ინტერფეისი ═══════════
+function aqToggle(){
+  var p=document.getElementById('aq-panel');
+  if(!p) return;
+  var open=p.style.display==='flex';
+  p.style.display=open?'none':'flex';
+  if(!open){ var i=document.getElementById('aq-in'); if(i) i.focus(); }
+}
+function aqRun(){
+  var i=document.getElementById('aq-in'), out=document.getElementById('aq-out');
+  if(!i||!out) return;
+  var q=i.value.trim();
+  if(q.length<2){ out.innerHTML=''; return; }
+  var r=[];
+  try{ r=astroAsk(q)||[]; }catch(e){ r=[]; }
+  if(!r.length){
+    out.innerHTML='<div style="padding:18px 14px;text-align:center;font-size:13px;color:var(--text3);line-height:1.7">'
+      +'ვერაფერი ვიპოვე.<br><span style="font-size:12px">სცადე ასე: „მარსი მერვე სახლში“, „მზე კვადრატი სატურნი“, „ვენერა კუროში“</span></div>';
+    return;
+  }
+  var h='';
+  r.slice(0,5).forEach(function(x){
+    h+='<div style="border-top:.5px solid var(--border);padding:14px 2px">';
+    h+='<div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px">'+x.t+'</div>';
+    if(x.s) h+='<div style="font-size:11px;color:var(--text3);margin-bottom:7px">'+x.s+'</div>';
+    h+='<div style="font-size:13px;color:var(--text2);line-height:1.85">'+x.x+'</div>';
+    if(x.sec) h+='<button onclick="aqGo(\''+x.sec+'\')" style="margin-top:9px;padding:6px 13px;border-radius:16px;border:.5px solid #7c3aed;background:rgba(124,58,237,.08);color:#7c3aed;font-size:12px;cursor:pointer">სრულად ნახვა →</button>';
+    h+='</div>';
+  });
+  out.innerHTML=h;
+}
+function aqGo(sec){ aqToggle(); try{ showPage(sec); }catch(e){} }
+function aqChip(t){ var i=document.getElementById('aq-in'); if(i){ i.value=t; aqRun(); i.focus(); } }
+
+function aqMount(){
+  if(document.getElementById('aq-fab')) return;
+  var b=document.createElement('button');
+  b.id='aq-fab'; b.onclick=aqToggle; b.title='ასტრო-კითხვები';
+  b.style.cssText='position:fixed;right:18px;bottom:18px;z-index:9998;width:52px;height:52px;border-radius:50%;'
+   +'border:none;background:#7c3aed;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,.38)';
+  b.textContent='✦';
+  document.body.appendChild(b);
+
+  var p=document.createElement('div');
+  p.id='aq-panel';
+  p.style.cssText='position:fixed;right:18px;bottom:80px;z-index:9999;width:min(420px,calc(100vw - 36px));'
+   +'max-height:min(70vh,560px);display:none;flex-direction:column;background:var(--bg);'
+   +'border:.5px solid var(--border);border-radius:18px;box-shadow:0 10px 36px rgba(0,0,0,.22);overflow:hidden';
+  p.innerHTML='<div style="padding:14px 16px 10px;border-bottom:.5px solid var(--border)">'
+   +'<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">'
+   +'<span style="font-size:16px;color:#7c3aed">✦</span>'
+   +'<span style="flex:1;font-size:14.5px;font-weight:500;color:var(--text)">ჰკითხე რუკის შესახებ</span>'
+   +'<button onclick="aqToggle()" style="border:none;background:transparent;color:var(--text3);font-size:17px;cursor:pointer;padding:2px 5px">✕</button></div>'
+   +'<input id="aq-in" type="text" placeholder="მაგ: მარსი მერვე სახლში" oninput="aqRun()" autocomplete="off" '
+   +'style="width:100%;padding:9px 12px;border-radius:12px;border:.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13.5px;outline:none">'
+   +'<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:9px">'
+   +['მარსი მერვე სახლში','მზე კვადრატი სატურნი','ვენერა კუროში','მეშვიდე სახლი','რეტროგრადული მერკური']
+     .map(function(c){ return '<button onclick="aqChip(\''+c+'\')" style="padding:4px 10px;border-radius:11px;border:.5px solid var(--border);background:var(--bg2);color:var(--text3);font-size:11px;cursor:pointer">'+c+'</button>'; }).join('')
+   +'</div></div>'
+   +'<div id="aq-out" style="flex:1;overflow-y:auto;padding:0 16px 16px"></div>'
+   +'<div style="padding:9px 16px;border-top:.5px solid var(--border);font-size:10.5px;color:var(--text3);line-height:1.6">'
+   +'პასუხები საიტის საკუთარი მასალიდან მოდის — 1447 ჩანაწერი. ინტერნეტს არ უკავშირდება.</div>';
+  document.body.appendChild(p);
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ var pp=document.getElementById('aq-panel'); if(pp&&pp.style.display==='flex') aqToggle(); }
+  });
+}
 
 function renderHousesSection(sec){
   var MC={'კუთხოვანი':'#dc2626','მომდევნო':'#2563a8','დაცემადი':'#16a34a'};
@@ -10343,7 +10621,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.6';
+const SITE_VERSION='v7.7';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
@@ -10367,6 +10645,7 @@ try{
 }catch(e){}
 try{ applyDataOverrides(); }catch(e){}
 renderAll();
+try{ aqMount(); }catch(e){}
 
 // Global planet tooltip
 (function(){
