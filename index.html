@@ -4654,13 +4654,56 @@ function buildSearchIndex(){
   var life=T(typeof DEF_LIFE!=='undefined'?DEF_LIFE:null);
   if(life) life.forEach(function(x){ add(x.n,x.a+' წელი · ციკლი','s-transits',x.t); });
 
-  var pairs=[['DEF_ASC_SIGNS','ასცენდენტი','s-asc'],['DEF_CHIRON_SIGNS','ქირონი','s-chiron'],
-             ['DEF_NODE_SIGNS','კვანძი','s-node'],['DEF_LILITH_SIGNS','ლილითი','s-lilith']];
-  pairs.forEach(function(pr){
-    var arr=T(typeof window[pr[0]]!=='undefined'?window[pr[0]]:null);
-    if(!arr) return;
-    arr.forEach(function(x){ add(pr[1]+' '+x.n+'ში',pr[1],pr[2],(x.d||'')+' '+(x.desc||'')+' '+(x.wound||'')+' '+(x.gift||'')+' '+(x.nn||'')+' '+(x.sn||'')); });
+  var GV=function(n){ try{ var v=eval(n); return v||null; }catch(e){ return null; } };
+  var BLOB=function(r){ var o=[]; Object.keys(r).forEach(function(k){
+      var v=r[k]; if(typeof v==='string'&&v.length>25&&['sym','n','el','cyc'].indexOf(k)<0) o.push(v); }); return o.join(' '); };
+  var SGN=function(n){ return String(n).replace(/ი$/,''); };
+
+  // ── პლანეტები და წერტილები ნიშნებში (ცოცხალი მასივები, DEF_ სარეზერვოდ)
+  [['SUN_IN_SIGNS','DEF_SUN_SIGNS','მზე','s-sun-signs'],
+   ['MOON_IN_SIGNS','DEF_MOON_IN_SIGNS','მთვარე','s-moon-signs'],
+   ['MERCURY','DEF_MERCURY_SIGNS','მერკური','s-mercury'],
+   ['VENUS','DEF_VENUS_SIGNS','ვენერა','s-venus'],
+   ['MARS','DEF_MARS_SIGNS','მარსი','s-mars'],
+   ['JUPITER_IN_SIGNS','DEF_JUPITER_SIGNS','იუპიტერი','s-jupiter'],
+   ['SATURN_IN_SIGNS','DEF_SATURN_SIGNS','სატურნი','s-saturn'],
+   ['CHIRON_IN_SIGNS','DEF_CHIRON_SIGNS','ქირონი','s-chiron'],
+   ['NODE_IN_SIGNS','DEF_NODE_SIGNS','კვანძი','s-node'],
+   ['LILITH_IN_SIGNS','DEF_LILITH_SIGNS','ლილითი','s-lilith'],
+   ['DEF_ASC_SIGNS','DEF_ASC_SIGNS','ასცენდენტი','s-asc']].forEach(function(pr){
+    var arr=GV(pr[0])||GV(pr[1]); if(!arr||!arr.length) return;
+    arr.forEach(function(x){ add(pr[2]+' '+SGN(x.n)+'ში',(x.badge||'')+' · პლანეტა ნიშანში',pr[3],BLOB(x)); });
   });
+
+  // ── სინასტრია: სახლების გადაფარვა
+  var so=T(typeof DEF_SYN_OVER!=='undefined'?DEF_SYN_OVER:null);
+  if(so) so.forEach(function(x){ add('პარტნიორის პლანეტა '+x.h+' სახლში','სახლების გადაფარვა · სინასტრია','s-syn',x.t); });
+
+  // ── რუკის კითხვა: ხშირი შეცდომები
+  var mi=T(typeof DEF_MISTAKES!=='undefined'?DEF_MISTAKES:null);
+  if(mi) mi.forEach(function(x){ add(x.ti,'ხშირი შეცდომა · რუკის კითხვა','s-method',x.t); });
+
+  // ── ტრიპლიციტეტი
+  var tp=T(typeof DEF_TRIPL!=='undefined'?DEF_TRIPL:null);
+  if(tp) tp.forEach(function(x){ add('ტრიპლიციტეტი — '+x.el,x.s+' · დღე '+x.day+' · ღამე '+x.night,'s-dign',x.t); });
+
+  // ── პლანეტების ციკლები
+  var cy=T(typeof DEF_CYCLES!=='undefined'?DEF_CYCLES:null);
+  if(cy) cy.forEach(function(x){ add(x.n+' — ციკლი '+x.cyc,'ნიშანში '+x.sign+' · ტრანზიტი '+x.tr,'s-transits',x.m); });
+
+  // ── დიგნიტეტების ცხრილები სტრიქონ-სტრიქონ
+  var ds=T(typeof DEF_DIGN_SIGNS!=='undefined'?DEF_DIGN_SIGNS:null);
+  if(ds) ds.forEach(function(x){ add('დიგნიტეტები — '+x.n,'კლასიკური სკოლა','s-dign',
+    'მმართველი '+x.r+' ეგზალტაცია '+x.e+' ტყვეობა '+x.d+' ვარდნა '+x.f); });
+  var av=T(typeof DEF_AVEST!=='undefined'?DEF_AVEST:null);
+  if(av) av.forEach(function(x){ add('ავესტური — '+x.n,'ავესტური სკოლა · გლობა','s-dign',
+    'მმართველი '+x.r+' ეგზალტაცია '+x.e+' ტყვეობა '+x.d+' ვარდნა '+x.f); });
+  var tm=T(typeof DEF_TERMS!=='undefined'?DEF_TERMS:null);
+  if(tm) tm.forEach(function(x){ add('ტერმინები — '+x.n,'ეგვიპტური საზღვრები','s-dign',
+    x.b.map(function(t){return t.p+' '+t.a+'-'+t.b+'°';}).join(' · ')); });
+  var dc=T(typeof DEF_DEC!=='undefined'?DEF_DEC:null);
+  if(dc) dc.forEach(function(x){ x.d.forEach(function(t){
+    add(x.n+' · '+t.r+' დეკანატი','მმართველი '+t.p+' · 36 სახე','s-dign',t.t); }); });
 
   [['DEF_GEN_U','ურანი'],['DEF_GEN_N','ნეპტუნი'],['DEF_GEN_P','პლუტონი']].forEach(function(pr){
     var arr=T(typeof window[pr[0]]!=='undefined'?window[pr[0]]:null);
@@ -4720,11 +4763,24 @@ function doSearch(q){
   if(q.length<2){ box.style.display='none'; box.innerHTML=''; return; }
   var ix=buildSearchIndex();
   var res=[];
-  for(var i=0;i<ix.length&&res.length<60;i++){
+  var terms=q.split(/\s+/).filter(function(w){ return w.length>1; });
+  if(!terms.length) terms=[q];
+  for(var i=0;i<ix.length&&res.length<80;i++){
     var e=ix[i];
-    var hay=(e.t+' '+e.s+' '+e.b).toLowerCase();
+    var ttl=(e.t+' '+e.s).toLowerCase();
+    var hay=ttl+' '+e.b.toLowerCase();
+    var sc=-1;
     var p=hay.indexOf(q);
-    if(p>=0) res.push({e:e,score:(e.t.toLowerCase().indexOf(q)>=0?0:1)+(p/1000)});
+    if(p>=0){ sc=(e.t.toLowerCase().indexOf(q)>=0?0:1)+(p/5000); }
+    else {
+      var all=true, inT=0;
+      for(var k=0;k<terms.length;k++){
+        if(hay.indexOf(terms[k])<0){ all=false; break; }
+        if(ttl.indexOf(terms[k])>=0) inT++;
+      }
+      if(all) sc=2+(terms.length-inT)*0.2;
+    }
+    if(sc>=0) res.push({e:e,score:sc});
   }
   res.sort(function(a,b){return a.score-b.score;});
   if(!res.length){
@@ -5431,10 +5487,16 @@ function astroAsk(q){
   // ── საერთო ძებნა
   try{
     var ix=buildSearchIndex(), ql2=q.toLowerCase();
-    for(var i=0;i<ix.length&&res.length<5;i++){
-      var e=ix[i];
-      if((e.t+' '+e.s+' '+e.b).toLowerCase().indexOf(ql2)>=0) add(e.t,e.s,e.b,e.sec);
+    var tm2=ql2.split(/\s+/).filter(function(w){ return w.length>1; });
+    var hit=[];
+    for(var i=0;i<ix.length;i++){
+      var e=ix[i], hay=(e.t+' '+e.s+' '+e.b).toLowerCase(), sc=-1;
+      if(hay.indexOf(ql2)>=0) sc=0;
+      else if(tm2.length&&tm2.every(function(w){ return hay.indexOf(w)>=0; })) sc=1;
+      if(sc>=0) hit.push({e:e,s:sc});
     }
+    hit.sort(function(a,b){ return a.s-b.s; });
+    hit.slice(0,5).forEach(function(h){ add(h.e.t,h.e.s,h.e.b,h.e.sec); });
   }catch(e){}
   return res;
 }
@@ -10621,7 +10683,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.7';
+const SITE_VERSION='v7.8';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
