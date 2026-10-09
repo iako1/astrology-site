@@ -1388,6 +1388,16 @@ const GLOSSARY_TERMS=[
   {ka:'პოლარობა',en:'Polarity',cat:'საფუძვლები',
    def:'ზოდიაქოს დაყოფა ორ ჯგუფად: იან (ცეცხლი და ჰაერი) და ინი (მიწა და წყალი). ნიშნები მკაცრად მონაცვლეობენ ვერძიდან დაწყებული, ამიტომ ყოველი მეორე ნიშანი ერთსა და იმავე პოლუსს ეკუთვნის. რუკაში პლანეტების განაწილება ორ პოლუსს შორის აჩვენებს, ენერგია უფრო გარეთაა მიმართული თუ შიგნით.',
    url:'https://www.astro.com/astrology/in_elements_e.htm'}
+,
+  {ka:'ავესტური სკოლა',en:'Avestan school',cat:'სკოლები',
+   def:'ასტროლოგიური სკოლა, რომელიც XX საუკუნის ბოლოს პაველ გლობამ ჩამოაყალიბა და ზოროასტრული ტრადიციის აღდგენას აცხადებს. მისი თავისებურებებია ორმაგი მმართველობა (ჩვეულებრივი და უმაღლესი მმართველი), ეგზალტაცია 12-ვე ნიშანში, და დამატებითი სხეულების — ქირონის, პროზერპინისა და კვანძების — ჩართვა დიგნიტეტებში. გავრცელებულია ძირითადად პოსტსაბჭოთა სივრცეში; საერთაშორისო პრაქტიკაში სტანდარტად კლასიკური სისტემა რჩება.',
+   url:'https://www.skyscript.co.uk/dignities.html'},
+  {ka:'უმაღლესი მმართველი',en:'Higher ruler',cat:'სკოლები',
+   def:'ავესტური სკოლის ცნება: ნიშნის მეორე, ფარული მმართველი, რომელიც ტრადიციულ მმართველთან ერთად მოქმედებს. ცხრილებში ᴿ ინდექსით აღინიშნება — ეს რეტროგრადულობას არ ნიშნავს. კლასიკურ ასტროლოგიაში ასეთი ცნება არ არსებობს: ყოველ ნიშანს ერთი მმართველი ჰყავს.',
+   url:'https://www.skyscript.co.uk/dignities.html'},
+  {ka:'პროზერპინა',en:'Proserpina',cat:'სკოლები',
+   def:'ჰიპოთეტური პლანეტა, რომელიც ავესტურ და ზოგიერთ სხვა ეზოთერიკულ სკოლაში ქალწულის უმაღლეს მმართველად ითვლება. ასტრონომიულად არ არსებობს და კლასიკურ ასტროლოგიაში არ გამოიყენება. ცხრილებში ხშირად Prs-ით ან სპეციალური ნიშნით აღინიშნება.',
+   url:'https://www.skyscript.co.uk/dignities.html'}
 ];
 
 const DEF_WHEEL={id:'s-wheel',type:'wheel',title:'🔮 ზოდიაქოს წრე',visible:true,tab:'🔮 ზოდიაქოს წრე'};
@@ -3777,9 +3787,9 @@ const DEF_DIGN_SIGNS=[
 const DEF_DIGN_TERMS=[
   {ka:'სახლი',en:'Domicile · Rulership',c:'#16a34a',t:'პლანეტა საკუთარ ნიშანშია და სრული ძალით მოქმედებს. ეს მისი ბუნებრივი გარემოა — აქ მას არაფერი უშლის. ყველაზე ძლიერი დიგნიტეტი.'},
   {ka:'ეგზალტაცია',en:'Exaltation',c:'#2563a8',t:'პლანეტა სტუმრადაა ნიშანში, რომელიც მას განსაკუთრებით უწყობს ხელს. ძალა მაღალია, ოღონდ ოდნავ გადაჭარბებულიც — ეგზალტირებული პლანეტა ხშირად საკუთარ ზომას ვერ ხედავს. ტრადიციულად თითოეულს ზუსტი გრადუსი აქვს.'},
-  {ka:'დაცემა',en:'Detriment',c:'#dc2626',t:'პლანეტა საკუთარი სახლის საპირისპირო ნიშანშია. აქ მას გარემო ეწინააღმდეგება და ენერგიის გამოხატვა ძალისხმევას მოითხოვს. ეს არ ნიშნავს ცუდს — ნიშნავს, რომ ადამიანმა ეს ფუნქცია ცნობიერად უნდა ისწავლოს.'},
+  {ka:'ტყვეობა',en:'Detriment',c:'#dc2626',t:'პლანეტა საკუთარი სახლის საპირისპირო ნიშანშია. აქ მას გარემო ეწინააღმდეგება და ენერგიის გამოხატვა ძალისხმევას მოითხოვს. ეს არ ნიშნავს ცუდს — ნიშნავს, რომ ადამიანმა ეს ფუნქცია ცნობიერად უნდა ისწავლოს.'},
   {ka:'ვარდნა',en:'Fall',c:'#dc2626',t:'პლანეტა ეგზალტაციის საპირისპირო ნიშანშია — ყველაზე სუსტი პოზიცია. ის აქ თავს არაკომფორტულად გრძნობს და ხშირად თავს არიდებს გამოვლენას. სამაგიეროდ სწორედ ასეთი პლანეტა ხდება ცხოვრებისეული მუშაობის მთავარი წერტილი.'},
-  {ka:'პერეგრინი',en:'Peregrine',c:'#7c3aed',t:'პლანეტა, რომელსაც არც ერთი დიგნიტეტი არ აქვს — არც სახლი, არც ეგზალტაცია, არც დაცემა, არც ვარდნა. ის ნეიტრალურია და მოქმედებს ისე, როგორც გარემო კარნახობს. ტრადიციულ ასტროლოგიაში პერეგრინი პლანეტა არასტაბილურად ითვლებოდა.'},
+  {ka:'პერეგრინი',en:'Peregrine',c:'#7c3aed',t:'პლანეტა, რომელსაც არც ერთი დიგნიტეტი არ აქვს — არც სახლი, არც ეგზალტაცია, არც ტყვეობა, არც ვარდნა. ის ნეიტრალურია და მოქმედებს ისე, როგორც გარემო კარნახობს. ტრადიციულ ასტროლოგიაში პერეგრინი პლანეტა არასტაბილურად ითვლებოდა.'},
   {ka:'აქციდენტური დიგნიტეტი',en:'Accidental Dignity',c:'#0d9488',t:'ნიშნის გარდა პლანეტის ძალაზე მოქმედებს სახლიც: კუთხოვან სახლში მდგარი პლანეტა გაცილებით ძლიერია, ვიდრე დაცემად სახლში. ასევე მნიშვნელოვანია რეტროგრადულობა, მზესთან სიახლოვე და ასპექტები. ესენია აქციდენტური, ანუ გარემოებითი დიგნიტეტები.'},
 ];
 
@@ -3820,6 +3830,70 @@ const DEF_DEC=[
   {sym:'♒',n:'მერწყული',d:[{p:'♀',r:'0°-10°',t:'სოციალური ხიბლი. მერწყული, რომელსაც ხალხი უყვარს.'},{p:'☿',r:'10°-20°',t:'ინტელექტუალური ინოვაცია. ყველაზე მოაზროვნე მერწყული.'},{p:'☽',r:'20°-30°',t:'ჰუმანური თანაგრძნობა. მერწყული, რომელიც კოლექტივს გრძნობს.'}]},
   {sym:'♓',n:'თევზები',d:[{p:'♄',r:'0°-10°',t:'სტრუქტურირებული სულიერება. თევზები, რომელსაც ფორმა სჭირდება.'},{p:'♃',r:'10°-20°',t:'ფართო რწმენა და გულუხვობა. ყველაზე კეთილშობილი თევზები.'},{p:'♂',r:'20°-30°',t:'მოქმედი თანაგრძნობა. თევზები, რომელიც იბრძვის სხვისთვის.'}]},
 ];
+
+
+const DEF_AVEST=[
+  {sym:'♈',n:'ვერძი',r:'♂ ♇ᴿ',e:'☉',d:'♀ ⚕ᴿ',f:'♄ ♅ᴿ'},
+  {sym:'♉',n:'კურო',r:'⚕ ♀ᴿ',e:'☽',d:'♇ ♂ᴿ',f:'♅ ♄ᴿ'},
+  {sym:'♊',n:'ტყუპები',r:'Prsᴿ ☿ᴿ',e:'☿ Prsᴿ ☊',d:'♃ ♆ᴿ',f:'☋'},
+  {sym:'♋',n:'კირჩხიბი',r:'☽',e:'♃ ♆ᴿ',d:'♄ ♅ᴿ',f:'♂ ♇ᴿ'},
+  {sym:'♌',n:'ლომი',r:'☉',e:'♇ ♂ᴿ',d:'♅ ♄ᴿ',f:'♆ ♃ᴿ'},
+  {sym:'♍',n:'ქალწული',r:'☿ Prs',e:'Prsᴿ ☿ᴿ',d:'♆ ♃ᴿ',f:'♀ ⚕ᴿ'},
+  {sym:'♎',n:'სასწორი',r:'♀ ⚕ᴿ',e:'♄ ♅ᴿ',d:'♂ ♇ᴿ',f:'☉'},
+  {sym:'♏',n:'მორიელი',r:'♇ ♂ᴿ',e:'♅ ♄ᴿ',d:'⚕ ♀ᴿ',f:'☽'},
+  {sym:'♐',n:'მშვილდოსანი',r:'♃ ♆ᴿ',e:'☋',d:'Prsᴿ ☿ᴿ',f:'☿ Prsᴿ ☊'},
+  {sym:'♑',n:'თხის რქა',r:'♄ ♅ᴿ',e:'♂ ♇ᴿ',d:'☽',f:'♃ ♆ᴿ'},
+  {sym:'♒',n:'მერწყული',r:'♅ ♄ᴿ',e:'♆ ♃ᴿ',d:'☉',f:'♇ ♂ᴿ'},
+  {sym:'♓',n:'თევზები',r:'♆ ♃ᴿ',e:'♀ ⚕ᴿ',d:'☿ Prs',f:'Prsᴿ ☿ᴿ'},
+];
+
+function renderSchoolsBlock(){
+  var h='<details style="margin-top:16px;border:.5px solid var(--border);border-radius:16px;background:var(--bg);overflow:hidden">';
+  h+='<summary style="display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none">';
+  h+='<div style="width:34px;height:34px;border-radius:50%;background:rgba(124,58,237,.12);display:flex;align-items:center;justify-content:center;font-size:14px">⚯</div>';
+  h+='<div style="flex:1"><div style="font-size:14.5px;font-weight:500;color:var(--text)">ავესტური სკოლის ცხრილი</div>';
+  h+='<div style="font-size:11px;color:var(--text3)">პაველ გლობა · ალტერნატიული სისტემა</div></div><span style="font-size:12px;color:var(--text3)">▾</span></summary>';
+  h+='<div style="padding:0 20px 16px;border-top:.5px solid var(--border)">';
+
+  h+='<p style="font-size:12.5px;color:var(--text2);line-height:1.8;margin:14px 0 10px">ეს <strong>განსხვავებული სკოლაა</strong> და არა ზემოთ მოცემული კლასიკური ცხრილის შესწორება. ავესტური სკოლა XX საუკუნის ბოლოს ჩამოყალიბდა და ზოროასტრული ტრადიციის აღდგენას აცხადებს. მისი თავისებურებები:</p>';
+  var F=[
+   ['ორმაგი მმართველობა','ყოველ ნიშანს ორი მმართველი ჰყავს — ჩვეულებრივი და უმაღლესი (ᴿ ინდექსით). კლასიკურ სისტემაში ერთია.'],
+   ['12-ვე ეგზალტაცია','ყველა ნიშანს აქვს ეგზალტაცია და ვარდნა. კლასიკურში ხუთ ნიშანს ეგზალტაცია საერთოდ არ აქვს.'],
+   ['დამატებითი სხეულები','ჩართულია ⚕ ქირონი, Prs პროზერპინა და ☊ ☋ კვანძები, რომლებიც კლასიკურ დიგნიტეტებში არ მონაწილეობს.'],
+   ['გარე პლანეტები','♅ ♆ ♇ სრულუფლებიან მმართველებად ითვლება და არა მხოლოდ თანამედროვე დანამატად.']
+  ];
+  F.forEach(function(x){
+    h+='<div style="padding:10px 0;border-top:.5px solid var(--border)">';
+    h+='<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">'+x[0]+'</div>';
+    h+='<div style="font-size:12.5px;color:var(--text2);line-height:1.75">'+x[1]+'</div></div>';
+  });
+
+  h+='<div style="overflow-x:auto;margin-top:14px"><table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:380px">';
+  h+='<tr style="border-bottom:.5px solid var(--border)">';
+  [['ნიშანი','var(--text3)'],['მმართველი','#16a34a'],['ეგზალტაცია','#2563a8'],['ტყვეობა','#dc2626'],['ვარდნა','#dc2626']].forEach(function(t,i){
+    h+='<th style="text-align:'+(i===0?'left':'center')+';padding:8px 5px;font-weight:500;font-size:10.5px;color:'+t[1]+'">'+t[0]+'</th>';
+  });
+  h+='</tr>';
+  DEF_AVEST.forEach(function(x){
+    h+='<tr style="border-bottom:.5px solid var(--border)">';
+    h+='<td style="padding:8px 5px;white-space:nowrap"><span style="font-size:15px">'+x.sym+'</span> <span style="font-size:11px;color:var(--text2)">'+x.n+'</span></td>';
+    [[x.r,'#16a34a'],[x.e,'#2563a8'],[x.d,'#dc2626'],[x.f,'#dc2626']].forEach(function(p){
+      h+='<td style="text-align:center;padding:8px 5px;font-size:13px;color:'+(p[0]==='—'?'var(--text3)':p[1])+';white-space:nowrap">'+p[0]+'</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</table></div>';
+
+  h+='<div style="margin-top:12px;padding:11px 13px;border-radius:10px;background:var(--bg2)">';
+  h+='<div style="font-size:10.5px;color:var(--text3);margin-bottom:5px">აღნიშვნები</div>';
+  h+='<div style="font-size:12px;color:var(--text2);line-height:1.8"><strong>ᴿ</strong> — უმაღლესი მმართველი (და არა რეტროგრადულობა) · <strong>⚕</strong> ქირონი · <strong>Prs</strong> პროზერპინა · <strong>☊ ☋</strong> ჩრდილოეთისა და სამხრეთის კვანძი</div></div>';
+
+  h+='<div style="margin-top:10px;padding:11px 13px;border-radius:10px;background:rgba(220,38,38,.06);border-left:3px solid #dc2626;border-radius:0 10px 10px 0">';
+  h+='<div style="font-size:12px;color:var(--text2);line-height:1.8"><strong>ორი სისტემა არ აირიოს.</strong> ერთ რუკაში ან ერთს იყენებ, ან მეორეს. კლასიკური სისტემა ორი ათასწლეულის ტრადიციას ეყრდნობა და საერთაშორისო პრაქტიკაში სტანდარტია; ავესტური თანამედროვე ავტორისეული სკოლაა და ძირითადად პოსტსაბჭოთა სივრცეშია გავრცელებული. ქვემოთ მოცემული ტრიპლიციტეტი, ტერმინები და დეკანატები მხოლოდ კლასიკურ სისტემას ეკუთვნის.</div></div>';
+  h+='</div></details>';
+  return h;
+}
+
 
 function renderDignExtra(){
   var PC={'☉':'#e8a33d','☽':'#7b8fa8','☿':'#4895ef','♀':'#db2777','♂':'#e85d04','♃':'#2563a8','♄':'#7a6a8e'};
@@ -3920,16 +3994,19 @@ function renderDignSection(sec){
   });
   h+='</div></details>';
 
+  h+=renderSchoolsBlock();
   h+=renderDignExtra();
   h+=renderSectBlock();
 
   // ნიშნების ცხრილი
   h+='<div style="border:.5px solid var(--border);border-radius:16px;background:var(--bg);padding:18px 20px;margin-bottom:16px">';
-  h+='<div style="font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:4px">ცხრილი ნიშნების მიხედვით</div>';
-  h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:14px">რომელი პლანეტა როგორ გრძნობს თავს თითოეულ ნიშანში</div>';
+  h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">';
+  h+='<span style="font-size:14.5px;font-weight:500;color:var(--text)">ცხრილი ნიშნების მიხედვით</span>';
+  h+='<span style="font-size:10.5px;padding:2px 9px;border-radius:12px;background:rgba(37,99,168,.12);color:#2563a8">კლასიკური სკოლა</span></div>';
+  h+='<div style="font-size:11.5px;color:var(--text3);margin-bottom:14px">პტოლემეოსის სისტემა · ჰელენური, ტრადიციული და თანამედროვე დასავლური ასტროლოგია</div>';
   h+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;min-width:340px">';
   h+='<tr style="border-bottom:.5px solid var(--border)">';
-  ['ნიშანი','სახლი','ეგზალტ.','დაცემა','ვარდნა'].forEach(function(t,i){
+  ['ნიშანი','სახლი','ეგზალტ.','ტყვეობა','ვარდნა'].forEach(function(t,i){
     var col=['var(--text3)','#16a34a','#2563a8','#dc2626','#dc2626'][i];
     h+='<th style="text-align:'+(i===0?'left':'center')+';padding:8px 6px;font-weight:500;font-size:11px;color:'+col+'">'+t+'</th>';
   });
@@ -3963,7 +4040,7 @@ function renderDignSection(sec){
     h+='<div style="padding:0 16px 16px;border-top:.5px solid var(--border)">';
     h+='<p style="font-size:13.5px;color:var(--text2);line-height:1.85;margin:14px 0 12px">'+x.t+'</p>';
     h+='<div style="display:grid;gap:7px">';
-    [['სახლი',x.dom,'#16a34a'],['ეგზალტაცია',x.ex,'#2563a8'],['დაცემა',x.det,'#dc2626'],['ვარდნა',x.fall,'#dc2626']].forEach(function(r){
+    [['სახლი',x.dom,'#16a34a'],['ეგზალტაცია',x.ex,'#2563a8'],['ტყვეობა',x.det,'#dc2626'],['ვარდნა',x.fall,'#dc2626']].forEach(function(r){
       h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;background:var(--bg2)">';
       h+='<span style="width:8px;height:8px;border-radius:50%;background:'+r[2]+';flex-shrink:0"></span>';
       h+='<span style="font-size:11.5px;color:var(--text3);min-width:76px">'+r[0]+'</span>';
@@ -4088,7 +4165,7 @@ const DEF_METHOD=[
    b:'ეძებე, სად გროვდება პლანეტები. სამი ან მეტი ერთ ნიშანში ან სახლში სტელიუმია — ცხოვრების უზარმაზარი ნაწილი ამ სფეროზეა ფოკუსირებული. აქვე ნახე, რუკის რომელი ნახევარია სავსე: აღმოსავლეთი დამოუკიდებლობაზე მიუთითებს, დასავლეთი ურთიერთობებზე, ქვედა ნახევარი პირად სფეროზე, ზედა — საჯაროზე.',
    tip:'ცარიელი სახლი არაფერს ცუდს არ ნიშნავს. ის უბრალოდ იმას ამბობს, რომ ეს სფერო ცხოვრების მთავარი თემა არაა — მისი მმართველი მაინც უნდა ნახო.'},
   {n:7,ti:'დიგნიტეტები',goto:'s-dign',q:'რომელი პლანეტა მუშაობს თავისუფლად და რომელი ჭიდაობს?',
-   b:'ერთი და იგივე პლანეტა სხვადასხვა ნიშანში სხვადასხვა ძალით მოქმედებს. საკუთარ სახლში ან ეგზალტაციაში მდგარი პლანეტა ბუნებრივად მუშაობს. დაცემასა და ვარდნაში — ცნობიერ ძალისხმევას მოითხოვს. ეს არ არის შეფასება: დაცემაში მდგარი პლანეტა ხშირად ცხოვრებისეული მუშაობის მთავარი წერტილია.',
+   b:'ერთი და იგივე პლანეტა სხვადასხვა ნიშანში სხვადასხვა ძალით მოქმედებს. საკუთარ სახლში ან ეგზალტაციაში მდგარი პლანეტა ბუნებრივად მუშაობს. ტყვეობასა და ვარდნაში — ცნობიერ ძალისხმევას მოითხოვს. ეს არ არის შეფასება: ტყვეობაში მდგარი პლანეტა ხშირად ცხოვრებისეული მუშაობის მთავარი წერტილია.',
    tip:'განსაკუთრებით მნიშვნელოვანია რუკის მმართველისა და მზის დიგნიტეტი.'},
   {n:8,ti:'მთავარი ასპექტები',goto:'s-aspects',q:'რომელი შინაგანი ნაწილები ეხმარებიან და რომლები ედავებიან ერთმანეთს?',
    b:'აქ ბევრი დამწყები იხრჩობა, ამიტომ არ დაიწყო ყველა ასპექტის კითხვით. ჯერ მხოლოდ ის ასპექტები ნახე, რომლებიც მზეს, მთვარეს, ასცენდენტსა და რუკის მმართველს ეხება — და მხოლოდ ვიწრო ორბით, 3 გრადუსამდე. ეს ხუთი-ექვსი ასპექტი რუკის სამოცდაათ პროცენტს ხსნის.',
@@ -4607,6 +4684,9 @@ function buildSearchIndex(){
   var sr=T(typeof DEF_SECT_RULES!=='undefined'?DEF_SECT_RULES:null);
   if(sr) sr.forEach(function(x){ add(x.ti,'სექტი','s-dign',x.t); });
 
+  var av=T(typeof DEF_AVEST!=='undefined'?DEF_AVEST:null);
+  if(av) av.forEach(function(x){ add('ავესტური: '+x.n,'მმართ. '+x.r+' · ეგზ. '+x.e,'s-dign','ტყვეობა '+x.d+' ვარდნა '+x.f); });
+
   var mt=T(typeof DEF_METHOD!=='undefined'?DEF_METHOD:null);
   if(mt) mt.forEach(function(x){ add(x.n+'. '+x.ti,'რუკის კითხვა','s-method',x.q+' '+x.b); });
 
@@ -4979,7 +5059,8 @@ const DATASETS=[
  {k:'DEF_ECL_H',        n:'დაბნელება სახლებში', g:'ანალიზი'},
  {k:'DEF_ECL_R',        n:'დაბნელების წესები', g:'ანალიზი'},
  {k:'DEF_DIGN',         n:'დიგნიტეტები პლანეტებით', g:'საფუძვლები'},
- {k:'DEF_DIGN_SIGNS',   n:'დიგნიტეტების ცხრილი', g:'საფუძვლები'},
+ {k:'DEF_DIGN_SIGNS',   n:'დიგნიტეტები — კლასიკური ცხრილი', g:'საფუძვლები'},
+ {k:'DEF_AVEST',        n:'დიგნიტეტები — ავესტური ცხრილი', g:'საფუძვლები'},
  {k:'DEF_DIGN_TERMS',   n:'დიგნიტეტების ტერმინები', g:'საფუძვლები'},
  {k:'DEF_TRIPL',        n:'ტრიპლიციტეტი', g:'საფუძვლები'},
  {k:'DEF_TERMS',        n:'ტერმინები (bounds)', g:'საფუძვლები'},
@@ -10262,7 +10343,7 @@ function initTriadToggle(){
   }
 }
 // Version check — only removes sections if version changed, preserves all text/game data
-const SITE_VERSION='v7.5';
+const SITE_VERSION='v7.6';
 if(ls('as_version')!==SITE_VERSION){
   // Only clear sections structure and quiz questions (new versions may change these)
   // NEVER clear user-edited content:
