@@ -4290,6 +4290,168 @@ const DEF_RETRO_RULES=[
   {i:'✦',ti:'რეტროგრადულობა არ არის დეფექტი',t:'Rx პლანეტა არ ნიშნავს, რომ რაღაც არ მუშაობს. ის ნიშნავს, რომ ენერგია შიგნით არის მიმართული და არა გარეთ. ხშირად ეს სიღრმეს იძლევა იქ, სადაც პირდაპირი პლანეტა ზედაპირზე რჩება.'},
 ];
 
+// ===== 🪐 პლანეტების მოძრაობა (ჰელიოცენტრული vs გეოცენტრული) =====
+let DEF_MOTION_SECTION={id:'s-motion',type:'motion',title:'🪐 პლანეტების მოძრაობა',visible:true,tab:'🪐 პლანეტების მოძრაობა'};
+
+function renderMotionSection(sec){
+  var box='border:.5px solid var(--border);border-radius:18px;padding:22px 24px;background:var(--bg2);margin-bottom:18px';
+  var mc='background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:10px 14px';
+  var ml='font-size:12px;color:var(--text3);margin-bottom:2px';
+  var mv='font-size:17px;font-weight:500;color:var(--text)';
+  var h='';
+  h+='<div style="'+box+'">';
+  h+='<h2 style="font-size:20px;font-weight:500;margin-bottom:10px;color:var(--text)">🪐 როგორ მოძრაობენ პლანეტები და რატომ ვუყურებთ დედამიწიდან</h2>';
+  h+='<p style="font-size:14px;line-height:1.75;color:var(--text2);margin-bottom:10px"><strong style="color:var(--text)">ზემოდან ხედი — ჰელიოცენტრული (Heliocentric).</strong> სინამდვილეში მზე ცენტრშია და ყველა პლანეტა მის გარშემო ერთი მიმართულებით ბრუნავს. რაც უფრო შორსაა პლანეტა მზიდან, მით უფრო ნელა მოძრაობს.</p>';
+  h+='<p style="font-size:14px;line-height:1.75;color:var(--text2);margin-bottom:10px"><strong style="color:var(--text)">ხედი დედამიწიდან — გეოცენტრული (Geocentric).</strong> ასტროლოგია ამ ხედს იყენებს: ჩვენ დედამიწაზე ვდგავართ და ვაკვირდებით, ზოდიაქოს რომელი ნიშნის ფონზე ჩანს პლანეტა. ზოდიაქო ცის 360°-იანი სარტყელია, დაყოფილი 12 ნიშნად, თითო 30°. ნატალური რუკა არის „ფოტო“ იმისა, თუ სად ჩანდა თითოეული პლანეტა ამ წრეზე დაბადების მომენტში.</p>';
+  h+='<p style="font-size:14px;line-height:1.75;color:var(--text2);margin-bottom:10px"><strong style="color:var(--text)">მზე „მოძრაობს“ ზოდიაქოში.</strong> სინამდვილეში დედამიწა ბრუნავს მზის გარშემო, მაგრამ ჩვენი ხედიდან მზე წელიწადში ერთხელ შემოუვლის 12-ვე ნიშანს — ამიტომ ვამბობთ „მზე მშვილდოსანშია“.</p>';
+  h+='<p style="font-size:14px;line-height:1.75;color:var(--text2)"><strong style="color:var(--text)">რეტროგრადულობა (Retrograde, ℞).</strong> როცა დედამიწა უსწრებს უფრო ნელ გარე პლანეტას (ან შიდა პლანეტა — დედამიწას), ჩვენი ხედიდან პლანეტა თითქოს უკან მიდის და ცაზე მარყუჟს ხაზავს (ანიმაციაში წითლად). სინამდვილეში უკან არაფერი მოძრაობს — ეს პერსპექტივის ეფექტია, როგორც გზაზე ნელ მანქანას რომ გაუსწრებ.</p>';
+  h+='</div>';
+
+  h+='<div style="'+box+'">';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;font-size:13px;color:var(--text2)">';
+  h+='<button id="mo-play" type="button" style="padding:6px 12px;border-radius:8px;border:.5px solid var(--border2);background:var(--bg);color:var(--text);cursor:pointer">⏸ პაუზა</button>';
+  h+='<select id="mo-pl" style="padding:6px 8px;border-radius:8px;border:.5px solid var(--border2);background:var(--bg);color:var(--text)"><option value="mars" selected>♂ მარსი</option><option value="venus">♀ ვენერა</option><option value="mercury">☿ მერკური</option><option value="jupiter">♃ იუპიტერი</option><option value="saturn">♄ სატურნი</option></select>';
+  h+='<label>თარიღი <input id="mo-date" type="date" style="padding:5px 8px;border-radius:8px;border:.5px solid var(--border2);background:var(--bg);color:var(--text)"></label>';
+  h+='<label>სიჩქარე <input id="mo-sp" type="range" min="1" max="15" step="1" value="2" style="width:100px;vertical-align:middle"></label>';
+  h+='<button id="mo-reset" type="button" style="padding:6px 12px;border-radius:8px;border:.5px solid var(--border2);background:var(--bg);color:var(--text);cursor:pointer">↺ თავიდან</button>';
+  h+='</div>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center">';
+  h+='<div style="text-align:center"><canvas id="mo-h" width="320" height="320" style="width:320px;max-width:100%;height:auto"></canvas><div style="font-size:12px;color:var(--text3)">რეალობა: მზე ცენტრში (ზემოდან ხედი)</div></div>';
+  h+='<div style="text-align:center"><canvas id="mo-g" width="320" height="320" style="width:320px;max-width:100%;height:auto"></canvas><div style="font-size:12px;color:var(--text3)">ჩვენი ხედი: დედამიწა ცენტრში + ზოდიაქო</div></div>';
+  h+='</div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px">';
+  h+='<div style="'+mc+'"><div style="'+ml+'">თარიღი</div><div id="mo-dt" style="'+mv+'">—</div></div>';
+  h+='<div style="'+mc+'"><div style="'+ml+'">☉ მზე ზოდიაქოში</div><div id="mo-sn" style="'+mv+'">—</div></div>';
+  h+='<div style="'+mc+'"><div style="'+ml+'" id="mo-pn">მარსი ზოდიაქოში</div><div id="mo-ps" style="'+mv+'">—</div></div>';
+  h+='<div style="'+mc+'"><div style="'+ml+'">მოძრაობა</div><div id="mo-st" style="'+mv+'">—</div></div>';
+  h+='</div>';
+  h+='<p style="font-size:12px;color:var(--text3);margin-top:10px;line-height:1.6">ფერები: <span style="color:#EF9F27">●</span> მზე · <span style="color:#378ADD">●</span> დედამიწა · <span style="color:#D85A30">●</span> პლანეტა · <span style="color:#E24B4A">●</span> რეტროგრადული მონაკვეთი. მოდელი გამარტივებულია (ელიფსური ორბიტები ერთ სიბრტყეში) — პოზიციები ~1–2°-ის სიზუსტითაა. ზუსტი რუკისთვის გამოიყენე ეფემერიდი ან astro.com.</p>';
+  h+='</div>';
+
+  var L=[
+    ['GeoGebra — მარსის რეტროგრადი','https://www.geogebra.org/m/bnHNYejX','მარცხნივ ზემოდან ხედი, მარჯვნივ დედამიწიდან — პირდაპირი/რეტრო მოძრაობით.'],
+    ['McGraw-Hill — Retrograde Motion Interactive','https://highered.mheducation.com/sites/0073512184/student_view0/chapter4/retrograde_motion_interactive.html','ორბიტების ზომის შეცვლა და ხედი სხვადასხვა პლანეტიდან.'],
+    ['Elysia Tools — Planetary Retrograde','https://elysiatools.com/en/visualizations/planetary-retrograde','ჰელიო- და გეოცენტრული ხედი გვერდიგვერდ, რეტრო წითლად.'],
+    ['Solar System Scope','https://www.solarsystemscope.com/','3D მზის სისტემა NASA-ს მონაცემებით, რეალურ დროში; აქვს აპიც.'],
+    ['NASA Eyes on the Solar System','https://eyes.nasa.gov/apps/solar-system/','მზის სისტემის წარსული, აწმყო და მომავალი 3D-ში.'],
+    ['Astro.Observer Orrery','https://astro.observer/orrery/','პლანეტები ახლა; თარიღის შეცვლა და რეალური მასშტაბი.'],
+    ['Stellarium','https://stellarium.org/','უფასო პლანეტარიუმი — ნახე ცა ნებისმიერ ადგილას და დროს (მაგ. შენი დაბადების წუთს).']
+  ];
+  h+='<div style="'+box+'">';
+  h+='<h3 style="font-size:16px;font-weight:500;margin-bottom:10px;color:var(--text)">🔗 სად ვნახოთ დამატებით</h3>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px">';
+  L.forEach(function(x){
+    h+='<a href="'+x[1]+'" target="_blank" rel="noopener" style="display:block;text-decoration:none;background:var(--bg);border:.5px solid var(--border);border-radius:12px;padding:12px 14px"><div style="font-size:14px;font-weight:500;color:var(--text-accent);margin-bottom:4px">'+x[0]+' ↗</div><div style="font-size:12.5px;color:var(--text2);line-height:1.55">'+x[2]+'</div></a>';
+  });
+  h+='</div></div>';
+
+  h+='<div style="'+box+'">';
+  h+='<h3 style="font-size:16px;font-weight:500;margin-bottom:8px;color:var(--text)">✏️ დავალება</h3>';
+  h+='<p style="font-size:14px;line-height:1.75;color:var(--text2)">1. აირჩიე ვენერა და დააკვირდი: სად არის ის მზესთან შედარებით, როცა რეტროგრადული ხდება — მზესა და დედამიწას შორის თუ მზის მეორე მხარეს?<br>2. აირჩიე მარსი, შემდეგ სატურნი: რომელს აქვს უფრო პატარა მარყუჟი და რატომ?<br>3. ჩაწერე შენი დაბადების თარიღი და ნახე, რომელ ნიშანში იყო მზე და რეტროგრადული იყო თუ არა პლანეტა.</p>';
+  h+='</div>';
+  return h;
+}
+
+function initMotion(){
+  var hcv=document.getElementById('mo-h'),gcv=document.getElementById('mo-g');
+  if(!hcv||!gcv) return;
+  var hc=hcv.getContext('2d'),gc=gcv.getContext('2d');
+  var token={}; window.__moToken=token;
+  var P={
+    mercury:{n:'მერკური',a:.387,T:.2408467,L0:252.25,w:77.46,e:.2056},
+    venus:{n:'ვენერა',a:.723,T:.61519726,L0:181.98,w:131.6,e:.0068},
+    mars:{n:'მარსი',a:1.524,T:1.8808476,L0:355.43,w:336.04,e:.0934},
+    jupiter:{n:'იუპიტერი',a:5.203,T:11.862615,L0:34.35,w:14.75,e:.0484},
+    saturn:{n:'სატურნი',a:9.537,T:29.447498,L0:50.08,w:92.43,e:.0539}
+  };
+  var EA={a:1,T:1.0000174,L0:100.46,w:102.94,e:.0167};
+  var Z=['ვერძი','კურო','ტყუპ.','კირჩხ.','ლომი','ქალწ.','სასწ.','მორ.','მშვილდ.','თხის რ.','მერწ.','თევზ.'];
+  var ZF=['ვერძი','კურო','ტყუპები','კირჩხიბი','ლომი','ქალწული','სასწორი','მორიელი','მშვილდოსანი','თხის რქა','მერწყული','თევზები'];
+  var SUN='#EF9F27',EAR='#378ADD',PLC='#D85A30',RET='#E24B4A';
+  var key='mars',d=0,run=true,trail=[],prev=null,startJ=0,startDate=new Date();
+  var J2000=Date.UTC(2000,0,1,12);
+  function css(v,f){var x=getComputedStyle(document.body).getPropertyValue(v).trim();return x||f;}
+  function pos(o,days){
+    var n=startJ+days, L=o.L0+360*n/365.25/o.T, M=(L-o.w)*Math.PI/180, e=o.e;
+    var v=L+(2*e*Math.sin(M)+1.25*e*e*Math.sin(2*M))*180/Math.PI;
+    var nu=(v-o.w)*Math.PI/180, r=o.a*(1-e*e)/(1+e*Math.cos(nu)), lr=v*Math.PI/180;
+    return [r*Math.cos(lr),r*Math.sin(lr)];
+  }
+  function lon(x,y){var l=Math.atan2(y,x)*180/Math.PI;return (l+360)%360;}
+  function fmt(l){return Math.floor(l%30)+'° '+ZF[Math.floor(l/30)];}
+  function dot(c,x,y,r,col){c.beginPath();c.arc(x,y,r,0,7);c.fillStyle=col;c.fill();}
+  function circ(c,r,col){c.beginPath();c.setLineDash([3,4]);c.arc(160,160,r,0,7);c.strokeStyle=col;c.lineWidth=1;c.stroke();c.setLineDash([]);}
+  function geo(days){var o=P[key],e=pos(EA,days),q=pos(o,days);return {e:e,q:q,gx:q[0]-e[0],gy:q[1]-e[1]};}
+  function step(days){
+    var g=geo(days),pl=lon(g.gx,g.gy),retro=false;
+    if(prev!==null){var dl=pl-prev;if(dl>180)dl-=360;if(dl<-180)dl+=360;retro=dl<0;}
+    prev=pl; trail.push([g.gx,g.gy,retro]); if(trail.length>900) trail.shift();
+    return retro;
+  }
+  function draw(retro){
+    var tx=css('--text2','#888'),bd=css('--border2','#ccc'),bg2=css('--bg3','#eee');
+    var o=P[key],g=geo(d);
+    var hs=140/Math.max(o.a*(1+o.e),1.02)/1.05;
+    hc.clearRect(0,0,320,320);circ(hc,hs,bd);circ(hc,o.a*hs,bd);dot(hc,160,160,9,SUN);
+    var ex=160+g.e[0]*hs,ey=160-g.e[1]*hs,px=160+g.q[0]*hs,py=160-g.q[1]*hs,dx=px-ex,dy=py-ey,k=400/Math.hypot(dx,dy);
+    hc.beginPath();hc.moveTo(ex,ey);hc.lineTo(ex+dx*k,ey+dy*k);hc.strokeStyle=PLC;hc.globalAlpha=.35;hc.stroke();hc.globalAlpha=1;
+    dot(hc,ex,ey,6,EAR);dot(hc,px,py,6,PLC);
+    var sx=-g.e[0],sy=-g.e[1],pl=lon(g.gx,g.gy),sl=lon(sx,sy);
+    var R=150,ri=R-26,gs=(ri-8)/(o.a*(1+o.e)+1.02);
+    gc.clearRect(0,0,320,320);
+    gc.beginPath();gc.arc(160,160,R,0,7);gc.arc(160,160,ri,0,7,true);gc.fillStyle=bg2;gc.fill();
+    gc.strokeStyle=bd;gc.lineWidth=1;
+    for(var i=0;i<12;i++){
+      var a=i*30*Math.PI/180;gc.beginPath();gc.moveTo(160+ri*Math.cos(a),160-ri*Math.sin(a));gc.lineTo(160+R*Math.cos(a),160-R*Math.sin(a));gc.stroke();
+      var m=(i*30+15)*Math.PI/180,tr=(R+ri)/2;gc.save();gc.translate(160+tr*Math.cos(m),160-tr*Math.sin(m));gc.rotate(-m+Math.PI/2);
+      gc.fillStyle=tx;gc.font='11px sans-serif';gc.textAlign='center';gc.textBaseline='middle';gc.fillText(Z[i],0,0);gc.restore();
+    }
+    circ(gc,gs,bd);
+    for(var j=1;j<trail.length;j++){
+      var p0=trail[j-1],p1=trail[j];gc.beginPath();gc.moveTo(160+p0[0]*gs,160-p0[1]*gs);gc.lineTo(160+p1[0]*gs,160-p1[1]*gs);
+      gc.strokeStyle=p1[2]?RET:PLC;gc.globalAlpha=.25+.75*j/trail.length;gc.lineWidth=p1[2]?2:1.2;gc.stroke();
+    }
+    gc.globalAlpha=1;
+    var sa=sl*Math.PI/180,pa=pl*Math.PI/180;
+    dot(gc,160+gs*sx,160-gs*sy,7,SUN);dot(gc,160+gs*g.gx,160-gs*g.gy,5,PLC);
+    dot(gc,160+(ri+4)*Math.cos(sa),160-(ri+4)*Math.sin(sa),5,SUN);
+    dot(gc,160+(ri+4)*Math.cos(pa),160-(ri+4)*Math.sin(pa),5,retro?RET:PLC);
+    dot(gc,160,160,7,EAR);
+    var dt=new Date(startDate.getTime()+d*864e5);
+    document.getElementById('mo-dt').textContent=dt.toLocaleDateString('ka-GE');
+    document.getElementById('mo-sn').textContent=fmt(sl);
+    document.getElementById('mo-pn').textContent=o.n+' ზოდიაქოში';
+    document.getElementById('mo-ps').textContent=fmt(pl);
+    var st=document.getElementById('mo-st');st.textContent=retro?'რეტროგრადი ℞':'პირდაპირი';st.style.color=retro?RET:'var(--text)';
+  }
+  var lastRetro=false;
+  function reset(){
+    var inp=document.getElementById('mo-date');
+    var v=inp&&inp.value?inp.value:null;
+    startDate=v?new Date(v+'T12:00:00'):new Date();
+    startJ=(Date.UTC(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),12)-J2000)/864e5;
+    d=0;trail=[];prev=null;
+    for(var i=-60;i<=0;i++){ lastRetro=step(i); }
+    d=0;draw(lastRetro);
+  }
+  function loop(){
+    if(window.__moToken!==token||!document.body.contains(hcv)) return;
+    if(run&&hcv.offsetParent!==null){
+      var s=+document.getElementById('mo-sp').value;
+      for(var i=0;i<s;i++){d+=0.5;lastRetro=step(d);}
+      draw(lastRetro);
+    }
+    requestAnimationFrame(loop);
+  }
+  var t=new Date(),di=document.getElementById('mo-date');
+  if(di&&!di.value) di.value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  document.getElementById('mo-play').onclick=function(){run=!run;this.textContent=run?'⏸ პაუზა':'▶ დაკვრა';};
+  document.getElementById('mo-pl').onchange=function(e){key=e.target.value;reset();};
+  document.getElementById('mo-reset').onclick=reset;
+  di.onchange=reset;
+  reset();loop();
+}
+
 let DEF_RETRO_SECTION={id:'s-retro',type:'retro',title:'℞ რეტროგრადულობა',visible:true,tab:'℞ რეტროგრადულობა'};
 
 function renderRetroSection(sec){
@@ -6946,7 +7108,7 @@ function renderBooksSection(sec){
 
 function initSections(){
   let saved=ls('as_sections');
-  if(!saved) return [DEF_METHOD_SECTION,DEF_ECL_SECTION,DEF_STAR_SECTION,DEF_MOON_SECTION,DEF_BOOKS,DEF_WHEEL,DEF_MATCHING,DEF_MOON_GAME,DEF_TETRIS,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
+  if(!saved) return [DEF_METHOD_SECTION,DEF_MOTION_SECTION,DEF_ECL_SECTION,DEF_STAR_SECTION,DEF_MOON_SECTION,DEF_BOOKS,DEF_WHEEL,DEF_MATCHING,DEF_MOON_GAME,DEF_TETRIS,DEF_PROG_SECTION,DEF_PHASE_SECTION,DEF_FORT_SECTION,DEF_GEN_SECTION,DEF_RULERS_SECTION,DEF_RETRO_SECTION,DEF_ASC_SECTION,DEF_SYN_SECTION,DEF_DIGN_SECTION,DEF_TRANSIT_SECTION,DEF_HOUSES_SECTION,DEF_ASPECTS_SECTION,...DEF_SECTIONS,DEF_SUN_SECTION,DEF_VENUS,DEF_MARS,DEF_MERCURY,DEF_JUPITER_SECTION,DEF_SATURN_SECTION,DEF_LILITH_SECTION,DEF_CHIRON_SECTION,DEF_NODE_SECTION,DEF_QUIZ_SEC,DEF_RESOURCES,DEF_TIMEZONE];
   const hasVenus=saved.some(s=>s.id==='s-venus'||s.type==='venus');
   const hasMars=saved.some(s=>s.id==='s-mars'||s.type==='mars');
   const hasTimezone=saved.some(s=>s.id==='s-timezone');
@@ -6975,6 +7137,7 @@ function initSections(){
   const hasRl=saved.some(s=>s.id==='s-rulers');
   const hasRx=saved.some(s=>s.id==='s-retro');
   const hasMt=saved.some(s=>s.id==='s-method');
+  const hasMotion=saved.some(s=>s.id==='s-motion');
   const hasSy=saved.some(s=>s.id==='s-syn');
   const hasDg=saved.some(s=>s.id==='s-dign');
   const hasTr=saved.some(s=>s.id==='s-transits');
@@ -7002,6 +7165,7 @@ function initSections(){
   if(!hasRl) saved.push(DEF_RULERS_SECTION);
   if(!hasRx) saved.push(DEF_RETRO_SECTION);
   if(!hasMt) saved.unshift(DEF_METHOD_SECTION);
+  if(!hasMotion){ const mi=saved.findIndex(s=>s.id==='s-method'); saved.splice(mi>=0?mi+1:0,0,DEF_MOTION_SECTION); }
   if(!hasSy) saved.push(DEF_SYN_SECTION);
   if(!hasDg) saved.push(DEF_DIGN_SECTION);
   if(!hasTr) saved.push(DEF_TRANSIT_SECTION);
@@ -7600,16 +7764,16 @@ function renderAll(){
   const visible=SECTIONS.filter(s=>s.visible!==false);
 
   const GROUPS=[
-    {k:'base', label:'📐 საფუძვლები', types:['method','signs','elements','crosses','dign'], ids:[]},
+    {k:'base', label:'📐 საფუძვლები', types:['method','motion','signs','elements','crosses','dign'], ids:[]},
     {k:'chart',label:'🗺 რუკა',       types:['asc','houses','rulers','gener','phase','fort','stars','moon-signs','sun-signs','venus','mars','mercury','jupiter','saturn','chiron','node','lilith','table','planets'], ids:['s-moon']},
     {k:'anal', label:'🔍 ანალიზი',    types:['aspects','transits','prog','syn','retro','ecl'], ids:[]},
     {k:'learn',label:'🎓 სწავლა',     types:['quiz','resources','points','timezone','glossary','library','games','wheel','matching','moon-game','tetris','books','calc'], ids:[]}
   ];
-  const ICONS={'s-ecl':'◐','s-stars':'✧','s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
+  const ICONS={'s-ecl':'◐','s-stars':'✧','s-prog':'⇢','s-phase':'☾','s-fort':'⊗','s-gener':'⧗','s-rulers':'⚿','s-retro':'℞','s-method':'🧭','s-motion':'🪐','s-asc':'↑','s-houses':'⌂','s-aspects':'⚡','s-transits':'⟳','s-syn':'♥','s-dign':'⚖',
     's-chiron':'⚕','s-node':'☊','s-lilith':'⚫','s-moon':'🌙','s-sun-signs':'🌟','s-venus':'♀',
     's-mars':'♂','s-mercury':'☿','s-jupiter':'♃','s-saturn':'♄','s-quiz':'🎯','s-resources':'📖'};
   const SUBS={'s-aspects':'520 ინტერპრეტაცია','s-houses':'12 სახლი · 156 პოზიცია','s-rulers':'144 კომბინაცია','s-gener':'♅ ♆ ♇ · 36 თაობა','s-phase':'8 ფაზა · რუდჰიარის სისტემა','s-fort':'ჰელენური ლოტი · ნიშნები და სახლები',
-    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-prog':'შინაგანი მომწიფება · 36 პოზიცია','s-ecl':'4 ტიპი · 12 სახლი · საროსი','s-stars':'18 ვარსკვლავი · პოზიციებით','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
+    's-transits':'რა ხდება ახლა','s-retro':'10 პლანეტა · ნატალური და ტრანზიტი','s-motion':'ანიმაცია · ჰელიო- და გეოცენტრული ხედი','s-prog':'შინაგანი მომწიფება · 36 პოზიცია','s-ecl':'4 ტიპი · 12 სახლი · საროსი','s-stars':'18 ვარსკვლავი · პოზიციებით','s-syn':'ორი რუკის შედარება','s-dign':'პლანეტის ძალა ნიშანში',
     's-asc':'12 ნიშანი · რუკის მმართველი','s-method':'11 ნაბიჯი · საიდან დავიწყოთ','s-resources':'ლექსიკონი და ბიბლიოთეკა','s-quiz':'სავარჯიშოები'};
 
   const groupOf=s=>{
@@ -9281,6 +9445,7 @@ function renderSection(sec){
   if(sec.type==='syn')return renderSynSection(sec);
   if(sec.type==='method')return renderMethodSection(sec);
   if(sec.type==='retro')return renderRetroSection(sec);
+  if(sec.type==='motion')return renderMotionSection(sec);
   if(sec.type==='rulers')return renderRulersSection(sec);
   if(sec.type==='gener')return renderGenerSection(sec);
   if(sec.type==='phase')return renderPhaseSection(sec);
@@ -9715,6 +9880,7 @@ function bindSectionEvents(sec,div){
   if(sec.type==='quiz'){setTimeout(()=>initQuiz(sec.id),50);}
   if(sec.type==='matching'){setTimeout(()=>initMatching(sec.id),50);}
   if(sec.type==='wheel'){setTimeout(()=>initWheel(sec.id),50);}
+  if(sec.type==='motion'){setTimeout(()=>initMotion(),50);}
   if(sec.type==='moon-game'){setTimeout(()=>initMoonGame(sec.id),50);}
   if(sec.type==='resources'){setTimeout(()=>initResourcesSection(),50);}
   if(sec.type==='tetris'){setTimeout(()=>initTetris(sec.id),50);}
